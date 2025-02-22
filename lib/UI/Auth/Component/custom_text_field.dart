@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:myott/Utils/app_text_styles.dart';
 import '../../../Utils/app_colors.dart';
-
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool isPassword;
   final TextInputType keyboardType;
+  final IconData? prefixIcon;
+  final IconData? suffixIcon;
+  final VoidCallback? onSuffixTap;
+  final ValueChanged<String>? onChanged; // Added onChanged callback
 
   const CustomTextField({
     super.key,
@@ -16,6 +19,10 @@ class CustomTextField extends StatelessWidget {
     required this.hintText,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.onSuffixTap,
+    this.onChanged, // Pass onChanged function
   });
 
   @override
@@ -24,16 +31,26 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       obscureText: isPassword,
       keyboardType: keyboardType,
-      style: const TextStyle(color: Colors.white),
+      style: GoogleFonts.poppins(color: AppColors.white),
+      onChanged: onChanged, // Assign onChanged callback
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: GoogleFonts.poppins(color: Colors.white60, fontSize: 14),
+        hintStyle: AppTextStyles.SubHeading2,
         filled: true,
         fillColor: AppColors.inputField,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
+        prefixIcon: prefixIcon != null
+            ? Icon(prefixIcon, color: AppColors.subwhite)
+            : null,
+        suffixIcon: suffixIcon != null
+            ? GestureDetector(
+          onTap: onSuffixTap ?? () {},
+          child: Icon(suffixIcon, color: AppColors.subwhite),
+        )
+            : null,
       ),
     );
   }

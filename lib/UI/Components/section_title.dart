@@ -15,11 +15,11 @@ class SectionTitle extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTextStyles.heading,
+            style: AppTextStyles.SubHeadingb1,
           ),
           Text(
             "Show all",
-            style: AppTextStyles.subText,
+            style: AppTextStyles.SubHeadingRed2,
           ),
         ],
       ),

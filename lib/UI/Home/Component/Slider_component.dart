@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/Utils/app_colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../Utils/app_text_styles.dart';
 import '../../../utils/size_config.dart';
 import '../../Movie/Controller/Movie_controller.dart';
+import '../../Movie/movie_details_page.dart';
 
 class MovieSlider extends StatelessWidget {
   final MovieController movieController = Get.put(MovieController());
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Column(
       children: [
         // Movie Slider
         SizedBox(
-          height: SizeConfig.height(400),
+          height: (400 / 812.0) * screenHeight,
           child: Obx(() {
             return PageView.builder(
               controller: movieController.pageController,
-              itemCount: movieController.movies.length,
-              onPageChanged: movieController.updatePage, // No need for setState
+              itemCount: movieController.featuredMovies.length,
+              onPageChanged: movieController.updatePage,
               itemBuilder: (context, index) {
-                var movie = movieController.movies[index];
+                var movie = movieController.featuredMovies[index];
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -55,14 +59,14 @@ class MovieSlider extends StatelessWidget {
                         // Movie Info
                         Positioned(
                           left: 16,
-                          bottom: 80, // Adjusted for buttons
+                          bottom: 80,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(movie.title, style: AppTextStyles.heading),
-                              Text("${movie.duration} min | Director: Unknown", style: AppTextStyles.subText),
+                              Text(movie.title, style: AppTextStyles.Headingb),
+                              Text("${movie.duration} min | Director: Unknown", style: AppTextStyles.SubHeading2),
                               const SizedBox(height: 5),
-                              Text(movie.description, style: AppTextStyles.subText2),
+                              Text(movie.description, style: AppTextStyles.SubHeading3),
                             ],
                           ),
                         ),
@@ -76,32 +80,32 @@ class MovieSlider extends StatelessWidget {
                               // Watch Later Button
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: Colors.white),
+                                  side: BorderSide(color: AppColors.white),
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                 ),
                                 onPressed: () {
-                                  // Get.to(() => MovieDetailScreen(movie: movie));
+                                  // Logic to add to watch later
                                 },
                                 child: Text(
                                   "Watch Later",
-                                  style: AppTextStyles.subText,
+                                  style: AppTextStyles.SubHeading2,
                                 ),
                               ),
 
                               SizedBox(width: 10),
 
-                              // Watch Now Button
+                              // Watch Now Button - Navigates to Details Page
                               ElevatedButton.icon(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: AppColors.primary,
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                 ),
                                 onPressed: () {
-                                  // Get.to(() => MovieDetailScreen());
+                                  movieController.setSelectedMovie(movie);
                                 },
-                                icon: Icon(Icons.play_arrow, color: Colors.white),
+                                icon: Icon(Icons.play_arrow, color: AppColors.white),
                                 label: Text(
                                   "Watch Now",
                                   style: AppTextStyles.buttonText,
@@ -125,9 +129,9 @@ class MovieSlider extends StatelessWidget {
         Obx(() {
           return SmoothPageIndicator(
             controller: movieController.pageController,
-            count: movieController.movies.length,
+            count: movieController.featuredMovies.length,
             effect: ExpandingDotsEffect(
-              activeDotColor: Colors.red,
+              activeDotColor: AppColors.primary,
               dotColor: Colors.white,
               dotHeight: 8,
               dotWidth: 8,

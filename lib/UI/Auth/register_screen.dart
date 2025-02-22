@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Home/Main_screen.dart';
+import 'Controller/auth_controller.dart';
 
 
 
@@ -12,6 +13,7 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthController authController = Get.put(AuthController());
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
@@ -88,7 +90,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                       Get.to(MainScreen());
+                      authController.register();
                         // Handle Registration Action
                       },
                       child: Text(

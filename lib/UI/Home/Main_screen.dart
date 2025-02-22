@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/Utils/app_colors.dart';
 
 import 'Controller/mian_screen_controller.dart';
@@ -11,13 +12,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() => controller.screens[controller.selectedIndex.value]), // Ensure `.value` is used
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        shape: CircleBorder(),
-        backgroundColor: AppColors.primary,
-        child: Icon(Icons.add, size: 30, color: AppColors.white),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
       bottomNavigationBar: BottomAppBar(
         color: AppColors.background,
         child: Padding(
@@ -39,20 +34,26 @@ class MainScreen extends StatelessWidget {
                         : AppColors.white),
                 onPressed: () => controller.changeIndex(1),
               ),
-              SizedBox(width: 48), // Space for the floating button
               IconButton(
-                icon: Icon(Icons.campaign,
+                icon: Icon(Icons.favorite,
                     color: controller.selectedIndex.value == 2
-                        ? AppColors.white
+                        ? AppColors.primary2
                         : AppColors.white),
                 onPressed: () => controller.changeIndex(2),
               ),
               IconButton(
-                icon: Icon(Icons.person,
+                icon: Icon(Icons.campaign,
                     color: controller.selectedIndex.value == 3
-                        ? AppColors.white
+                        ? AppColors.primary2
                         : AppColors.white),
                 onPressed: () => controller.changeIndex(3),
+              ),
+              IconButton(
+                icon: Icon(Icons.person,
+                    color: controller.selectedIndex.value == 4
+                        ? AppColors.primary2
+                        : AppColors.white),
+                onPressed: () => controller.changeIndex(4),
               ),
             ],
           )),

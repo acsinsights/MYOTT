@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Auth/register_screen.dart';
+
+import '../../Home/Main_screen.dart';
+import '../forgot_password_screen.dart';
 
 
 class AuthController extends GetxController {
@@ -9,12 +13,12 @@ class AuthController extends GetxController {
   TextEditingController confirmPasswordController = TextEditingController();
 
   void login() async {
-   // Get.to(MainScreen());
+   Get.to(MainScreen());
 
   }
 
   void forgotPassword() {
-   // Get.to(page);
+   Get.to(ForgotPasswordScreen());
     //Get.snackbar("Forgot Password", "Password reset link sent!", backgroundColor: Colors.green);
   }
 
@@ -23,5 +27,6 @@ class AuthController extends GetxController {
   }
 
   void register() async {
+    Get.to(MainScreen());
   }
 }

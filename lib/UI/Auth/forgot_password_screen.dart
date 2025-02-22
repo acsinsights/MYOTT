@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myott/Config/app_images.dart';
 
 import 'fogot_otp_verification_screen.dart';
 
@@ -32,7 +33,7 @@ class ForgotPasswordScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Image(image: AssetImage("assets/Icons/app_logo.png"),height: 40,),
+              child: Image(image: AssetImage(AppImages.applogo),height: 40,),
             ),
             SizedBox(height: 50,),
             Text(

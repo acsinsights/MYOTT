@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Home/home_screen.dart';
+import 'package:myott/UI/Reels/reels_page.dart';
+import 'package:myott/UI/Wishlist/wishlist_page.dart';
+
+import '../../Profile/profile_screen.dart';
+import '../../Search/search_screen.dart';
 
 
 
@@ -13,8 +18,9 @@ class MainScreenController extends GetxController {
 
   final List<Widget> screens = [
     HomeScreen(),
-    //SearchScreen(),
-    //ReelsScreen(),
-    //ProfilePage(),
+    SearchScreen(),
+    WishlistPage(),
+    ReelsPage(),
+    ProfileScreen(),
   ];
 }
