@@ -46,7 +46,7 @@ class MoviesByGenre extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  movieController.setSelectedMovie(movies[index]); // Set selected movie
+                  // movieController.setSelectedMovie(movies[index]); // Set selected movie
                 },
 
                 child: ClipRRect(

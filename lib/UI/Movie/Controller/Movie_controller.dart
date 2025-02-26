@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Movie/movie_details_page.dart';
 import '../../../Data/movies_data.dart';
+import '../../../Services/MovieService.dart';
+import '../../Model/Moviemodel.dart';
 import '../Model/movie_model.dart';
 
 class MovieController extends GetxController {
@@ -11,7 +13,7 @@ class MovieController extends GetxController {
   var isLoading = true.obs;
   var currentPage = 0.obs; // Observable for the current page
   late PageController pageController;
-  var selectedMovie = Rxn<MovieModel>(); // Stores the selected movie
+  var selectedMovie = Rxn<MoviesModel>(); // Stores the selected movie
 
   @override
   void onInit() {
@@ -70,8 +72,18 @@ class MovieController extends GetxController {
     });
   }
 
-  void setSelectedMovie(MovieModel movie) {
-    selectedMovie.value = movie;
-    Get.to(MovieDetailScreen(),arguments: movie); // Navigate to the Movie Details Page
-  }
+  // void setSelectedMovie(MovieModel movie) {
+  //   selectedMovie.value = movie;
+  //   Get.to(MovieDetailScreen(),arguments: movie); // Navigate to the Movie Details Page
+  // }
+
+  // void fetchMovieDetails(int movieId) async {
+  //   try {
+  //     var movie = await MoviesModelService.getMovieDetails(movieId);
+  //     selectedMovie.value = movie;
+  //     Get.to(() => MovieDetailScreen(),arguments: movie);
+  //   } catch (e) {
+  //     print("Error fetching movie details: $e");
+  //   }
+  // }
 }

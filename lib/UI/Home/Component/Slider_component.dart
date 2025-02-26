@@ -103,7 +103,7 @@ class MovieSlider extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                 ),
                                 onPressed: () {
-                                  movieController.setSelectedMovie(movie);
+                                  // movieController.setSelectedMovie(movie);
                                 },
                                 icon: Icon(Icons.play_arrow, color: AppColors.white),
                                 label: Text(

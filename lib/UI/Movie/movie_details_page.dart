@@ -52,9 +52,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     children: [
                       MovieInfo(movie: movie, isWatchlisted: isWatchlisted, isLiked: isLiked, toggleWatchlist: _toggleWatchlist, toggleLike: _toggleLike),
                       MovieSeasons(movie: movie),
-                      MovieAttributes(title: "Genre", items: movie.genres),
+                      MovieAttributes(title: "Movie Name", items: movie),
                       SizedBox(height: 10,),
-                      MovieAttributes(title: "Languages", items: movie.languages),
+                      MovieAttributes(title: "Languages", items: movie),
                       SizedBox(height: 10,),
 
                       MovieSynopsis(description: movie.description),

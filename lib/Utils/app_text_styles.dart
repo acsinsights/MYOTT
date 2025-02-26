@@ -12,6 +12,7 @@ class AppTextStyles {
       static TextStyle Heading1 = GoogleFonts.poppins(color: AppColors.white, fontSize: 26);
 
       static TextStyle Headingb2 = GoogleFonts.poppins(color: AppColors.white, fontSize: 24, fontWeight: FontWeight.bold,);
+      static TextStyle HeadingbLackB2 = GoogleFonts.poppins(color: AppColors.background, fontSize: 24, fontWeight: FontWeight.bold,);
       static TextStyle HeadingbRed2 = GoogleFonts.poppins(color: AppColors.primary2, fontSize: 24, fontWeight: FontWeight.bold,);
       static TextStyle Heading2 = GoogleFonts.poppins(color: AppColors.white, fontSize: 24);
 
@@ -40,6 +41,8 @@ class AppTextStyles {
 
       static TextStyle SubHeadingb4= GoogleFonts.poppins(color: AppColors.white, fontSize: 10, fontWeight: FontWeight.bold,);
       static TextStyle SubHeading4= GoogleFonts.poppins(color: AppColors.white, fontSize: 10);
+      static TextStyle SubHeadingRed4= GoogleFonts.poppins(color: AppColors.primary2, fontSize: 10);
+      static TextStyle SubHeadingSubW4= GoogleFonts.poppins(color: AppColors.subwhite, fontSize: 10);
 
 
 

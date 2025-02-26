@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:myott/UI/Profile/screens/AccountSettingsScreen.dart';
-import 'package:myott/UI/Profile/screens/Subscription_history_page.dart';
+import 'package:myott/Services/Setting_service.dart';
+import 'package:myott/UI/Setting/Blogs/blog_page.dart';
+import 'package:myott/UI/Setting/account_setting/AccountSettingsScreen.dart';
+import 'package:myott/UI/Setting/Subscription_History/Subscription_history_page.dart';
 import 'package:myott/UI/Profile/screens/downloadPage.dart';
-import 'package:myott/UI/Profile/screens/langSelectionScreen.dart';
+import 'package:myott/UI/Setting/language/langSelectionScreen.dart';
 import 'package:myott/UI/Profile/screens/wishlistPage.dart';
+import 'package:myott/UI/Setting/Faq/faq_screen.dart';
+
+import '../Profile/Components/SettingItem.dart';
 
 
 
@@ -58,13 +63,23 @@ class HelpAndSettingScreen extends StatelessWidget {
                 Get.to(Downloadpage());
               },
               title: "Downloads", icon: Icons.download),
-          InkWell(
-            onTap: (){
-              Get.to(SubscriptionHistoryScreen());
+          SettingItem(
+              onTap: (){
+                Get.to(SubscriptionHistoryScreen());
 
-            },
-              child: SettingItem(title: "Subscription History", icon: Icons.history)),
-          SettingItem(title: "FAQ", icon: Icons.help_outline),
+              },
+              title: "Subscription History", icon: Icons.history),
+          SettingItem(
+              onTap: (){
+                Get.to(FAQScreen());
+              },
+              title: "FAQ", icon: Icons.help_outline),
+          SettingItem(
+              onTap: (){
+                Get.to(BlogScreen());
+              },
+              title: "Blogs", icon: Icons.comment),
+
           Divider(color: Colors.grey[800]),
 
           // Policy & Support
@@ -97,61 +112,3 @@ class HelpAndSettingScreen extends StatelessWidget {
   }
 }
 
-class SettingItem extends StatelessWidget {
-  final String title;
-  final String? subtitle;
-  final IconData icon;
-  final bool isLogout;
-  final VoidCallback? onTap; // Callback function for onTap
-
-  const SettingItem({
-    Key? key,
-    required this.title,
-    required this.icon,
-    this.subtitle,
-    this.isLogout = false,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-        decoration: BoxDecoration(
-          color: Colors.grey[900],
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: isLogout ? Colors.red : Colors.white, size: 24),
-            SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: isLogout ? FontWeight.bold : FontWeight.normal,
-                    ),
-                  ),
-                  if (subtitle != null)
-                    Text(
-                      subtitle!,
-                      style: TextStyle(color: Colors.white70, fontSize: 12),
-                    ),
-                ],
-              ),
-            ),
-            Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
-          ],
-        ),
-      ),
-    );
-  }
-}

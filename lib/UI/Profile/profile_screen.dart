@@ -8,7 +8,7 @@ import 'package:myott/UI/Profile/Components/UserProfile.dart';
 import 'package:myott/UI/Profile/screens/create_profile.dart';
 import 'package:myott/UI/Profile/screens/edit_profile.dart';
 import 'package:myott/UI/Profile/screens/subscription_page.dart';
-import 'package:myott/UI/Profile/setting_page.dart';
+import 'package:myott/UI/Setting/setting_page.dart';
 
 import 'Components/MovieListComponent.dart';
 

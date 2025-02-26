@@ -30,6 +30,13 @@ class LanguageController extends GetxController {
     );
 
     // Navigate to movie list screen with filtered movies
-    Get.to(MoviesByLanguageScreen(), arguments: moviesByLanguage);
+    // Get.to(MoviesByLanguageScreen(), arguments: moviesByLanguage);
   }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+  }
+
 }

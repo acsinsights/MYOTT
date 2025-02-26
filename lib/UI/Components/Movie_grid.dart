@@ -26,7 +26,7 @@ class MovieGrid extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             // Navigate using GetX and pass the movie data
-            movieController.setSelectedMovie(movies[index]);
+            // movieController.setSelectedMovie(movies[index]);
             Get.to(() => MovieDetailScreen());
           },
           child: Container(

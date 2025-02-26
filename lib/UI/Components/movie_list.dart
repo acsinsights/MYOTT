@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Model/Moviemodel.dart';
+import 'package:myott/UI/Movie/movie_details_page.dart';
 import 'package:myott/Utils/app_text_styles.dart';
-import '../Movie/Controller/Movie_controller.dart';
-import '../Movie/Model/movie_model.dart';
 
 class MovieList extends StatelessWidget {
-  final List<MovieModel> movies;
-  final MovieController movieController = Get.find();
+  final List<MoviesModel> movies;
 
   MovieList({Key? key, required this.movies}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (movies.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            "No movies available",
+            style: AppTextStyles.SubHeading2.copyWith(color: Colors.white),
+          ),
+        ),
+      );
+    }
+
     return SizedBox(
       height: 220,
       child: ListView.builder(
@@ -20,7 +31,7 @@ class MovieList extends StatelessWidget {
         padding: const EdgeInsets.only(left: 16),
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () => movieController.setSelectedMovie(movies[index]), // Navigate to details
+            onTap: ()=> Get.to(MovieDetailScreen()),
             child: Padding(
               padding: const EdgeInsets.only(right: 12.0),
               child: Column(
@@ -32,15 +43,16 @@ class MovieList extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
-                        image: AssetImage(movies[index].imageUrl),
+                        image: NetworkImage(movies[index].posterImg),
                         fit: BoxFit.cover,
+                        onError: (exception, stackTrace) => AssetImage('assets/images/placeholder.png'),
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
-                      movies[index].title,
+                      movies[index].name,
                       style: AppTextStyles.SubHeading2,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
