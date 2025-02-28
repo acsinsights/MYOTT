@@ -6,7 +6,6 @@ import '../Model/coming_soon_model.dart';
 
 class ComingSoonController extends GetxController {
   var comingSoonMovies = <ComingSoonModel>[].obs;
-  final PageController pageController = PageController(viewportFraction: 0.85);
   var currentPage = 0.obs;
   Timer? _timer;
 
@@ -29,11 +28,7 @@ class ComingSoonController extends GetxController {
         nextPage = 0;
       }
 
-      pageController.animateToPage(
-        nextPage,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
+
 
       currentPage.value = nextPage;
     });

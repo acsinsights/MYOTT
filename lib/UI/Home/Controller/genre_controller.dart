@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:myott/UI/Movie/movie_details_page.dart';
+import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import '../../Movie/Controller/Movie_controller.dart';
 import '../../Movie/Model/movie_model.dart';
 import '../Model/genre_model.dart';

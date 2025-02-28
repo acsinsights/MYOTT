@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Home/Controller/genre_controller.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
-import 'package:myott/UI/Movie/movie_details_page.dart';
-import 'Controller/language_controller.dart';
+import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
+import 'Controller/Audio_controller.dart';
 
 class MoviesByGenre extends StatelessWidget {
   final GenreController genreController = Get.find<GenreController>();

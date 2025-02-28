@@ -6,6 +6,7 @@ import 'package:myott/UI/Home/Controller/Home_controller.dart';
 
 import '../../../Services/Home_service.dart';
 import '../../../Services/api_service.dart';
+import '../../Components/MovieListShrimerLoad.dart';
 
 class ActorList extends StatelessWidget {
   const ActorList({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class ActorList extends StatelessWidget {
       height: 100,
       child: Obx(() {
         if(homeController.actors.isEmpty){
-          return Center(child: CircularProgressIndicator());
+          return ActorShimmerLoader();
         }
         return ListView.builder(
           scrollDirection: Axis.horizontal,

@@ -4,10 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/Utils/app_colors.dart';
 import 'package:myott/Utils/app_text_styles.dart';
 
-class MovieSynopsis extends StatelessWidget {
+class TVseriesSynopsis extends StatelessWidget {
   final String description;
 
-  const MovieSynopsis({required this.description});
+  const TVseriesSynopsis({required this.description});
 
   @override
   Widget build(BuildContext context) {

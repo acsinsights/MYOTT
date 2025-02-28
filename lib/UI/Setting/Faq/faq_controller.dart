@@ -9,7 +9,7 @@ class FAQController extends GetxController {
 
   final SettingService _settingService;
 
-  FAQController(this._settingService);
+    FAQController(this._settingService);
 
   @override
   void onInit() {

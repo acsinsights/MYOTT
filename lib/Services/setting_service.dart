@@ -1,4 +1,5 @@
 import 'package:myott/Services/api_endpoints.dart';
+import 'package:myott/UI/Setting/Models/PackageModel.dart';
 
 import '../UI/Setting/Blogs/Model/blog_model.dart';
 import '../UI/Setting/Faq/Model/FAQModel.dart';
@@ -68,5 +69,26 @@ class SettingService {
       throw Exception("Error fetching blog details: $e");
     }
   }
+
+  Future<List<PackageModel>> fetchPackages({int page = 1, int perPage = 10}) async {
+    try {
+      final response = await _apiService.get(APIEndpoints.Packages, params: {
+        "page": page,
+        "per_page": perPage,
+      });
+
+      if (response.statusCode == 200) {
+        return (response.data["Packages"] as List<dynamic>? ?? [])
+            .map((e) => PackageModel.fromJson(e))
+            .toList();
+      } else {
+        throw Exception("Failed to fetch packages");
+      }
+    } catch (e) {
+      print("Error fetching packages: $e");
+      throw Exception("Something went wrong while fetching packages");
+    }
+  }
+
 
 }

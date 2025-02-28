@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Model/Moviemodel.dart';
-import 'package:myott/UI/Movie/movie_details_page.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
+import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
+import 'package:myott/UI/TvSeries/tv_series_controller.dart';
 import 'package:myott/Utils/app_text_styles.dart';
 
-class MovieList extends StatelessWidget {
-  final List<MoviesModel> movies;
+import '../../../Services/api_service.dart';
+import '../../../Services/tv_series_service.dart';
 
-  MovieList({Key? key, required this.movies}) : super(key: key);
+class TvSeriesMovieList extends StatelessWidget {
+  final List<TvSeriesModel> tvSeries;
+
+  TvSeriesMovieList({Key? key, required this.tvSeries}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (movies.isEmpty) {
+    final TVSeriesController tvSeriesController =Get.put(TVSeriesController(TVSeriesService(ApiService())));
+
+    if (tvSeries.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Text(
-            "No movies available",
+            "No tvSeries available",
             style: AppTextStyles.SubHeading2.copyWith(color: Colors.white),
           ),
         ),
@@ -28,11 +34,14 @@ class MovieList extends StatelessWidget {
       height: 220,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: movies.length,
+        itemCount: tvSeries.length,
         padding: const EdgeInsets.only(left: 16),
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: ()=> Get.to(MovieDetailsPage()),
+              onTap: () {
+                tvSeriesController.selectTVSeries(tvSeries[index]); // Set selected TV Series
+                Get.to(() => TvSeriesPage()); // Navigate to TV Series Page
+              },
             child: Padding(
               padding: const EdgeInsets.only(right: 12.0),
               child: Column(
@@ -44,7 +53,7 @@ class MovieList extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
-                        image: NetworkImage(movies[index].posterImg),
+                        image: NetworkImage(tvSeries[index].thumbnailImg),
                         fit: BoxFit.cover,
                         onError: (exception, stackTrace) => AssetImage('assets/images/placeholder.png'),
                       ),
@@ -53,7 +62,7 @@ class MovieList extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
-                      movies[index].name,
+                      tvSeries[index].name,
                       style: AppTextStyles.SubHeading2,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

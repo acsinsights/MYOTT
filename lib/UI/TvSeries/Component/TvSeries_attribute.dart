@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/UI/Model/Moviemodel.dart';
+import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/Utils/app_colors.dart';
 import 'package:myott/Utils/app_text_styles.dart';
 
-class MovieAttributes extends StatefulWidget {
+class TVseriesAttributes extends StatefulWidget {
   final String title;
-  final MoviesModel items;
+  final TvSeriesModel items;
 
-  const MovieAttributes({required this.title, required this.items});
+  const TVseriesAttributes({required this.title, required this.items});
 
   @override
-  _MovieAttributesState createState() => _MovieAttributesState();
+  _TVseriesAttributesState createState() => _TVseriesAttributesState();
 }
 
-class _MovieAttributesState extends State<MovieAttributes> {
+class _TVseriesAttributesState extends State<TVseriesAttributes> {
   Set<String> selectedItems = {}; // Stores selected items
 
   @override

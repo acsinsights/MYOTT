@@ -6,7 +6,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../Utils/app_text_styles.dart';
 import '../../../utils/size_config.dart';
 import '../../Movie/Controller/Movie_controller.dart';
-import '../../Movie/movie_details_page.dart';
+import '../../TvSeries/TvSeries_details_page.dart';
 
 class MovieSlider extends StatelessWidget {
   final MovieController movieController = Get.put(MovieController());

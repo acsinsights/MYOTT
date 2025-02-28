@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:myott/Services/Setting_service.dart';
 import 'package:myott/Services/api_service.dart';
 import 'package:myott/Utils/app_colors.dart';
@@ -46,9 +47,11 @@ class BlogScreen extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                Get.to(() => BlogDetailsScreen(blogId: blog.id));
-              },
+                // Get.to(() => BlogDetailsScreen(blogId: blog.id));
 
+                // Navigate to Blog Details Page (Uncomment when ready)
+                Get.to(() => BlogDetailsScreen(blog: blog));
+              },
               child: Card(
                 color: AppColors.subwhite,
                 margin: EdgeInsets.symmetric(vertical: 8),
@@ -77,11 +80,30 @@ class BlogScreen extends StatelessWidget {
 
                       // Blog Title
                       Expanded(
-                        child: Text(
-                          blog.title,
-                          style: AppTextStyles.HeadingbLackB2,
-                          maxLines: 2, // Prevents overflow
-                          overflow: TextOverflow.ellipsis,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              blog.title,
+                              style: AppTextStyles.HeadingbLackB2,
+                              maxLines: 2, // Prevents overflow
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              blog.desc,
+                              style: AppTextStyles.SubHeadingw3,
+                              maxLines: 2, // Prevents overflow
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              blog.createdAt != null
+                                  ? DateFormat('dd MMM yyyy').format(blog.createdAt)
+                                  : "No Date",
+                              style: AppTextStyles.SubHeadingw3,
+                            ),
+                          ],
                         ),
                       ),
                     ],

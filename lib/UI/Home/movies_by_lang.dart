@@ -1,8 +1,8 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 // import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
-// import 'package:myott/UI/Movie/movie_details_page.dart';
-// import 'Controller/language_controller.dart';
+// import 'package:myott/UI/Movie/TvSeries_details_page.dart';
+// import 'Controller/Audio_controller.dart';
 //
 // class MoviesByLanguageScreen extends StatelessWidget {
 //   final LanguageController languageController = Get.find<LanguageController>();
