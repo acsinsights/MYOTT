@@ -1,0 +1,65 @@
+{
+  "welcome": "欢迎回到 OTT 演示",
+  "welcomeSub": "我们一直在期待您的归来。",
+  "email": "电子邮件",
+  "password": "密码",
+  "forgotPassword": "忘记密码？",
+  "login": "登录",
+  "or": "或",
+  "SignInGoogle": "使用 Google 登录",
+  "DontHaveAcc": "还没有账户？",
+  "SignUp": " 注册",
+
+  "ForgotPass": "忘记密码",
+  "EnterEmail": "输入您的电子邮件或手机号",
+  "EmailOrMobile": "电子邮件或手机号",
+  "SendOTP": "发送 OTP / 重置链接",
+
+  "verifyotp": "验证 OTP",
+  "EnterOTPTxt": "输入发送到您手机的 OTP",
+  "EnterOTPhint": "输入 OTP",
+
+  "resetpass": "重置密码",
+  "NewPasshint": "输入您的新密码",
+  "NewPass": "新密码",
+  "ConfirmPass": "确认密码",
+  "ResetPassBtn": "重置密码",
+
+  "passSucess": "密码重置成功",
+  "passNotMatch": "密码不匹配",
+
+  "OtpSent": "重置链接已发送到您的电子邮件。",
+
+  "latestRelease": "最新发布",
+  "Showall": "查看全部",
+  "Top10": "前 10 名",
+  "Actors": "演员/艺术家",
+  "TvSeries": "电视剧",
+  "Sports": "体育",
+  "Languages": "语言",
+  "NewArrival": "最新上架",
+  "Genre": "类型",
+
+  "ComingSoon": "即将推出",
+  "Notify": "通知",
+
+  "Profile": "个人资料",
+  "ContinueWatching": "继续观看",
+
+  "Settings": "设置",
+  "Help": "帮助",
+  "AppLang": "应用语言",
+  "Account": "账户设置",
+  "Watchlist": "观看列表",
+  "Downloads": "下载",
+  "Subscription": "订阅历史",
+  "FAQ": "常见问题",
+  "Blog": "博客",
+  "Privacy": "隐私政策",
+  "Terms": "条款和条件",
+  "Support": "帮助和支持",
+  "Refund": "退款和取消政策",
+  "Deletion": "数据删除请求",
+  "About": "关于我们",
+  "Logout": "退出登录"
+}

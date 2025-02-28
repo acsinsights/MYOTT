@@ -33,7 +33,7 @@ class ComingSoonWidget extends StatelessWidget {
             viewportFraction: 0.85, // Adjusts width of each card
             enlargeCenterPage: false, // Zoom effect
             autoPlayInterval: Duration(seconds: 5),
-            height: MediaQuery.of(context).size.height * 0.7, // ✅ Ensures it fits inside screen
+            height: MediaQuery.of(context).size.height * 0.6, // ✅ Ensures it fits inside screen
 
           ),
           itemBuilder: (context, index, realIndex) {

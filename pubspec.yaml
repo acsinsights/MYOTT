@@ -44,6 +44,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.3
   carousel_slider: ^5.0.0
   shimmer: ^3.0.0
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -95,6 +96,7 @@ flutter:
     - assets/images/movies/
     - assets/images/movies/SliderMovies/
     - assets/images/Sports/
+    - assets/lang/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

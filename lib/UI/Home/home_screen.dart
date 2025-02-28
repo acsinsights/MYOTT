@@ -68,24 +68,19 @@ class HomeScreen extends StatelessWidget {
 
               SizedBox(height: 10,),
 
-              SectionTitle(title: "New Arrival"),
-             // MovieList(movies: movieController.trendingMovies ),
+
 
               SectionTitle(title: "Languages"),
               AudioSelection(),
               SizedBox(height: 10,),
 
-              SectionTitle(title: "Sports"),
-             // MovieList(movies: movieController.latestMovies ),
-
-              const SizedBox(height: 10),
+              SectionTitle(title: "New Arrival"),
+              // MovieList(movies: movieController.trendingMovies ),
 
               SectionTitle(title: "Genre"),
               GenreSelection(),
               SizedBox(height: 20,),
               ComingSoonWidget(),
-
-              SizedBox(height: 10,),
             ],
           ),
         ),

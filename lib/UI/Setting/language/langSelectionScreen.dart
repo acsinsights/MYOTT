@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'languageController.dart'; // Import your LanguageController
 
-class LanguageSelectionPage extends StatefulWidget {
-  @override
-  _LanguageSelectionPageState createState() => _LanguageSelectionPageState();
-}
-
-class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
-  String selectedLanguage = "English"; // Default selected language
-
-  final List<Map<String, String>> languages = [
-    {"name": "English", "flag": "🇺🇸"},
-    {"name": "Hindi", "flag": "🇮🇳"},
-    {"name": "Arabic", "flag": "🇦🇪"},
-    {"name": "French", "flag": "🇫🇷"},
-    {"name": "German", "flag": "🇩🇪"},
-  ];
+class LanguageSelectionPage extends StatelessWidget {
+  final LanguageController languageController = Get.put(LanguageController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,34 +11,41 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text("Language", style: TextStyle(color: Colors.white)),
+        title: Text("Languages".tr, style: TextStyle(color: Colors.white)),
       ),
-      body: ListView.builder(
-        itemCount: languages.length,
-        itemBuilder: (context, index) {
-          final language = languages[index];
+      body: Obx(() {
+        if (languageController.locale.value.isEmpty) {
+          return Center(child: CircularProgressIndicator(color: Colors.white));
+        }
 
-          return ListTile(
-            leading: Text(language["flag"]!, style: TextStyle(fontSize: 24)),
-            title: Text(
-              language["name"]!,
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-            trailing: selectedLanguage == language["name"]
-                ? Icon(Icons.check_circle, color: Colors.white)
-                : null,
-            onTap: () {
-              setState(() {
-                selectedLanguage = language["name"]!;
-              });
-            },
-          );
-        },
-      ),
+        // Example: Replace this with your actual API-fetched language list
+        List<Map<String, String>> langList = [
+          {'code': 'en', 'name': 'English'},
+          {'code': 'hi', 'name': 'हिन्दी'},
+          {'code': 'ar', 'name': 'العربية'},
+          {'code': 'zh', 'name': '中文'},
+        ];
+
+        return ListView.builder(
+          itemCount: langList.length,
+          itemBuilder: (context, index) {
+            final language = langList[index];
+
+            return ListTile(
+              title: Text(language['name']!, style: TextStyle(color: Colors.white, fontSize: 18)),
+              trailing: languageController.locale.value == language['code']
+                  ? Icon(Icons.check_circle, color: Colors.white)
+                  : null,
+              onTap: () {
+                print("Language selected: ${language['code']}"); // Debug
+                languageController.changeLanguage(language['code']!);
+                print("Language changed to: ${languageController.locale.value}"); // Debug
+              },
+
+            );
+          },
+        );
+      }),
     );
   }
 }

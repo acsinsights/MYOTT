@@ -1,0 +1,72 @@
+{
+  "welcome": "Welcome Back to OTT Demo",
+  "welcomeSub": "We have eagerly awaited your return.",
+  "email": "Email",
+  "password": "Password",
+  "forgotPassword": "Forgot Password?",
+  "login": "Login",
+  "or": "OR",
+  "SignInGoogle": "Sign in with Google",
+  "DontHaveAcc": "Don't have an account?",
+  "SignUp": " Sign Up",
+
+  "ForgotPass": "Forgot Password",
+  "EnterEmail": "Enter your Email or Mobile Number",
+  "EmailOrMobile": "Email or Mobile",
+  "SendOTP": "Send OTP / Reset Link",
+
+  "verifyotp": "Verify OTP",
+  "EnterOTPTxt": "Enter the OTP sent to your mobile",
+  "EnterOTPhint": "Enter OTP",
+
+
+  "resetpass": "Reset Password",
+  "NewPasshint": "Enter Your New Password",
+  "NewPass": "New Password",
+  "ConfirmPass": "Confirm Password",
+  "ResetPassBtn": "Reset Password",
+
+  "passSucess": "Password reset successfully",
+  "passNotMatch": "Passwords do not match",
+
+  "OtpSent": "A reset link has been sent to your email.",
+
+  "latestRelease": "Latest Release",
+  "Showall": "Show all",
+  "Top10": "Top 10",
+  "Actors": "Actors/Artist",
+  "TvSeries": "Tv Series",
+  "Sports": "Sports",
+  "Languages": "Languages",
+  "NewArrival": "New Arrival",
+  "Genre": "Genre",
+
+  "ComingSoon": "Coming Soon",
+  "Notify": "Notify",
+
+  "Profile": "Profile",
+  "ContinueWatching": "Continue Watching",
+
+
+  "Settings": "Settings",
+  "Help": "Help",
+  "AppLang": "App Language",
+  "Account": "Account Settings",
+  "Watchlist": "Watchlist",
+  "Downloads": "Downloads",
+  "Subscription": "Subscription History",
+  "FAQ": "FAQ",
+  "Blog": "Blogs",
+  "Privacy": "Privacy Policy",
+  "Terms": "Terms & Conditions",
+  "Support": "Help and Support",
+  "Refund": "Refund and Cancellation Policy",
+  "Deletion": "Data Deletion Request",
+  "About": "About Us",
+  "Logout": "Logout"
+
+
+
+
+
+}

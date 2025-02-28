@@ -1,4 +1,5 @@
 import 'package:myott/Services/api_endpoints.dart';
+import 'package:myott/UI/Setting/Models/LanguageModel.dart';
 import 'package:myott/UI/Setting/Models/PackageModel.dart';
 
 import '../UI/Setting/Blogs/Model/blog_model.dart';
@@ -11,6 +12,27 @@ class SettingService {
   SettingService(this._apiService); // ✅ Dependency Injection
 
 
+
+  Future<List<LanguageModel>> getLanguages({int page=1,int perPage=10})async{
+    try {
+      final response = await _apiService.get(APIEndpoints.settings, params: {
+        "page": page,
+        "per_page": perPage,
+      });
+      if (response.statusCode == 200) {
+        return (response.data["languages"] as List<dynamic>? ?? [])
+            .map((e) => LanguageModel.fromJson(e))
+            .toList();
+      }else{
+        throw Exception("Failed to load languages");
+      }
+
+
+    }catch(e){
+      print("Error fetching languages: $e");
+      return [];
+    }
+  }
 //FAQ
   Future<List<FaqModel>> getFAQList({int page = 1, int perPage = 10}) async {
     try {

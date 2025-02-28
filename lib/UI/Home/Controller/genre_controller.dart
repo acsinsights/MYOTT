@@ -10,14 +10,6 @@ class GenreController extends GetxController {
   var moviesByGenre = <MovieModel>[].obs; // Store movies filtered by language
 
 
-  final List<GenreModel> genres = [
-    GenreModel(name: "Action",  image: "assets/images/language/lang1.png", color: 0xFF3B3B98),
-    GenreModel(name: "Drama", image: "assets/images/language/lang2.png", color: 0xFF8D4E3F),
-    GenreModel(name: "Comedy",  image: "assets/images/language/lang3.png", color: 0xFF5D5D81),
-    GenreModel(name: "Series",image: "assets/images/language/lang4.png", color: 0xFF725285),
-    GenreModel(name: "Horror", image: "assets/images/language/lang5.png", color: 0xFFA97E36),
-    GenreModel(name: "Biopic", image: "assets/images/language/lang6.png", color: 0xFF3B8D78),
-  ];
 
   void selectGenre(GenreModel genre) {
     selectedGenre.value = genre;

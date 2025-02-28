@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:myott/UI/Home/Model/genre_model.dart';
 import '../UI/Home/Model/ActorsModel.dart';
 import '../UI/Model/Moviemodel.dart';
 import '../UI/Home/Model/Audio_Model.dart';
@@ -34,6 +35,9 @@ class HomeService {
           "Audio": (data["Audio"] as List<dynamic>? ?? [])
               .map((e) => LangModel.fromJson(e))
               .toList(),
+          "all_genres": (data["all_genres"] as List<dynamic>? ?? [])
+          .map((e)=> GenreModel.fromJson(e))
+          .toList(),
         };
       } else {
         throw Exception("Failed to fetch home data. Status: ${response.statusCode}");

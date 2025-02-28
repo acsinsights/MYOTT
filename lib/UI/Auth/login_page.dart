@@ -46,15 +46,15 @@ children: [
                 const SizedBox(height: 20),
 
                 // Welcome Text
-                Text("Welcome Back to OTT Demo", style: AppTextStyles.Headingb4),
+                Text("welcome".tr, style: AppTextStyles.Headingb4),
                 const SizedBox(height: 5),
-                Text("We have eagerly awaited your return.", style: AppTextStyles.SubHeading2),
+                Text("welcomeSub".tr, style: AppTextStyles.SubHeading2),
 
                 const SizedBox(height: 30),
 
                 CustomTextField(
                   controller: authController.emailController,
-                  hintText: "Email",
+                  hintText: "email".tr,
                   keyboardType: TextInputType.emailAddress,
                 ),
 
@@ -63,7 +63,7 @@ children: [
                 // Password Input Field
                 CustomTextField(
                   controller: authController.passwordController,
-                  hintText: "Password",
+                  hintText: "password".tr,
                   isPassword: true,
                 ),
 
@@ -74,7 +74,7 @@ children: [
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () => authController.forgotPassword(),
-                    child: Text("Forgot Password?", style: AppTextStyles.SubHeadingRed2),
+                    child: Text("forgotPassword".tr, style: AppTextStyles.SubHeadingRed2),
                   ),
                 ),
 
@@ -82,7 +82,7 @@ children: [
 
                 // Login Button
                 CustomButton(
-                  text: "Login",
+                  text: "login".tr,
                   onPressed: () => authController.login(),
                   backgroundColor: AppColors.primary, // Optional
                   borderRadius: BorderRadius.circular(15), // Optional
@@ -95,7 +95,7 @@ children: [
                     Expanded(child: Divider(color: Colors.white60)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Text("OR", style: AppTextStyles.SubHeading2),
+                      child: Text("or".tr, style: AppTextStyles.SubHeading2),
                     ),
                     Expanded(child: Divider(color: Colors.white60)),
                   ],
@@ -120,7 +120,7 @@ children: [
                       children: [
                         Image.asset(AppImages.google, height: 24),
                         const SizedBox(width: 10),
-                        Text("Sign in with Google", style: AppTextStyles.buttonText),
+                        Text("SignInGoogle".tr, style: AppTextStyles.buttonText),
                       ],
                     ),
                   ),
@@ -129,12 +129,12 @@ children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't have an account?",style:AppTextStyles.SubHeading1),
+                    Text("DontHaveAcc".tr,style:AppTextStyles.SubHeading1),
                     InkWell(
                       onTap: (){
                         authController.register();
                       },
-                      child: Text(" Sign Up",style: AppTextStyles.SubHeadingRed1),
+                      child: Text("SignUp".tr,style: AppTextStyles.SubHeadingRed1),
                     )
                   ],
                 ),
