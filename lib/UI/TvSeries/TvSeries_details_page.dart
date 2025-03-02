@@ -21,7 +21,7 @@ class TvSeriesPage extends StatefulWidget {
 }
 
 class _TvSeriesPageState extends State<TvSeriesPage> {
-  final MovieController movieController = Get.find<MovieController>();
+  final MovieController movieController = Get.put(MovieController());
   final TVSeriesController tvSeriesController = Get.find<TVSeriesController>();
   bool isWatchlisted = false;
   bool isLiked = false;

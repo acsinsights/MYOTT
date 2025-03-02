@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:myott/UI/Home/Model/Audio_Model.dart';
+import 'package:myott/UI/Home/Model/SliderModel.dart';
 import 'package:myott/UI/Model/Moviemodel.dart';
 import '../../../Services/Home_service.dart';
 import '../Model/ActorsModel.dart';
@@ -9,6 +10,7 @@ class HomeController extends GetxController {
   final HomeService _homeService; // ✅ Dependency Injection
 
   var latestMovies = <MoviesModel>[].obs;
+  var sliderMovies = <SliderModel>[].obs;
   var topMovies = <MoviesModel>[].obs;
   var upcomingMovies = <MoviesModel>[].obs;
   var actors = <ActorsModel>[].obs;
@@ -51,6 +53,7 @@ class HomeController extends GetxController {
       topMovies.assignAll(homeData["top_movies"] ?? []);
       upcomingMovies.assignAll(homeData["upcoming_movie"] ?? []);
       actors.assignAll(homeData["actors"] ?? []);
+      sliderMovies.assignAll(homeData["slider"] ?? []);
 
       // ✅ Assign colors dynamically to audios (languages)
       List<LangModel> languageList = homeData["Audio"] ?? [];
@@ -59,6 +62,7 @@ class HomeController extends GetxController {
       }
       audios.assignAll(languageList);
 
+      // ✅ Assign colors dynamically to Gnere (languages)
       List<GenreModel> genreList = homeData["all_genres"] ?? [];
       for (int i = 0; i < genreList.length; i++) {
         genreList[i].color = colors[i % colors.length]; // ✅ Assign color in a loop

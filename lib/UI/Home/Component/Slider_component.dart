@@ -1,32 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:myott/Services/Home_service.dart';
+import 'package:myott/Services/api_service.dart';
+import 'package:myott/UI/Home/Controller/Home_controller.dart';
 import 'package:myott/Utils/app_colors.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../../../Utils/app_text_styles.dart';
 import '../../../utils/size_config.dart';
 import '../../Movie/Controller/Movie_controller.dart';
-import '../../TvSeries/TvSeries_details_page.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../Controller/MovieSliderController.dart';
 
 class MovieSlider extends StatelessWidget {
-  final MovieController movieController = Get.put(MovieController());
+  final MovieSliderController movieSliderController = Get.put(MovieSliderController());
+  final HomeController homeController=Get.put(HomeController(HomeService(ApiService())));
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     return Column(
       children: [
-        // Movie Slider
+        // Movie Carousel Slider
         SizedBox(
           height: (400 / 812.0) * screenHeight,
           child: Obx(() {
-            return PageView.builder(
-              controller: movieController.pageController,
-              itemCount: movieController.featuredMovies.length,
-              onPageChanged: movieController.updatePage,
-              itemBuilder: (context, index) {
-                var movie = movieController.featuredMovies[index];
+            if (homeController.sliderMovies.isEmpty) {
+              return Center(child: CircularProgressIndicator()); // Show loader while fetching
+            }
+
+            return CarouselSlider.builder(
+              itemCount: homeController.sliderMovies.length,
+              itemBuilder: (context, index, realIndex) {
+                var movie = homeController.sliderMovies[index];
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -35,11 +42,23 @@ class MovieSlider extends StatelessWidget {
                     child: Stack(
                       children: [
                         // Background Image
-                        Image.asset(
-                          movie.imageUrl,
+                        Image.network(
+                          movie.content.image != null && movie.content.image!.isNotEmpty
+                              ? movie.content.image!
+                              : "https://templatecookies.com/ott/public/uploads/movies/images/poster_img/1740810789_poster_02.png", // Placeholder image URL
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
+                          loadingBuilder: (context, child, progress) {
+                            if (progress == null) return child;
+                            return Center(child: CircularProgressIndicator());
+                          },
+                          errorBuilder: (context, error, stackTrace) => Image.asset(
+                            "assets/images/movies/SliderMovies/movie-1.png", // Local placeholder image
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                          ),
                         ),
 
                         // Dark Gradient Overlay
@@ -63,10 +82,10 @@ class MovieSlider extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(movie.title, style: AppTextStyles.Headingb),
-                              Text("${movie.duration} min | Director: Unknown", style: AppTextStyles.SubHeading2),
+                              Text(movie.content.name, style: AppTextStyles.Headingb),
+                              // Text("${movie.duration} min | Director: Unknown", style: AppTextStyles.SubHeading2),
                               const SizedBox(height: 5),
-                              Text(movie.description, style: AppTextStyles.SubHeading3),
+                              Text(movie.content.description, style: AppTextStyles.SubHeading3),
                             ],
                           ),
                         ),
@@ -77,7 +96,6 @@ class MovieSlider extends StatelessWidget {
                           bottom: 20,
                           child: Row(
                             children: [
-                              // Watch Later Button
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
                                   side: BorderSide(color: AppColors.white),
@@ -92,10 +110,7 @@ class MovieSlider extends StatelessWidget {
                                   style: AppTextStyles.SubHeading2,
                                 ),
                               ),
-
                               SizedBox(width: 10),
-
-                              // Watch Now Button - Navigates to Details Page
                               ElevatedButton.icon(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.primary,
@@ -103,7 +118,7 @@ class MovieSlider extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                 ),
                                 onPressed: () {
-                                  // movieController.setSelectedMovie(movie);
+                                  // homeController.setSelectedMovie(movie);
                                 },
                                 icon: Icon(Icons.play_arrow, color: AppColors.white),
                                 label: Text(
@@ -119,6 +134,16 @@ class MovieSlider extends StatelessWidget {
                   ),
                 );
               },
+              options: CarouselOptions(
+                height: (400 / 812.0) * screenHeight,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                viewportFraction: 0.9,
+                aspectRatio: 16 / 9,
+                onPageChanged: (index, reason) {
+                  movieSliderController.updatePage(index); // Updating index for indicators
+                },
+              ),
             );
           }),
         ),
@@ -127,9 +152,9 @@ class MovieSlider extends StatelessWidget {
 
         // Dot Indicator
         Obx(() {
-          return SmoothPageIndicator(
-            controller: movieController.pageController,
-            count: movieController.featuredMovies.length,
+          return AnimatedSmoothIndicator(
+            activeIndex: movieSliderController.currentIndex.value, // Use current index
+            count: homeController.sliderMovies.length,
             effect: ExpandingDotsEffect(
               activeDotColor: AppColors.primary,
               dotColor: Colors.white,
@@ -138,8 +163,7 @@ class MovieSlider extends StatelessWidget {
               spacing: 6,
             ),
           );
-        }),
-      ],
+        }),      ],
     );
   }
 }

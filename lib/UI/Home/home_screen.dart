@@ -22,7 +22,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MovieController movieController= Get.put(MovieController());
     final HomeController homeController = Get.put(HomeController(HomeService(ApiService())));
     final TVSeriesController tvSeriesController =Get.put(TVSeriesController(TVSeriesService(ApiService())));
 
@@ -40,7 +39,7 @@ class HomeScreen extends StatelessWidget {
               MovieSlider(),
               const SizedBox(height: 20),
 
-              SectionTitle(title: "Latest Release"),
+              SectionTitle(title: "latestRelease".tr),
               Obx(() {
                 if (homeController.isLoading.value) {
                   return MovieShrimmerLoader();
@@ -52,32 +51,32 @@ class HomeScreen extends StatelessWidget {
                SizedBox(height: 10),
 
 
-              SectionTitle(title: "Top 10"),
+              SectionTitle(title: "Top10".tr),
               Obx(()=> homeController.isLoading.value
                   ?MovieShrimmerLoader()
                   : MovieList(movies: homeController.topMovies)),
 
-              SectionTitle(title: "Actors/Artist"),
+              SectionTitle(title: "Actors".tr),
               ActorList(),
-              SectionTitle(title: "Tv Series"),
+              SectionTitle(title: "TvSeries".tr),
               Obx(()=> homeController.isLoading.value
                   ?MovieShrimmerLoader()
                   : TvSeriesMovieList(tvSeries: tvSeriesController.tvSeries)),
-              SectionTitle(title: "Sports"),
+              SectionTitle(title: "Sports".tr),
               //MovieList(movies: movieController.latestMovies ),
 
               SizedBox(height: 10,),
 
 
 
-              SectionTitle(title: "Languages"),
+              SectionTitle(title: "Languages".tr),
               AudioSelection(),
               SizedBox(height: 10,),
 
-              SectionTitle(title: "New Arrival"),
+              SectionTitle(title: "NewArrival".tr),
               // MovieList(movies: movieController.trendingMovies ),
 
-              SectionTitle(title: "Genre"),
+              SectionTitle(title: "Genre".tr),
               GenreSelection(),
               SizedBox(height: 20,),
               ComingSoonWidget(),

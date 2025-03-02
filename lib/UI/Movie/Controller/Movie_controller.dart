@@ -12,7 +12,7 @@ class MovieController extends GetxController {
   var movies = <MovieModel>[].obs; // Main list of movies
   var isLoading = true.obs;
   var currentPage = 0.obs; // Observable for the current page
-  late PageController pageController;
+  late  PageController pageController;
   var selectedMovie = Rxn<MoviesModel>(); // Stores the selected movie
 
   @override

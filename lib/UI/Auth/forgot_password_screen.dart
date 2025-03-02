@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/Config/app_images.dart';
 
@@ -23,7 +24,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             Navigator.pop(context);
           },),
         elevation: 0,
-        title: Text("Forgot Password", style: GoogleFonts.poppins(
+        title: Text("ForgotPass".tr, style: GoogleFonts.poppins(
           color: Colors.white
         )),
       ),
@@ -37,7 +38,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             ),
             SizedBox(height: 50,),
             Text(
-              "Enter your Email or Mobile Number",
+              "EnterEmail".tr,
               style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
             ),
             const SizedBox(height: 10),
@@ -45,7 +46,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               controller: emailOrMobileController,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: "Email or Mobile",
+                hintText: "EmailOrMobile".tr,
                 hintStyle: GoogleFonts.poppins(color: Colors.white70),
                 filled: true,
                 fillColor: Colors.grey[900],
@@ -67,7 +68,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 );
               },
               child: Text(
-                "Send OTP / Reset Link",
+                "SendOTP".tr,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontSize: 16,

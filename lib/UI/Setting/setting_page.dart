@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:myott/Services/Setting_service.dart';
 import 'package:myott/UI/Setting/Blogs/blog_page.dart';
+import 'package:myott/UI/Setting/Wallet/wallet_Screen.dart';
 import 'package:myott/UI/Setting/account_setting/AccountSettingsScreen.dart';
 import 'package:myott/UI/Setting/Subscription_History/Subscription_history_page.dart';
 import 'package:myott/UI/Profile/screens/downloadPage.dart';
@@ -11,9 +11,6 @@ import 'package:myott/UI/Profile/screens/wishlistPage.dart';
 import 'package:myott/UI/Setting/Faq/faq_screen.dart';
 
 import '../Profile/Components/SettingItem.dart';
-
-
-
 
 
 class HelpAndSettingScreen extends StatelessWidget {
@@ -33,7 +30,7 @@ class HelpAndSettingScreen extends StatelessWidget {
           },
         ),
         title: Text(
-          "Help & Setting",
+          "Help".tr+ "&" "Setting".tr,
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
       ),
@@ -44,68 +41,67 @@ class HelpAndSettingScreen extends StatelessWidget {
               onTap: (){
                 Get.to(LanguageSelectionPage());
               },
-              title: "App Language", icon: Icons.language),
+              title: "AppLang".tr, icon: Icons.language),
           SettingItem(
             onTap: (){
               Get.to(AccountSettingsScreen());
             },
-            title: "Account Settings",
+            title: "Account".tr,
             icon: Icons.person_outline,
-            subtitle: "Subscription plan, device connected",
+            subtitle: "subSubscription".tr,
           ),
           SettingItem(
               onTap: (){
                 Get.to(WatchlistScreen());
               },
-              title: "Watchlist", icon: Icons.add),
+              title: "Watchlist".tr, icon: Icons.add),
+          SettingItem(
+              onTap: (){
+                Get.to(WalletScreen());
+              },
+              title: "Wallet".tr, icon: Icons.add),
           SettingItem(
               onTap: (){
                 Get.to(Downloadpage());
               },
-              title: "Downloads", icon: Icons.download),
+              title: "Downloads".tr, icon: Icons.download),
           SettingItem(
               onTap: (){
                 Get.to(SubscriptionHistoryScreen());
 
               },
-              title: "Subscription History", icon: Icons.history),
+              title: "Subscription".tr, icon: Icons.history),
           SettingItem(
               onTap: (){
                 Get.to(FAQScreen());
               },
-              title: "FAQ", icon: Icons.help_outline),
+              title: "FAQ".tr, icon: Icons.help_outline),
           SettingItem(
               onTap: (){
                 Get.to(BlogScreen());
               },
-              title: "Blogs", icon: Icons.comment),
+              title: "Blog".tr, icon: Icons.comment),
 
           Divider(color: Colors.grey[800]),
 
           // Policy & Support
-          SettingItem(title: "Privacy Policy", icon: Icons.lock_outline),
-          SettingItem(title: "Terms & Conditions", icon: Icons.article_outlined),
-          SettingItem(title: "Help and Support", icon: Icons.help),
+          SettingItem(title: "Privacy".tr, icon: Icons.lock_outline),
+          SettingItem(title: "Terms".tr, icon: Icons.article_outlined),
+          SettingItem(title: "Support".tr, icon: Icons.help),
           SettingItem(
-              title: "Refund and Cancellation Policy",
+              title: "Refund".tr,
               icon: Icons.receipt_long_outlined),
           SettingItem(
-              title: "Data Deletion Request", icon: Icons.delete_outline),
+              title: "Deletion".tr, icon: Icons.delete_outline),
           Divider(color: Colors.grey[800]),
 
           // Repeated Sections
-          SettingItem(title: "About Us", icon: Icons.info_outline),
-          SettingItem(title: "Help and Support", icon: Icons.help),
-          SettingItem(
-              title: "Refund and Cancellation Policy",
-              icon: Icons.receipt_long_outlined),
-          SettingItem(
-              title: "Data Deletion Request", icon: Icons.delete_outline),
-          SettingItem(title: "About Us", icon: Icons.info_outline),
+          SettingItem(title: "About".tr, icon: Icons.info_outline),
+
           Divider(color: Colors.grey[800]),
 
           // Logout
-          SettingItem(title: "Logout", icon: Icons.logout, isLogout: true),
+          SettingItem(title: "Logout".tr, icon: Icons.logout, isLogout: true),
         ],
       ),
     );

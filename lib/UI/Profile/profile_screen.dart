@@ -25,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
         // elevation: 0,
-        title: Text("Profile", style: GoogleFonts.poppins(color: Colors.white)),
+        title: Text("Profile".tr, style: GoogleFonts.poppins(color: Colors.white)),
         actions: [
           IconButton(
             icon: Icon(Icons.settings, color: Colors.white),
@@ -46,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
 UserProfile(),
             SizedBox(height: 16),
 
-            Text("Continue Watching", style: GoogleFonts.poppins(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
+            Text("ContinueWatching".tr, style: GoogleFonts.poppins(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
             SizedBox(height: 10,),
             MovieListComponent(movies: movieController.movies, isContinueWatching: true),
           ],

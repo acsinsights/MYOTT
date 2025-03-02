@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/UI/Auth/reset_password_screen.dart';
 
@@ -21,7 +22,7 @@ class ForgotOtpVerificationScreen extends StatelessWidget {
             Navigator.pop(context);
           },),
         elevation: 0,
-        title: Text("Verify OTP", style: GoogleFonts.poppins(
+        title: Text("verifyotp".tr, style: GoogleFonts.poppins(
             color: Colors.white
         )),
       ),
@@ -39,7 +40,7 @@ class ForgotOtpVerificationScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Enter the OTP sent to your mobile",
+                  "EnterOTPTxt".tr,
                   style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
                 ),
                 const SizedBox(height: 10),
@@ -48,7 +49,7 @@ class ForgotOtpVerificationScreen extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    hintText: "Enter OTP",
+                    hintText: "EnterOTPhint".tr,
                     hintStyle: GoogleFonts.poppins(color: Colors.white70),
                     filled: true,
                     fillColor: Colors.grey[900],

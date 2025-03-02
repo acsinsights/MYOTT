@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/Utils/app_text_styles.dart';
 
@@ -18,7 +19,7 @@ class SectionTitle extends StatelessWidget {
             style: AppTextStyles.SubHeadingb1,
           ),
           Text(
-            "Show all",
+            "Showall".tr,
             style: AppTextStyles.SubHeadingRed2,
           ),
         ],

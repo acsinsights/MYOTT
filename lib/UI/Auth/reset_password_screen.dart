@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
@@ -20,7 +21,7 @@ class ResetPasswordScreen extends StatelessWidget {
             Navigator.pop(context);
           },),
         elevation: 0,
-        title: Text("Reset Password", style: GoogleFonts.poppins(
+        title: Text("resetpass".tr, style: GoogleFonts.poppins(
             color: Colors.white
         )),
       ),
@@ -30,7 +31,7 @@ class ResetPasswordScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Enter your new password",
+              "NewPasshint".tr,
               style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
             ),
             const SizedBox(height: 10),
@@ -39,7 +40,7 @@ class ResetPasswordScreen extends StatelessWidget {
               obscureText: true,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: "New Password",
+                hintText: "NewPass".tr,
                 hintStyle: GoogleFonts.poppins(color: Colors.white70),
                 filled: true,
                 fillColor: Colors.grey[900],
@@ -52,7 +53,7 @@ class ResetPasswordScreen extends StatelessWidget {
               obscureText: true,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: "Confirm Password",
+                hintText: "ConfirmPass".tr,
                 hintStyle: GoogleFonts.poppins(color: Colors.white70),
                 filled: true,
                 fillColor: Colors.grey[900],
@@ -66,16 +67,16 @@ class ResetPasswordScreen extends StatelessWidget {
                 // Simulate password reset
                 if (newPasswordController.text == confirmPasswordController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Password reset successfully", style: GoogleFonts.poppins())),
+                    SnackBar(content: Text("passSucess".tr, style: GoogleFonts.poppins())),
                   );
                   Navigator.popUntil(context, (route) => route.isFirst);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Passwords do not match", style: GoogleFonts.poppins())),
+                    SnackBar(content: Text("passNotMatch".tr, style: GoogleFonts.poppins())),
                   );
                 }
               },
-              child: Text("Reset Password", style: GoogleFonts.poppins(fontSize: 16,color: Colors.white)),
+              child: Text("ResetPassBtn".tr, style: GoogleFonts.poppins(fontSize: 16,color: Colors.white)),
             ),
           ],
         ),

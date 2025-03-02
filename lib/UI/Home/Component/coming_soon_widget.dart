@@ -33,7 +33,7 @@ class ComingSoonWidget extends StatelessWidget {
             viewportFraction: 0.85, // Adjusts width of each card
             enlargeCenterPage: false, // Zoom effect
             autoPlayInterval: Duration(seconds: 5),
-            height: MediaQuery.of(context).size.height * 0.6, // ✅ Ensures it fits inside screen
+            height: MediaQuery.of(context).size.height * 0.8, // ✅ Ensures it fits inside screen
 
           ),
           itemBuilder: (context, index, realIndex) {
@@ -61,8 +61,10 @@ class ComingSoonWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
                       movie.thumbnailImg,
+                      // height: 300,
+
                       width: double.infinity,
-                      fit: BoxFit.fitWidth,
+                      fit: BoxFit.fitHeight,
                       errorBuilder: (context, error, stackTrace) =>
                           Image.asset("assets/images/CommingSoon/bigmovie1.jpg"),
                     ),
@@ -94,7 +96,7 @@ class ComingSoonWidget extends StatelessWidget {
                       ),
                     ),
                     icon: Icon(Icons.notifications, color: Colors.white),
-                    label: Text("Notify", style: GoogleFonts.poppins(fontSize: 16)),
+                    label: Text("Notify".tr, style: GoogleFonts.poppins(fontSize: 16)),
                   ),
                 ],
               ),

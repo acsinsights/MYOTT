@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:myott/UI/Home/Model/SliderModel.dart';
 import 'package:myott/UI/Home/Model/genre_model.dart';
 import '../UI/Home/Model/ActorsModel.dart';
 import '../UI/Model/Moviemodel.dart';
@@ -38,6 +39,13 @@ class HomeService {
           "all_genres": (data["all_genres"] as List<dynamic>? ?? [])
           .map((e)=> GenreModel.fromJson(e))
           .toList(),
+          "slider": (data["slider"] as List<dynamic>? ?? [])
+              .map((e) => SliderModel.fromJson(e))
+              .toList(),
+          "new_arrivals": (data["new_arrivals"] as List<dynamic>? ?? [])
+              .map((e) => SliderModel.fromJson(e))
+              .toList(),
+
         };
       } else {
         throw Exception("Failed to fetch home data. Status: ${response.statusCode}");

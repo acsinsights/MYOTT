@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Model/Moviemodel.dart';
 import 'package:myott/UI/Movie/movie_details_page.dart';
-import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import 'package:myott/Utils/app_text_styles.dart';
 
 class MovieList extends StatelessWidget {
@@ -25,18 +24,18 @@ class MovieList extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 220,
+      height: 240, // Increased height to accommodate text
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: movies.length,
         padding: const EdgeInsets.only(left: 16),
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: ()=> Get.to(MovieDetailsPage()),
+            onTap: () => Get.to(MovieDetailsPage()),
             child: Padding(
               padding: const EdgeInsets.only(right: 12.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     width: 120,
@@ -46,17 +45,23 @@ class MovieList extends StatelessWidget {
                       image: DecorationImage(
                         image: NetworkImage(movies[index].posterImg),
                         fit: BoxFit.cover,
-                        onError: (exception, stackTrace) => AssetImage('assets/images/placeholder.png'),
+                        onError: (exception, stackTrace) =>
+                        const AssetImage('assets/images/placeholder.png') as ImageProvider,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
+                  const SizedBox(height: 6), // Increased spacing to avoid overflow
+
+                  // Ensure text fits properly within the container
+                  SizedBox(
+                    width: 120, // Match image width
                     child: Text(
                       movies[index].name,
                       style: AppTextStyles.SubHeading2,
-                      maxLines: 1,
+                      textAlign: TextAlign.center, // Center the text
+                      maxLines: 2, // Allow wrapping into the second line
                       overflow: TextOverflow.ellipsis,
+                      softWrap: true,
                     ),
                   ),
                 ],

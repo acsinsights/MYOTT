@@ -52,6 +52,7 @@
   "Help": "Help",
   "AppLang": "App Language",
   "Account": "Account Settings",
+  "subSubscription":"Subscription plan, device connected",
   "Watchlist": "Watchlist",
   "Downloads": "Downloads",
   "Subscription": "Subscription History",
@@ -64,9 +65,6 @@
   "Deletion": "Data Deletion Request",
   "About": "About Us",
   "Logout": "Logout"
-
-
-
 
 
 }

@@ -11,7 +11,6 @@ class ComingSoonController extends GetxController {
 
   @override
   void onInit() {
-    loadStaticMovies();
     if (comingSoonMovies.isNotEmpty) {
       startAutoScroll();
     }
@@ -34,31 +33,6 @@ class ComingSoonController extends GetxController {
     });
   }
 
-  void loadStaticMovies() {
-    comingSoonMovies.assignAll([
-      ComingSoonModel(
-        title: "Red Carpet",
-        imageUrl: "assets/images/CommingSoon/comming_movie.png",
-        releaseYear: 2025,
-        director: "Keith Johnson",
-        description: "'Red Carpet' is a captivating drama in Hollywood.",
-      ),
-      ComingSoonModel(
-        title: "Midnight Shadows",
-        imageUrl: "assets/images/CommingSoon/bigmovie1.jpg",
-        releaseYear: 2026,
-        director: "Anna Smith",
-        description: "A thriller that keeps you on the edge.",
-      ),
-      ComingSoonModel(
-        title: "Beyond the Stars",
-        imageUrl: "assets/images/CommingSoon/bigmovie2.jpg",
-        releaseYear: 2025,
-        director: "John Doe",
-        description: "A sci-fi adventure exploring the unknown galaxies.",
-      ),
-    ]);
-  }
 
   void notifyUser(BuildContext context, String movieTitle) {
     ScaffoldMessenger.of(context).showSnackBar(
