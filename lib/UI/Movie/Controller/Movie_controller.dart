@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import '../../../Data/movies_data.dart';
 import '../../../Services/MovieService.dart';
-import '../../Model/Moviemodel.dart';
+import '../../Model/Moviesmodel.dart';
 import '../Model/movie_model.dart';
 
 class MovieController extends GetxController {

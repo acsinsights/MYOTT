@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:myott/Services/tv_series_service.dart';
+import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 
@@ -8,8 +9,9 @@ class TVSeriesController extends GetxController {
   TVSeriesController(this.tvSeriesService);
 
   var tvSeries = <TvSeriesModel>[].obs;
+  var tvSeriesDetails = Rxn<TvSeriesDetailsModel>(); // Stores the details
+
   var isLoading = true.obs;
-  var selectedTvSeries = Rxn<TvSeriesModel>(); // Stores the selected movie
 
 
   @override
@@ -34,8 +36,17 @@ class TVSeriesController extends GetxController {
       isLoading.value = false;
     }
   }
-  void selectTVSeries(TvSeriesModel series) {
-    selectedTvSeries.value = series; // Assign selected TV show
-    Get.to(TvSeriesPage());
+  void fetchTVSeriesDetails(int seriesId) async {
+    try {
+      isLoading.value = true;
+      var details = await tvSeriesService.fetchTVSeriesDetails(seriesId);
+      tvSeriesDetails.value = details;
+    } catch (e) {
+      print("Error fetching TV Series Details: $e");
+    } finally {
+      isLoading.value = false;
+    }
   }
+
+
 }

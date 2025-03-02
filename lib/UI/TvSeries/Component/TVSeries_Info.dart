@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/Utils/app_text_styles.dart';
 
@@ -8,7 +9,7 @@ import '../TvSeries_details_page.dart';
 import 'TVSeries_Action.dart';
 import 'TvSeries_metadata.dart';
 class TVseriesInfo extends StatelessWidget {
-  final TvSeriesModel movie;
+  final TvSeriesDetailsModel movie;
   final bool isWatchlisted;
   final bool isLiked;
   final VoidCallback toggleWatchlist;
@@ -27,7 +28,7 @@ class TVseriesInfo extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(movie.name, style: AppTextStyles.Headingb3),
+                Text(movie.series.name, style: AppTextStyles.Headingb3),
                 MovieMeta(movie: movie),
               ],
             ),

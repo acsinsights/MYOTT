@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/UI/Home/Controller/genre_controller.dart';
+import 'package:myott/UI/Genre/Controller/genre_controller.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
-import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
-import 'Controller/Audio_controller.dart';
+import 'package:myott/UI/Movie/Movie_details_page.dart';
 
 class MoviesByGenre extends StatelessWidget {
   final GenreController genreController = Get.find<GenreController>();
-  final MovieController movieController = Get.find<MovieController>();
+  // final MovieController movieController = Get.find<MovieController>();
 
   @override
   Widget build(BuildContext context) {
@@ -15,19 +14,22 @@ class MoviesByGenre extends StatelessWidget {
       appBar: AppBar(
         title: Obx(() => Text(
           genreController.selectedGenre.value?.name ?? "Movies",
-          style: TextStyle(color: Colors.white), // Explicitly setting white color
+          style: TextStyle(color: Colors.white),
         )),
         backgroundColor: Colors.black,
-        iconTheme: IconThemeData(color: Colors.white), // Ensures back icon is white
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       backgroundColor: Colors.black,
       body: Obx(() {
-        final movies = genreController.moviesByGenre;
+        if (genreController.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        }
 
+        final movies = genreController.moviesByGenre;
         if (movies.isEmpty) {
           return Center(
             child: Text(
-              "No movies available in this language",
+              "No movies available in this genre",
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           );
@@ -44,17 +46,21 @@ class MoviesByGenre extends StatelessWidget {
             ),
             itemCount: movies.length,
             itemBuilder: (context, index) {
+              final movie = movies[index];
               return GestureDetector(
                 onTap: () {
-                  // movieController.setSelectedMovie(movies[index]); // Set selected movie
+                  // movieController.setSelectedMovie(movie); // Set selected movie
+                  // Get.to(() => MovieDetailsPage(), arguments: movie);
                 },
-
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    movies[index].bannerUrl,  // Dynamically load movie posters
+                  child: movie.posterImg.isNotEmpty
+                      ? Image.network(
+                    movie.posterImg, // Load image dynamically
                     fit: BoxFit.cover,
-                  ),
+                    errorBuilder: (context, error, stackTrace) => Image(image: AssetImage("assets/images/movies/SliderMovies/movie-1.png")),
+                  )
+                      : Image(image: AssetImage("assets/images/movies/SliderMovies/movie-1.png"))
                 ),
               );
             },

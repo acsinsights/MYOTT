@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:myott/UI/Home/Model/SliderModel.dart';
-import 'package:myott/UI/Home/Model/genre_model.dart';
+import 'package:myott/UI/Genre/Model/genre_model.dart';
 import '../UI/Home/Model/ActorsModel.dart';
-import '../UI/Model/Moviemodel.dart';
+import '../UI/Model/Moviesmodel.dart';
 import '../UI/Home/Model/Audio_Model.dart';
 import 'api_endpoints.dart';
 import 'api_service.dart';

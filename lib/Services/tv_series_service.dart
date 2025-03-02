@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:myott/Services/api_endpoints.dart';
 import 'package:myott/Services/api_service.dart';
+import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 
 class TVSeriesService {
@@ -10,12 +11,11 @@ class TVSeriesService {
 
   Future<List<TvSeriesModel>> fetchTVSeries() async {
     try {
-      final response = await apiService.get(APIEndpoints.tvSeries); // Ensure correct API endpoint
+      final response = await apiService.get(APIEndpoints.tvSeries);
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = response.data; // Extract JSON data
-
-        return data.map((e) => TvSeriesModel.fromJson(e)).toList(); // Map JSON to model
+        final List<dynamic> data = response.data;
+        return data.map((e) => TvSeriesModel.fromJson(e)).toList();
       } else {
         print("Error: ${response.statusCode} - ${response.statusMessage}");
       }
@@ -24,6 +24,25 @@ class TVSeriesService {
     } catch (e) {
       print("Unexpected Error: $e");
     }
-    return []; // Return an empty list in case of failure
+    return [];
+  }
+
+  /// Fetch TV Series Details by ID
+  Future<TvSeriesDetailsModel?> fetchTVSeriesDetails(int seriesId) async {
+    try {
+      final response = await apiService.get(APIEndpoints.tvSeriesDetails(seriesId));
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        return TvSeriesDetailsModel.fromJson(data);
+      } else {
+        print("Error: ${response.statusCode} - ${response.statusMessage}");
+      }
+    } on DioException catch (e) {
+      print("API Error: ${e.response?.statusCode} - ${e.message}");
+    } catch (e) {
+      print("Unexpected Error: $e");
+    }
+    return null;
   }
 }

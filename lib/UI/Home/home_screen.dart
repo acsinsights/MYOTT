@@ -5,7 +5,7 @@ import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Home/Component/actor_list.dart';
 import 'package:myott/UI/Components/movie_list.dart';
 import 'package:myott/UI/Components/section_title.dart';
-import 'package:myott/UI/Home/Component/Gnere_selection.dart';
+import 'package:myott/UI/Genre/components/Gnere_selection.dart';
 import 'package:myott/UI/Home/Component/Audio_selection.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/UI/Model/Moviemodel.dart';
+import 'package:myott/UI/Model/Moviesmodel.dart';
 import 'package:myott/UI/Movie/movie_details_page.dart';
 import 'package:myott/Utils/app_text_styles.dart';
 

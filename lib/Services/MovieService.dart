@@ -1,4 +1,4 @@
-import '../UI/Model/Moviemodel.dart';
+import '../UI/Model/Moviesmodel.dart';
 import 'api_service.dart';
 import 'api_endpoints.dart';
 import 'package:dio/dio.dart';

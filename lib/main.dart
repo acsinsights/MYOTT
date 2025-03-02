@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'Services/api_service.dart';
 import 'Services/translation_service.dart';
 import 'UI/Auth/login_page.dart';
 import 'UI/Movie/Controller/Movie_controller.dart';
@@ -14,6 +15,8 @@ import 'package:get_storage/get_storage.dart';
 
 
 void main() async {
+  Get.put(ApiService()); // Register API Service globally
+
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();  // 🔥 Initialize persistent storage
   await TranslationService.loadTranslations(); // 🔥 Load language files

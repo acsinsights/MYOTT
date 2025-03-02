@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myott/UI/Model/Moviemodel.dart';
+import 'package:myott/UI/Model/Moviesmodel.dart';
+import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/Utils/app_colors.dart';
 import 'package:myott/Utils/app_text_styles.dart';
 
 class TVseriesAttributes extends StatefulWidget {
   final String title;
-  final TvSeriesModel items;
+  final TvSeriesDetailsModel items;
 
   const TVseriesAttributes({required this.title, required this.items});
 

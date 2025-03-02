@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:myott/UI/Home/Model/Audio_Model.dart';
 import 'package:myott/UI/Home/Model/SliderModel.dart';
-import 'package:myott/UI/Model/Moviemodel.dart';
+import 'package:myott/UI/Model/Moviesmodel.dart';
 import '../../../Services/Home_service.dart';
 import '../Model/ActorsModel.dart';
-import '../Model/genre_model.dart';
+import '../../Genre/Model/genre_model.dart';
 
 class HomeController extends GetxController {
   final HomeService _homeService; // ✅ Dependency Injection

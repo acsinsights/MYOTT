@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/UI/Model/Moviemodel.dart';
+import 'package:myott/UI/Model/Moviesmodel.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/UI/TvSeries/tv_series_controller.dart';
@@ -39,8 +39,7 @@ class TvSeriesMovieList extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
               onTap: () {
-                tvSeriesController.selectTVSeries(tvSeries[index]); // Set selected TV Series
-                Get.to(() => TvSeriesPage()); // Navigate to TV Series Page
+                Get.to(() => TvSeriesDetailsPage(seriesId: tvSeries[index].id));
               },
             child: Padding(
               padding: const EdgeInsets.only(right: 12.0),

@@ -10,6 +10,7 @@ import '../Model/genre_model.dart';
 
 class GenreSelection extends StatelessWidget {
   final HomeController homeController=Get.put(HomeController(HomeService(ApiService())));
+  final GenreController genreController = Get.put(GenreController());
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class GenreSelection extends StatelessWidget {
             GenreModel genre = homeController.genre[index];
 
             return GestureDetector(
-              // onTap: () => homeController.selectGenre(genre),
+              onTap: () => genreController.selectGenre(genre),
               child: Padding(
                 padding: const EdgeInsets.only(right: 12.0),
                 child: Container(

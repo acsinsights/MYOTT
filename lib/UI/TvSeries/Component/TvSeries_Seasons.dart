@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 
 import 'episode_card.dart';
@@ -8,7 +9,7 @@ import 'episode_card.dart';
 
 
 class TvSeriesSeasons extends StatelessWidget {
-  final TvSeriesModel tvSeries;
+  final TvSeriesDetailsModel tvSeries;
   const TvSeriesSeasons({required this.tvSeries});
 
   @override
@@ -65,7 +66,7 @@ class TvSeriesSeasons extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: tvSeries.episodes
-                  .map((episode) => EpisodeCard(episode.title, episode.posterImage))
+                  .map((episode) => EpisodeCard(episode.title, episode.poster))
                   .toList(),
             ),
           ),
