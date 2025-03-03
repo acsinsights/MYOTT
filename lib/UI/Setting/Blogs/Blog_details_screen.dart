@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/Utils/app_colors.dart';
-import 'package:myott/Utils/app_text_styles.dart';
+import 'package:myott/Core/Utils/app_colors.dart';
+import 'package:myott/Core/Utils/app_text_styles.dart';
 
 import 'Model/blog_model.dart';
 

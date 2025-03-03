@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
-import 'package:myott/Utils/app_colors.dart';
+import 'package:myott/Core//Utils/app_colors.dart';
 
 import 'Controller/mian_screen_controller.dart';
 

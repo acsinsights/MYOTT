@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:myott/UI/Model/Moviesmodel.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
-import 'package:myott/UI/TvSeries/tv_series_controller.dart';
-import 'package:myott/Utils/app_text_styles.dart';
+import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
+import 'package:myott/Core/Utils/app_text_styles.dart';
 
 import '../../../Services/api_service.dart';
 import '../../../Services/tv_series_service.dart';

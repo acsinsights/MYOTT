@@ -9,7 +9,7 @@ import 'package:myott/UI/Genre/components/Gnere_selection.dart';
 import 'package:myott/UI/Home/Component/Audio_selection.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
-import 'package:myott/UI/TvSeries/tv_series_controller.dart';
+import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
 import '../../Services/Home_service.dart';
 import '../../Services/api_service.dart';
 import '../Components/MovieListShrimerLoad.dart';

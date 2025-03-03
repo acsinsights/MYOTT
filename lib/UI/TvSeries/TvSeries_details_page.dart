@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/UI/TvSeries/tv_series_controller.dart';
+import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
 import 'Component/TVSeries_poster.dart';
 import 'Component/TVSeries_Info.dart';
 import 'Component/TvSeries_Seasons.dart';
@@ -53,7 +53,7 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TVseriesPoster(movie: seriesDetails),
+                TVseriesPoster(videoUrl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4", thumbnailurl: seriesDetails.series.thumbnail,),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),

@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'Services/api_service.dart';
 import 'Services/translation_service.dart';
 import 'UI/Auth/login_page.dart';
-import 'UI/Movie/Controller/Movie_controller.dart';
-import 'UI/Setting/language/languageController.dart';
-import 'Utils/size_config.dart';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
-
 
 void main() async {
-  Get.put(ApiService()); // Register API Service globally
-
   WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init();  // 🔥 Initialize persistent storage
-  await TranslationService.loadTranslations(); // 🔥 Load language files
+
+  // 🔥 Initialize GetX services
+  Get.put(ApiService());
+  await GetStorage.init();
+  await TranslationService.loadTranslations();
 
   // ✅ Read saved language from GetStorage (default to 'en' if not set)
   final box = GetStorage();
@@ -35,25 +29,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      translations: TranslationService(),
-      locale: TranslationService.getLocale(savedLang), // ✅ Set saved language as default
-      fallbackLocale: Locale('en'),
-      home: LoginPage(),
+    return ScreenUtilInit(
+      designSize: Size(375, 812),  // 🔥 Adjust to your design reference
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          translations: TranslationService(),
+          locale: TranslationService.getLocale(savedLang),
+          fallbackLocale: Locale('en'),
+          home: child,
+        );
+      },
+      child: LoginPage(),  // ✅ Pass LoginPage as child
     );
-  }
-}
-
-
-
-
-class InitScreen extends StatelessWidget {
-  const InitScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    SizeConfig.init(context); // ✅ Initialize once
-    return  LoginPage(); // ✅ Now all screens can use `SizeConfig`
   }
 }

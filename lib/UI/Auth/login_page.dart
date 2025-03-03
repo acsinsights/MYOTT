@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:myott/UI/Auth/register_screen.dart';
 
 import '../../Config/app_images.dart';
-import '../../Utils/app_colors.dart';
-import '../../Utils/app_text_styles.dart';
+
+import '../../Core/Utils/app_colors.dart';
+import '../../Core/Utils/app_text_styles.dart';
 import '../Components/custom_button.dart';
 import 'Component/custom_text_field.dart';
 import 'Controller/auth_controller.dart';

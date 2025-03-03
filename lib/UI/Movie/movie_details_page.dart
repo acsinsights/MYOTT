@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myott/Utils/app_text_styles.dart';
+import 'package:myott/Core//Utils/app_text_styles.dart';
 
 class MovieDetailsPage extends StatelessWidget {
   const MovieDetailsPage({super.key});

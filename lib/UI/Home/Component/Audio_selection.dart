@@ -4,9 +4,9 @@ import 'package:myott/Services/Home_service.dart';
 import 'package:myott/Services/api_service.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
+import '../../../Core/Utils/app_text_styles.dart';
 import '../Controller/Audio_controller.dart';
 import '../Model/Audio_Model.dart';
-import 'package:myott/Utils/app_text_styles.dart';
 
 class AudioSelection extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController(HomeService(ApiService())));

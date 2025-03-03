@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import 'package:myott/Services/Home_service.dart';
 import 'package:myott/Services/api_service.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
-import 'package:myott/Utils/app_colors.dart';
-import '../../../Utils/app_text_styles.dart';
-import '../../../utils/size_config.dart';
-import '../../Movie/Controller/Movie_controller.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+import '../../../Core/Utils/app_colors.dart';
+import '../../../Core/Utils/app_text_styles.dart';
 import '../Controller/MovieSliderController.dart';
 
 class MovieSlider extends StatelessWidget {
   final MovieSliderController movieSliderController = Get.put(MovieSliderController());
-  final HomeController homeController=Get.put(HomeController(HomeService(ApiService())));
+  final HomeController homeController = Get.put(HomeController(HomeService(ApiService())));
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-
     return Column(
       children: [
         // Movie Carousel Slider
         SizedBox(
-          height: (400 / 812.0) * screenHeight,
+          height: 400.h, // Responsive height
           child: Obx(() {
             if (homeController.sliderMovies.isEmpty) {
               return Center(child: CircularProgressIndicator()); // Show loader while fetching
@@ -36,9 +33,9 @@ class MovieSlider extends StatelessWidget {
                 var movie = homeController.sliderMovies[index];
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w), // Responsive padding
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r), // Responsive border radius
                     child: Stack(
                       children: [
                         // Background Image
@@ -77,13 +74,12 @@ class MovieSlider extends StatelessWidget {
 
                         // Movie Info
                         Positioned(
-                          left: 16,
-                          bottom: 80,
+                          left: 16.w,
+                          bottom: 80.h,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(movie.content.name, style: AppTextStyles.Headingb),
-                              // Text("${movie.duration} min | Director: Unknown", style: AppTextStyles.SubHeading2),
                               const SizedBox(height: 5),
                               Text(movie.content.description, style: AppTextStyles.SubHeading3),
                             ],
@@ -92,15 +88,15 @@ class MovieSlider extends StatelessWidget {
 
                         // Buttons: "Watch Now" and "Watch Later"
                         Positioned(
-                          left: 16,
-                          bottom: 20,
+                          left: 16.w,
+                          bottom: 20.h,
                           child: Row(
                             children: [
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
                                   side: BorderSide(color: AppColors.white),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                                 ),
                                 onPressed: () {
                                   // Logic to add to watch later
@@ -110,12 +106,12 @@ class MovieSlider extends StatelessWidget {
                                   style: AppTextStyles.SubHeading2,
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              SizedBox(width: 10.w),
                               ElevatedButton.icon(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.primary,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                                 ),
                                 onPressed: () {
                                   // homeController.setSelectedMovie(movie);
@@ -135,7 +131,7 @@ class MovieSlider extends StatelessWidget {
                 );
               },
               options: CarouselOptions(
-                height: (400 / 812.0) * screenHeight,
+                height: 400.h, // Responsive height
                 autoPlay: true,
                 enlargeCenterPage: true,
                 viewportFraction: 0.9,
@@ -148,22 +144,36 @@ class MovieSlider extends StatelessWidget {
           }),
         ),
 
-        const SizedBox(height: 10),
+        SizedBox(height: 10.h), // Responsive spacing
 
         // Dot Indicator
         Obx(() {
+          int currentIndex = movieSliderController.currentIndex.value;
+          int totalSlides = homeController.sliderMovies.length;
+
+          // Ensure currentIndex is within range
+          if (currentIndex.isNaN || currentIndex.isInfinite || currentIndex < 0) {
+            currentIndex = 0;
+          }
+
+          // Ensure totalSlides is valid
+          if (totalSlides.isNaN || totalSlides.isInfinite || totalSlides <= 0) {
+            totalSlides = 1;
+          }
+
           return AnimatedSmoothIndicator(
-            activeIndex: movieSliderController.currentIndex.value, // Use current index
-            count: homeController.sliderMovies.length,
+            activeIndex: currentIndex,
+            count: totalSlides,
             effect: ExpandingDotsEffect(
               activeDotColor: AppColors.primary,
               dotColor: Colors.white,
-              dotHeight: 8,
-              dotWidth: 8,
-              spacing: 6,
+              dotHeight: 8.h, // Responsive dot height
+              dotWidth: 8.w, // Responsive dot width
+              spacing: 6.w, // Responsive spacing
             ),
           );
-        }),      ],
+        }),
+      ],
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
-import 'package:myott/Utils/app_text_styles.dart';
+import 'package:myott/Core/Utils/app_text_styles.dart';
 
 import '../TvSeries_details_page.dart';
 import 'TVSeries_Action.dart';

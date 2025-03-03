@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myott/Utils/app_text_styles.dart';
+import 'package:myott/UI/Components/network_image_widget.dart';
+import 'package:myott/Core/Utils/app_text_styles.dart';
 
 class EpisodeCard extends StatelessWidget {
   final String title;
@@ -16,12 +17,10 @@ class EpisodeCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              image,
-              width: 120,
-              height: 70,
-              fit: BoxFit.cover,
-            ),
+            child: NetworkImageWidget(
+                imageUrl: image,
+                width: 120,
+                height: 70)
           ),
           SizedBox(height: 5),
           Text(

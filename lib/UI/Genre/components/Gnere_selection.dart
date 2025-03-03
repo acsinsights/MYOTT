@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:myott/Services/Home_service.dart';
 import 'package:myott/Services/api_service.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
-import 'package:myott/Utils/app_text_styles.dart';
+import '../../../Core/Utils/app_text_styles.dart';
 import '../../Components/ShimmerLoader.dart';
 import '../Controller/genre_controller.dart';
 import '../Model/genre_model.dart';

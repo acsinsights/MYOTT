@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myott/Utils/app_text_styles.dart';
-import '../../../Utils/app_colors.dart';
+
+import '../../../Core/Utils/app_colors.dart';
+import '../../../Core/Utils/app_text_styles.dart';
+
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;

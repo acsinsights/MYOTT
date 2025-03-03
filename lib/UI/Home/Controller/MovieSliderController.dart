@@ -16,7 +16,6 @@ class MovieSliderController extends GetxController {
   }
 
 
-
   void updatePage(int index) {
     currentIndex.value = index;
   }

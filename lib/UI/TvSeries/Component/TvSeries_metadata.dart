@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
-import 'package:myott/Utils/app_text_styles.dart';
+import 'package:myott/Core/Utils/app_text_styles.dart';
 
 class MovieMeta extends StatelessWidget {
   final TvSeriesDetailsModel movie;

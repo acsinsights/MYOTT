@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../Utils/app_text_styles.dart';
+import '../../../../Core/Utils/app_text_styles.dart';
 
 class AlertRows extends StatelessWidget {
   final IconData icon;
