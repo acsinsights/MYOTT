@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../Setting/Models/PackageModel.dart';
+import 'package:myott/UI/Profile/screens/SubscriptionPackage/Model/PackageModel.dart';
 
 class SubscriptionCard extends StatelessWidget {
   final PackageModel plan;

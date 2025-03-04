@@ -59,6 +59,7 @@ class WalletScreen extends StatelessWidget {
 
 
                       onPressed: (){
+                    walletController.proceedToPayment();
 
                       }),
                   SizedBox(height: 20,),

@@ -1,3 +1,5 @@
+import 'package:myott/UI/Movie/Model/movie_details_model.dart';
+
 import '../UI/Model/Moviesmodel.dart';
 import 'api_service.dart';
 import 'api_endpoints.dart';
@@ -9,12 +11,13 @@ class MoviesService {
   MoviesService(this._apiService); // ✅ Dependency Injection
 
   /// 🔹 **Fetch Movie Details**
-  Future<MoviesModel> getMovieDetails(int movieId) async {
+  Future<MovieDetailsModel> getMovieDetails(int movieId) async {
     try {
-      final response = await _apiService.get("${APIEndpoints.movieDetails}/$movieId");
+      final response = await _apiService.get(APIEndpoints.movieDetails(movieId));
 
       if (response.statusCode == 200) {
-        return MoviesModel.fromJson(response.data);
+        final data=response.data;
+        return MovieDetailsModel.fromJson(data);
       } else {
         throw Exception("Failed to fetch movie details. Status: ${response.statusCode}");
       }

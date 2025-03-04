@@ -1,7 +1,8 @@
 import 'package:myott/Services/api_endpoints.dart';
 import 'package:myott/UI/Setting/Models/LanguageModel.dart';
-import 'package:myott/UI/Setting/Models/PackageModel.dart';
+import 'package:myott/UI/Profile/screens/SubscriptionPackage/Model/PackageModel.dart';
 
+import '../UI/Setting/Blogs/Model/blog_detail_model.dart';
 import '../UI/Setting/Blogs/Model/blog_model.dart';
 import '../UI/Setting/Faq/Model/FAQModel.dart';
 import 'api_service.dart';
@@ -10,6 +11,8 @@ class SettingService {
   final ApiService _apiService;
 
   SettingService(this._apiService); // ✅ Dependency Injection
+
+
 
 
 
@@ -78,12 +81,13 @@ class SettingService {
     }
   }
 
-  Future<BlogModel> fetchBlogDetails(int blogId) async {
+  Future<BlogdetailsModel> fetchBlogDetails(int blogId) async {
     try {
-      final response = await _apiService.get("${APIEndpoints.blogs}/$blogId");
+      final response = await _apiService.get(APIEndpoints.blogDeatils(blogId));
 
       if (response.statusCode == 200) {
-        return BlogModel.fromJson(response.data["data"]);
+        final data=response.data;
+        return BlogdetailsModel.fromJson(data);
       } else {
         throw Exception("Failed to fetch blog details");
       }
@@ -91,6 +95,7 @@ class SettingService {
       throw Exception("Error fetching blog details: $e");
     }
   }
+
 
   Future<List<PackageModel>> fetchPackages({int page = 1, int perPage = 10}) async {
     try {

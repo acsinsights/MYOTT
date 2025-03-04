@@ -10,13 +10,17 @@ class APIEndpoints {
       "genre/$genreId?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
 
 
-  static const String movieDetails = "movie";
+  static String movieDetails(int movieId) =>
+      "movie/$movieId?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
+
   static const String searchMovies = "search";
 
 
   //setting
   static const String faq = "faq";
   static const String blogs = "blog";
+  static String blogDeatils(int blogId) =>
+      "blog/$blogId?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
   static const String Packages = "package?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
   static const String settings = "setting?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
 

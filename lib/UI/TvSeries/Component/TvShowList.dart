@@ -16,7 +16,6 @@ class TvSeriesMovieList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TVSeriesController tvSeriesController =Get.put(TVSeriesController(TVSeriesService(ApiService())));
 
     if (tvSeries.isEmpty) {
       return Center(
@@ -38,9 +37,14 @@ class TvSeriesMovieList extends StatelessWidget {
         padding: const EdgeInsets.only(left: 16),
         itemBuilder: (context, index) {
           return GestureDetector(
-              onTap: () {
-                Get.to(() => TvSeriesDetailsPage(seriesId: tvSeries[index].id));
-              },
+            onTap: () {
+              final seriesId = tvSeries[index].id;
+              print(seriesId);
+              Get.to(() => TvSeriesDetailsPage(seriesId: seriesId,),
+                  binding: BindingsBuilder(() {
+                    Get.put(TVSeriesController(TVSeriesService(ApiService()))); // Ensure Controller is available
+                  }));
+            },
             child: Padding(
               padding: const EdgeInsets.only(right: 12.0),
               child: Column(

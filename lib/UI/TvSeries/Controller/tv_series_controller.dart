@@ -9,8 +9,7 @@ class TVSeriesController extends GetxController {
   TVSeriesController(this.tvSeriesService);
 
   var tvSeries = <TvSeriesModel>[].obs;
-  var tvSeriesDetails = Rxn<TvSeriesDetailsModel>(); // Stores the details
-
+  var tvSeriesDetails = Rxn<TvSeriesDetailsModel>();
   var isLoading = true.obs;
 
 

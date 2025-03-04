@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myott/UI/Profile/screens/subscription_page.dart';
+import 'package:myott/UI/Profile/screens/SubscriptionPackage/subscription_page.dart';
 
 class SubscriptionBanner extends StatelessWidget {
   @override

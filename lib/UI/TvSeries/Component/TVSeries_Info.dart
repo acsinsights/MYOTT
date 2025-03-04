@@ -28,7 +28,7 @@ class TVseriesInfo extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(movie.series.name, style: AppTextStyles.Headingb3),
+                Text(movie.series!.name, style: AppTextStyles.Headingb3),
                 MovieMeta(movie: movie),
               ],
             ),
@@ -36,7 +36,7 @@ class TVseriesInfo extends StatelessWidget {
           ],
         ),
         SizedBox(height: 10),
-        MovieActions(isWatchlisted: isWatchlisted, isLiked: isLiked, toggleWatchlist: toggleWatchlist, toggleLike: toggleLike),
+        TvSeiesActionButton(isWatchlisted: isWatchlisted, isLiked: isLiked, toggleWatchlist: toggleWatchlist, toggleLike: toggleLike),
         Divider(color: Colors.grey),
       ],
     );

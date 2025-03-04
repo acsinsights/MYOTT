@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/Services/MovieService.dart';
+import 'package:myott/Services/api_service.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/movie_details_page.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
@@ -12,7 +14,7 @@ class MovieGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MovieController movieController=Get.put(MovieController());
+    final MovieController movieController=Get.put(MovieController(MoviesService(ApiService())));
     return GridView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -29,7 +31,7 @@ class MovieGrid extends StatelessWidget {
             // Navigate using GetX and pass the movie data
             // movieController.setSelectedMovie(movies[index]);
             // Get.to(() => TvSeriesDetailsPage(seriesId: seriesId));
-            Get.to(MovieDetailsPage());
+            Get.to(MovieDetailsPage(movieId: movies.elementAt(index).id));
           },
           child: Container(
             decoration: BoxDecoration(

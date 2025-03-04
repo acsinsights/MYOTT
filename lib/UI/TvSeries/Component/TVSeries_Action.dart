@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 
-class MovieActions extends StatelessWidget {
+class TvSeiesActionButton extends StatelessWidget {
   final bool isWatchlisted;
   final bool isLiked;
   final VoidCallback toggleWatchlist;
   final VoidCallback toggleLike;
 
-  const MovieActions({
+  const TvSeiesActionButton({
     required this.isWatchlisted,
     required this.isLiked,
     required this.toggleWatchlist,

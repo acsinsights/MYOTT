@@ -25,7 +25,7 @@ class MovieMeta extends StatelessWidget {
         // Text("${movie.imdbRating} (IMDb)", style: AppTextStyles.SubHeading3),
         SizedBox(width: 10),
         Text(
-          movie.series.releaseYear ,
+          movie.series!.releaseYear ,
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
       ],

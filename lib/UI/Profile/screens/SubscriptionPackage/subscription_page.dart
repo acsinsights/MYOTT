@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../Components/SubscriptionCard.dart';
-import '../Controller/SubscriptionController.dart';
+import 'SubscriptionController.dart';
+import 'Component/SubscriptionCard.dart';
 
 class SubscriptionScreen extends StatelessWidget {
   final SubscriptionController controller = Get.put(SubscriptionController());
@@ -68,6 +68,7 @@ class SubscriptionScreen extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
               onPressed: () {
+                 controller.proceedToPayment();
                 // Handle payment process
               },
               child: Text("Next", style: TextStyle(color: Colors.black)),

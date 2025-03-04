@@ -11,6 +11,7 @@ import 'package:myott/UI/Profile/screens/wishlistPage.dart';
 import 'package:myott/UI/Setting/Faq/faq_screen.dart';
 
 import '../Profile/Components/SettingItem.dart';
+import 'Components/FooterWidget.dart';
 
 
 class HelpAndSettingScreen extends StatelessWidget {
@@ -59,7 +60,7 @@ class HelpAndSettingScreen extends StatelessWidget {
               onTap: (){
                 Get.to(WalletScreen());
               },
-              title: "Wallet".tr, icon: Icons.add),
+              title: "Wallet".tr, icon: Icons.wallet),
           SettingItem(
               onTap: (){
                 Get.to(Downloadpage());
@@ -102,6 +103,14 @@ class HelpAndSettingScreen extends StatelessWidget {
 
           // Logout
           SettingItem(title: "Logout".tr, icon: Icons.logout, isLogout: true),
+
+          FooterWidget(
+            facebookUrl: "https://www.facebook.com/",
+            linkedinUrl: "https://linkedin.com/",
+            twitterUrl: "https://twitter.com/",
+            instagramUrl: "https://instagram.com/",
+          )
+
         ],
       ),
     );

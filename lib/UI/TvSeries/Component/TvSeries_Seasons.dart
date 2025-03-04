@@ -66,7 +66,7 @@ class TvSeriesSeasons extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: tvSeries.episodes
-                  .map((episode) => EpisodeCard(episode.title, episode.poster))
+                  .map((episode) => EpisodeCard(episode.title, episode.poster.toString()))
                   .toList(),
             ),
           ),

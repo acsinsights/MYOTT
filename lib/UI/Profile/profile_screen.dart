@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myott/Services/MovieService.dart';
+import 'package:myott/Services/api_service.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Profile/Components/SubscriptionBanner.dart';
 import 'package:myott/UI/Profile/Components/UserProfile.dart';
 import 'package:myott/UI/Profile/screens/create_profile.dart';
 import 'package:myott/UI/Profile/screens/edit_profile.dart';
-import 'package:myott/UI/Profile/screens/subscription_page.dart';
+import 'package:myott/UI/Profile/screens/SubscriptionPackage/subscription_page.dart';
 import 'package:myott/UI/Setting/setting_page.dart';
 
 import 'Components/MovieListComponent.dart';
@@ -18,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MovieController movieController = Get.put(MovieController());
+    final MovieController movieController = Get.put(MovieController(MoviesService(ApiService())));
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -48,7 +50,7 @@ UserProfile(),
 
             Text("ContinueWatching".tr, style: GoogleFonts.poppins(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
             SizedBox(height: 10,),
-            MovieListComponent(movies: movieController.movies, isContinueWatching: true),
+           // MovieListComponent(movies: movieController.movies, isContinueWatching: true),
           ],
         ),
       ),

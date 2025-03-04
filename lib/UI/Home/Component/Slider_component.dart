@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:myott/Services/Home_service.dart';
@@ -24,7 +25,9 @@ class MovieSlider extends StatelessWidget {
           height: 400.h, // Responsive height
           child: Obx(() {
             if (homeController.sliderMovies.isEmpty) {
-              return Center(child: CircularProgressIndicator()); // Show loader while fetching
+              return ShimmerLoader(
+                height: 400.h,
+              ); // Show loader while fetching
             }
 
             return CarouselSlider.builder(
@@ -40,15 +43,16 @@ class MovieSlider extends StatelessWidget {
                       children: [
                         // Background Image
                         Image.network(
-                          movie.content.image != null && movie.content.image!.isNotEmpty
-                              ? movie.content.image!
-                              : "https://templatecookies.com/ott/public/uploads/movies/images/poster_img/1740810789_poster_02.png", // Placeholder image URL
+
+                          movie.content.posterImg.toString(),
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
                           loadingBuilder: (context, child, progress) {
                             if (progress == null) return child;
-                            return Center(child: CircularProgressIndicator());
+                            return ShimmerLoader(
+                              height: 400.h,
+                            );
                           },
                           errorBuilder: (context, error, stackTrace) => Image.asset(
                             "assets/images/movies/SliderMovies/movie-1.png", // Local placeholder image

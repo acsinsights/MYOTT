@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:myott/Services/Setting_service.dart';
@@ -6,6 +7,7 @@ import 'package:myott/Services/api_service.dart';
 import 'package:myott/Core/Utils/app_colors.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 
+import '../../Components/network_image_widget.dart';
 import 'Blog_details_screen.dart';
 import 'Model/blog_model.dart';
 import 'blog_controller.dart';
@@ -29,7 +31,7 @@ class BlogScreen extends StatelessWidget {
         ),
       ),
       body: Obx(() {
-        if (blogController.isLoading.value) {
+        if (blogController.isBlogsLoading.value) {
           return Center(child: CircularProgressIndicator());
         }
 
@@ -47,13 +49,13 @@ class BlogScreen extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                // Get.to(() => BlogDetailsScreen(blogId: blog.id));
-
-                // Navigate to Blog Details Page (Uncomment when ready)
-                Get.to(() => BlogDetailsScreen(blog: blog));
+                final BlogController controller = Get.find<BlogController>();
+                controller.setBlogId(blog.id); // Set the blog ID before navigation
+                Get.to(() => BlogDetailsScreen(blogId: blog.id));
               },
+
               child: Card(
-                color: AppColors.subwhite,
+                color: Color(0xff191818),
                 margin: EdgeInsets.symmetric(vertical: 8),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -66,15 +68,10 @@ class BlogScreen extends StatelessWidget {
                       // Blog Image
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          "assets/images/movies/SliderMovies/movie-1.png",
-                          height: 100,
-                          width: 100, // Fixed width for consistency
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Icon(Icons.image_not_supported, size: 100, color: Colors.grey);
-                          },
-                        ),
+                        child: NetworkImageWidget(
+                            imageUrl: blog.thumbnailImg,
+                            errorAsset: "assets/images/CommingSoon/comming_movie.png",
+                            width: 100.w, height: 100.h)
                       ),
                       SizedBox(width: 15),
 
@@ -85,7 +82,7 @@ class BlogScreen extends StatelessWidget {
                           children: [
                             Text(
                               blog.title,
-                              style: AppTextStyles.HeadingbLackB2,
+                              style: AppTextStyles.Headingb3,
                               maxLines: 2, // Prevents overflow
                               overflow: TextOverflow.ellipsis,
                             ),

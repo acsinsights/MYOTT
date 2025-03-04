@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/Services/api_service.dart';
 import 'package:myott/UI/Model/Moviesmodel.dart';
 import 'package:myott/UI/Movie/movie_details_page.dart';
 
 import '../../Core/Utils/app_text_styles.dart';
+import '../../Services/MovieService.dart';
+import '../Movie/Controller/Movie_controller.dart';
 
 class MovieList extends StatelessWidget {
   final List<MoviesModel> movies;
@@ -32,7 +35,13 @@ class MovieList extends StatelessWidget {
         padding: const EdgeInsets.only(left: 16),
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () => Get.to(MovieDetailsPage()),
+              onTap: () {
+                final movieId = movies[index].id;
+                Get.to(() => MovieDetailsPage(movieId: movieId),
+                    binding: BindingsBuilder(() {
+                      Get.put(MovieController(MoviesService(ApiService()))); // Ensure Controller is available
+                    }));
+              },
             child: Padding(
               padding: const EdgeInsets.only(right: 12.0),
               child: Column(

@@ -10,7 +10,7 @@ class MovieShrimmerLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 120,  // Ensure the shimmer effect has a fixed height
+      height: 180,  // Ensure the shimmer effect has a fixed height
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 3, // Showing 3 shimmer items as placeholders
@@ -18,7 +18,7 @@ class MovieShrimmerLoader extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(right: 16.0), // ✅ Space between shimmer items
-            child: ShimmerLoader(height: 120, width: 100), // Adjusted width for better alignment
+            child: ShimmerLoader(height: 180, width: 120), // Adjusted width for better alignment
           );
         },
       ),
