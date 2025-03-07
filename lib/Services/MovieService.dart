@@ -15,11 +15,11 @@ class MoviesService {
     try {
       final response = await _apiService.get(APIEndpoints.movieDetails(movieId));
 
-      if (response.statusCode == 200) {
-        final data=response.data;
+      if (response?.statusCode == 200) {
+        final data=response?.data;
         return MovieDetailsModel.fromJson(data);
       } else {
-        throw Exception("Failed to fetch movie details. Status: ${response.statusCode}");
+        throw Exception("Failed to fetch movie details. Status: ${response?.statusCode}");
       }
     } on DioException catch (e) {
       throw Exception("API Error: ${e.message}");
@@ -33,12 +33,12 @@ class MoviesService {
     try {
       final response = await _apiService.get("${APIEndpoints.searchMovies}?query=$query");
 
-      if (response.statusCode == 200) {
-        return (response.data["results"] as List<dynamic>? ?? [])
+      if (response?.statusCode == 200) {
+        return (response?.data["results"] as List<dynamic>? ?? [])
             .map((e) => MoviesModel.fromJson(e))
             .toList();
       } else {
-        throw Exception("No results found. Status: ${response.statusCode}");
+        throw Exception("No results found. Status: ${response?.statusCode}");
       }
     } on DioException catch (e) {
       throw Exception("API Error: ${e.message}");

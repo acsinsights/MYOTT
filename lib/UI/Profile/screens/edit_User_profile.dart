@@ -4,12 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'EditProfileDetailsScreen.dart';
 import 'create_profile.dart';
 
-class EditProfileScreen extends StatefulWidget {
+class EditUserProfileScreen extends StatefulWidget {
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  _EditUserProfileScreenState createState() => _EditUserProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
   List<Map<String, dynamic>> profiles = [
     {"name": "John Doe", "image": "assets/Avtars/person1.png"},
     {"name": "Kids", "image": "assets/Avtars/person2.png"},

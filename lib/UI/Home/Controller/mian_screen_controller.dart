@@ -20,7 +20,6 @@ class MainScreenController extends GetxController {
     HomeScreen(),
     SearchScreen(),
     WishlistPage(),
-    ReelsPage(),
     ProfileScreen(),
   ];
 }

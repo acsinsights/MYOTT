@@ -20,15 +20,15 @@ class MovieDetailsPage extends StatefulWidget {
 }
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
+
+  bool isWatchlisted=false;
+  bool isLiked=false;
+
   @override
   Widget build(BuildContext context) {
     final MovieController controller =
         Get.put(MovieController(MoviesService(ApiService())));
 
-    bool isWatchlisted=false;
-    bool isLiked=false;
-    void toggleWatchlist() => setState(() => isWatchlisted = !isWatchlisted);
-    void toggleLike() => setState(() => isLiked = !isLiked);
 
     // Fetch details when this page loads
     controller.fetchMovieDetails(widget.movieId);
@@ -143,5 +143,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         ),
       ),
     );
+
   }
+  void toggleWatchlist() => setState(() => isWatchlisted = !isWatchlisted);
+  void toggleLike() => setState(() => isLiked = !isLiked);
+
 }

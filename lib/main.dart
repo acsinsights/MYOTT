@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 
 import 'Services/api_service.dart';
 import 'Services/translation_service.dart';
-import 'UI/Auth/login_page.dart';
+import 'UI/Auth/Login/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

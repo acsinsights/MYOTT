@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:myott/UI/Setting/Blogs/blog_page.dart';
+import 'package:myott/UI/Setting/Pages/Components/AboutusPage.dart';
 import 'package:myott/UI/Setting/Wallet/wallet_Screen.dart';
 import 'package:myott/UI/Setting/account_setting/AccountSettingsScreen.dart';
 import 'package:myott/UI/Setting/Subscription_History/Subscription_history_page.dart';
@@ -12,6 +13,8 @@ import 'package:myott/UI/Setting/Faq/faq_screen.dart';
 
 import '../Profile/Components/SettingItem.dart';
 import 'Components/FooterWidget.dart';
+import 'Pages/Components/PrivacyPolicy.dart';
+import 'Pages/Components/TermsAndCondition.dart';
 
 
 class HelpAndSettingScreen extends StatelessWidget {
@@ -86,8 +89,16 @@ class HelpAndSettingScreen extends StatelessWidget {
           Divider(color: Colors.grey[800]),
 
           // Policy & Support
-          SettingItem(title: "Privacy".tr, icon: Icons.lock_outline),
-          SettingItem(title: "Terms".tr, icon: Icons.article_outlined),
+          SettingItem(
+              onTap: (){
+                Get.to(PrivacyPolicy());
+              },
+              title: "Privacy".tr, icon: Icons.lock_outline),
+          SettingItem(
+            onTap:  () {
+              Get.to(TermsAndCondition());
+            },
+              title: "Terms".tr, icon: Icons.article_outlined),
           SettingItem(title: "Support".tr, icon: Icons.help),
           SettingItem(
               title: "Refund".tr,
@@ -97,7 +108,12 @@ class HelpAndSettingScreen extends StatelessWidget {
           Divider(color: Colors.grey[800]),
 
           // Repeated Sections
-          SettingItem(title: "About".tr, icon: Icons.info_outline),
+          SettingItem(
+            onTap: (){
+              Get.to(AboutUsPage());
+            },
+
+              title: "About".tr, icon: Icons.info_outline),
 
           Divider(color: Colors.grey[800]),
 

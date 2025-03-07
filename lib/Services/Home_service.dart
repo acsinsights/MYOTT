@@ -17,8 +17,8 @@ class HomeService {
     try {
       final response = await _apiService.get("${APIEndpoints.homeEndpoint}");
 
-      if (response.statusCode == 200) {
-        final data = response.data;
+      if (response?.statusCode == 200) {
+        final data = response?.data;
 
         return {
           "latest": (data["latest"] as List<dynamic>? ?? [])
@@ -34,7 +34,7 @@ class HomeService {
               .map((e) => ActorsModel.fromJson(e))
               .toList(),
           "Audio": (data["Audio"] as List<dynamic>? ?? [])
-              .map((e) => LangModel.fromJson(e))
+              .map((e) => AudioModel.fromJson(e))
               .toList(),
           "all_genres": (data["all_genres"] as List<dynamic>? ?? [])
           .map((e)=> GenreModel.fromJson(e))
@@ -48,7 +48,7 @@ class HomeService {
 
         };
       } else {
-        throw Exception("Failed to fetch home data. Status: ${response.statusCode}");
+        throw Exception("Failed to fetch home data. Status: ${response?.statusCode}");
       }
     } on DioException catch (e) {
       throw Exception("API Error: ${e.message}");

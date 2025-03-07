@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:myott/UI/Auth/Component/custom_text_field.dart';
+import 'package:myott/UI/Components/custom_text_field.dart';
 import 'package:myott/UI/Components/custom_button.dart';
 import 'package:myott/UI/Setting/Wallet/wallet_controller.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';

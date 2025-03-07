@@ -14,7 +14,7 @@ class HomeController extends GetxController {
   var topMovies = <MoviesModel>[].obs;
   var upcomingMovies = <MoviesModel>[].obs;
   var actors = <ActorsModel>[].obs;
-  var audios = <LangModel>[].obs;
+  var audios = <AudioModel>[].obs;
   var genre = <GenreModel>[].obs;
   var isLoading = false.obs;
   final List<int> colors = [
@@ -56,7 +56,7 @@ class HomeController extends GetxController {
       sliderMovies.assignAll(homeData["slider"] ?? []);
 
       // ✅ Assign colors dynamically to audios (languages)
-      List<LangModel> languageList = homeData["Audio"] ?? [];
+      List<AudioModel> languageList = homeData["Audio"] ?? [];
       for (int i = 0; i < languageList.length; i++) {
         languageList[i].color = colors[i % colors.length]; // ✅ Assign color in a loop
       }

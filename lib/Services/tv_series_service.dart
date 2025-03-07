@@ -13,11 +13,11 @@ class TVSeriesService {
     try {
       final response = await apiService.get(APIEndpoints.tvSeries);
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data;
+      if (response?.statusCode == 200) {
+        final List<dynamic> data = response?.data;
         return data.map((e) => TvSeriesModel.fromJson(e)).toList();
       } else {
-        print("Error: ${response.statusCode} - ${response.statusMessage}");
+        print("Error: ${response?.statusCode} - ${response?.statusMessage}");
       }
     } on DioException catch (e) {
       print("API Error: ${e.response?.statusCode} - ${e.message}");
@@ -32,11 +32,11 @@ class TVSeriesService {
     try {
       final response = await apiService.get(APIEndpoints.tvSeriesDetails(seriesId));
 
-      if (response.statusCode == 200) {
-        final data = response.data;
+      if (response?.statusCode == 200) {
+        final data = response?.data;
         return TvSeriesDetailsModel.fromJson(data);
       } else {
-        print("Error: ${response.statusCode} - ${response.statusMessage}");
+        print("Error: ${response?.statusCode} - ${response?.statusMessage}");
       }
     } on DioException catch (e) {
       print("API Error: ${e.response?.statusCode} - ${e.message}");

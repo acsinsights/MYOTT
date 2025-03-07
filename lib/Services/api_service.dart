@@ -6,16 +6,29 @@ class ApiService {
   ApiService()
       : _dio = Dio(BaseOptions(
     baseUrl: "https://templatecookies.com/ott/public/api/",
-    connectTimeout: Duration(seconds: 10),
-    receiveTimeout: Duration(seconds: 10),
+    connectTimeout: const Duration(seconds: 10),
+    receiveTimeout: const Duration(seconds: 10),
   ));
 
-  Future<Response> get(String endpoint, {Map<String, dynamic>? params}) async {
+  Future<Response?> get(String endpoint, {Map<String, dynamic>? params}) async {
     try {
-      Response response = await _dio.get(endpoint, queryParameters: params);
-      return response;
-    } catch (e) {
-      throw Exception("API Error: $e");
+      return await _dio.get(endpoint, queryParameters: params);
+    } on DioException catch (e) {
+      _handleError(e);
+      return null;
     }
+  }
+
+  Future<Response?> post(String endpoint, {Map<String, dynamic>? data}) async {
+    try {
+      return await _dio.post(endpoint, data: data);
+    } on DioException catch (e) {
+      _handleError(e);
+      return null;
+    }
+  }
+
+  void _handleError(DioException e) {
+    print("API Error: ${e.response?.data ?? e.message}");
   }
 }

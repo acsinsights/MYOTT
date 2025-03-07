@@ -2,21 +2,21 @@ import 'dart:convert';
 
 // To parse this JSON data, do
 //
-//     final langModel = langModelFromJson(jsonString);
+//     final AudioModel = AudioModelFromJson(jsonString);
 
 
-List<LangModel> langModelFromJson(String str) => List<LangModel>.from(json.decode(str).map((x) => LangModel.fromJson(x)));
+List<AudioModel> AudioModelFromJson(String str) => List<AudioModel>.from(json.decode(str).map((x) => AudioModel.fromJson(x)));
 
-String langModelToJson(List<LangModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String AudioModelToJson(List<AudioModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class LangModel {
+class AudioModel {
   int id;
   String name;
   DateTime createdAt;
   DateTime updatedAt;
   int? color; // ✅ Nullable color field
 
-  LangModel({
+  AudioModel({
     required this.id,
     required this.name,
     required this.createdAt,
@@ -24,7 +24,7 @@ class LangModel {
     this.color, // ✅ Initialize color field
   });
 
-  factory LangModel.fromJson(Map<String, dynamic> json) => LangModel(
+  factory AudioModel.fromJson(Map<String, dynamic> json) => AudioModel(
     id: json["id"],
     name: json["name"],
     createdAt: DateTime.parse(json["created_at"]),

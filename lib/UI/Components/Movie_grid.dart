@@ -1,46 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/Services/MovieService.dart';
 import 'package:myott/Services/api_service.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/movie_details_page.dart';
-import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
-import '../Movie/Model/movie_model.dart';
+import '../Model/Moviesmodel.dart';
 
 class MovieGrid extends StatelessWidget {
-  final List<MovieModel> movies;
+  final List<MoviesModel> movies;
 
   const MovieGrid({Key? key, required this.movies}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final MovieController movieController=Get.put(MovieController(MoviesService(ApiService())));
     return GridView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h), // Responsive Padding
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 2 / 3,
+        crossAxisCount: ScreenUtil().screenWidth > 600 ? 4 : 3, // Adjusts for tablets
+        crossAxisSpacing: 12.w,
+        mainAxisSpacing: 12.h,
+        childAspectRatio: 2 / 3, // Standard movie poster aspect ratio
       ),
       itemCount: movies.length,
       itemBuilder: (context, index) {
+        final movie = movies[index];
+
         return GestureDetector(
           onTap: () {
-            // Navigate using GetX and pass the movie data
-            // movieController.setSelectedMovie(movies[index]);
-            // Get.to(() => TvSeriesDetailsPage(seriesId: seriesId));
-            Get.to(MovieDetailsPage(movieId: movies.elementAt(index).id));
+            final movieId = movie.id;
+            Get.to(() => MovieDetailsPage(movieId: movieId),
+                binding: BindingsBuilder(() {
+                  Get.put(MovieController(MoviesService(ApiService())));
+                }));
           },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              image: DecorationImage(
-                image: AssetImage(movies[index].imageUrl),
-                fit: BoxFit.cover,
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.r),
+                    image: DecorationImage(
+                      image: NetworkImage(movie.posterImg), // Use NetworkImage if from API
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
-            ),
+              SizedBox(height: 6.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                child: Text(
+                  movie.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },

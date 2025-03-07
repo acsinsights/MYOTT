@@ -42,18 +42,11 @@ class MainScreen extends StatelessWidget {
                 onPressed: () => controller.changeIndex(2),
               ),
               IconButton(
-                icon: Icon(Icons.campaign,
+                icon: Icon(Icons.person,
                     color: controller.selectedIndex.value == 3
                         ? AppColors.primary2
                         : AppColors.white),
                 onPressed: () => controller.changeIndex(3),
-              ),
-              IconButton(
-                icon: Icon(Icons.person,
-                    color: controller.selectedIndex.value == 4
-                        ? AppColors.primary2
-                        : AppColors.white),
-                onPressed: () => controller.changeIndex(4),
               ),
             ],
           )),

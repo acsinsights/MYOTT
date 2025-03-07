@@ -27,13 +27,13 @@ class GenreController extends GetxController {
       isLoading.value = true;
       final response = await apiService.get(APIEndpoints.moviesByGenre(genreId));
 
-      if (response.statusCode == 200 && response.data != null) {
-        final List<dynamic> data = response.data;
+      if (response?.statusCode == 200 && response?.data != null) {
+        final List<dynamic> data = response?.data;
         moviesByGenre.assignAll(data.map((e) => MoviesByGenreModel.fromJson(e)).toList());
         print(data.length);
         print(data.first);
       } else {
-        print("Error: ${response.statusCode} - ${response.statusMessage}");
+        print("Error: ${response?.statusCode} - ${response?.statusMessage}");
       }
     } catch (e, stacktrace) {
       print("Error fetching movies by genre: $e");

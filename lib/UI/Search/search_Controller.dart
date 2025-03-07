@@ -1,47 +1,46 @@
 import 'package:get/get.dart';
-import '../../Data/movies_data.dart';
-import '../Movie/Model/movie_model.dart';
+import '../../Services/Search_service.dart';
+import '../Model/searchable_content.dart';
 
 class CustomSearchController extends GetxController {
-  var searchHistory = <MovieModel>[].obs; // Stores the search history
-  var popularMovies = <MovieModel>[].obs; // Stores popular movies
-  var filteredMovies = <MovieModel>[].obs; // Stores search results
+  final SearchService _searchService = SearchService();
+
+  var searchResults = <SearchableContent>[].obs; // Observable List
+  var isLoading = false.obs;
+  var query = "".obs;
 
   @override
   void onInit() {
-    loadPopularMovies();
     super.onInit();
+    debounce(query, (_) {
+      if (query.value.isNotEmpty) {
+        fetchResults(query.value);
+      } else {
+        searchResults.clear();
+      }
+    }, time: Duration(milliseconds: 500));
   }
 
-  // Load the popular movies (dummy data)
-  void loadPopularMovies() {
-    popularMovies.assignAll(allMovies);
-  }
+  void fetchResults(String value) async {
+    isLoading.value = true;
 
-  // Add movie to search history
-  void addToSearchHistory(MovieModel movie) {
-    if (!searchHistory.any((m) => m.title == movie.title)) {
-      searchHistory.insert(0, movie);
+    try {
+      final results = await _searchService.fetchSearchResults(value);
+      if (results.isNotEmpty) {
+        searchResults.assignAll(results); // Efficient list update
+      } else {
+        searchResults.clear();
+      }
+    } catch (e) {
+      print("Search error: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
 
-  // Remove movie from search history
-  void removeFromSearchHistory(MovieModel movie) {
-    searchHistory.removeWhere((m) => m.title == movie.title);
-  }
-
-  // Perform a search based on user input
-  void searchMovies(String query) {
-    if (query.isEmpty) {
-      filteredMovies.clear();
-      return;
-    }
-    filteredMovies.assignAll(
-      allMovies.where((movie) => movie.title.toLowerCase().contains(query.toLowerCase())).toList(),
-    );
-
-    if (filteredMovies.isNotEmpty) {
-      addToSearchHistory(filteredMovies.first);
+  void updateQuery(String value) {
+    if (query.value != value) {
+      query.value = value;
     }
   }
 }

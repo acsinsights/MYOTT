@@ -7,6 +7,7 @@ import 'package:myott/UI/Movie/movie_details_page.dart';
 import '../../Core/Utils/app_text_styles.dart';
 import '../../Services/MovieService.dart';
 import '../Movie/Controller/Movie_controller.dart';
+import 'ShimmerLoader.dart';
 
 class MovieList extends StatelessWidget {
   final List<MoviesModel> movies;
@@ -56,7 +57,7 @@ class MovieList extends StatelessWidget {
                         image: NetworkImage(movies[index].posterImg),
                         fit: BoxFit.cover,
                         onError: (exception, stackTrace) =>
-                        const AssetImage('assets/images/placeholder.png') as ImageProvider,
+                            ShimmerLoader(height: 180, width: 120,),
                       ),
                     ),
                   ),

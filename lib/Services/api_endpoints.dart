@@ -1,4 +1,8 @@
 class APIEndpoints {
+  static const String send_otp = "send-otp";
+
+
+
   static const String homeEndpoint = "home?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
   //TvSeries
     static const String tvSeries = "tv-series?secret=06c51069-0171-4f23-bf8f-41c9cd86762d&currency=INR";
@@ -13,7 +17,8 @@ class APIEndpoints {
   static String movieDetails(int movieId) =>
       "movie/$movieId?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
 
-  static const String searchMovies = "search";
+  static  String searchMovies(String searchTerm) => "search?secret=06c51069-0171-4f23-bf8f-41c9cd86762d&searchTerm=$searchTerm";
+  static  String pages (String pageName) => "pages/$pageName?secret=06c51069-0171-4f23-bf8f-41c9cd86762d ";
 
 
   //setting

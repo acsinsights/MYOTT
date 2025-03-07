@@ -62,8 +62,6 @@ class HomeScreen extends StatelessWidget {
               Obx(()=> homeController.isLoading.value
                   ?MovieShrimmerLoader()
                   : TvSeriesMovieList(tvSeries: tvSeriesController.tvSeries)),
-              SectionTitle(title: "Sports".tr),
-              //MovieList(movies: movieController.latestMovies ),
 
               SizedBox(height: 10,),
 

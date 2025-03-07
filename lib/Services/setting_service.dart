@@ -1,6 +1,7 @@
 import 'package:myott/Services/api_endpoints.dart';
 import 'package:myott/UI/Setting/Models/LanguageModel.dart';
 import 'package:myott/UI/Profile/screens/SubscriptionPackage/Model/PackageModel.dart';
+import 'package:myott/UI/Setting/Pages/Model/PageModel.dart';
 
 import '../UI/Setting/Blogs/Model/blog_detail_model.dart';
 import '../UI/Setting/Blogs/Model/blog_model.dart';
@@ -22,8 +23,8 @@ class SettingService {
         "page": page,
         "per_page": perPage,
       });
-      if (response.statusCode == 200) {
-        return (response.data["languages"] as List<dynamic>? ?? [])
+      if (response?.statusCode == 200) {
+        return (response?.data["languages"] as List<dynamic>? ?? [])
             .map((e) => LanguageModel.fromJson(e))
             .toList();
       }else{
@@ -44,8 +45,8 @@ class SettingService {
         "per_page": perPage,
       });
 
-      if (response.statusCode == 200) {
-        final data = response.data;
+      if (response?.statusCode == 200) {
+        final data = response?.data;
 
         return (data["data"] as List<dynamic>? ?? [])
             .map((e) => FaqModel.fromJson(e))
@@ -55,6 +56,25 @@ class SettingService {
       }
     } catch (e) {
       print("Error fetching FAQs: $e");
+      return [];
+    }
+  }
+
+  Future<List<CustomPage>> getPandP(String PageName) async {
+    try {
+      final response = await _apiService.get(APIEndpoints.pages(PageName));
+
+      if (response?.statusCode == 200) {
+        final data = response?.data;
+
+        return (data["Pages"] as List<dynamic>? ?? []) // Ensure correct key
+            .map((e) => CustomPage.fromJson(e)) // Convert JSON to CustomPage
+            .toList();
+      } else {
+        throw Exception("Failed to load pages");
+      }
+    } catch (e) {
+      print("Error fetching pages: $e");
       return [];
     }
   }
@@ -69,8 +89,8 @@ class SettingService {
         "per_page": perPage,
       });
 
-      if (response.statusCode == 200) {
-        return (response.data["data"] as List<dynamic>? ?? [])
+      if (response?.statusCode == 200) {
+        return (response?.data["data"] as List<dynamic>? ?? [])
             .map((e) => BlogModel.fromJson(e))
             .toList();
       } else {
@@ -85,8 +105,8 @@ class SettingService {
     try {
       final response = await _apiService.get(APIEndpoints.blogDeatils(blogId));
 
-      if (response.statusCode == 200) {
-        final data=response.data;
+      if (response?.statusCode == 200) {
+        final data=response?.data;
         return BlogdetailsModel.fromJson(data);
       } else {
         throw Exception("Failed to fetch blog details");
@@ -104,8 +124,8 @@ class SettingService {
         "per_page": perPage,
       });
 
-      if (response.statusCode == 200) {
-        return (response.data["Packages"] as List<dynamic>? ?? [])
+      if (response?.statusCode == 200) {
+        return (response?.data["Packages"] as List<dynamic>? ?? [])
             .map((e) => PackageModel.fromJson(e))
             .toList();
       } else {
