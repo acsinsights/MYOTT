@@ -1,4 +1,4 @@
-import 'package:myott/Services/api_endpoints.dart';
+import 'package:myott/services/api_endpoints.dart';
 import 'package:myott/UI/Setting/Models/LanguageModel.dart';
 import 'package:myott/UI/Profile/screens/SubscriptionPackage/Model/PackageModel.dart';
 import 'package:myott/UI/Setting/Pages/Model/PageModel.dart';

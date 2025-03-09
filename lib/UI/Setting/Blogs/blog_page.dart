@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:myott/Services/Setting_service.dart';
-import 'package:myott/Services/api_service.dart';
+import 'package:myott/services/Setting_service.dart';
+import 'package:myott/services/api_service.dart';
 import 'package:myott/Core/Utils/app_colors.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 

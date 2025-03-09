@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:myott/UI/Setting/Blogs/Model/blog_detail_model.dart';
-import '../../../Services/Setting_service.dart';
+import '../../../services/Setting_service.dart';
 import 'Model/blog_model.dart';
 
 class BlogController extends GetxController {

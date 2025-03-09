@@ -4,8 +4,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
 
-import '../../../Services/Home_service.dart';
-import '../../../Services/api_service.dart';
+import '../../../services/Home_service.dart';
+import '../../../services/api_service.dart';
 import '../../Components/MovieListShrimerLoad.dart';
 
 class ActorList extends StatelessWidget {

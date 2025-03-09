@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/Services/api_service.dart';
-import 'package:myott/Services/payment_service.dart';
-import 'package:myott/Services/setting_service.dart';
+import 'package:myott/services/api_service.dart';
+import 'package:myott/services/payment_service.dart';
+import 'package:myott/services/setting_service.dart';
 
 import 'Model/PackageModel.dart';
 

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:myott/Services/Setting_service.dart';
-import 'package:myott/Services/api_service.dart';
+import 'package:myott/services/Setting_service.dart';
+import 'package:myott/services/api_service.dart';
 import '../Model/PageModel.dart';
 
 class DynamicPageController extends GetxController {

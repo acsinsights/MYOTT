@@ -1,7 +1,7 @@
 import 'package:myott/UI/Movie/Model/movie_details_model.dart';
 
 import '../UI/Model/Moviesmodel.dart';
-import 'api_service.dart';
+import 'package:myott/services/api_service.dart';
 import 'api_endpoints.dart';
 import 'package:dio/dio.dart';
 

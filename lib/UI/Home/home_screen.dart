@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/Services/tv_series_service.dart';
+import 'package:myott/services/tv_series_service.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Home/Component/actor_list.dart';
 import 'package:myott/UI/Components/movie_list.dart';
@@ -10,8 +10,8 @@ import 'package:myott/UI/Home/Component/Audio_selection.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
-import '../../Services/Home_service.dart';
-import '../../Services/api_service.dart';
+import '../../services/Home_service.dart';
+import '../../services/api_service.dart';
 import '../Components/MovieListShrimerLoad.dart';
 import '../TvSeries/Component/TvShowList.dart';
 import 'Component/Slider_component.dart';
@@ -41,14 +41,18 @@ class HomeScreen extends StatelessWidget {
 
               SectionTitle(title: "latestRelease".tr),
               Obx(() {
+                print("🔄 UI Rebuilding... isLoading: ${homeController.isLoading.value}");
+                print("🎬 Latest Movies Count: ${homeController.latestMovies.length}");
+
                 if (homeController.isLoading.value) {
                   return MovieShrimmerLoader();
-                } else {
-                  return MovieList(movies: homeController.latestMovies);
                 }
+
+                return MovieList(movies: homeController.latestMovies);
               }),
 
-               SizedBox(height: 10),
+
+              SizedBox(height: 10),
 
 
               SectionTitle(title: "Top10".tr),

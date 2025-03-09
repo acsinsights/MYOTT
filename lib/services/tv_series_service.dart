@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:myott/Services/api_endpoints.dart';
-import 'package:myott/Services/api_service.dart';
+import 'package:myott/services/api_endpoints.dart';
+import 'package:myott/services/api_service.dart';
 import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 

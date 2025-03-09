@@ -5,8 +5,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import 'package:myott/Services/Home_service.dart';
-import 'package:myott/Services/api_service.dart';
+import 'package:myott/services/Home_service.dart';
+import 'package:myott/services/api_service.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
 import '../../../Core/Utils/app_colors.dart';
 import '../../../Core/Utils/app_text_styles.dart';

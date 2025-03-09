@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Core/Utils/app_colors.dart';
 import '../../../Core/Utils/app_text_styles.dart';
-import '../../../Services/Home_service.dart';
-import '../../../Services/api_service.dart';
+import '../../../services/Home_service.dart';
+import '../../../services/api_service.dart';
 import '../Controller/Home_controller.dart';
 import '../Controller/coming_soon_controller.dart';
 

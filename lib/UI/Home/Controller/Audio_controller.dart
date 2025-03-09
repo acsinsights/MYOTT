@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:myott/Services/Home_service.dart';
+import 'package:myott/services/Home_service.dart';
 import '../Model/Audio_Model.dart';
 
 class AudioController extends GetxController {

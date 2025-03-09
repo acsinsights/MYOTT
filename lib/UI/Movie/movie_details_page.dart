@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
-import 'package:myott/Services/MovieService.dart';
-import 'package:myott/Services/api_service.dart';
+import 'package:myott/services/MovieService.dart';
+import 'package:myott/services/api_service.dart';
 import 'package:myott/UI/Movie/Component/MoviesActionButton.dart';
 import 'package:myott/video_player/component/Video_palyer_widget.dart';
 

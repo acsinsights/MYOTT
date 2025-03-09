@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:myott/UI/Home/Model/Audio_Model.dart';
 import 'package:myott/UI/Home/Model/SliderModel.dart';
 import 'package:myott/UI/Model/Moviesmodel.dart';
-import '../../../Services/Home_service.dart';
+import '../../../services/Home_service.dart';
 import '../Model/ActorsModel.dart';
 import '../../Genre/Model/genre_model.dart';
 
@@ -46,10 +46,14 @@ class HomeController extends GetxController {
   Future<void> fetchHomeData() async {
     try {
       isLoading(true);
+      print("Fetching Home Data...");
 
       var homeData = await _homeService.fetchHomeData();
+      print("✅ API Response: $homeData");
 
       latestMovies.assignAll(homeData["latest"] ?? []);
+      print("🎬 Latest Movies Count: ${latestMovies.length}");
+
       topMovies.assignAll(homeData["top_movies"] ?? []);
       upcomingMovies.assignAll(homeData["upcoming_movie"] ?? []);
       actors.assignAll(homeData["actors"] ?? []);
@@ -58,19 +62,19 @@ class HomeController extends GetxController {
       // ✅ Assign colors dynamically to audios (languages)
       List<AudioModel> languageList = homeData["Audio"] ?? [];
       for (int i = 0; i < languageList.length; i++) {
-        languageList[i].color = colors[i % colors.length]; // ✅ Assign color in a loop
+        languageList[i].color = colors[i % colors.length];
       }
       audios.assignAll(languageList);
 
-      // ✅ Assign colors dynamically to Gnere (languages)
+      // ✅ Assign colors dynamically to genres
       List<GenreModel> genreList = homeData["all_genres"] ?? [];
       for (int i = 0; i < genreList.length; i++) {
-        genreList[i].color = colors[i % colors.length]; // ✅ Assign color in a loop
+        genreList[i].color = colors[i % colors.length];
       }
       genre.assignAll(genreList);
 
     } catch (e) {
-      print("Error fetching home data: $e");
+      print("❌ Error fetching home data: $e");
     } finally {
       isLoading(false);
     }

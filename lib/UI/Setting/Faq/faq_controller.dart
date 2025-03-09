@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../../../Services/Setting_service.dart';
+import '../../../services/Setting_service.dart';
 import 'Model/FAQModel.dart';
 
 class FAQController extends GetxController {

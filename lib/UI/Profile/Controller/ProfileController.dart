@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:myott/Services/Setting_service.dart';
+import 'package:myott/services/Setting_service.dart';
 import 'package:myott/UI/Movie/Controller/movie_controller.dart';
 import 'package:myott/UI/Movie/Model/movie_model.dart';
 import 'package:myott/UI/Profile/screens/SubscriptionPackage/Model/PackageModel.dart';

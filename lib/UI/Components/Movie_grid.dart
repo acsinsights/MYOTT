@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:myott/Services/MovieService.dart';
-import 'package:myott/Services/api_service.dart';
+import 'package:myott/services/MovieService.dart';
+import 'package:myott/services/api_service.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/movie_details_page.dart';
 import '../Model/Moviesmodel.dart';

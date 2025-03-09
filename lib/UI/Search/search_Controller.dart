@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../../Services/Search_service.dart';
+import '../../services/Search_service.dart';
 import '../Model/searchable_content.dart';
 
 class CustomSearchController extends GetxController {

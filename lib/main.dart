@@ -2,23 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
-import 'Services/api_service.dart';
-import 'Services/translation_service.dart';
+import 'package:myott/UI/SplashScreen/splashScreen.dart';
+import 'package:myott/services/auth_service.dart';
+import 'Binding/auth_binding.dart';
+import 'UI/Auth/Controller/auth_controller.dart';
+import 'services/api_service.dart';
+import 'services/translation_service.dart';
 import 'UI/Auth/Login/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 🔥 Initialize GetX services
   Get.put(ApiService());
   await GetStorage.init();
   await TranslationService.loadTranslations();
 
-  // ✅ Read saved language from GetStorage (default to 'en' if not set)
   final box = GetStorage();
   String savedLang = box.read('language') ?? 'en';
-
+  Get.put(AuthController(AuthService(ApiService()))); // Inject AuthController
   runApp(MyApp(savedLang: savedLang));
 }
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(375, 812),  // 🔥 Adjust to your design reference
+      designSize: Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
@@ -39,10 +40,10 @@ class MyApp extends StatelessWidget {
           translations: TranslationService(),
           locale: TranslationService.getLocale(savedLang),
           fallbackLocale: Locale('en'),
-          home: child,
+          initialBinding: AuthBinding(),
+          home: SplashScreen(),
         );
       },
-      child: LoginPage(),  // ✅ Pass LoginPage as child
     );
   }
 }

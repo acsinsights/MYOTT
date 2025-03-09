@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Components/MovieListShrimerLoad.dart';
@@ -6,12 +7,11 @@ import 'package:myott/UI/Genre/Controller/genre_controller.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/Movie_details_page.dart';
 
-import '../../Services/MovieService.dart';
-import '../../Services/api_service.dart';
+import '../../services/MovieService.dart';
+import '../../services/api_service.dart';
 
 class MoviesByGenre extends StatelessWidget {
   final GenreController genreController = Get.find<GenreController>();
-  // final MovieController movieController = Get.find<MovieController>();
 
   @override
   Widget build(BuildContext context) {
@@ -49,38 +49,51 @@ class MoviesByGenre extends StatelessWidget {
           child: Container(
             height: 200,
             child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                childAspectRatio: 0.5,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: ScreenUtil().screenWidth > 600 ? 4 : 3, // Adjusts for tablets
+                crossAxisSpacing: 12.w,
+                mainAxisSpacing: 12.h,
+                childAspectRatio: 2 / 3, // Standa
               ),
               itemCount: movies.length,
               itemBuilder: (context, index) {
                 final movie = movies[index];
                 return GestureDetector(
                   onTap: () {
-                    // movieController.setSelectedMovie(movie); // Set selected movie
-                    // Get.to(() => MovieDetailsPage(), arguments: movie);
-                    Get.to(() => MovieDetailsPage(movieId: movie.id),
+                    final movieId = movie.id;
+                    Get.to(() => MovieDetailsPage(movieId: movieId),
                         binding: BindingsBuilder(() {
-                          Get.put(MovieController(MoviesService(ApiService()))); // Ensure Controller is available
+                          Get.put(MovieController(MoviesService(ApiService())));
                         }));
                   },
                   child: Column(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: movie.posterImg.isNotEmpty
-                            ? Image.network(
-                          movie.posterImg, // Load image dynamically
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Image(image: AssetImage("assets/images/movies/SliderMovies/movie-1.png")),
-                        )
-                            : Image(image: AssetImage("assets/images/movies/SliderMovies/movie-1.png"))
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.r),
+                            image: DecorationImage(
+                              image: NetworkImage(movie.posterImg),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       ),
-                      Text(movie.name,style: AppTextStyles.SubHeading2,overflow: TextOverflow.ellipsis,)
-
+                      SizedBox(height: 6.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.w),
+                        child: Text(
+                          movie.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 );

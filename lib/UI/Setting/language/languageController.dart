@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../../Services/translation_service.dart';
+import '../../../services/translation_service.dart';
 
 class LanguageController extends GetxController {
   var locale = 'en'.obs;

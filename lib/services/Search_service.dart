@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:myott/Services/api_endpoints.dart';
+import 'package:myott/services/api_endpoints.dart';
 import '../UI/Model/searchable_content.dart';
 import '../UI/Search/Model/SearchModel.dart';
 import '../services/api_service.dart'; // Ensure correct path to ApiService

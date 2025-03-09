@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../../../Services/Setting_service.dart';
+import '../../../services/Setting_service.dart';
 import 'Faq/Model/FAQModel.dart';
 import 'Models/LanguageModel.dart';
 

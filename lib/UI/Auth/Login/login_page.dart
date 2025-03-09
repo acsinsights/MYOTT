@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:myott/Services/auth_service.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:myott/services/auth_service.dart';
 import 'package:myott/services/api_service.dart';
 import '../../../Config/app_images.dart';
 import '../../../Core/Utils/app_colors.dart';
@@ -67,11 +68,12 @@ class LoginPage extends StatelessWidget {
                       SizedBox(height: 20.h),
 
                       CustomButton(
-                        text:  "Get OTP".tr,
+                        text: "Get OTP".tr,
                         onPressed: () async {
                           if (authController.isPhoneLogin.value) {
-                            String mobile = authController.mobileNumber.value;
-                            if (mobile.length < 10) {
+                            String fullPhoneNumber = authController.mobileNumber.value.trim(); // ✅ This now includes country code
+
+                            if (fullPhoneNumber.isEmpty || !fullPhoneNumber.startsWith("+")) {
                               Get.snackbar("Error", "Please enter a valid phone number",
                                   snackPosition: SnackPosition.TOP,
                                   colorText: Colors.white,
@@ -79,11 +81,9 @@ class LoginPage extends StatelessWidget {
                               return;
                             }
 
-                            await authController.sendOtp(mobile).then((_) {
+                            await authController.sendOtp().then((_) {
                               if (authController.otpSent.value) {
                                 Get.bottomSheet(OtpBottomSheet());
-
-
                               } else {
                                 Get.snackbar("Error", "Failed to send OTP. Try again.",
                                     snackPosition: SnackPosition.TOP,
@@ -91,8 +91,7 @@ class LoginPage extends StatelessWidget {
                                     backgroundColor: Colors.red);
                               }
                             });
-                          }
-                          else {
+                          } else {
                             String email = authController.inputController.text.trim();
                             if (!GetUtils.isEmail(email)) {
                               Get.snackbar("Error", "Please enter a valid email",
@@ -102,9 +101,8 @@ class LoginPage extends StatelessWidget {
                               return;
                             }
 
-                            await authController.sendEmailOtp(email); // ✅ This will update emailAddress
+                            await authController.sendOtp();
                           }
-
                         },
                       ),
                       SizedBox(height: 20.h),

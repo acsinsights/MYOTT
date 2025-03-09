@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:myott/UI/Auth/Controller/auth_controller.dart';
 import 'package:myott/UI/Setting/Blogs/blog_page.dart';
 import 'package:myott/UI/Setting/Pages/Components/AboutusPage.dart';
 import 'package:myott/UI/Setting/Wallet/wallet_Screen.dart';
@@ -10,6 +11,8 @@ import 'package:myott/UI/Profile/screens/downloadPage.dart';
 import 'package:myott/UI/Setting/language/langSelectionScreen.dart';
 import 'package:myott/UI/Profile/screens/wishlistPage.dart';
 import 'package:myott/UI/Setting/Faq/faq_screen.dart';
+import 'package:myott/services/api_service.dart';
+import 'package:myott/services/auth_service.dart';
 
 import '../Profile/Components/SettingItem.dart';
 import 'Components/FooterWidget.dart';
@@ -118,7 +121,12 @@ class HelpAndSettingScreen extends StatelessWidget {
           Divider(color: Colors.grey[800]),
 
           // Logout
-          SettingItem(title: "Logout".tr, icon: Icons.logout, isLogout: true),
+          SettingItem(
+            onTap: (){
+              AuthController authcontroller=Get.find<AuthController>();
+              authcontroller.logout();
+            },
+              title: "Logout".tr, icon: Icons.logout, isLogout: true),
 
           FooterWidget(
             facebookUrl: "https://www.facebook.com/",

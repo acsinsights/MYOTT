@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:myott/Services/api_service.dart';
-import 'package:myott/Services/api_endpoints.dart';
+import 'package:myott/services/api_service.dart';
+import 'package:myott/services/api_endpoints.dart';
 import 'package:myott/UI/Genre/Model/movie_by_genre_model.dart';
 import '../../Model/Moviesmodel.dart';
 import '../Model/genre_model.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-import '../../../Services/payment_service.dart';
+import '../../../services/payment_service.dart';
 
 class WalletController extends GetxController{
   TextEditingController moneyController=TextEditingController();

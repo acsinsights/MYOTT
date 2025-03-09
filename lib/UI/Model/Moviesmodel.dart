@@ -1,33 +1,34 @@
-// To parse this JSON data, do
+// To parse this JSON data, do:
 //
 //     final moviesModel = moviesModelFromJson(jsonString);
 
 import 'dart:convert';
 
-List<MoviesModel> moviesModelFromJson(String str) => List<MoviesModel>.from(json.decode(str).map((x) => MoviesModel.fromJson(x)));
+MoviesModel moviesModelFromJson(String str) => MoviesModel.fromJson(json.decode(str));
 
-String moviesModelToJson(List<MoviesModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String moviesModelToJson(MoviesModel data) => json.encode(data.toJson());
 
 class MoviesModel {
-  int id;
-  String movieUploadType;
-  String movieUploadUrl;
-  dynamic movieUploadFiles;
-  String name;
-  String slug;
-  String posterImg;
-  String thumbnailImg;
-  int audioLanguage;
-  String maturity;
-  String trailerUrl;
-  String releaseYear;
-  String description;
-  DateTime? scheduleDate;
-  String? scheduleTime;
-  int status;
-  dynamic deletedAt;
-  DateTime createdAt;
-  DateTime updatedAt;
+  final int id;
+  final String movieUploadType;
+  final String movieUploadUrl;
+  final dynamic movieUploadFiles;
+  final String name;
+  final String slug;
+  final String posterImg;
+  final String thumbnailImg;
+  final int? audioLanguage; // Nullable
+  final String maturity;
+  final String trailerUrl;
+  final String releaseYear;
+  final String description;
+  final String? scheduleDate; // Nullable
+  final String? scheduleTime; // Nullable
+  final int status;
+  final String? deletedAt; // Nullable
+  final DateTime? createdAt; // Nullable
+  final DateTime? updatedAt; // Nullable
+  final List<String> directors;
 
   MoviesModel({
     required this.id,
@@ -38,39 +39,43 @@ class MoviesModel {
     required this.slug,
     required this.posterImg,
     required this.thumbnailImg,
-    required this.audioLanguage,
+    this.audioLanguage, // Nullable
     required this.maturity,
     required this.trailerUrl,
     required this.releaseYear,
     required this.description,
-    required this.scheduleDate,
-    required this.scheduleTime,
+    this.scheduleDate, // Nullable
+    this.scheduleTime, // Nullable
     required this.status,
-    required this.deletedAt,
-    required this.createdAt,
-    required this.updatedAt,
+    this.deletedAt, // Nullable
+    this.createdAt, // Nullable
+    this.updatedAt, // Nullable
+    required this.directors,
   });
 
   factory MoviesModel.fromJson(Map<String, dynamic> json) => MoviesModel(
-    id: json["id"],
-    movieUploadType: json["movie_upload_type"],
-    movieUploadUrl: json["movie_upload_url"],
+    id: json["id"] ?? 0, // Default value if null
+    movieUploadType: json["movie_upload_type"] ?? "",
+    movieUploadUrl: json["movie_upload_url"] ?? "",
     movieUploadFiles: json["movie_upload_files"],
-    name: json["name"],
-    slug: json["slug"],
-    posterImg: json["poster_img"],
-    thumbnailImg: json["thumbnail_img"],
-    audioLanguage: json["audio_language"],
-    maturity: json["maturity"],
-    trailerUrl: json["trailer_url"],
-    releaseYear: json["release_year"],
-    description: json["description"],
-    scheduleDate: json["schedule_date"] == null ? null : DateTime.parse(json["schedule_date"]),
-    scheduleTime: json["schedule_time"],
-    status: json["status"],
-    deletedAt: json["deleted_at"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
+    name: json["name"] ?? "",
+    slug: json["slug"] ?? "",
+    posterImg: json["poster_img"] ?? "",
+    thumbnailImg: json["thumbnail_img"] ?? "",
+    audioLanguage: json["audio_language"], // Nullable
+    maturity: json["maturity"] ?? "",
+    trailerUrl: json["trailer_url"] ?? "",
+    releaseYear: json["release_year"] ?? "",
+    description: json["description"] ?? "",
+    scheduleDate: json["schedule_date"], // Nullable
+    scheduleTime: json["schedule_time"], // Nullable
+    status: json["status"] ?? 0, // Default value
+    deletedAt: json["deleted_at"], // Nullable
+    createdAt: json["created_at"] != null ? DateTime.tryParse(json["created_at"]) : null,
+    updatedAt: json["updated_at"] != null ? DateTime.tryParse(json["updated_at"]) : null,
+    directors: json["directors"] != null
+        ? List<String>.from(json["directors"].map((x) => x.toString()))
+        : [], // Handle null case
   );
 
   Map<String, dynamic> toJson() => {
@@ -87,11 +92,12 @@ class MoviesModel {
     "trailer_url": trailerUrl,
     "release_year": releaseYear,
     "description": description,
-    "schedule_date": "${scheduleDate!.year.toString().padLeft(4, '0')}-${scheduleDate!.month.toString().padLeft(2, '0')}-${scheduleDate!.day.toString().padLeft(2, '0')}",
+    "schedule_date": scheduleDate,
     "schedule_time": scheduleTime,
     "status": status,
     "deleted_at": deletedAt,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+    "directors": List<dynamic>.from(directors.map((x) => x)),
   };
 }

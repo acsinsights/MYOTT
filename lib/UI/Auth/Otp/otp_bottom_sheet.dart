@@ -76,7 +76,7 @@ class OtpBottomSheet extends StatelessWidget {
               style: TextStyle(color: Colors.red, fontSize: 16),
             )
                 : GestureDetector(
-              onTap: () => authController.sendOtp( authController.mobileNumber.value.trim()), // ✅ Resend OTP
+              onTap: () => authController.sendOtp(), // ✅ Resend OTP
               child: RichText(
                 text: TextSpan(
                   children: [
