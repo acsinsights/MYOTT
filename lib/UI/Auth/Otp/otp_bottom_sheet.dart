@@ -103,6 +103,7 @@ class OtpBottomSheet extends StatelessWidget {
             SizedBox(height: 20),
 
             CustomButton(
+              width: double.infinity,
               text: "Verify OTP".tr,
 
               onPressed: () => authController.verifyOtp(),

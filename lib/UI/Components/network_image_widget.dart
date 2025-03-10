@@ -1,18 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:myott/UI/Components/ShimmerLoader.dart';
 
 class NetworkImageWidget extends StatelessWidget {
   final String imageUrl;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   final BoxFit fit;
   final String? errorAsset;
 
   const NetworkImageWidget({
     Key? key,
     required this.imageUrl,
-    required this.width,
-    required this.height,
+     this.width,
+     this.height,
     this.fit = BoxFit.cover,
     this.errorAsset,
   }) : super(key: key);
@@ -24,12 +25,15 @@ class NetworkImageWidget extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
+      placeholder: (context, url) => ShimmerLoader(), // Shimmer effect
       errorWidget: (context, url, error) => Image.asset(
-        errorAsset!,
+        errorAsset ?? 'assets/images/default_placeholder.png',
         width: width,
         height: height,
         fit: fit,
       ),
+      fadeInDuration: Duration(milliseconds: 500), // Fade-in effect
+      fadeOutDuration: Duration(milliseconds: 200),
     );
   }
 }

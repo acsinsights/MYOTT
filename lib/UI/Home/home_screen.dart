@@ -56,9 +56,9 @@ class HomeScreen extends StatelessWidget {
 
 
               SectionTitle(title: "Top10".tr),
-              Obx(()=> homeController.isLoading.value
-                  ?MovieShrimmerLoader()
-                  : MovieList(movies: homeController.topMovies)),
+              Obx(() => homeController.isLoading.value
+                  ? MovieShrimmerLoader()
+                  : MovieList(movies: homeController.topMovies.take(10).toList(), isTop10: true)),
 
               SectionTitle(title: "Actors".tr),
               ActorList(),
@@ -76,7 +76,10 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 10,),
 
               SectionTitle(title: "NewArrival".tr),
-              // MovieList(movies: movieController.trendingMovies ),
+              Obx(()=> homeController.isLoading.value
+                  ?MovieShrimmerLoader()
+                  : MovieList(movies: homeController.newArrivals ),
+              ),
 
               SectionTitle(title: "Genre".tr),
               GenreSelection(),

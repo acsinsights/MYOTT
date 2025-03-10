@@ -86,8 +86,9 @@ class EditProfileScreen extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 120,
-                  child: CustomButton(
-                    backgroundColor: Colors.black,
+                  child: CustomButton(              width: double.infinity,
+
+                      backgroundColor: Colors.black,
                       borderColor: Colors.white,
                       text: "Cancel",
                       onPressed: (){})
@@ -95,7 +96,8 @@ class EditProfileScreen extends StatelessWidget {
                 const SizedBox(width: 16.0),
                 SizedBox(
                   width: 160,
-                  child: CustomButton(text: "Save Update", onPressed: (){
+                  child: CustomButton(              width: double.infinity,
+                      text: "Save Update", onPressed: (){
 
                   }),
                 ),

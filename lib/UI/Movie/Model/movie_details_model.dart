@@ -48,6 +48,11 @@ class Movie {
   dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
+  List<Ctor> actors;
+  List<Ctor> directors;
+  List<dynamic> genres;
+  Subtitles subtitles;
+  DubbedLanguages dubbedLanguages;
 
   Movie({
     required this.id,
@@ -69,6 +74,11 @@ class Movie {
     required this.deletedAt,
     required this.createdAt,
     required this.updatedAt,
+    required this.actors,
+    required this.directors,
+    required this.genres,
+    required this.subtitles,
+    required this.dubbedLanguages,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) => Movie(
@@ -91,6 +101,11 @@ class Movie {
     deletedAt: json["deleted_at"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
+    actors: List<Ctor>.from(json["actors"].map((x) => Ctor.fromJson(x))),
+    directors: List<Ctor>.from(json["directors"].map((x) => Ctor.fromJson(x))),
+    genres: List<dynamic>.from(json["genres"].map((x) => x)),
+    subtitles: Subtitles.fromJson(json["subtitles"]),
+    dubbedLanguages: DubbedLanguages.fromJson(json["dubbed_languages"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -113,5 +128,70 @@ class Movie {
     "deleted_at": deletedAt,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
+    "actors": List<dynamic>.from(actors.map((x) => x.toJson())),
+    "directors": List<dynamic>.from(directors.map((x) => x.toJson())),
+    "genres": List<dynamic>.from(genres.map((x) => x)),
+    "subtitles": subtitles.toJson(),
+    "dubbed_languages": dubbedLanguages.toJson(),
+  };
+}
+
+class Ctor {
+  int id;
+  String name;
+  String image;
+
+  Ctor({
+    required this.id,
+    required this.name,
+    required this.image,
+  });
+
+  factory Ctor.fromJson(Map<String, dynamic> json) => Ctor(
+    id: json["id"],
+    name: json["name"],
+    image: json["image"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "image": image,
+  };
+}
+
+class DubbedLanguages {
+  String en;
+
+  DubbedLanguages({
+    required this.en,
+  });
+
+  factory DubbedLanguages.fromJson(Map<String, dynamic> json) => DubbedLanguages(
+    en: json["en"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "en": en,
+  };
+}
+
+class Subtitles {
+  String fr;
+  String en;
+
+  Subtitles({
+    required this.fr,
+    required this.en,
+  });
+
+  factory Subtitles.fromJson(Map<String, dynamic> json) => Subtitles(
+    fr: json["fr"],
+    en: json["en"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "fr": fr,
+    "en": en,
   };
 }

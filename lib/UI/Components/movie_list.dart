@@ -11,8 +11,23 @@ import 'ShimmerLoader.dart';
 
 class MovieList extends StatelessWidget {
   final List<MoviesModel> movies;
+  final bool isTop10;
 
-  MovieList({Key? key, required this.movies}) : super(key: key);
+  MovieList({Key? key, required this.movies, this.isTop10 = false}) : super(key: key);
+
+  final List<String> topRankImages = [
+    'assets/Icons/top_10_icon/ic_one.png',
+    'assets/Icons/top_10_icon/ic_two.png',
+    'assets/Icons/top_10_icon/ic_three.png',
+    'assets/Icons/top_10_icon/ic_four.png',
+    'assets/Icons/top_10_icon/ic_five.png',
+    'assets/Icons/top_10_icon/ic_six.png',
+    'assets/Icons/top_10_icon/ic_seven.png',
+    'assets/Icons/top_10_icon/ic_eight.png',
+    'assets/Icons/top_10_icon/ic_nine.png',
+    'assets/Icons/top_10_icon/ic_ten.png',
+
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -29,52 +44,66 @@ class MovieList extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 240, // Increased height to accommodate text
+      height: 240,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: movies.length,
         padding: const EdgeInsets.only(left: 16),
         itemBuilder: (context, index) {
           return GestureDetector(
-              onTap: () {
-                final movieId = movies[index].id;
-                Get.to(() => MovieDetailsPage(movieId: movieId),
-                    binding: BindingsBuilder(() {
-                      Get.put(MovieController(MoviesService(ApiService()))); // Ensure Controller is available
-                    }));
-              },
+            onTap: () {
+              final movieId = movies[index].id;
+              Get.to(() => MovieDetailsPage(movieId: movieId),
+                  binding: BindingsBuilder(() {
+                    Get.put(MovieController(MoviesService(ApiService())));
+                  }));
+            },
             child: Padding(
               padding: const EdgeInsets.only(right: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Stack(
                 children: [
-                  Container(
-                    width: 120,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: NetworkImage(movies[index].posterImg),
-                        fit: BoxFit.cover,
-                        onError: (exception, stackTrace) =>
-                            ShimmerLoader(height: 180, width: 120,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 120,
+                        height: 180,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: NetworkImage(movies[index].posterImg),
+                            fit: BoxFit.cover,
+                            onError: (exception, stackTrace) =>
+                                ShimmerLoader(height: 180, width: 120),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      SizedBox(
+                        width: 120,
+                        child: Text(
+                          movies[index].name,
+                          style: AppTextStyles.SubHeading2,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Show ranking image if isTop10 is true and within top 10 range
+                  if (isTop10 && index < topRankImages.length)
+                    Positioned(
+                      bottom: 60,
+                      right: 8,
+                      child: Image.asset(
+                        topRankImages[index], // Load corresponding ranking image
+                        width: 30,
+                        height: 60,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 6), // Increased spacing to avoid overflow
-
-                  // Ensure text fits properly within the container
-                  SizedBox(
-                    width: 120, // Match image width
-                    child: Text(
-                      movies[index].name,
-                      style: AppTextStyles.SubHeading2,
-                      textAlign: TextAlign.center, // Center the text
-                      maxLines: 2, // Allow wrapping into the second line
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                    ),
-                  ),
                 ],
               ),
             ),

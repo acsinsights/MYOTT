@@ -68,6 +68,7 @@ class LoginPage extends StatelessWidget {
                       SizedBox(height: 20.h),
 
                       CustomButton(
+                        width: double.infinity,
                         text: "Get OTP".tr,
                         onPressed: () async {
                           if (authController.isPhoneLogin.value) {
@@ -123,6 +124,7 @@ class LoginPage extends StatelessWidget {
 
                       /// **Toggle Login Mode Button (Email <-> Phone)**
                       Obx(() => CustomButton(
+                        width: double.infinity,
                         backgroundColor: Color(0xff191818),
                         text: authController.isPhoneLogin.value
                             ? "Login Using Email".tr

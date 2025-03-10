@@ -5,9 +5,9 @@ import '../Controller/video_controller.dart';
 
 class VideoPlayerWidget extends StatelessWidget {
   final String videoUrl;
-  final String thumbnailUrl;
+  final String? thumbnailUrl;
 
-  VideoPlayerWidget({required this.videoUrl, required this.thumbnailUrl});
+  VideoPlayerWidget({required this.videoUrl, this.thumbnailUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class VideoPlayerWidget extends StatelessWidget {
                   height: MediaQuery.of(context).size.width * (9 / 16),
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(thumbnailUrl),
+                      image: NetworkImage(thumbnailUrl!),
                       fit: BoxFit.cover,
                     ),
                   ),

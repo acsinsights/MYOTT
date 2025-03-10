@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
+import 'package:myott/UI/Movie/Movie_details_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:myott/services/Home_service.dart';
@@ -118,7 +119,8 @@ class MovieSlider extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                                 ),
                                 onPressed: () {
-                                  // homeController.setSelectedMovie(movie);
+                                  Get.to(MovieDetailsPage(movieId: movie.id));
+
                                 },
                                 icon: Icon(Icons.play_arrow, color: AppColors.white),
                                 label: Text(

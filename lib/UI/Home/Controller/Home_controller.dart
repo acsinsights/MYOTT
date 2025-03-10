@@ -12,6 +12,7 @@ class HomeController extends GetxController {
   var latestMovies = <MoviesModel>[].obs;
   var sliderMovies = <SliderModel>[].obs;
   var topMovies = <MoviesModel>[].obs;
+  var newArrivals = <MoviesModel>[].obs;
   var upcomingMovies = <MoviesModel>[].obs;
   var actors = <ActorsModel>[].obs;
   var audios = <AudioModel>[].obs;
@@ -46,15 +47,13 @@ class HomeController extends GetxController {
   Future<void> fetchHomeData() async {
     try {
       isLoading(true);
-      print("Fetching Home Data...");
 
       var homeData = await _homeService.fetchHomeData();
-      print("✅ API Response: $homeData");
 
       latestMovies.assignAll(homeData["latest"] ?? []);
-      print("🎬 Latest Movies Count: ${latestMovies.length}");
 
       topMovies.assignAll(homeData["top_movies"] ?? []);
+      newArrivals.assignAll(homeData["new_arrivals"] ?? []);
       upcomingMovies.assignAll(homeData["upcoming_movie"] ?? []);
       actors.assignAll(homeData["actors"] ?? []);
       sliderMovies.assignAll(homeData["slider"] ?? []);

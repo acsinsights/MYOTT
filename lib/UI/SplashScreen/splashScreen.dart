@@ -22,10 +22,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> checkTokenAndNavigate() async {
     if (await authController.isTokenExpired()) {
       print("🔴 Token expired, redirecting to login...");
-      Get.to(LoginPage());
+      Get.offAll(LoginPage());
     } else {
       print("✅ Token is still valid, navigating to Home.");
-      Get.to(MainScreen());  // Change as per your app's home screen
+      Get.offAll(MainScreen());  // Change as per your app's home screen
     }
   }
 

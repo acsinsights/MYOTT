@@ -15,6 +15,7 @@ class MovieController extends GetxController {
 
   var movieDetails =Rxn<MovieDetailsModel>();
   var isLoading = false.obs;
+  RxBool isExpanded = false.obs;
 
 
   @override
@@ -23,20 +24,19 @@ class MovieController extends GetxController {
     super.onInit();
   }
 
-  void fetchMovieDetails(int movieId)async{
+  void fetchMovieDetails(int movieId) async {
     try {
       isLoading(true);
 
-      var fetchMovieDetials=await moviesService.getMovieDetails(movieId);
-      movieDetails.value = fetchMovieDetials;
+      var fetchedMovieDetails = await moviesService.getMovieDetails(movieId);
 
 
-    } on Exception catch (e) {
-      // TODO
-    }finally{
+      movieDetails.value = fetchedMovieDetails;
+    } catch (e) {
+      print("Error fetching movie details: $e");
+    } finally {
       isLoading(false);
     }
-
   }
 
 }

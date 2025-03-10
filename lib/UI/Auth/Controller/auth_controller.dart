@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Auth/Login/login_page.dart';
+import 'package:myott/UI/Profile/screens/EditProfile/Edit_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../services/SecureStorageService.dart';
 import '../../Home/Main_screen.dart';
@@ -20,21 +21,17 @@ class AuthController extends GetxController {
   AuthController(this._authService);
 
   final OtpController otpController = Get.put(OtpController());
+  TextEditingController inputController = TextEditingController();
 
   var isPhoneLogin = false.obs;
-  TextEditingController inputController = TextEditingController();
   var isLoading = false.obs;
   var otpSent = false.obs;
   var isVerifying = false.obs; // ✅ Fix: Define isVerifying
   var errorMessage = "".obs;
   var mobileNumber = "".obs;
-  final RxBool isLoggedIn = false.obs;  // Track login status
-  final RxString accessToken = "".obs;  // Store token
 
   RxString emailAddress = "".obs;
 
-  var token = "".obs;
-  var otp = "".obs; // Store entered OTP
   var timerValue = 60.obs;
   Timer? _timer;
 
@@ -94,9 +91,8 @@ class AuthController extends GetxController {
 
     bool isEmail = GetUtils.isEmail(identifier);
 
-    // If it's a phone number, get the full number with country code
     if (!isEmail) {
-      identifier = mobileNumber.value.trim(); // This should already include country code
+      identifier = mobileNumber.value.trim();
       if (identifier.isEmpty || !identifier.startsWith("+")) {
         Get.snackbar("Error", "Please enter a valid phone number with country code",
             snackPosition: SnackPosition.TOP,
@@ -113,19 +109,21 @@ class AuthController extends GetxController {
       print("Sending OTP to: $identifier"); // ✅ Debugging log
 
       OtpResponseModel? response = await _authService.sendOtp(identifier: identifier);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool("creating_new_account", response!.creatingNewAccount);
+
 
       if (response != null) {
         otpSent.value = true;
 
-        // Store the identifier properly
         if (isEmail) {
           emailAddress.value = identifier;
         } else {
-          mobileNumber.value = identifier; // Ensure country code persists
+          mobileNumber.value = identifier;
         }
 
         startOtpTimer();
-        Get.bottomSheet(OtpBottomSheet()); // ✅ Open OTP Bottom Sheet
+        Get.bottomSheet(OtpBottomSheet());
       } else {
         errorMessage.value = "Failed to send OTP. Try again.";
         Get.snackbar("Error", errorMessage.value,
@@ -160,6 +158,7 @@ class AuthController extends GetxController {
 
     try {
       VerifyOtpResponse response = await _authService.verifyOtp(identifier: identifier, otp: otp);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
       if (response.token != null && response.token!.isNotEmpty) {
         await saveAuthToken(
@@ -167,11 +166,15 @@ class AuthController extends GetxController {
             response.tokenType ?? "Bearer",
             response.expiresAt ?? DateTime.now().toIso8601String() // ✅ Use expiresAt
         );
+        bool? isNewUser = prefs.getBool("creating_new_account");
+        print("✅ OTP Verified. New Account: $isNewUser");
 
 
-
-        Get.offAll(() => MainScreen());
-
+        if (isNewUser == true) {
+          Get.offAll(() => EditProfileScreen());
+        } else {
+          Get.offAll(() => MainScreen());
+        }
 
         Get.snackbar("Success", response.message,
             snackPosition: SnackPosition.TOP,
@@ -225,11 +228,10 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('auth_token'); // Remove token
-    await prefs.remove('token_expiry'); // Remove expiry
+    await prefs.clear();
     print("🔴 Logged out successfully");
 
-    Get.to(LoginPage());
+    Get.offAll(LoginPage());
   }
 
   Future<bool> isTokenExpired() async {

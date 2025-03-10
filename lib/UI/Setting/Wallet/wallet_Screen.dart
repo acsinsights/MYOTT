@@ -53,7 +53,8 @@ class WalletScreen extends StatelessWidget {
                       controller: walletController.moneyController,
                       hintText: "0.00"),
                   SizedBox(height: 20,),
-                  CustomButton(text: "Add Money to wallet",
+                  CustomButton(              width: double.infinity,
+                      text: "Add Money to wallet",
                       backgroundColor: Colors.black,
                       borderColor: Colors.red,
 

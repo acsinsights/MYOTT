@@ -28,7 +28,6 @@ class MoviesService {
     }
   }
 
-  /// 🔹 **Search Movies by Query**
   Future<List<MoviesModel>> searchMovies(String query) async {
     try {
       final response = await _apiService.get("${APIEndpoints.searchMovies}?query=$query");
