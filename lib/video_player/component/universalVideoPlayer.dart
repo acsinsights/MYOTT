@@ -26,6 +26,11 @@ class _UniversalVideoPlayerState extends State<UniversalVideoPlayer> {
     _setLandscapeMode();
   }
 
+  /// Check if the URL is a YouTube link
+  bool _isYouTubeUrl(String url) {
+    return url.contains("youtube.com") || url.contains("youtu.be");
+  }
+
   void _initializePlayer() {
     if (_isYouTubeUrl(widget.videoUrl)) {
       isYouTube = true;
@@ -35,34 +40,33 @@ class _UniversalVideoPlayerState extends State<UniversalVideoPlayer> {
         _youtubeController = YoutubePlayerController(
           initialVideoId: videoId,
           flags: YoutubePlayerFlags(
-            autoPlay: true, // AutoPlay enabled
-            mute: false,
+            autoPlay: true,
+            mute: false, // Allows user to control volume
           ),
         );
-
-        setState(() {}); // Ensure UI updates
       } else {
         print("⚠️ Invalid YouTube URL");
       }
     } else {
       _videoController = VideoPlayerController.network(widget.videoUrl)
         ..initialize().then((_) {
-          setState(() {}); // Ensure UI updates after initialization
-          _videoController!.play(); // Start playing automatically
+          setState(() {}); // Update UI after initialization
+          _videoController!.play();
         }).catchError((error) {
           print("⚠️ Video initialization error: $error");
         });
 
       _chewieController = ChewieController(
         videoPlayerController: _videoController!,
-        autoPlay: true,  // Ensure AutoPlay
+        autoPlay: true,
         looping: false,
-      );
+        allowMuting: true,
 
-      setState(() {}); // Ensure UI updates
+      );
     }
   }
 
+  /// Force the app into landscape mode
   void _setLandscapeMode() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
@@ -70,21 +74,23 @@ class _UniversalVideoPlayerState extends State<UniversalVideoPlayer> {
     ]);
   }
 
+  /// Reset orientation back to portrait when leaving
+  void _resetPortraitMode() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-// Reset orientation when leaving
+    _resetPortraitMode(); // Ensure portrait mode is restored
+
     _videoController?.dispose();
     _chewieController?.dispose();
     _youtubeController?.dispose();
-    super.dispose();
-  }
 
-  bool _isYouTubeUrl(String url) {
-    return url.contains("youtube.com") || url.contains("youtu.be");
+    super.dispose();
   }
 
   @override

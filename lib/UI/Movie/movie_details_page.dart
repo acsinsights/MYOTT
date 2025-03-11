@@ -132,7 +132,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                       width: 180.w,
                                       text: "Play Now",
                                       onPressed: () {
-                                        Get.to(UniversalVideoPlayer(videoUrl: movie.movie.trailerUrl)
+                                        Get.to(UniversalVideoPlayer(videoUrl: movie.movie.movieUploadUrl)
                                         );
 
                                       },
@@ -145,7 +145,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                     CustomButton(
                                       width: 180.w,
                                       text: "Trailer",
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Get.to(UniversalVideoPlayer(videoUrl: movie.movie.trailerUrl));
+
+
+                                            },
                                       backgroundColor: Colors.black,
                                       borderColor: Colors.white,
                                     )
