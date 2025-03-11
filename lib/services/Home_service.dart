@@ -31,6 +31,7 @@ class HomeService {
       return {
         "latest": data["latest"] != null ? (data["latest"] as List).map((e) => MoviesModel.fromJson(e)).toList() : [],
         "top_movies": data["top_movies"] != null ? (data["top_movies"] as List).map((e) => MoviesModel.fromJson(e)).toList() : [],
+        "new_arrivals": data["new_arrivals"] != null ? (data["new_arrivals"] as List).map((e) => MoviesModel.fromJson(e)).toList() : [],
         "upcoming_movie": data["upcoming_movie"] != null ? (data["upcoming_movie"] as List).map((e) => MoviesModel.fromJson(e)).toList() : [],
         "actors": data["actors"] != null ? (data["actors"] as List).map((e) => ActorsModel.fromJson(e)).toList() : [],
         "slider": data["slider"] != null ? (data["slider"] as List).map((e) => SliderModel.fromJson(e)).toList() : [],
