@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/Actors/ActorsDetailedScreen.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
-
 import '../../services/Home_service.dart';
 import '../../services/api_service.dart';
 import '../../UI/Components/MovieListShrimerLoad.dart';
@@ -20,7 +17,7 @@ class ActorList extends StatelessWidget {
     return SizedBox(
       height: 100,
       child: Obx(() {
-        if(homeController.actors.isEmpty){
+        if (homeController.actors.isEmpty) {
           return ActorShimmerLoader();
         }
         return ListView.builder(
@@ -28,28 +25,31 @@ class ActorList extends StatelessWidget {
           itemCount: homeController.actors.length,
           padding: const EdgeInsets.only(left: 16),
           itemBuilder: (context, index) {
-            var actor= homeController.actors[index];
-            return InkWell(
-              // onTap: ()=> Get.to(ActorsDetailedScreen()),
+            var actor = homeController.actors[index];
+            return GestureDetector(
+              onTap: () {
+                Get.to(() => ActorsDetailedScreen(
+                  artistDes: actor.description,
+                  artistName: actor.name,
+                  artistImage: actor.image,
+                ));
+              },
               child: Padding(
                 padding: const EdgeInsets.only(right: 12.0),
                 child: Column(
                   children: [
                     CircleAvatar(
                       radius: 35,
-                      backgroundImage: NetworkImage(actor.image), // Removed `const`
+                      backgroundImage: NetworkImage(actor.image),
                     ),
-                    Text(actor.name,style: AppTextStyles.SubHeading2,)
-
+                    Text(actor.name, style: AppTextStyles.SubHeading2),
                   ],
                 ),
               ),
             );
           },
         );
-      }
-
-      )
+      }),
     );
   }
 }

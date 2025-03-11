@@ -30,7 +30,7 @@ class ProfileController extends GetxController {
     final token= prefs.getString("access_token");
     bool success = await _profileService.createProfile(profile.value, token!);
     if (success) {
-      Get.snackbar("Success", "Profile created successfully");
+      Get.snackbar("Success", "Profile created successfully",backgroundColor: CupertinoColors.black,colorText: CupertinoColors.white);
     } else {
       Get.snackbar("Error", "Failed to create profile");
     }

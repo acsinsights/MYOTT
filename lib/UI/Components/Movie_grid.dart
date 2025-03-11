@@ -23,59 +23,63 @@ class MovieGrid extends StatelessWidget {
         foregroundColor: Colors.white,
         title: Text(title!, style: AppTextStyles.Headingb4,
       ),),
-      body: GridView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h), // Responsive Padding
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: ScreenUtil().screenWidth > 600 ? 4 : 3, // Adjusts for tablets
-          crossAxisSpacing: 12.w,
-          mainAxisSpacing: 12.h,
-          childAspectRatio: 0.6.h,
-        ),
-        itemCount: movies.length,
-        itemBuilder: (context, index) {
-          final movie = movies[index];
-      
-          return GestureDetector(
-            onTap: () {
-              final movieId = movie.id;
-              Get.to(() => MovieDetailsPage(movieId: movieId),
-                  binding: BindingsBuilder(() {
-                    Get.put(MovieController(MoviesService(ApiService())));
-                  }));
-            },
-            child: Column(
-              children: [
-                Container(
-                  height: 140.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    image: DecorationImage(
-                      image: NetworkImage(movie.posterImg), // Use NetworkImage if from API
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 6.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w),
-                  child: Text(
-                    movie.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
+      body: Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, // 3 columns like in the image
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              childAspectRatio: 0.5, // Adjust for movie poster aspect ratio
             ),
-          );
-        },
+            itemCount: movies.length,
+            itemBuilder: (context, index) {
+              final movie = movies[index];
+
+              return GestureDetector(
+                onTap: () {
+                  final movieId = movie.id;
+                  Get.to(() => MovieDetailsPage(movieId: movieId),
+                      binding: BindingsBuilder(() {
+                        Get.put(MovieController(MoviesService(ApiService())));
+                      }));
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      height: 150.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.r),
+                        image: DecorationImage(
+                          image: NetworkImage(movie.posterImg), // Use NetworkImage if from API
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: Text(
+                        movie.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
