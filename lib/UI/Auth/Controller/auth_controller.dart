@@ -170,11 +170,12 @@ class AuthController extends GetxController {
         print("✅ OTP Verified. New Account: $isNewUser");
 
 
-        if (isNewUser == true) {
-          Get.offAll(() => EditProfileScreen());
-        } else {
-          Get.offAll(() => MainScreen());
-        }
+        // if (isNewUser == true) {
+        //   Get.offAll(() => EditProfileScreen());
+        // } else {
+        //   Get.offAll(() => MainScreen());
+        // }
+        Get.offAll(MainScreen());
 
         Get.snackbar("Success", response.message,
             snackPosition: SnackPosition.TOP,

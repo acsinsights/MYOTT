@@ -19,14 +19,25 @@ class ApiService {
     }
   }
 
-  Future<Response?> post(String endpoint, {Map<String, dynamic>? data}) async {
+  Future<Response?> post(String endpoint, {Map<String, dynamic>? data, String? token}) async {
     try {
-      return await _dio.post(endpoint, data: data);
+      return await _dio.post(
+
+        endpoint,
+        data: data,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token", // Add Bearer Token
+            "Content-Type": "application/json", // Ensure JSON data
+          },
+        ),
+      );
     } on DioException catch (e) {
       _handleError(e);
       return null;
     }
   }
+
 
   void _handleError(DioException e) {
     print("API Error: ${e.response?.data ?? e.message}");

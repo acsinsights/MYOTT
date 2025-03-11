@@ -5,7 +5,7 @@ import '../../Core/Utils/app_text_styles.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final double width;
+  final double? width;
   final VoidCallback onPressed;
   final Color? backgroundColor;
   final BorderRadius? borderRadius;
@@ -17,7 +17,8 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     this.backgroundColor,
     this.borderRadius,
-    this.borderColor, required this.width,
+    this.borderColor,
+    this.width,
   }) : super(key: key);
 
   @override

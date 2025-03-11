@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Components/Movie_grid.dart';
+import 'package:myott/UI/Components/TvSeriesGrid.dart';
 import 'package:myott/services/tv_series_service.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
-import 'package:myott/UI/Home/Component/actor_list.dart';
+import 'package:myott/Actors/Components/actor_list.dart';
 import 'package:myott/UI/Components/movie_list.dart';
 import 'package:myott/UI/Components/section_title.dart';
 import 'package:myott/UI/Genre/components/Gnere_selection.dart';
@@ -39,7 +41,9 @@ class HomeScreen extends StatelessWidget {
               MovieSlider(),
               const SizedBox(height: 20),
 
-              SectionTitle(title: "latestRelease".tr),
+              SectionTitle(title: "latestRelease".tr,onTap: (){
+                Get.to(MovieGrid(movies: homeController.latestMovies,title: "latestRelease".tr,));
+              },),
               Obx(() {
                 print("🔄 UI Rebuilding... isLoading: ${homeController.isLoading.value}");
                 print("🎬 Latest Movies Count: ${homeController.latestMovies.length}");
@@ -55,14 +59,18 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 10),
 
 
-              SectionTitle(title: "Top10".tr),
+              SectionTitle(title: "Top10".tr,onTap: (){
+                Get.to(MovieGrid(movies: homeController.topMovies,title: "Top10".tr,));
+              },),
               Obx(() => homeController.isLoading.value
                   ? MovieShrimmerLoader()
                   : MovieList(movies: homeController.topMovies.take(10).toList(), isTop10: true)),
 
-              SectionTitle(title: "Actors".tr),
+              SectionTitle(title: "Actors".tr,showAll: false),
               ActorList(),
-              SectionTitle(title: "TvSeries".tr),
+              SectionTitle(title: "TvSeries".tr,onTap: (){
+                Get.to(TvSeriesGird(tvSeries: tvSeriesController.tvSeries,title: "TvSeries".tr,));
+              }),
               Obx(()=> homeController.isLoading.value
                   ?MovieShrimmerLoader()
                   : TvSeriesMovieList(tvSeries: tvSeriesController.tvSeries)),
@@ -71,17 +79,19 @@ class HomeScreen extends StatelessWidget {
 
 
 
-              SectionTitle(title: "Languages".tr),
+              SectionTitle(title: "Languages".tr,showAll: false,),
               AudioSelection(),
               SizedBox(height: 10,),
 
-              SectionTitle(title: "NewArrival".tr),
+              SectionTitle(title: "NewArrival".tr,onTap: (){
+                Get.to(MovieGrid(movies: homeController.newArrivals,title: "NewArrival".tr,));
+              },),
               Obx(()=> homeController.isLoading.value
                   ?MovieShrimmerLoader()
                   : MovieList(movies: homeController.newArrivals ),
               ),
 
-              SectionTitle(title: "Genre".tr),
+              SectionTitle(title: "Genre".tr,showAll: false,),
               GenreSelection(),
               SizedBox(height: 20,),
               ComingSoonWidget(),

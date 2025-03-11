@@ -14,6 +14,7 @@ import 'package:myott/UI/Setting/Faq/faq_screen.dart';
 import 'package:myott/services/api_service.dart';
 import 'package:myott/services/auth_service.dart';
 
+import '../Profile/Components/CompleteProfileScreen.dart';
 import '../Profile/Components/SettingItem.dart';
 import 'Components/FooterWidget.dart';
 import 'Pages/Components/PrivacyPolicy.dart';
@@ -107,6 +108,7 @@ class HelpAndSettingScreen extends StatelessWidget {
               title: "Refund".tr,
               icon: Icons.receipt_long_outlined),
           SettingItem(
+            // onTap: ()=> Get.to(ComplateProfileScreen()),
               title: "Deletion".tr, icon: Icons.delete_outline),
           Divider(color: Colors.grey[800]),
 

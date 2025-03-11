@@ -1,70 +1,72 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:myott/services/Setting_service.dart';
-import 'package:myott/UI/Movie/Controller/movie_controller.dart';
-import 'package:myott/UI/Movie/Model/movie_model.dart';
-import 'package:myott/UI/Profile/screens/SubscriptionPackage/Model/PackageModel.dart';
+import 'package:myott/services/ProfileService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Model/ProfileModel.dart';
 
 class ProfileController extends GetxController {
-  final SettingService _settingService;
-  ProfileController(this._settingService);
-  var packageList = <PackageModel>[].obs;
-  var isLoading = false.obs;
+  final ProfileService _profileService;
 
-  // User details
-  var userName = "John Doe".obs;
-  var userEmail = "jhondoe123@gmail.com".obs;
-  var userAvatar = "assets/images/actor1.png".obs;
-
-  // Subscription details
-  var subscriptionPlan = "Ultimate Plan".obs;
-  var subscriptionExpiry = "03 May, 2025".obs;
-
-  // Profiles list
-  var profiles = <Map<String, String>>[
-    {"name": "John Doe", "initials": "JO"},
-    {"name": "Jane Doe", "initials": "JD"},
-  ].obs;
-
-
+  ProfileController(this._profileService);
+  final nameController=TextEditingController();
+  final emailController=TextEditingController();
+  final phoneController=TextEditingController();
+  final addressController=TextEditingController();
+  final oldPasswordController=TextEditingController();
+  final newPasswordController=TextEditingController();
   @override
   void onInit() {
-    super.onInit();
-    fetchPackages();
+    // TODO: implement onInit
+    fetchProfile();
   }
 
+ 
+  var isLoading = false.obs;
+  var profile = ProfileModel(name: '', email: '', mobile: '').obs; // Default empty values
 
-
-  // Movies list (Fetched from MovieController)
-  final movieController = Get.find<MovieController>(); // Get MovieController
-  RxList<MovieModel> popularMovies = <MovieModel>[].obs;
-
-  // void fetchPopularMovies() {
-  //   // Fetch movies directly from MovieController
-  //   popularMovies.assignAll(
-  //     movieController.movies.where((movie) =>
-  //     movie.imdbRating != null && movie.imdbRating > 8).toList(),
-  //   );
-  //
-  //   // Listen for future changes
-  //   ever(movieController.movies, (_) {
-  //     popularMovies.assignAll(
-  //       movieController.movies.where((movie) =>
-  //       movie.imdbRating != null && movie.imdbRating > 8).toList(),
-  //     );
-  //   });
-  // }
-  Future<void> fetchPackages() async {
-    try {
-      isLoading(true);
-      final data = await _settingService.fetchPackages();
-      packageList.assignAll(data);
-    } catch (e) {
-
+  Future<void> saveProfile() async {
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    final token= prefs.getString("access_token");
+    bool success = await _profileService.createProfile(profile.value, token!);
+    if (success) {
+      Get.snackbar("Success", "Profile created successfully");
+    } else {
+      Get.snackbar("Error", "Failed to create profile");
     }
   }
 
+  // Fetch Profile
+  Future<void> fetchProfile() async {
+    try {
+      isLoading.value = true;
+      final fetchedProfile = await _profileService.getProfile();
+      if (fetchedProfile != null) {
+        profile.value = fetchedProfile;
+      }
+    } catch (e) {
+      print("Error fetching profile: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
+  // Update Profile
+  Future<void> updateProfile() async {
+    try {
+      isLoading.value = true;
+      SharedPreferences prefs=await SharedPreferences.getInstance();
+      final token= prefs.getString("access_token");
+      bool success = await _profileService.updateProfile(profile.value,token!);
+      if (success) {
+        print("Profile updated successfully");
+      } else {
+        print("Profile update failed");
+      }
+    } catch (e) {
+      print("Error updating profile: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }
-
-
-

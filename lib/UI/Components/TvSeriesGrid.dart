@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
-import 'package:myott/services/MovieService.dart';
+import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
+import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import 'package:myott/services/api_service.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/movie_details_page.dart';
-import '../Model/Moviesmodel.dart';
 
-class MovieGrid extends StatelessWidget {
-  final List<MoviesModel> movies;
+class TvSeriesGird extends StatelessWidget {
+  final List<TvSeriesModel> tvSeries;
   final String? title;
 
-  const MovieGrid({Key? key, required this.movies, this.title}) : super(key: key);
+  const TvSeriesGird({Key? key, required this.tvSeries, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class MovieGrid extends StatelessWidget {
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         title: Text(title!, style: AppTextStyles.Headingb4,
-      ),),
+        ),),
       body: GridView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
@@ -33,17 +33,14 @@ class MovieGrid extends StatelessWidget {
           mainAxisSpacing: 12.h,
           childAspectRatio: 0.6.h,
         ),
-        itemCount: movies.length,
+        itemCount: tvSeries.length,
         itemBuilder: (context, index) {
-          final movie = movies[index];
-      
+          final tvseries = tvSeries[index];
+
           return GestureDetector(
             onTap: () {
-              final movieId = movie.id;
-              Get.to(() => MovieDetailsPage(movieId: movieId),
-                  binding: BindingsBuilder(() {
-                    Get.put(MovieController(MoviesService(ApiService())));
-                  }));
+              final tvseriesId = tvseries.id;
+              Get.to(() => TvSeriesDetailsPage(seriesId: tvseriesId));
             },
             child: Column(
               children: [
@@ -52,7 +49,7 @@ class MovieGrid extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.r),
                     image: DecorationImage(
-                      image: NetworkImage(movie.posterImg), // Use NetworkImage if from API
+                      image: NetworkImage(tvseries.thumbnailImg), // Use NetworkImage if from API
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -61,7 +58,7 @@ class MovieGrid extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Text(
-                    movie.name,
+                    tvseries.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,

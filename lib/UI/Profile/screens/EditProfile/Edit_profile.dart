@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Components/custom_button.dart';
+import 'package:myott/UI/Profile/Controller/ProfileController.dart';
+import 'package:myott/services/Setting_service.dart';
 
+import '../../../../services/ProfileService.dart';
+import '../../../../services/api_service.dart';
 import '../../../Components/custom_text_field.dart';
 import 'Component/Profilepic.dart';
 import 'Component/UserInfoEditField.dart';
@@ -11,101 +17,93 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController profileController = Get.put(ProfileController(ProfileService(ApiService())));
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-
         centerTitle: false,
         elevation: 0,
         backgroundColor: const Color(0xFF000000),
         foregroundColor: Colors.white,
         title: const Text("Edit Profile"),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            ProfilePic(
-              image: 'https://i.postimg.cc/cCsYDjvj/user-2.png',
-              imageUploadBtnPress: () {},
-            ),
-            const Divider(),
-            Form(
-              child: Column(
-                children: [
-                  UserInfoEditField(
-                    text: "Name",
-                    child: CustomTextFieldWithNoBg(
-                      initialValue: "Annette Black",
-                      hintText: "Enter your name",
-                    ),
+      body: Obx(() {
+        if (profileController.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-                  ),
-                  UserInfoEditField(
-                    text: "Email",
-                    child: CustomTextFieldWithNoBg(
-                      initialValue: "annette@gmail.com",
-                      hintText: "Enter your email",
-                    )
-                  ),
-                  UserInfoEditField(
-                    text: "Phone",
-                    child: CustomTextFieldWithNoBg(
-                      initialValue: "7887317651",
-                      hintText: "Enter your Phone No.",
-                    ),
-                  ),
-                  UserInfoEditField(
-                    text: "Address",
-                    child: CustomTextFieldWithNoBg(
-                      initialValue: "Mumbai India",
-                      hintText: "Enter Your Address",
-                    ),
-                  ),
-                  UserInfoEditField(
-                    text: "Old Password",
-                    child: CustomTextFieldWithNoBg(
-                      initialValue: "asdasd",
-                      obscureText: true,
-                      hintText: "Enter Your Old Password",
-                    ),
-                  ),
-                  UserInfoEditField(
-                    text: "New Password",
-                    child: CustomTextFieldWithNoBg(
-                      hintText: "Enter Your new Pass",
-                      obscureText: true,
-                    )
-                  ),
-                ],
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              ProfilePic(
+                image: 'https://i.postimg.cc/cCsYDjvj/user-2.png',
+                imageUploadBtnPress: () {},
               ),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  width: 120,
-                  child: CustomButton(              width: double.infinity,
+              const Divider(),
+              Form(
+                child: Column(
+                  children: [
+                    UserInfoEditField(
+                      text: "Name",
+                      child: CustomTextFieldWithNoBg(
+                        controller: profileController.nameController,
+                        hintText: "Enter your name",
+                      ),
+                    ),
+                    UserInfoEditField(
+                      text: "Email",
+                      child: CustomTextFieldWithNoBg(
+                        controller: profileController.emailController,
+                        hintText: "Enter your email",
+                      ),
+                    ),
+                    UserInfoEditField(
+                      text: "Phone",
+                      child: CustomTextFieldWithNoBg(
+                        controller: profileController.phoneController,
+                        hintText: "Enter your Phone No.",
+                      ),
+                    ),
+                    UserInfoEditField(
+                      text: "Address",
+                      child: CustomTextFieldWithNoBg(
+                        controller: profileController.addressController,
+                        hintText: "Enter Your Address",
+                      ),
+                    ),
 
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: CustomButton(
                       backgroundColor: Colors.black,
                       borderColor: Colors.white,
                       text: "Cancel",
-                      onPressed: (){})
-                ),
-                const SizedBox(width: 16.0),
-                SizedBox(
-                  width: 160,
-                  child: CustomButton(              width: double.infinity,
-                      text: "Save Update", onPressed: (){
-
-                  }),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+                      onPressed: () => Get.back(),
+                    ),
+                  ),
+                  const SizedBox(width: 16.0),
+                  SizedBox(
+                    width: 160,
+                    child: CustomButton(
+                      text: "Save Update",
+                      onPressed: () => profileController.saveProfile(),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

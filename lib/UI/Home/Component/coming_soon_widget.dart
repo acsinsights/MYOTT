@@ -19,10 +19,11 @@ class ComingSoonWidget extends StatelessWidget {
     return Obx(() {
       if (homeController.upcomingMovies.isEmpty) {
         return Center(
-          child: Text(
-            "No upcoming movies available.",
-            style: TextStyle(color: AppColors.white),
-          ),
+          // child: Text(
+          //   "No upcoming movies available.",
+          //   style: TextStyle(color: AppColors.white),
+          // ),
+          child: SizedBox(height: 0.5,),
         );
       }
 

@@ -10,7 +10,7 @@ import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Components/custom_button.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Components/section_title.dart';
-import 'package:myott/UI/Home/Component/actor_list.dart';
+import 'package:myott/Actors/Components/actor_list.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/Movie_details_page.dart';
 import 'package:myott/services/MovieService.dart';

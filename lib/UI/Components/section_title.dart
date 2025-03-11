@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../../Core/Utils/app_text_styles.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
-  const SectionTitle({Key? key, required this.title}) : super(key: key);
+  final GestureTapCallback? onTap;
+  final bool showAll; // New parameter with default value
+
+  const SectionTitle({
+    Key? key,
+    required this.title,
+    this.onTap,
+    this.showAll = true, // Default value set to true
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +25,14 @@ class SectionTitle extends StatelessWidget {
             title,
             style: AppTextStyles.SubHeadingb1,
           ),
-          Text(
-            "Showall".tr,
-            style: AppTextStyles.SubHeadingRed2,
-          ),
+          if (showAll) // Conditionally show "Showall"
+            InkWell(
+              onTap: onTap,
+              child: Text(
+                "Showall".tr,
+                style: AppTextStyles.SubHeadingRed2,
+              ),
+            ),
         ],
       ),
     );
