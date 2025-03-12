@@ -5,12 +5,14 @@ import 'package:myott/UI/Model/Moviesmodel.dart';
 import '../../../services/Home_service.dart';
 import '../Model/ActorsModel.dart';
 import '../../Genre/Model/genre_model.dart';
+import '../Model/HomePageModel.dart';
 
 class HomeController extends GetxController {
   final HomeService _homeService; // ✅ Dependency Injection
 
+  var homePageData = Rxn<HomePageModel>();
   var latestMovies = <MoviesModel>[].obs;
-  var sliderMovies = <SliderModel>[].obs;
+  var sliderMovies = <SliderItemModel>[].obs;
   var topMovies = <MoviesModel>[].obs;
   var newArrivals = <MoviesModel>[].obs;
   var upcomingMovies = <MoviesModel>[].obs;
@@ -41,7 +43,27 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     fetchHomeData();
+    fetchHomePageData();
   }
+  Future<void> fetchHomePageData() async {
+    try {
+      isLoading(true);
+
+      final HomePageModel? data = await _homeService.fetchHomePageData();
+
+      if (data != null) {
+        homePageData.value = data;
+      } else {
+        print("No data received from API");
+      }
+    } catch (e) {
+      print("Error fetching HomePage data: $e");
+    } finally {
+      isLoading(false);
+    }
+  }
+
+
 
   /// **✅ Fetch Home Data (Movies, Actors, Languages)**
   Future<void> fetchHomeData() async {

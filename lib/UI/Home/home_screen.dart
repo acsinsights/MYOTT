@@ -41,18 +41,23 @@ class HomeScreen extends StatelessWidget {
               MovieSlider(),
               const SizedBox(height: 20),
 
-              SectionTitle(title: "latestRelease".tr,onTap: (){
-                Get.to(MovieGrid(movies: homeController.latestMovies,title: "latestRelease".tr,));
-              },),
-              Obx(() {
-                print("🔄 UI Rebuilding... isLoading: ${homeController.isLoading.value}");
-                print("🎬 Latest Movies Count: ${homeController.latestMovies.length}");
+              SectionTitle(
+                title: "latestRelease".tr,
+                onTap: () {
+                  Get.to(
+                    MovieGrid(
+                      movies: homeController.homePageData.value!.latest, // Correct way to pass list
+                      title: "latestRelease".tr,
+                    ),
+                  );
+                },
+              ),
 
+              Obx(() {
                 if (homeController.isLoading.value) {
                   return MovieShrimmerLoader();
                 }
-
-                return MovieList(movies: homeController.latestMovies);
+                return MovieList(movies: homeController.homePageData.value!.latest);
               }),
 
 
@@ -60,14 +65,16 @@ class HomeScreen extends StatelessWidget {
 
 
               SectionTitle(title: "Top10".tr,onTap: (){
-                Get.to(MovieGrid(movies: homeController.topMovies,title: "Top10".tr,));
+                Get.to(MovieGrid(movies: homeController.homePageData.value!.top10,title: "Top10".tr,));
               },),
               Obx(() => homeController.isLoading.value
                   ? MovieShrimmerLoader()
-                  : MovieList(movies: homeController.topMovies.take(10).toList(), isTop10: true)),
+                  : MovieList(movies: homeController.homePageData.value!.top10.take(10).toList(), isTop10: true)),
 
               SectionTitle(title: "Actors".tr,showAll: false),
               ActorList(),
+
+
               SectionTitle(title: "TvSeries".tr,onTap: (){
                 Get.to(TvSeriesGird(tvSeries: tvSeriesController.tvSeries,title: "TvSeries".tr,));
               }),
@@ -84,11 +91,11 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 10,),
 
               SectionTitle(title: "NewArrival".tr,onTap: (){
-                Get.to(MovieGrid(movies: homeController.newArrivals,title: "NewArrival".tr,));
+                Get.to(MovieGrid(movies: homeController.homePageData.value!.newArrival,title: "NewArrival".tr,));
               },),
               Obx(()=> homeController.isLoading.value
                   ?MovieShrimmerLoader()
-                  : MovieList(movies: homeController.newArrivals ),
+                  : MovieList(movies: homeController.homePageData.value!.newArrival ),
               ),
 
               SectionTitle(title: "Genre".tr,showAll: false,),

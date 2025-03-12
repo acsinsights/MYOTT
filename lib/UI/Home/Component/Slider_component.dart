@@ -11,6 +11,7 @@ import 'package:myott/services/api_service.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
 import '../../../Core/Utils/app_colors.dart';
 import '../../../Core/Utils/app_text_styles.dart';
+import '../../TvSeries/TvSeries_details_page.dart';
 import '../Controller/MovieSliderController.dart';
 
 class MovieSlider extends StatelessWidget {
@@ -21,28 +22,26 @@ class MovieSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Movie Carousel Slider
         SizedBox(
-          height: 400.h, // Responsive height
+          height: 400.h,
           child: Obx(() {
-            if (homeController.sliderMovies.isEmpty) {
+            if (homeController.homePageData.value!.slider.isEmpty) {
               return ShimmerLoader(
                 height: 400.h,
-              ); // Show loader while fetching
+              );
             }
 
             return CarouselSlider.builder(
-              itemCount: homeController.sliderMovies.length,
+              itemCount: homeController.homePageData.value!.slider.length,
               itemBuilder: (context, index, realIndex) {
-                var movie = homeController.sliderMovies[index];
+                var movie = homeController.homePageData.value!.slider[index];
 
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w), // Responsive padding
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12.r), // Responsive border radius
+                    borderRadius: BorderRadius.circular(12.r),
                     child: Stack(
                       children: [
-                        // Background Image
                         Image.network(
 
                           movie.content.posterImg.toString(),
@@ -55,15 +54,8 @@ class MovieSlider extends StatelessWidget {
                               height: 400.h,
                             );
                           },
-                          errorBuilder: (context, error, stackTrace) => Image.asset(
-                            "assets/images/movies/SliderMovies/movie-1.png", // Local placeholder image
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
                         ),
 
-                        // Dark Gradient Overlay
                         Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -84,9 +76,9 @@ class MovieSlider extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(movie.content.name, style: AppTextStyles.Headingb),
+                              Text(movie.content.name, style: AppTextStyles.Headingb,overflow: TextOverflow.ellipsis,),
                               const SizedBox(height: 5),
-                              Text(movie.content.description, style: AppTextStyles.SubHeading3),
+                              Text(movie.content.description.toString(), style: AppTextStyles.SubHeading3),
                             ],
                           ),
                         ),
@@ -104,7 +96,6 @@ class MovieSlider extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                                 ),
                                 onPressed: () {
-                                  // Logic to add to watch later
                                 },
                                 child: Text(
                                   "Watch Later",
@@ -119,8 +110,15 @@ class MovieSlider extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                                 ),
                                 onPressed: () {
-                                  Get.to(MovieDetailsPage(movieId: movie.id));
+                                  final content = homeController.homePageData.value!.slider[index].content;
 
+                                  if (content.type == 'movie') {
+                                    Get.to(MovieDetailsPage(movieId: content.id));
+                                  } else if (content.type == 'tvseries') {
+                                    Get.to(TvSeriesDetailsPage(seriesId: content.id));
+                                  } else {
+                                    Get.snackbar("Error", "Unknown content type");
+                                  }
                                 },
                                 icon: Icon(Icons.play_arrow, color: AppColors.white),
                                 label: Text(

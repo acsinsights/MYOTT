@@ -13,7 +13,6 @@ class ProfileModel {
      this.id,
     required this.name,
     required this.email,
-
     required this.mobile,
 
   });

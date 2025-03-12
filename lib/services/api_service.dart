@@ -38,6 +38,26 @@ class ApiService {
     }
   }
 
+  Future<Response?> putRequest(String endpoint, Map<String, dynamic> data) async {
+    try {
+      Response response = await _dio.put(endpoint, data: data);
+      return response;
+    } catch (e) {
+      print('PUT Request Error: $e');
+      return null;
+    }
+  }
+
+  Future<Response?> deleteRequest(String endpoint) async {
+    try {
+      Response response = await _dio.delete(endpoint);
+      return response;
+    } catch (e) {
+      print('DELETE Request Error: $e');
+      return null;
+    }
+  }
+
 
   void _handleError(DioException e) {
     print("API Error: ${e.response?.data ?? e.message}");
