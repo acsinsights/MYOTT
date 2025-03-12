@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
+import 'package:myott/UI/Home/Model/ActorsModel.dart';
 
 class ActorsDetailedScreen extends StatelessWidget {
-  final String artistName;
-  final String artistImage;
-  final String artistDes;
-
-  const ActorsDetailedScreen({Key? key, required this.artistName, required this.artistImage, required this.artistDes}) : super(key: key);
+  final ActorsModel actors;
+  const ActorsDetailedScreen({Key? key,  required this.actors}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +22,7 @@ class ActorsDetailedScreen extends StatelessWidget {
                   height: 300,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(artistImage), // Use NetworkImage for dynamic data
+                      image: NetworkImage(actors.image), // Use NetworkImage for dynamic data
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -44,7 +42,7 @@ class ActorsDetailedScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                artistName,
+                actors.name,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -57,7 +55,7 @@ class ActorsDetailedScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
-                child: Text(artistDes,style: AppTextStyles.SubHeading2,),
+                child: Text(actors.description,style: AppTextStyles.SubHeading2,),
               ),
             )
 

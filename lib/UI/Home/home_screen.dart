@@ -52,14 +52,12 @@ class HomeScreen extends StatelessWidget {
                   );
                 },
               ),
-
               Obx(() {
                 if (homeController.isLoading.value) {
                   return MovieShrimmerLoader();
                 }
                 return MovieList(movies: homeController.homePageData.value!.latest);
               }),
-
 
               SizedBox(height: 10),
 

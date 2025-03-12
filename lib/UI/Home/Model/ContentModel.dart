@@ -31,7 +31,7 @@ class   ContentModel {
       slug: json['slug'] ?? '',
       description: json['description'],
       posterImg: json['poster_img'] ?? '',
-      thumbnailImg: json['thumbnail_img'],
+      thumbnailImg: json['thumbnail_img'] ?? '',
       trailerUrl: json['trailer_url'],
       movieUploadUrl: json['movie_upload_url'],
       releaseYear: json['release_year'],

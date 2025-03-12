@@ -39,10 +39,11 @@ class GenreSelection extends StatelessWidget {
         height: 60,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: homeController.genre.length,
+          itemCount: homeController.homePageData.value!.genre.length,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           itemBuilder: (context, index) {
-            GenreModel genre = homeController.genre[index];
+            GenreModel genre = homeController.homePageData.value!.genre[index];
+            print(genre.name);
 
             return GestureDetector(
               onTap: () => genreController.selectGenre(genre),
@@ -52,7 +53,7 @@ class GenreSelection extends StatelessWidget {
                   width: 140,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: Color(genre.color ?? 0xFF3B3B98).withOpacity(0.7), // ✅ Provide default color if null
+                    color: genre.color!.withOpacity(0.7), // ✅ Provide default color if null
                     borderRadius: BorderRadius.circular(12),
 
                   ),

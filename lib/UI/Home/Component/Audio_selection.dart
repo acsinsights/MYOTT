@@ -39,10 +39,10 @@ class AudioSelection extends StatelessWidget {
         height: 60,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: homeController.audios.length,
+          itemCount: homeController.homePageData.value!.audios.length,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           itemBuilder: (context, index) {
-            var audio = homeController.audios[index]; // Get audiouage item
+            var audio = homeController.homePageData.value!.audios[index];
 
             return GestureDetector(
               // onTap: () => homeController.selectaudiouage(audio),
@@ -54,7 +54,7 @@ class AudioSelection extends StatelessWidget {
                     width: 140,
                     height: 100,
                     decoration: BoxDecoration(
-                       color: Color(audio.color ?? 0xFF3B3B98).withOpacity(0.7), // ✅ Provide default color if null
+                       color: audio.color?.withOpacity(0.7), // ✅ Provide default color if null
                       borderRadius: BorderRadius.circular(12),
 
                     ),

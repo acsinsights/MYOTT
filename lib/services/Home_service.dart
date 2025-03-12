@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:myott/UI/Home/Model/SliderModel.dart';
+import 'package:myott/UI/Home/Model/SliderItemModel.dart';
 import 'package:myott/UI/Genre/Model/genre_model.dart';
 import '../UI/Home/Model/ActorsModel.dart';
 import '../UI/Home/Model/HomePageModel.dart';

@@ -153,7 +153,7 @@ class MovieSlider extends StatelessWidget {
         // Dot Indicator
         Obx(() {
           int currentIndex = movieSliderController.currentIndex.value;
-          int totalSlides = homeController.sliderMovies.length;
+          int totalSlides = homeController.homePageData.value!.slider.length;
 
           // Ensure currentIndex is within range
           if (currentIndex.isNaN || currentIndex.isInfinite || currentIndex < 0) {
