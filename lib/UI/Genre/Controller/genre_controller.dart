@@ -1,39 +1,34 @@
 import 'package:get/get.dart';
+import 'package:myott/services/GenreService.dart';
 import 'package:myott/services/api_service.dart';
 import 'package:myott/services/api_endpoints.dart';
-import 'package:myott/UI/Genre/Model/movie_by_genre_model.dart';
 import '../../Model/Moviesmodel.dart';
+import '../Model/GenreMandTModel.dart';
 import '../Model/genre_model.dart';
 import '../movies_by_genre.dart';
 
 class GenreController extends GetxController {
-  final ApiService apiService = Get.find<ApiService>(); // Use Get.find() for dependency injection
-
+  final GenreService genreService = Get.put(GenreService(ApiService()));
   var selectedGenre = Rxn<GenreModel>();
-  var moviesByGenre = <MoviesByGenreModel>[].obs;
+  var mAndtGenre = Rxn<GenreMandTModel>();
   var isLoading = false.obs;
 
   void selectGenre(GenreModel genre) {
     if (selectedGenre.value?.id != genre.id) {
-      // Only fetch if the selected genre is different
       selectedGenre.value = genre;
       fetchMoviesByGenre(genre.id);
     }
     Get.to(() => MoviesByGenre(), arguments: genre);
   }
 
-  Future<void> fetchMoviesByGenre(int genreId) async {
+  void fetchMoviesByGenre(int genreId) async {
     try {
       isLoading.value = true;
-      final response = await apiService.get(APIEndpoints.moviesByGenre(genreId));
-
-      if (response?.statusCode == 200 && response?.data != null) {
-        final List<dynamic> data = response?.data;
-        moviesByGenre.assignAll(data.map((e) => MoviesByGenreModel.fromJson(e)).toList());
-        print(data.length);
-        print(data.first);
-      } else {
-        print("Error: ${response?.statusCode} - ${response?.statusMessage}");
+      var data = await genreService.fetchMoviesByGenre(genreId);
+      if (data != null) {
+        mAndtGenre.value = data;
+      }else {
+        print("Failed to fetch genre movies");
       }
     } catch (e, stacktrace) {
       print("Error fetching movies by genre: $e");

@@ -48,6 +48,9 @@ class MovieSlider extends StatelessWidget {
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
+                          errorBuilder: (context,child, error){
+                            return Icon(Icons.image_not_supported,color: Colors.white,);
+                          },
                           loadingBuilder: (context, child, progress) {
                             if (progress == null) return child;
                             return ShimmerLoader(
@@ -73,13 +76,16 @@ class MovieSlider extends StatelessWidget {
                         Positioned(
                           left: 16.w,
                           bottom: 80.h,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(movie.content.name, style: AppTextStyles.Headingb,overflow: TextOverflow.ellipsis,),
-                              const SizedBox(height: 5),
-                              Text(movie.content.description.toString(), style: AppTextStyles.SubHeading3),
-                            ],
+                          child: Container(
+                            width: 300.w,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(movie.content.name, style: AppTextStyles.Headingb,overflow: TextOverflow.ellipsis,),
+                                const SizedBox(height: 5),
+                                Text(movie.content.description.toString(), style: AppTextStyles.SubHeading3),
+                              ],
+                            ),
                           ),
                         ),
 

@@ -2,8 +2,6 @@
 //
 //     final GenreModel = GenreModelFromJson(jsonString);
 
-import 'dart:convert';
-import 'dart:ui';
 
 
 
