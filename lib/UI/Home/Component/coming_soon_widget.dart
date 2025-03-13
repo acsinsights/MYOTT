@@ -17,7 +17,7 @@ class ComingSoonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (homeController.homePageData.value!.upcomingMovies.isEmpty) {
+      if (homeController.isLoading.value || homeController.homePageData.value!.upcomingMovies.isEmpty) {
         return Center(
           // child: Text(
           //   "No upcoming movies available.",

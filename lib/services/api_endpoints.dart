@@ -9,6 +9,9 @@ class APIEndpoints {
     static String tvSeriesDetails(int seriesId) =>
       "tvseries/$seriesId?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
 
+  static String actorDetails(int actorId) =>
+      "actor/$actorId?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
+
     //Genre
   static String moviesByGenre(int genreId) =>
       "genre/$genreId?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";

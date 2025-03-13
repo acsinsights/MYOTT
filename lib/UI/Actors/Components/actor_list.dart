@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:myott/Actors/ActorsDetailedScreen.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
+import 'package:myott/UI/Actors/Controller/ActorController.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
-import '../../services/Home_service.dart';
-import '../../services/api_service.dart';
-import '../../UI/Components/MovieListShrimerLoad.dart';
+import 'package:myott/services/ActorService.dart';
+
+import '../../../services/Home_service.dart';
+import '../../../services/api_service.dart';
+import '../../Components/MovieListShrimerLoad.dart';
+import '../ActorsDetailedScreen.dart';
+
 
 class ActorList extends StatelessWidget {
   const ActorList({Key? key}) : super(key: key);
@@ -16,9 +21,10 @@ class ActorList extends StatelessWidget {
     final HomeController homeController = Get.put(HomeController(HomeService(ApiService())));
 
     return SizedBox(
-      height: 100,
+      height: 120,
       child: Obx(() {
-        if (homeController.homePageData.value!.actors.isEmpty) {
+
+        if (homeController.isLoading.value || homeController.homePageData.value!.actors.isEmpty) {
           return ActorShimmerLoader();
         }
         return ListView.builder(
@@ -33,30 +39,30 @@ class ActorList extends StatelessWidget {
                 Get.to(() => ActorsDetailedScreen(
                  actors: actorsdata,
                 ));
+                print(actor.image);
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 12.0),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.grey.shade300, // Placeholder color
-                      child: ClipOval(
+                child: Container(
+                  width: 80.w,
+                  child: Column(
+                    children: [
+                      ClipOval(
                         child: Image.network(
                           actor.image,
-                          width: 80, // Diameter of CircleAvatar
-                          height: 80,
-                          fit: BoxFit.contain, // Ensures the image fills the circle properly
-                          errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+                          width: 70, // Explicitly setting width and height
+                          height: 70,
+                          fit: BoxFit.fill,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(Icons.error, color: Colors.red); // Placeholder on error
+                          },
                         ),
                       ),
-                    ),
 
-
-
-
-                    Text(actor.name, style: AppTextStyles.SubHeading2),
-                  ],
+                      Text(actor.name, style: AppTextStyles.SubHeading2,overflow: TextOverflow.ellipsis,
+                      maxLines: 2,textAlign: TextAlign.center,),
+                    ],
+                  ),
                 ),
               ),
             );

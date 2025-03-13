@@ -1,7 +1,3 @@
-// To parse this JSON data, do:
-//
-//     final moviesModel = moviesModelFromJson(jsonString);
-
 import 'dart:convert';
 
 MoviesModel moviesModelFromJson(String str) => MoviesModel.fromJson(json.decode(str));
@@ -17,7 +13,7 @@ class MoviesModel {
   final String slug;
   final String posterImg;
   final String thumbnailImg;
-  final int? audioLanguage; // Nullable
+  final int? audioLanguage; // Nullable to avoid forced 0 if needed
   final String maturity;
   final String trailerUrl;
   final String releaseYear;
@@ -26,8 +22,8 @@ class MoviesModel {
   final String? scheduleTime; // Nullable
   final int status;
   final String? deletedAt; // Nullable
-  final DateTime? createdAt; // Nullable
-  final DateTime? updatedAt; // Nullable
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   final List<String> directors;
 
   MoviesModel({
@@ -48,16 +44,16 @@ class MoviesModel {
     this.scheduleTime, // Nullable
     required this.status,
     this.deletedAt, // Nullable
-    this.createdAt, // Nullable
-    this.updatedAt, // Nullable
+    this.createdAt,
+    this.updatedAt,
     required this.directors,
   });
 
   factory MoviesModel.fromJson(Map<String, dynamic> json) => MoviesModel(
-    id: json["id"] ?? 0, // Default value if null
+    id: json["id"] ?? 0,
     movieUploadType: json["movie_upload_type"] ?? "",
     movieUploadUrl: json["movie_upload_url"] ?? "",
-    movieUploadFiles: json["movie_upload_files"],
+    movieUploadFiles: json["movie_upload_files"] ?? "",
     name: json["name"] ?? "",
     slug: json["slug"] ?? "",
     posterImg: json["poster_img"] ?? "",
@@ -69,13 +65,11 @@ class MoviesModel {
     description: json["description"] ?? "",
     scheduleDate: json["schedule_date"], // Nullable
     scheduleTime: json["schedule_time"], // Nullable
-    status: json["status"] ?? 0, // Default value
+    status: json["status"] ?? 0,
     deletedAt: json["deleted_at"], // Nullable
     createdAt: json["created_at"] != null ? DateTime.tryParse(json["created_at"]) : null,
     updatedAt: json["updated_at"] != null ? DateTime.tryParse(json["updated_at"]) : null,
-    directors: json["directors"] != null
-        ? List<String>.from(json["directors"].map((x) => x.toString()))
-        : [], // Handle null case
+    directors: (json["directors"] as List?)?.map((x) => x.toString()).toList() ?? [], // Safe handling
   );
 
   Map<String, dynamic> toJson() => {
@@ -98,6 +92,6 @@ class MoviesModel {
     "deleted_at": deletedAt,
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
-    "directors": List<dynamic>.from(directors.map((x) => x)),
+    "directors": directors, // No need for `.map()` since it's already a list
   };
 }

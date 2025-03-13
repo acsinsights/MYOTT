@@ -5,7 +5,7 @@ import 'package:myott/UI/Home/Model/Audio_Model.dart';
 import 'package:myott/UI/Home/Model/SliderItemModel.dart';
 import 'package:myott/UI/Model/Moviesmodel.dart';
 import '../../../services/Home_service.dart';
-import '../Model/ActorsModel.dart';
+import '../../Actors/Model/ActorsModel.dart';
 import '../../Genre/Model/genre_model.dart';
 import '../Model/HomePageModel.dart';
 

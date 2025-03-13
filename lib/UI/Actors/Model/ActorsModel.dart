@@ -1,14 +1,6 @@
-// To parse this JSON data, do
-//
-//     final actorsModel = actorsModelFromJson(jsonString);
 
-import 'dart:convert';
 
-List<ActorsModel> actorsModelFromJson(String str) => List<ActorsModel>.from(json.decode(str).map((x) => ActorsModel.fromJson(x)));
-
-String actorsModelToJson(List<ActorsModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class ActorsModel {
+  class ActorsModel {
   int id;
   String name;
   String slug;

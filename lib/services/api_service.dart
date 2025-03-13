@@ -60,6 +60,9 @@ class ApiService {
 
 
   void _handleError(DioException e) {
-    print("API Error: ${e.response?.data ?? e.message}");
+    print("API Error: ${e.response?.statusCode} - ${e.response?.data}");
+    print("Dio Error Type: ${e.type}");
+    print("Dio Error Message: ${e.message}");
   }
+
 }
