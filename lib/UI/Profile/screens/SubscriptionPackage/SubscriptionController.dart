@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/PaymentGateways/Controller/PaymentGatewayController.dart';
 import 'package:myott/services/api_service.dart';
 import 'package:myott/services/payment_service.dart';
 import 'package:myott/services/setting_service.dart';
@@ -9,7 +10,7 @@ import 'Model/PackageModel.dart';
 
 class SubscriptionController extends GetxController {
   final SettingService settingService = Get.put(SettingService(ApiService()));
-  final PaymentService paymentService = Get.put(PaymentService());
+  final PaymentGatewayController paymentGatewayController=Get.put(PaymentGatewayController());
 
   var plans = <PackageModel>[].obs;
   var isLoading = true.obs;
@@ -49,7 +50,7 @@ class SubscriptionController extends GetxController {
     final selectedPlan = plans[selectedPlanIndex.value!];
 
     // Convert int amount to string before passing it
-    paymentService.initiatePayment(
+    paymentGatewayController.initiatePayment(
       amount: selectedPlan.amount.toString(),
       currency: "INR",
     );
@@ -57,7 +58,7 @@ class SubscriptionController extends GetxController {
 
   @override
   void onClose() {
-    paymentService.dispose();
+    paymentGatewayController.dispose();
     super.onClose();
   }
 }

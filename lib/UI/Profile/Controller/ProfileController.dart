@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Home/Main_screen.dart';
 import 'package:myott/services/ProfileService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Model/ProfileModel.dart';
 
 class ProfileController extends GetxController {
-  final ProfileService _profileService;
+  final ProfileService profileService;
 
-  ProfileController(this._profileService);
+  ProfileController(this.profileService);
+  var profile = Rxn<Profile>(); // Observable Profile Object
+
   final nameController=TextEditingController();
   final emailController=TextEditingController();
   final phoneController=TextEditingController();
@@ -24,34 +27,21 @@ class ProfileController extends GetxController {
  
   var isLoading = false.obs;
 
+  Future<void> createProfile(String name, String email, String phoneNo) async {
+    isLoading.value = true;
+    Profile newProfile = Profile(name: name, email: email, mobile: phoneNo, id: 0);
 
-
-  Future<void> saveProfile() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("access_token");
-
-    if (token == null) {
-      Get.snackbar("Error", "Token not found. Please log in again.");
-      return;
-    }
-
-    ProfileModel profileData = ProfileModel(
-      name: nameController.text.trim(),
-      email: emailController.text.trim(),
-      mobile: phoneController.text.trim(),
-    );
-
-    bool success = await _profileService.createProfile(profileData, token);
-
-    if (success) {
-      Get.snackbar("Success", "Profile created successfully",
-        backgroundColor: CupertinoColors.black,
-        colorText: CupertinoColors.white,
-      );
+    Profile? createdProfile = await profileService.createProfile(newProfile);
+    if (createdProfile != null) {
+      profile.value = createdProfile;
+      Get.offAll(MainScreen());
+      Get.snackbar("Success", "Profile created successfully!",colorText: CupertinoColors.white,backgroundColor: CupertinoColors.black,);
     } else {
       Get.snackbar("Error", "Failed to create profile");
     }
+    isLoading.value = false;
   }
+
 
   // // Fetch Profile
   // Future<void> fetchProfile() async {

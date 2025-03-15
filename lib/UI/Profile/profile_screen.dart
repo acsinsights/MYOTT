@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myott/UI/PaymentGateways/Controller/PaymentGatewayController.dart';
 import 'package:myott/services/MovieService.dart';
 import 'package:myott/services/api_service.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';

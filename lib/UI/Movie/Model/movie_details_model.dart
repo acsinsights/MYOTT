@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:myott/UI/Actors/Model/ActorsModel.dart';
+
 MovieDetailsModel movieDetailsModelFromJson(String str) => MovieDetailsModel.fromJson(json.decode(str));
 
 String movieDetailsModelToJson(MovieDetailsModel data) => json.encode(data.toJson());
@@ -48,8 +50,8 @@ class Movie {
   dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
-  List<Ctor> actors;
-  List<Ctor> directors;
+  List<ActorsModel> actors;
+  List<ActorsModel> directors;
   List<dynamic> genres;
   final Map<String, String> subtitles;
   final Map<String, String> dubbedLanguages;
@@ -101,9 +103,9 @@ class Movie {
     deletedAt: json["deleted_at"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    actors: List<Ctor>.from(json["actors"].map((x) => Ctor.fromJson(x))),
+    actors: List<ActorsModel>.from(json["actors"].map((x) => ActorsModel.fromJson(x))),
     directors:
-    List<Ctor>.from(json["directors"].map((x) => Ctor.fromJson(x))),
+    List<ActorsModel>.from(json["directors"].map((x) => ActorsModel.fromJson(x))),
     genres: List<dynamic>.from(json["genres"].map((x) => x)),
     subtitles: _parseMap(json['subtitles']),
     dubbedLanguages: _parseMap(json['dubbed_languages']),
@@ -147,29 +149,6 @@ class Movie {
   }
 }
 
-class Ctor {
-  int id;
-  String name;
-  String image;
-
-  Ctor({
-    required this.id,
-    required this.name,
-    required this.image,
-  });
-
-  factory Ctor.fromJson(Map<String, dynamic> json) => Ctor(
-    id: json["id"],
-    name: json["name"],
-    image: json["image"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "image": image,
-  };
-}
 
 class Subtitles {
   String hi;

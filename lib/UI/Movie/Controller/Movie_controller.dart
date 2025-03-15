@@ -14,6 +14,7 @@ class MovieController extends GetxController {
   MovieController(this.moviesService);
 
   var movieDetails =Rxn<MovieDetailsModel>();
+  var commentController=TextEditingController();
   var isLoading = false.obs;
   RxBool isExpanded = false.obs;
 

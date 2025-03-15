@@ -95,7 +95,8 @@ class EditProfileScreen extends StatelessWidget {
                     width: 160,
                     child: CustomButton(
                       text: "Save Update",
-                      onPressed: () => profileController.saveProfile(),
+                      onPressed: () {
+                      },
                     ),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   final Dio _dio;
@@ -10,9 +11,21 @@ class ApiService {
     receiveTimeout: const Duration(seconds: 10),
   ));
 
+
+
   Future<Response?> get(String endpoint, {Map<String, dynamic>? params}) async {
+    SharedPreferences preferences=await SharedPreferences.getInstance();
+    final token=preferences.getString("access_token");
     try {
-      return await _dio.get(endpoint, queryParameters: params);
+      return await _dio.get(endpoint, queryParameters: params,
+      options: Options(
+       headers: {
+         "Authorization" :"Bearer $token",
+         "Content-Type": "application/json"
+       }
+
+      )
+      );
     } on DioException catch (e) {
       _handleError(e);
       return null;

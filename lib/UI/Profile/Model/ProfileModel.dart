@@ -1,36 +1,25 @@
-import 'dart:convert';
+class Profile {
+  final int id;
+  final String? name;
+  final String? email;
+  final String? mobile;
 
+  Profile({required this.id, this.name, this.email, this.mobile});
 
+  factory Profile.fromJson(Map<String, dynamic> json) {
+    return Profile(
+      id: json["id"] ?? 0,
+      name: json["name"] ?? "",
+      email: json["email"] ?? "",
+      mobile: json["mobile"] ?? "",
+    );
+  }
 
-class ProfileModel {
-  int? id;
-  String name;
-  String email;
-  String mobile;
-
-
-  ProfileModel({
-     this.id,
-    required this.name,
-    required this.email,
-    required this.mobile,
-
-  });
-
-  factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
-    id: json["id"] ?? 0,
-    name: json["name"] ?? "",
-    email: json["email"] ?? "",
-
-    mobile: json["mobile"] ?? "",
-
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "email": email,
-    "mobile": mobile,
-
-  };
+Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "email": email,
+      "mobile": mobile,
+    };
+  }
 }

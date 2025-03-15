@@ -81,7 +81,7 @@ class ActorsDetailedScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10),
-                Text(actors.description, style: AppTextStyles.SubHeading2),
+                Text(actors.description.toString(), style: AppTextStyles.SubHeading2),
                 SizedBox(height: 10,),
                 Text(
                   "Movies of ${actors.name}",

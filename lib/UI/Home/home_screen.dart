@@ -11,6 +11,7 @@ import 'package:myott/UI/Home/Component/Audio_selection.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/Home_service.dart';
 import '../../services/api_service.dart';
 import '../Actors/Components/actor_list.dart';
@@ -88,7 +89,9 @@ class HomeScreen extends StatelessWidget {
               AudioSelection(),
               SizedBox(height: 10,),
 
-              SectionTitle(title: "NewArrival".tr,onTap: (){
+              SectionTitle(title: "NewArrival".tr,onTap: () async{
+                SharedPreferences pref= await SharedPreferences.getInstance();
+                print(pref.getString("access_token"));
                 Get.to(MovieGrid(movies: homeController.homePageData.value!.newArrival,title: "NewArrival".tr,));
               },),
               Obx(()=> homeController.isLoading.value

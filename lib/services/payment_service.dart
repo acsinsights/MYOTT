@@ -1,58 +1,28 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../UI/PaymentGateways/Model/PaymentGateway.dart';
+import 'api_service.dart';
+
 class PaymentService {
-  late Razorpay _razorpay;
+  ApiService _apiService;
+  PaymentService(this._apiService);
 
-  PaymentService() {
-    _razorpay = Razorpay();
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-  }
-  void initiatePayment({required String amount, required String currency}) {
-    var options = {
-      'key': 'rzp_test_Y2wDGdLutEecD5', // Use Test Key only
-      'amount': (double.parse(amount) * 100).toInt(), // Convert ₹ to paise
-      'currency': currency,
-      'name': 'My OTT Platform',
-      'description': 'Subscription Payment',
-      'prefill': {'email': 'user@example.com', 'contact': '9876543210'},
-      'theme': {'color': '#FF0000'}
-    };
+  Future<List<PaymentGateway>> fetchPaymentGateways() async {
+    final response = await _apiService.get("paymentgateway-keys?secret=06c51069-0171-4f23-bf8f-41c9cd86762d");
 
-    try {
-      Razorpay _razorpay = Razorpay();
-      _razorpay.open(options);
-    } catch (e) {
-      print("Payment Error: $e");
-      Get.snackbar("Payment Failed", "Something went wrong",
-          backgroundColor: Colors.red, colorText: Colors.white);
+    if (response?.statusCode == 200) {
+      print("API Response: ${response?.data}"); // Debugging
+
+      List<dynamic> data = jsonDecode(response?.data);
+
+      return data.map((e) => PaymentGateway.fromJson(e)).toList();
+    } else {
+      throw Exception("Failed to load payment gateways");
     }
   }
 
-
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    Get.snackbar("Success", "Payment ID: ${response.paymentId}",
-        backgroundColor: Colors.green, colorText: Colors.white);
-    print("Payment Success: ${response.paymentId}");
-  }
-
-  void _handlePaymentError(PaymentFailureResponse response) {
-    print("Payment Error Code: ${response.code}");
-    print("Payment Error Message: ${response.message}");
-
-    Get.snackbar("Error", "Payment failed: ${response.message}",
-        backgroundColor: Colors.red, colorText: Colors.white);
-  }
-
-  void _handleExternalWallet(ExternalWalletResponse response) {
-    Get.snackbar("Wallet", "External Wallet Selected: ${response.walletName}");
-    print("External Wallet: ${response.walletName}");
-  }
-
-  void dispose() {
-    _razorpay.clear();
-  }
 }

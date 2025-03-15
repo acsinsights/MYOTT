@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Auth/Login/login_page.dart';
+import 'package:myott/UI/Profile/Components/CompleteProfileScreen.dart';
 import 'package:myott/UI/Profile/screens/EditProfile/Edit_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../services/SecureStorageService.dart';
@@ -133,10 +134,10 @@ class AuthController extends GetxController {
       }
     } catch (e) {
       errorMessage.value = "Error: ${e.toString()}";
-      Get.snackbar("Error", errorMessage.value,
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
+      // Get.snackbar("Error", errorMessage.value,
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: Colors.red,
+      //     colorText: Colors.white);
     } finally {
       isLoading.value = false;
     }
@@ -168,14 +169,14 @@ class AuthController extends GetxController {
         );
         bool? isNewUser = prefs.getBool("creating_new_account");
         print("✅ OTP Verified. New Account: $isNewUser");
+        print(prefs.getString("access_token"));
 
 
-        // if (isNewUser == true) {
-        //   Get.offAll(() => EditProfileScreen());
-        // } else {
-        //   Get.offAll(() => MainScreen());
-        // }
-        Get.offAll(MainScreen());
+        if (isNewUser == true) {
+          Get.offAll(() => CompleteProfileScreen());
+        } else {
+          Get.offAll(() => MainScreen());
+        }
 
         Get.snackbar("Success", response.message,
             snackPosition: SnackPosition.TOP,

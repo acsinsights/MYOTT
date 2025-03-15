@@ -15,7 +15,7 @@
     final bool isPassword;
     final TextInputType keyboardType;
     final IconData? prefixIcon;
-    final IconData? suffixIcon;
+    final IconButton? suffixIcon;
     final VoidCallback? onSuffixTap;
     final ValueChanged<String>? onChanged; // Added onChanged callback
 
@@ -54,7 +54,7 @@
           suffixIcon: suffixIcon != null
               ? GestureDetector(
             onTap: onSuffixTap ?? () {},
-            child: Icon(suffixIcon, color: AppColors.subwhite),
+            child: suffixIcon,
           )
               : null,
         ),
@@ -68,6 +68,7 @@
     final String? initialValue;
     final String? hintText;
     final bool obscureText;
+    final IconButton? suffixIcon;
     final TextInputType keyboardType;
 
     const CustomTextFieldWithNoBg({
@@ -75,6 +76,7 @@
       this.controller,
       this.initialValue,
       this.hintText,
+      this.suffixIcon,
       this.obscureText = false,
       this.keyboardType = TextInputType.text,
     }) : super(key: key);
@@ -87,8 +89,10 @@
         keyboardType: keyboardType,
         obscureText: obscureText,
         cursorColor: Colors.red,
+
         style: const TextStyle(color: Colors.white), // White text
         decoration: InputDecoration(
+          suffixIcon: suffixIcon,
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.white70), // Slightly faded white hint
           enabledBorder: const UnderlineInputBorder(
