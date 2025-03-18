@@ -12,7 +12,7 @@ class TVseriesPoster extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        VideoPlayerWidget(videoUrl: videoUrl, thumbnailUrl: thumbnailurl,),
+        SizedBox(height: 200,),
         Positioned(
             top: 10,
             left: 10,

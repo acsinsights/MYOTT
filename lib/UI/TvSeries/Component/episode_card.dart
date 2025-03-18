@@ -17,10 +17,20 @@ class EpisodeCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: NetworkImageWidget(
-                imageUrl: image,
-                width: 120,
-                height: 70)
+            child: Image.network(
+              image,
+              width: 120,
+              height: 70,
+              fit: BoxFit.cover, // Adjust as needed
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'assets/images/CommingSoon/comming_movie.png',
+                  width: 120,
+                  height: 70,// Replace with your asset image path
+                  fit: BoxFit.cover,
+                );
+              },
+            ),
           ),
           SizedBox(height: 5),
           Text(

@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
+import 'package:myott/UI/Setting/Models/SettingModel.dart';
 import '../../../services/Setting_service.dart';
-import 'Faq/Model/FAQModel.dart';
 import 'Models/LanguageModel.dart';
 
 class SettingController extends GetxController {
   var langList=<LanguageModel>[].obs;
+  var playerSetting=<PlayerSettings>[].obs;
   var isLoading = false.obs;
   var selectedLanguage = "en".obs; // Store selected language
+  var settingData= Rxn<SettingModel>();
 
 
 
@@ -17,7 +19,47 @@ class SettingController extends GetxController {
   void onInit() {
     super.onInit();
     getLang();
+    getPlayerSettings();
+
   }
+
+  Future<void> fetchSettingData() async {
+    try {
+      isLoading(true);
+
+      final SettingModel? data = await _settingService.fetchSettingData();
+
+      if (data != null) {
+        settingData.value = data;
+
+      } else {
+        print("No data received from API");
+      }
+    } catch (e) {
+      print("Error fetching Setting data: $e");
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> getPlayerSettings() async {
+    isLoading(true);
+    try {
+      final PlayerSettings? data = await _settingService.getPlayerSetting();
+
+      if (data != null) {
+        playerSetting.assignAll([data]); // Wrap it inside a list
+      } else {
+        print("No player settings received");
+      }
+
+    } catch (e) {
+      print("Error fetching settings: $e");
+    } finally {
+      isLoading(false);
+    }
+  }
+
 
   Future<void> getLang()async{
     isLoading(true);
@@ -30,6 +72,8 @@ class SettingController extends GetxController {
     }
     isLoading(false);
   }
+
+
   void selectLanguage(String languageCode) {
     selectedLanguage.value = languageCode;
   }

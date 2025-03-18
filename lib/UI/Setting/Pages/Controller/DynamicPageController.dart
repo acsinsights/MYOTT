@@ -38,7 +38,7 @@ class DynamicPageController extends GetxController {
   Future<void> fetchPrvacyAndPolicy() async {
     try {
       isLoading(true);
-      var response = await _settingService.getPandP("Terms_And_Condition");
+      var response = await _settingService.getPandP("Privacy_Policy");
 
       if (response.isNotEmpty) {
         privacyAndPolicy.value = response; // Store the list of CustomPage
@@ -55,7 +55,7 @@ class DynamicPageController extends GetxController {
   Future<void> fetchAboutUs() async {
     try {
       isLoading(true);
-      var response = await _settingService.getPandP("Terms_And_Condition");
+      var response = await _settingService.getPandP("About_Us");
 
       if (response.isNotEmpty) {
         aboutUs.value = response; // Store the list of CustomPage

@@ -8,7 +8,7 @@ class HomePageModel {
   final List<MoviesModel> latest;
   final List<MoviesModel> top10;
   final List<MoviesModel> newArrival;
-  final List<MoviesModel> upcomingMovies;
+  final List<MoviesModel>? upcomingMovies;
   final List<SliderItemModel> slider;
   final List<ActorsModel> actors;
   final List<AudioModel> audios;
@@ -18,7 +18,7 @@ class HomePageModel {
     required this.latest,
     required this.top10,
     required this.newArrival,
-    required this.upcomingMovies,
+     this.upcomingMovies,
     required this.slider,
     required this.actors,
     required this.audios,

@@ -1,29 +1,24 @@
 
 
-import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Actors/ActorsDetailedScreen.dart';
-import 'package:myott/UI/Actors/Controller/ActorController.dart';
 import 'package:myott/UI/Components/custom_button.dart';
 import 'package:myott/UI/Components/custom_text_field.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
-import 'package:myott/UI/Components/section_title.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
-import 'package:myott/UI/Movie/Movie_details_page.dart';
-import 'package:myott/services/ActorService.dart';
 import 'package:myott/services/MovieService.dart';
 import 'package:myott/services/api_service.dart';
-import 'package:myott/video_player/component/Video_palyer_widget.dart';
-import 'package:video_player/video_player.dart';
+import 'package:myott/video_player/component/Custom_videoPlayer.dart';
+import 'package:myott/video_player/component/SonylivStylePlayer.dart';
 
-import '../../services/Home_service.dart';
+
+import '../../video_player/component/Video_palyer_widget.dart';
 import '../../video_player/component/universalVideoPlayer.dart';
-import '../Home/Controller/Home_controller.dart';
+import '../../video_player/component/videoPlayerScreen.dart';
 import 'Component/ExpandableDescription.dart';
 
 class MovieDetailsPage extends StatefulWidget {
@@ -63,6 +58,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // InlineVideoPlayer(videoUrl: movie!.movie.movieUploadUrl),
                 Container(
                     height: 400.h,
                     child: Stack(
@@ -142,9 +138,18 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                         width: 180.w,
                                         text: "Play Now",
                                         onPressed: () {
-                                          Get.to(UniversalVideoPlayer(videoUrl: movie.movie.movieUploadUrl)
-                                          );
+                                          final vurl="https://videos.pexels.com/video-files/4620568/4620568-uhd_2732_1440_25fps.mp4";
+                                         final subtitleUrl="https://templatecookies.com/ott/public/uploads/movies/subtitles/fr_1741589524.srt";
+                                         final subtitleUrl1="https://templatecookies.com/ott/public/uploads/movies/subtitles/en_1741589524.srt";
 
+                                          // Get.to(VideoPlayerScreen(videoUrl: vurl, movieDetails: movie));
+                                          // Get.to(MoviePlayer(videoUrl: vurl,subtitlePath: "https://templatecookies.com/ott/public/uploads/movies/subtitles/fr_1741589524.srt",));
+Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
+                                          // Get.to(SonyLIVStyleVideoPlayer(videoUrl: vurl, movie: movie));
+                                          // Get.to(CustomVideoPlayer(videoUrl: vurl,));
+                                           //Get.to(UniversalVideoPlayer(videoUrl: vurl));
+
+                                          // Get.to(VideoPlayerWidget(thumbnailUrl: movie.movie.thumbnailImg,videoUrl: movie.movie.movieUploadUrl,));
                                         },
                                         backgroundColor: Color(0xff290b0b),
                                         borderColor: Colors.white,
@@ -156,7 +161,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                         width: 180.w,
                                         text: "Trailer",
                                         onPressed: () {
-                                          Get.to(UniversalVideoPlayer(videoUrl: movie.movie.trailerUrl));
+                                          // Get.to(UniversalVideoPlayer(videoUrl: movie.movie.trailerUrl));
 
 
                                               },
@@ -274,7 +279,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                   actor.image,
                                   width: 70, // Explicitly setting width and height
                                   height: 70,
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
                                     return Icon(Icons.error, color: Colors.red); // Placeholder on error
                                   },
@@ -316,7 +321,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                 director.image,
                                 width: 70, // Explicitly setting width and height
                                 height: 70,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Icon(Icons.error, color: Colors.red); // Placeholder on error
                                 },

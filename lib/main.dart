@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:myott/UI/Home/Main_screen.dart';
+import 'package:myott/UI/Setting/Setting_Controller.dart';
 import 'package:myott/UI/SplashScreen/splashScreen.dart';
+import 'package:myott/services/Setting_service.dart';
 import 'package:myott/services/auth_service.dart';
 import 'Binding/auth_binding.dart';
 import 'UI/Auth/Controller/auth_controller.dart';
@@ -20,6 +23,7 @@ void main() async {
   final box = GetStorage();
   String savedLang = box.read('language') ?? 'en';
   Get.put(AuthController(AuthService(ApiService()))); // Inject AuthController
+  Get.put(SettingController(SettingService(ApiService()))); // Inject AuthController
   runApp(MyApp(savedLang: savedLang));
 }
 
@@ -41,8 +45,10 @@ class MyApp extends StatelessWidget {
           locale: TranslationService.getLocale(savedLang),
           fallbackLocale: Locale('en'),
           initialBinding: AuthBinding(),
-          home: SplashScreen(),
+          home: MainScreen(),
+          // home: SplashScreen(),
         );
+
       },
     );
   }

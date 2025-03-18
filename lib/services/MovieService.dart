@@ -11,7 +11,7 @@ class MoviesService {
   MoviesService(this._apiService); // ✅ Dependency Injection
 
   /// 🔹 **Fetch Movie Details**
-  Future<MovieDetailsModel> getMovieDetails(int movieId) async {
+    Future<MovieDetailsModel> getMovieDetails(int movieId) async {
     try {
       final response = await _apiService.get(APIEndpoints.movieDetails(movieId));
 

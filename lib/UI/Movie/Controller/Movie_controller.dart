@@ -31,7 +31,6 @@ class MovieController extends GetxController {
 
       var fetchedMovieDetails = await moviesService.getMovieDetails(movieId);
 
-
       movieDetails.value = fetchedMovieDetails;
     } catch (e) {
       print("Error fetching movie details: $e");

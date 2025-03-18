@@ -12,7 +12,6 @@ class MoviePoster extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        VideoPlayerWidget(videoUrl: videoUrl, thumbnailUrl: thumbnailurl,),
         Positioned(
             top: 10,
             left: 10,

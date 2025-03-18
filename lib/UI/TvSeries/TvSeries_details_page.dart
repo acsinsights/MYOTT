@@ -58,11 +58,23 @@ class TvSeriesDetailsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TVseriesPoster(
-                  videoUrl:  tvdetails.series.trailerUrl.toString(),
-                  thumbnailurl: tvdetails.series.thumbnail,
+                Container(
+                  height: 200,
+                  width: double.infinity, // Ensures proper layout
+                  child: Image.network(
+                    tvdetails.series.thumbnail,
+                    fit: BoxFit.cover, // Adjust as needed
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/CommingSoon/comming_movie.png', // Replace with your asset image path
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
                 ),
-                const SizedBox(height: 10),
+
+
+                 SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
@@ -95,3 +107,6 @@ class TvSeriesDetailsPage extends StatelessWidget {
 
 
 }
+
+
+

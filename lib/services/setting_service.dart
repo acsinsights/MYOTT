@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:myott/UI/Setting/Models/SettingModel.dart';
 import 'package:myott/services/api_endpoints.dart';
 import 'package:myott/UI/Setting/Models/LanguageModel.dart';
 import 'package:myott/UI/Profile/screens/SubscriptionPackage/Model/PackageModel.dart';
@@ -14,8 +16,42 @@ class SettingService {
   SettingService(this._apiService); // ✅ Dependency Injection
 
 
+  Future<SettingModel?> fetchSettingData() async {
+    try {
+      Response? response = await _apiService.get("${APIEndpoints.settings}"); // API Endpoint
 
+      if (response != null && response.statusCode == 200) {
+        return SettingModel.fromJson(response.data);
+      } else {
+        print("Failed to fetch Setting Data");
+        return null;
+      }
+    } catch (e) {
+      print("Error in fetchHomePageData: $e");
+      return null;
+    }
+  }
 
+  Future<PlayerSettings?> getPlayerSetting() async {
+    try {
+      final response = await _apiService.get(APIEndpoints.settings);
+
+      if (response?.statusCode == 200) {
+        final data = response?.data["player_settings"] as Map<String, dynamic>?;
+
+        if (data != null) {
+          return PlayerSettings.fromJson(data); // Convert map to PlayerSettings object
+        } else {
+          throw Exception("Player settings data is null");
+        }
+      } else {
+        throw Exception("Failed to load settings");
+      }
+    } catch (e) {
+      print("Error fetching Settings: $e");
+      return null;
+    }
+  }
 
   Future<List<LanguageModel>> getLanguages({int page=1,int perPage=10})async{
     try {

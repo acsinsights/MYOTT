@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Components/Movie_grid.dart';
 import 'package:myott/UI/Components/TvSeriesGrid.dart';
@@ -25,8 +26,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeController homeController = Get.put(HomeController(HomeService(ApiService())));
-    final TVSeriesController tvSeriesController =Get.put(TVSeriesController(TVSeriesService(ApiService())));
+    final HomeController homeController = Get.put(
+        HomeController(HomeService(ApiService())));
+    final TVSeriesController tvSeriesController = Get.put(
+        TVSeriesController(TVSeriesService(ApiService())));
 
 
     return Scaffold(
@@ -39,7 +42,17 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              MovieSlider(),
+              Obx(() {
+                if(homeController.isLoading.value){
+                  return Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: ShimmerLoader(
+                      height:400.h ,
+                    ),
+                  );
+                }
+                return MovieSlider();
+              }),
               const SizedBox(height: 20),
 
               SectionTitle(
@@ -47,7 +60,8 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   Get.to(
                     MovieGrid(
-                      movies: homeController.homePageData.value!.latest, // Correct way to pass list
+                      movies: homeController.homePageData.value!.latest,
+                      // Correct way to pass list
                       title: "latestRelease".tr,
                     ),
                   );
@@ -57,49 +71,60 @@ class HomeScreen extends StatelessWidget {
                 if (homeController.isLoading.value) {
                   return MovieShrimmerLoader();
                 }
-                return MovieList(movies: homeController.homePageData.value!.latest);
+                return MovieList(
+                    movies: homeController.homePageData.value!.latest);
               }),
 
               SizedBox(height: 10),
 
 
-              SectionTitle(title: "Top10".tr,onTap: (){
-                Get.to(MovieGrid(movies: homeController.homePageData.value!.top10,title: "Top10".tr,));
+              SectionTitle(title: "Top10".tr, onTap: () {
+                Get.to(MovieGrid(
+                  movies: homeController.homePageData.value!.top10,
+                  title: "Top10".tr,));
               },),
-              Obx(() => homeController.isLoading.value
+              Obx(() =>
+              homeController.isLoading.value
                   ? MovieShrimmerLoader()
-                  : MovieList(movies: homeController.homePageData.value!.top10.take(10).toList(), isTop10: true)),
+                  : MovieList(
+                  movies: homeController.homePageData.value!.top10.take(10)
+                      .toList(), isTop10: true)),
 
-              SectionTitle(title: "Actors".tr,showAll: false),
+              SectionTitle(title: "Actors".tr, showAll: false),
               ActorList(),
 
 
-              SectionTitle(title: "TvSeries".tr,onTap: (){
-                Get.to(TvSeriesGird(tvSeries: tvSeriesController.tvSeries,title: "TvSeries".tr,));
+              SectionTitle(title: "TvSeries".tr, onTap: () {
+                Get.to(TvSeriesGird(tvSeries: tvSeriesController.tvSeries,
+                  title: "TvSeries".tr,));
               }),
-              Obx(()=> homeController.isLoading.value
-                  ?MovieShrimmerLoader()
+              Obx(() =>
+              homeController.isLoading.value
+                  ? MovieShrimmerLoader()
                   : TvSeriesMovieList(tvSeries: tvSeriesController.tvSeries)),
 
               SizedBox(height: 10,),
 
 
-
-              SectionTitle(title: "Languages".tr,showAll: false,),
+              SectionTitle(title: "Languages".tr, showAll: false,),
               AudioSelection(),
               SizedBox(height: 10,),
 
-              SectionTitle(title: "NewArrival".tr,onTap: () async{
-                SharedPreferences pref= await SharedPreferences.getInstance();
+              SectionTitle(title: "NewArrival".tr, onTap: () async {
+                SharedPreferences pref = await SharedPreferences.getInstance();
                 print(pref.getString("access_token"));
-                Get.to(MovieGrid(movies: homeController.homePageData.value!.newArrival,title: "NewArrival".tr,));
+                Get.to(MovieGrid(
+                  movies: homeController.homePageData.value!.newArrival,
+                  title: "NewArrival".tr,));
               },),
-              Obx(()=> homeController.isLoading.value
-                  ?MovieShrimmerLoader()
-                  : MovieList(movies: homeController.homePageData.value!.newArrival ),
+              Obx(() =>
+              homeController.isLoading.value
+                  ? MovieShrimmerLoader()
+                  : MovieList(
+                  movies: homeController.homePageData.value!.newArrival),
               ),
 
-              SectionTitle(title: "Genre".tr,showAll: false,),
+              SectionTitle(title: "Genre".tr, showAll: false,),
               GenreSelection(),
               SizedBox(height: 20,),
               ComingSoonWidget(),

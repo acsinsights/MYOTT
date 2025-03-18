@@ -17,19 +17,16 @@ class ComingSoonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (homeController.isLoading.value || homeController.homePageData.value!.upcomingMovies.isEmpty) {
+      if (homeController.isLoading.value || homeController.homePageData.value!.upcomingMovies!.isEmpty) {
         return Center(
-          // child: Text(
-          //   "No upcoming movies available.",
-          //   style: TextStyle(color: AppColors.white),
-          // ),
+
           child: SizedBox(height: 0.5,),
         );
       }
 
       return Container(
         child: CarouselSlider.builder(
-          itemCount: homeController.homePageData.value!.upcomingMovies.length,
+          itemCount: homeController.homePageData.value!.upcomingMovies?.length,
           options: CarouselOptions(
             autoPlay: true,
             viewportFraction: 0.85, // Adjusts width of each card
@@ -39,7 +36,7 @@ class ComingSoonWidget extends StatelessWidget {
 
           ),
           itemBuilder: (context, index, realIndex) {
-            var movie = homeController.homePageData.value!.upcomingMovies[index];
+            var movie = homeController.homePageData.value!.upcomingMovies![index];
 
             return Container(
               margin: EdgeInsets.symmetric(horizontal: 5),

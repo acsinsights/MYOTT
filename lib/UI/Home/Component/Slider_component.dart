@@ -83,7 +83,7 @@ class MovieSlider extends StatelessWidget {
                               children: [
                                 Text(movie.content.name, style: AppTextStyles.Headingb,overflow: TextOverflow.ellipsis,),
                                 const SizedBox(height: 5),
-                                Text(movie.content.description.toString(), style: AppTextStyles.SubHeading3),
+                                Text(movie.content.description.toString(), style: AppTextStyles.SubHeading3,maxLines: 3,overflow: TextOverflow.ellipsis,),
                               ],
                             ),
                           ),

@@ -1,110 +1,87 @@
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:flutter/services.dart';
 
-class UniversalVideoPlayer extends StatefulWidget {
+class CustomVideoPlayer extends StatefulWidget {
   final String videoUrl;
-
-  const UniversalVideoPlayer({Key? key, required this.videoUrl}) : super(key: key);
+  const CustomVideoPlayer({Key? key, required this.videoUrl}) : super(key: key);
 
   @override
-  _UniversalVideoPlayerState createState() => _UniversalVideoPlayerState();
+  _CustomVideoPlayerState createState() => _CustomVideoPlayerState();
 }
 
-class _UniversalVideoPlayerState extends State<UniversalVideoPlayer> {
-  VideoPlayerController? _videoController;
-  ChewieController? _chewieController;
-  YoutubePlayerController? _youtubeController;
+class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
+  YoutubePlayerController? _ytController;
+  VideoPlayerController? _videoPlayerController;
   bool isYouTube = false;
 
   @override
   void initState() {
     super.initState();
     _initializePlayer();
-    _setLandscapeMode();
   }
 
-  /// Check if the URL is a YouTube link
+  void _initializePlayer() {
+    isYouTube = _isYouTubeUrl(widget.videoUrl);
+    if (isYouTube) {
+      _initializeYouTubePlayer();
+    } else {
+      _initializeVideoPlayer();
+    }
+  }
+
   bool _isYouTubeUrl(String url) {
     return url.contains("youtube.com") || url.contains("youtu.be");
   }
 
-  void _initializePlayer() {
-    if (_isYouTubeUrl(widget.videoUrl)) {
-      isYouTube = true;
-      String? videoId = YoutubePlayer.convertUrlToId(widget.videoUrl);
+  void _initializeYouTubePlayer() {
+    final videoId = YoutubePlayer.convertUrlToId(widget.videoUrl);
+    _ytController = YoutubePlayerController(
+      initialVideoId: videoId!,
+      flags: YoutubePlayerFlags(autoPlay: true, mute: false),
+    );
+  }
 
-      if (videoId != null) {
-        _youtubeController = YoutubePlayerController(
-          initialVideoId: videoId,
-          flags: YoutubePlayerFlags(
-            autoPlay: true,
-            mute: false, // Allows user to control volume
-          ),
-        );
-      } else {
-        print("⚠️ Invalid YouTube URL");
-      }
-    } else {
-      _videoController = VideoPlayerController.network(widget.videoUrl)
-        ..initialize().then((_) {
-          setState(() {}); // Update UI after initialization
-          _videoController!.play();
-        }).catchError((error) {
-          print("⚠️ Video initialization error: $error");
-        });
+  void _initializeVideoPlayer() {
+    _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
+      ..initialize().then((_) {
+        setState(() {}); // Ensure widget updates after initialization
+        _videoPlayerController?.play(); // Auto-play the video
+      });
+  }
 
-      _chewieController = ChewieController(
-        videoPlayerController: _videoController!,
-        autoPlay: true,
-        looping: false,
-        allowMuting: true,
-
-      );
+  @override
+  void didUpdateWidget(covariant CustomVideoPlayer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.videoUrl != widget.videoUrl) {
+      _disposeControllers();
+      _initializePlayer();
     }
   }
 
-  /// Force the app into landscape mode
-  void _setLandscapeMode() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-  }
-
-  /// Reset orientation back to portrait when leaving
-  void _resetPortraitMode() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+  void _disposeControllers() {
+    _ytController?.dispose();
+    _videoPlayerController?.dispose();
   }
 
   @override
   void dispose() {
-    _resetPortraitMode(); // Ensure portrait mode is restored
-
-    _videoController?.dispose();
-    _chewieController?.dispose();
-    _youtubeController?.dispose();
-
+    _disposeControllers();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: isYouTube
-            ? _youtubeController != null
-            ? YoutubePlayer(controller: _youtubeController!)
-            : Center(child: Text("Invalid YouTube URL"))
-            : _videoController != null && _videoController!.value.isInitialized
-            ? Chewie(controller: _chewieController!)
-            : Center(child: CircularProgressIndicator()),
-      ),
-    );
+    return isYouTube
+        ? YoutubePlayer(
+      controller: _ytController!,
+      showVideoProgressIndicator: true,
+    )
+        : _videoPlayerController != null && _videoPlayerController!.value.isInitialized
+        ? AspectRatio(
+      aspectRatio: _videoPlayerController!.value.aspectRatio,
+      child: VideoPlayer(_videoPlayerController!),
+    )
+        : const Center(child: CircularProgressIndicator());
   }
 }
