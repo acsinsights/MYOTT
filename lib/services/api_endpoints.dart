@@ -1,5 +1,6 @@
 class APIEndpoints {
   static const String send_otp = "send-otp";
+  static const String stripePublishablekey ="pk_test_51R3woGCG37UV7MBEuZDyX1QGvAqSY4yxaBUduJyQRX18ucxrozR6ezq6CPSWF0VzJ0JfmlJYeO5KAuAfTYFl8HSp00zD5Er2RF";
 
 
 

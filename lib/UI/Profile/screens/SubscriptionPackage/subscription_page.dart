@@ -69,6 +69,7 @@ class SubscriptionScreen extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
               onPressed: () {
+                // Get.to(PaymentScreen());
 Get.to(PaymentSelectionScreen());                // Handle payment process
               },
               child: Text("Next", style: TextStyle(color: Colors.black)),
@@ -81,3 +82,53 @@ Get.to(PaymentSelectionScreen());                // Handle payment process
     );
   }
 }
+// ✅ Paystack Payment
+// void _payWithPaystack(double amount) async {
+//   Charge charge = Charge()
+//     ..amount = (amount * 100).toInt() // Convert to kobo
+//     ..email = "user@example.com"
+//     ..currency = "NGN"
+//     ..reference = "TXN_${DateTime.now().millisecondsSinceEpoch}";
+//
+//   CheckoutResponse response = await PaystackPlugin().checkout(
+//     context: Get.context!,
+//     method: CheckoutMethod.card,
+//     charge: charge,
+//   );
+//
+//   if (response.status) {
+//     print("Paystack Payment Success: ${response.reference}");
+//   } else {
+//     print("Paystack Payment Failed");
+//   }
+// }
+
+
+
+// // Flutterwave Payment
+// void _payWithFlutterwave(double amount) async {
+//   final Charge charge = Charge()
+//     ..amount = amount
+//     ..currency = "INR"
+//     ..email = "user@example.com"
+//     ..txRef = "FLW_TXN_123"
+//     ..paymentOptions = "card, banktransfer, ussd";
+//
+//   Flutterwave().charge(charge);
+//   print("Flutterwave Payment Initiated");
+// }
+
+// Notify Backend after payment (Uncomment when API is ready)
+/*
+  Future<void> _notifyBackend(String transactionId, String status) async {
+    await http.post(
+      Uri.parse("https://your-backend.com/api/payment/verify"),
+      body: jsonEncode({
+        "order_id": "ORD123",
+        "transaction_id": transactionId,
+        "payment_status": status
+      }),
+      headers: {"Content-Type": "application/json"},
+    );
+  }
+  */

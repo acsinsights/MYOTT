@@ -30,7 +30,7 @@ class HomePageModel {
       latest: (json['latest'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
       top10: (json['top_movies'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
       newArrival: (json['new_arrivals'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
-      upcomingMovies: (json['upcoming_movies'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
+      upcomingMovies: (json['upcoming_movie'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
       slider: (json['slider'] as List?)?.map((e) => SliderItemModel.fromJson(e)).toList() ?? [],
       actors: (json['actors'] as List?)?.map((e) => ActorsModel.fromJson(e)).toList() ?? [],
       audios: (json['Audio'] as List?)?.map((e) => AudioModel.fromJson(e)).toList() ?? [],

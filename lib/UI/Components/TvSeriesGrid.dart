@@ -4,15 +4,12 @@ import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
-import 'package:myott/services/api_service.dart';
-import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
-import 'package:myott/UI/Movie/movie_details_page.dart';
 
-class TvSeriesGird extends StatelessWidget {
+class TvSeriesGrid extends StatelessWidget {
   final List<TvSeriesModel> tvSeries;
   final String? title;
 
-  const TvSeriesGird({Key? key, required this.tvSeries, this.title}) : super(key: key);
+  const TvSeriesGrid({Key? key, required this.tvSeries, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,58 +18,66 @@ class TvSeriesGird extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
-        title: Text(title!, style: AppTextStyles.Headingb4,
-        ),),
-      body: GridView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h), // Responsive Padding
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: ScreenUtil().screenWidth > 600 ? 4 : 3, // Adjusts for tablets
-          crossAxisSpacing: 12.w,
-          mainAxisSpacing: 12.h,
-          childAspectRatio: 0.6.h,
-        ),
-        itemCount: tvSeries.length,
-        itemBuilder: (context, index) {
-          final tvseries = tvSeries[index];
+        title: Text(title ?? '', style: AppTextStyles.Headingb4),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, // 3 columns
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            childAspectRatio: 0.5, // Adjust aspect ratio for movie posters
+          ),
+          itemCount: tvSeries.length,
+          itemBuilder: (context, index) {
+            final tvseries = tvSeries[index];
 
-          return GestureDetector(
-            onTap: () {
-              final tvseriesId = tvseries.id;
-              Get.to(() => TvSeriesDetailsPage(seriesId: tvseriesId));
-            },
-            child: Column(
-              children: [
-                Container(
-                  height: 140.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    image: DecorationImage(
-                      image: NetworkImage(tvseries.thumbnailImg), // Use NetworkImage if from API
-                      fit: BoxFit.cover,
+            return GestureDetector(
+              onTap: () {
+                Get.to(() => TvSeriesDetailsPage(seriesId: tvseries.id));
+              },
+              child: Column(
+                children: [
+                  Container(
+                    height: 150.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: Image.network(
+                        tvseries.thumbnailImg,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/movies/SliderMovies/movie-1.png',
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 6.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w),
-                  child: Text(
-                    tvseries.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
+                  SizedBox(height: 6.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w),
+                    child: Text(
+                      tvseries.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

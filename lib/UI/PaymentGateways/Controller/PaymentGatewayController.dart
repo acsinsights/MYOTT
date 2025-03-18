@@ -15,7 +15,6 @@ class PaymentGatewayController extends GetxController {
   var paymentGateways = <PaymentGateway>[].obs; // Store fetched data
   var isLoading = false.obs; // Handle loading state
   var errorMessage = ''.obs; // Store error message if any
-  String mode = "sandbox"; // Change to 'live' in production
 
   @override
   void onInit() {
@@ -126,6 +125,7 @@ class PaymentGatewayController extends GetxController {
 
     print("PayPal Response: $response");
   }
+
 
   // static Future<void> startFlutterwave(BuildContext context) async {
   //   final Flutterwave flutterwave = Flutterwave(

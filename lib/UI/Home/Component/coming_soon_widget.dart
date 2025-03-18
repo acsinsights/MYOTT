@@ -32,7 +32,7 @@ class ComingSoonWidget extends StatelessWidget {
             viewportFraction: 0.85, // Adjusts width of each card
             enlargeCenterPage: false, // Zoom effect
             autoPlayInterval: Duration(seconds: 5),
-            height: MediaQuery.of(context).size.height * 0.8, // ✅ Ensures it fits inside screen
+            height: MediaQuery.of(context).size.height * 0.7, // ✅ Ensures it fits inside screen
 
           ),
           itemBuilder: (context, index, realIndex) {
@@ -60,7 +60,7 @@ class ComingSoonWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
                       movie.thumbnailImg,
-                      // height: 300,
+                      height: 300,
 
                       width: double.infinity,
                       fit: BoxFit.fitHeight,
@@ -72,7 +72,7 @@ class ComingSoonWidget extends StatelessWidget {
                   Text(movie.name, style: AppTextStyles.HeadingbRed2),
                   SizedBox(height: 5),
                   Text(
-                    "${movie.releaseYear} | Director: Unknown",
+                    "${movie.releaseYear} | Director: ${movie.directors.isNotEmpty ? movie.directors.first.name : 'N/A'}",
                     style: AppTextStyles.SubHeading2,
                   ),
                   SizedBox(height: 5),

@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:myott/UI/PaymentGateways/Controller/PaymentGatewayController.dart';
+import 'package:myott/services/payment_service.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../../services/PaymentManager.dart';
 import '../Profile/screens/SubscriptionPackage/SubscriptionController.dart';
 
 class PaymentSelectionScreen extends StatefulWidget {
@@ -16,6 +18,7 @@ class PaymentSelectionScreen extends StatefulWidget {
 class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
   final PaymentGatewayController paymentGatewayController=Get.put(PaymentGatewayController());
   final SubscriptionController controller = Get.put(SubscriptionController());
+  PaymentManager paymentManager = PaymentManager();
 
 
 
@@ -31,7 +34,9 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
             
             InkWell(
               onTap: (){
-                controller.proceedToPayment();
+                // controller.proceedToPayment();
+
+                paymentManager.startPayment(PaymentMethod.Razorpay, 15.00);
 
               },
               child: Container(
@@ -44,11 +49,23 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
             ),
             InkWell(
               onTap: (){
-                paymentGatewayController.startPayPalPayment(context, 100);
+                // paymentGatewayController.startPayPalPayment(context, 100);
+                paymentManager.startPayment(PaymentMethod.PayPal, 20.50);
 
               },
               child: Container(
                 child:   Image.network("https://cdn.iconscout.com/icon/free/png-512/free-paypal-icon-download-in-svg-png-gif-file-formats--company-brand-logo-social-media-3-pack-logos-icons-10439207.png?f=webp&w=512",height: 100,)
+
+              ),
+            ),
+            InkWell(
+              onTap: ()async{
+                // await StripeService.startPayment(500); // Example: $5.00 (500 cents)
+                paymentManager.startPayment(PaymentMethod.Stripe, 10.99);
+
+              },
+              child: Container(
+                  child:   Image.network("https://cdn.iconscout.com/icon/free/png-512/free-stripe-logo-icon-download-in-svg-png-gif-file-formats--technology-social-media-vol-6-pack-logos-icons-2945188.png?f=webp&w=512",height: 100,)
 
               ),
             ),

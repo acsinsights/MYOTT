@@ -11,6 +11,8 @@ class MoviesModel {
   final dynamic movieUploadFiles;
   final String name;
   final String slug;
+  final int? views;
+  final int? fakeviews;
   final String posterImg;
   final String thumbnailImg;
   final int? audioLanguage; // Nullable to avoid forced 0 if needed
@@ -24,8 +26,9 @@ class MoviesModel {
   final String? deletedAt; // Nullable
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final List<String> directors;
-
+  final List<Actor> directors;
+ final  List<Actor>? actors;
+  final List<Actor>? genre;
   MoviesModel({
     required this.id,
     required this.movieUploadType,
@@ -33,6 +36,8 @@ class MoviesModel {
     required this.movieUploadFiles,
     required this.name,
     required this.slug,
+    this.views,
+    this.fakeviews,
     required this.posterImg,
     required this.thumbnailImg,
     this.audioLanguage, // Nullable
@@ -47,6 +52,8 @@ class MoviesModel {
     this.createdAt,
     this.updatedAt,
     required this.directors,
+    this.actors,
+    this.genre
   });
 
   factory MoviesModel.fromJson(Map<String, dynamic> json) => MoviesModel(
@@ -56,6 +63,8 @@ class MoviesModel {
     movieUploadFiles: json["movie_upload_files"] ?? "",
     name: json["name"] ?? "",
     slug: json["slug"] ?? "",
+    views: json["views"] != null ? int.tryParse(json["views"].toString()) : null, // Safe parsing
+    fakeviews: json["fake_views"] != null ? int.tryParse(json["fake_views"].toString()) : null, // Safe parsing
     posterImg: json["poster_img"] ?? "",
     thumbnailImg: json["thumbnail_img"] ?? "",
     audioLanguage: json["audio_language"], // Nullable
@@ -69,7 +78,18 @@ class MoviesModel {
     deletedAt: json["deleted_at"], // Nullable
     createdAt: json["created_at"] != null ? DateTime.tryParse(json["created_at"]) : null,
     updatedAt: json["updated_at"] != null ? DateTime.tryParse(json["updated_at"]) : null,
-    directors: (json["directors"] as List?)?.map((x) => x.toString()).toList() ?? [], // Safe handling
+
+    directors: (json["directors"] as List?)?.map((x) => Actor.fromJson(x)).toList() ?? [],
+
+    // ✅ Fixing actors parsing (handles null safely)
+    actors: json["actors"] != null
+        ? (json["actors"] as List).map((x) => Actor.fromJson(x)).toList()
+        : null,
+
+    // ✅ Fixing genre parsing (handles null safely)
+    genre: json["genre"] != null
+        ? (json["genre"] as List).map((x) => Actor.fromJson(x)).toList()
+        : null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -92,6 +112,55 @@ class MoviesModel {
     "deleted_at": deletedAt,
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
-    "directors": directors, // No need for `.map()` since it's already a list
+    "directors": directors,
+
+  };
+}
+
+class Actor {
+  int id;
+  String name;
+  String slug;
+  String image;
+  String? type;
+  String description;
+  int status;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  Actor({
+    required this.id,
+    required this.name,
+    required this.slug,
+    required this.image,
+    this.type,
+    required this.description,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory Actor.fromJson(Map<String, dynamic> json) => Actor(
+    id: json["id"],
+    name: json["name"],
+    slug: json["slug"],
+    image: json["image"],
+    type: json["type"],
+    description: json["description"],
+    status: json["status"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "slug": slug,
+    "image": image,
+    "type": type,
+    "description": description,
+    "status": status,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
   };
 }

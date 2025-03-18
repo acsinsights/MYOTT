@@ -10,7 +10,7 @@ import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import '../../services/MovieService.dart';
 import '../../services/api_service.dart';
 
-class MoviesByGenre extends StatelessWidget {
+class MoviesByAudio extends StatelessWidget {
   final GenreController genreController = Get.find<GenreController>();
 
   @override
@@ -60,7 +60,6 @@ class MoviesByGenre extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Movies Section
                 if (movies.isNotEmpty) ...[
                   Text(
                     "Movies",

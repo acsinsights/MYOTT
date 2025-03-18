@@ -44,7 +44,7 @@ class MovieSlider extends StatelessWidget {
                       children: [
                         Image.network(
 
-                          movie.content.posterImg.toString(),
+                          movie.content.thumbnailImg.toString(),
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,

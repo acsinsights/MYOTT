@@ -135,7 +135,9 @@ class HelpAndSettingScreen extends StatelessWidget {
             linkedinUrl: "https://linkedin.com/",
             twitterUrl: "https://twitter.com/",
             instagramUrl: "https://instagram.com/",
-          )
+          ),
+
+          SizedBox(height: 25),
 
         ],
       ),

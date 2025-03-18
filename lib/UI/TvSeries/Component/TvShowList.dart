@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/UI/Model/Moviesmodel.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
-
 import '../../../services/api_service.dart';
 import '../../../services/tv_series_service.dart';
 
@@ -16,13 +14,12 @@ class TvSeriesMovieList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     if (tvSeries.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Text(
-            "No tvSeries available",
+            "No TV Series available",
             style: AppTextStyles.SubHeading2.copyWith(color: Colors.white),
           ),
         ),
@@ -40,9 +37,9 @@ class TvSeriesMovieList extends StatelessWidget {
             onTap: () {
               final seriesId = tvSeries[index].id;
               print(seriesId);
-              Get.to(() => TvSeriesDetailsPage(seriesId: seriesId,),
+              Get.to(() => TvSeriesDetailsPage(seriesId: seriesId),
                   binding: BindingsBuilder(() {
-                    Get.put(TVSeriesController(TVSeriesService(ApiService()))); // Ensure Controller is available
+                    Get.put(TVSeriesController(TVSeriesService(ApiService())));
                   }));
             },
             child: Padding(
@@ -55,10 +52,18 @@ class TvSeriesMovieList extends StatelessWidget {
                     height: 180,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: NetworkImage(tvSeries[index].thumbnailImg),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        tvSeries[index].thumbnailImg,
                         fit: BoxFit.cover,
-                        onError: (exception, stackTrace) => AssetImage('assets/images/placeholder.png'),
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/placeholder.png',
+                            fit: BoxFit.cover,
+                          );
+                        },
                       ),
                     ),
                   ),

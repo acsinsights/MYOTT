@@ -26,107 +26,163 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeController homeController = Get.put(
-        HomeController(HomeService(ApiService())));
-    final TVSeriesController tvSeriesController = Get.put(
-        TVSeriesController(TVSeriesService(ApiService())));
-
+    final HomeController homeController =
+    Get.put(HomeController(HomeService(ApiService())));
+    final TVSeriesController tvSeriesController =
+    Get.put(TVSeriesController(TVSeriesService(ApiService())));
 
     return Scaffold(
       backgroundColor: Colors.black,
-
       body: SafeArea(
-
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
               Obx(() {
-                if(homeController.isLoading.value){
+                if (homeController.isLoading.value) {
                   return Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: ShimmerLoader(
-                      height:400.h ,
+                      height: 400.h,
                     ),
                   );
                 }
                 return MovieSlider();
               }),
               const SizedBox(height: 20),
-
-              SectionTitle(
-                title: "latestRelease".tr,
-                onTap: () {
-                  Get.to(
-                    MovieGrid(
-                      movies: homeController.homePageData.value!.latest,
-                      // Correct way to pass list
-                      title: "latestRelease".tr,
-                    ),
-                  );
-                },
-              ),
               Obx(() {
                 if (homeController.isLoading.value) {
                   return MovieShrimmerLoader();
                 }
-                return MovieList(
-                    movies: homeController.homePageData.value!.latest);
+                if (homeController.homePageData.value!.latest.isEmpty) {
+                  return SizedBox();
+                }
+                return Column(
+                  children: [
+                    SectionTitle(
+                      title: "latestRelease".tr,
+                      showAll: false,
+                      onTap: () {
+                        Get.to(
+                          MovieGrid(
+                            movies: homeController.homePageData.value!.latest,
+                            // Correct way to pass list
+                            title: "latestRelease".tr,
+                          ),
+                        );
+                      },
+                    ),
+                    MovieList(
+                        movies: homeController.homePageData.value!.latest),
+                  ],
+                );
+              }),
+              SizedBox(height: 10),
+              Obx(() {
+                if (homeController.isLoading.value) {
+                  return MovieShrimmerLoader();
+                }
+                if (homeController.homePageData.value!.top10.isEmpty) {
+
+                }
+                return Column(
+                  children: [
+                    SectionTitle(
+                      title: "Top10".tr,
+                      showAll: false,
+                      onTap: () {
+                        Get.to(MovieGrid(
+                          movies: homeController.homePageData.value!.top10,
+                          title: "Top10".tr,
+                        ));
+                      },
+                    ),
+                    MovieList(
+                        movies: homeController.homePageData.value!.top10
+                            .take(10)
+                            .toList(),
+                        isTop10: true),
+                  ],
+                );
               }),
 
-              SizedBox(height: 10),
-
-
-              SectionTitle(title: "Top10".tr, onTap: () {
-                Get.to(MovieGrid(
-                  movies: homeController.homePageData.value!.top10,
-                  title: "Top10".tr,));
-              },),
-              Obx(() =>
-              homeController.isLoading.value
-                  ? MovieShrimmerLoader()
-                  : MovieList(
-                  movies: homeController.homePageData.value!.top10.take(10)
-                      .toList(), isTop10: true)),
-
-              SectionTitle(title: "Actors".tr, showAll: false),
               ActorList(),
 
-
-              SectionTitle(title: "TvSeries".tr, onTap: () {
-                Get.to(TvSeriesGird(tvSeries: tvSeriesController.tvSeries,
-                  title: "TvSeries".tr,));
+              Obx(() {
+                if (homeController.isLoading.value) {
+                  return MovieShrimmerLoader();
+                }
+                if (tvSeriesController.tvSeries.isEmpty) {
+                  return SizedBox();
+                }
+                return Column(
+                  children: [
+                    SectionTitle(
+                        title: "TvSeries".tr,
+                        onTap: () {
+                          Get.to(TvSeriesGrid(
+                            tvSeries: tvSeriesController.tvSeries,
+                            title: "TvSeries".tr,
+                          ));
+                        }),
+                    TvSeriesMovieList(tvSeries: tvSeriesController.tvSeries),
+                  ],
+                );
               }),
-              Obx(() =>
-              homeController.isLoading.value
-                  ? MovieShrimmerLoader()
-                  : TvSeriesMovieList(tvSeries: tvSeriesController.tvSeries)),
-
-              SizedBox(height: 10,),
-
-
-              SectionTitle(title: "Languages".tr, showAll: false,),
+              SizedBox(
+                height: 10,
+              ),
+              Obx(() {
+                if (homeController.homePageData.value!.audios.isEmpty) {
+                  return SizedBox();
+                }
+                return SectionTitle(
+                  title: "Languages".tr,
+                  showAll: false,
+                );
+              }),
               AudioSelection(),
-              SizedBox(height: 10,),
-
-              SectionTitle(title: "NewArrival".tr, onTap: () async {
-                SharedPreferences pref = await SharedPreferences.getInstance();
-                print(pref.getString("access_token"));
-                Get.to(MovieGrid(
-                  movies: homeController.homePageData.value!.newArrival,
-                  title: "NewArrival".tr,));
-              },),
-              Obx(() =>
-              homeController.isLoading.value
-                  ? MovieShrimmerLoader()
-                  : MovieList(
-                  movies: homeController.homePageData.value!.newArrival),
+              SizedBox(
+                height: 10,
               ),
 
-              SectionTitle(title: "Genre".tr, showAll: false,),
+              Obx(() {
+                if (homeController.isLoading.value) {
+                  return MovieShrimmerLoader();
+                }
+                if (homeController.homePageData.value!.newArrival.isEmpty) {
+                  return SizedBox();
+                }
+                return Column(
+                  children: [
+                    SectionTitle(
+                      title: "NewArrival".tr,
+                      onTap: () async {
+                        Get.to(MovieGrid(
+                          movies: homeController.homePageData.value!.newArrival,
+                          title: "NewArrival".tr,
+                        ));
+                      },
+                    ),
+                    MovieList(
+                        movies: homeController.homePageData.value!.newArrival),
+                  ],
+                );
+              }),
+              Obx(() {
+                if(homeController.homePageData.value!.genre.isEmpty){
+                  return SizedBox();
+                }
+                return SectionTitle(
+                  title: "Genre".tr,
+                  showAll: false,
+                );
+              }),
               GenreSelection(),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               ComingSoonWidget(),
             ],
           ),
@@ -135,4 +191,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
