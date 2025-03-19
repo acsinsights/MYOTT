@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:myott/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,7 +22,7 @@ class WishlistService {
       );
 
       if (response != null && response.statusCode == 200) {
-        await _updateLocalWishlist(id, value); // ✅ Local Storage Update
+        await _updateLocalWishlist(id,type ,value);
         return true;
       } else {
         return false;
@@ -31,12 +33,12 @@ class WishlistService {
     }
   }
 
-  Future<bool> removeFromWishlist(int movieId) async {
+  Future<bool> removeFromWishlist(int movieId, String type) async {
     try {
       var response = await apiService.get("removemovie/$movieId");
 
       if (response != null && response.statusCode == 200) {
-        await _updateLocalWishlist(movieId, 0); // ✅ Remove from local storage
+        await _updateLocalWishlist(movieId,type,0);
         return true;
       } else {
         print("❌ Failed to remove from wishlist: ${response?.statusCode}");
@@ -48,28 +50,111 @@ class WishlistService {
     }
   }
 
-  Future<void> saveWishlist(List<int> wishlistIds) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('wishlist', wishlistIds.map((id) => id.toString()).toList());
+  Future<List<Map<String, dynamic>>> fetchWishlistFromServer() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("access_token");
+
+      var response = await apiService.get("showwishlist");
+
+      print("🔵 Raw Wishlist Response: ${response?.data}"); // Debugging
+
+      if (response != null && response.statusCode == 200) {
+        var data = response.data;
+
+        // 🛠 Extract List from Map
+        if (data is Map<String, dynamic> && data.containsKey("wishlist")) {
+          List<dynamic> wishlist = data["wishlist"]; // ✅ Extracting list
+
+          return wishlist.map((item) => Map<String, dynamic>.from(item)).toList();
+        } else {
+          print("❌ Unexpected Wishlist Format: $data");
+          return [];
+        }
+      } else {
+        print("❌ Wishlist API failed: ${response?.statusCode}");
+        return [];
+      }
+    } catch (e) {
+      print("❌ Error fetching wishlist: $e");
+      return [];
+    }
   }
 
-  Future<List<int>> loadWishlist() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? savedWishlist = prefs.getStringList('wishlist');
 
-    if (savedWishlist != null) {
-      return savedWishlist.map((id) => int.parse(id)).toList();
+
+
+
+  Future<void> saveWishlist(List<Map<String, dynamic>> wishlist) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String wishlistJson = jsonEncode(wishlist);
+    prefs.setString('wishlist', wishlistJson);
+  }
+
+  Future<List<Map<String, dynamic>>> loadWishlist() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? wishlistJson = prefs.getString('wishlist');
+
+    if (wishlistJson != null) {
+      List<dynamic> decodedList = jsonDecode(wishlistJson);
+      return decodedList.map((item) => Map<String, dynamic>.from(item)).toList();
     }
     return [];
   }
 
-  Future<void> _updateLocalWishlist(int movieId, int value) async {
-    List<int> wishlist = await loadWishlist();
+
+  Future<void> _updateLocalWishlist(int movieId, String type, int value) async {
+    List<Map<String, dynamic>> wishlist = await loadWishlist();
+
     if (value == 1) {
-      wishlist.add(movieId);
+      wishlist.add({"id": movieId, "type": type});
     } else {
-      wishlist.remove(movieId);
+      wishlist.removeWhere((item) => item["id"] == movieId && item["type"] == type);
     }
+
     await saveWishlist(wishlist);
   }
+
+  Future<List<Map<String, dynamic>>> fetchMovieDetails(List<int> movieIds) async {
+    if (movieIds.isEmpty) return [];
+
+    try {
+      // ✅ Parallel API Calls
+      List<Future<Map<String, dynamic>?>> requests = movieIds.map((id) async {
+        var response = await apiService.get("movie/$id?secret=06c51069-0171-4f23-bf8f-41c9cd86762d");
+        if (response != null && response.statusCode == 200) {
+          return Map<String, dynamic>.from(response.data);
+        }
+        return null;
+      }).toList();
+
+      List<Map<String, dynamic>> movieDetails = (await Future.wait(requests)).whereType<Map<String, dynamic>>().toList();
+      return movieDetails;
+    } catch (e) {
+      print("❌ Error fetching movie details: $e");
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchTvSeriesDetails(List<int> tvSeriesIds) async {
+    if (tvSeriesIds.isEmpty) return [];
+
+    try {
+      List<Future<Map<String, dynamic>?>> requests = tvSeriesIds.map((id) async {
+        var response = await apiService.get("tvseries/$id?secret=06c51069-0171-4f23-bf8f-41c9cd86762d");
+        if (response != null && response.statusCode == 200) {
+          return Map<String, dynamic>.from(response.data);
+        }
+        return null;
+      }).toList();
+
+      List<Map<String, dynamic>> tvSeriesDetails = (await Future.wait(requests)).whereType<Map<String, dynamic>>().toList();
+      return tvSeriesDetails;
+    } catch (e) {
+      print("❌ Error fetching TV series details: $e");
+      return [];
+    }
+  }
+
+
 }

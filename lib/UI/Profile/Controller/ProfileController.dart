@@ -16,7 +16,7 @@ class ProfileController extends GetxController {
   ProfileController(this.profileService);
   var profile = Rxn<Profile>(); // Observable Profile Object
   Rx<File?> selectedImage = Rx<File?>(null);
-  final ImagePicker _picker = ImagePicker();
+  final RxBool isLoading = false.obs; // ✅ Loading state
 
   final nameController=TextEditingController();
   final emailController=TextEditingController();
@@ -31,7 +31,6 @@ class ProfileController extends GetxController {
   }
 
  
-  var isLoading = false.obs;
 
   Future<void> pickImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
@@ -48,19 +47,32 @@ class ProfileController extends GetxController {
         return;
       }
 
-      File imageFile = selectedImage.value!; // ✅ Ensuring it's non-null
-      String email = "user@example.com";
-      String name = "John Doe";
-      String phone = "1234567890";
+      isLoading.value = true;
+      update(); // ✅ Manually force UI update
 
-      await profileService.uploadUserData(
+      File imageFile = selectedImage.value!;
+      String email = emailController.text.trim();
+      String name = nameController.text.trim();
+      String phone = phoneController.text.trim();
+
+      var response = await profileService.uploadUserData(
         imageFile: imageFile,
         email: email,
         name: name,
         phone: phone,
       );
+
+      if (response != null && response.statusCode == 200) {
+        Get.offAll(() => MainScreen());
+      } else {
+        Get.snackbar("Error", "Failed to upload data");
+      }
     } catch (e) {
       print("Error uploading user data: $e");
+      Get.snackbar("Error", "Something went wrong!");
+    } finally {
+      isLoading.value = false;
+      update(); // ✅ Manually force UI update
     }
   }
 

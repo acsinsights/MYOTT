@@ -12,7 +12,6 @@ class MovieController extends GetxController {
   final WishlistService wishlistService = WishlistService();
 
   RxBool isWishlisted = false.obs;
-  RxList<int> wishlistIds = <int>[].obs; // Wishlist movie IDs list
 
   var isRated = false.obs;
   var isDownloaded = false.obs;
@@ -27,13 +26,21 @@ class MovieController extends GetxController {
     super.onInit();
     loadWishlistOnStartup();
   }
+  RxList<Map<String, String>> wishlistItems = <Map<String, String>>[].obs; // Stores Movie ID + Type
 
   Future<void> loadWishlistOnStartup() async {
-    wishlistIds.value = await wishlistService.loadWishlist();
+    List<Map<String, dynamic>> rawWishlist = await wishlistService.loadWishlist();
+
+    wishlistItems.value = rawWishlist.map((item) {
+      return {
+        "id": item["id"].toString(),
+        "type": item["type"].toString(),
+      };
+    }).toList();
   }
 
   Future<void> toggleWishlist(int movieId, String type) async {
-    int value = isWishlisted.value ? 0 : 1;
+    int value = isWishlisted.value ? 0 : 1; // 1 -> Add, 0 -> Remove
 
     bool success = await wishlistService.updateWishlist(
       id: movieId,
@@ -42,26 +49,22 @@ class MovieController extends GetxController {
     );
 
     if (success) {
-      isWishlisted.value = !isWishlisted.value;
+      isWishlisted.value = !isWishlisted.value; // Toggle UI state
 
       if (isWishlisted.value) {
-        wishlistIds.add(movieId);
+        wishlistItems.add({"id": movieId.toString(), "type": type});
       } else {
-        wishlistIds.remove(movieId);
+        wishlistItems.removeWhere((item) => item["id"] == movieId.toString());
       }
-      await wishlistService.saveWishlist(wishlistIds);
+
+      await wishlistService.saveWishlist(wishlistItems);
     } else {
       Get.snackbar("Error", "Failed to update wishlist");
     }
   }
 
-  void toggleRate() {
-    isRated.value = !isRated.value;
-  }
 
-  void toggleDownload() {
-    isDownloaded.value = !isDownloaded.value;
-  }
+
 
   void fetchMovieDetails(int movieId) async {
     try {
@@ -69,7 +72,7 @@ class MovieController extends GetxController {
 
       var fetchedMovieDetails = await moviesService.getMovieDetails(movieId);
 
-      isWishlisted.value = wishlistIds.contains(movieId);
+      isWishlisted.value = wishlistItems.any((item) => item["id"] == movieId.toString());
 
       movieDetails.value = fetchedMovieDetails;
     } catch (e) {
@@ -77,5 +80,15 @@ class MovieController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+
+  void toggleRate() {
+    isRated.value = !isRated.value;
+
+  }
+
+  void toggleDownload() {
+    isDownloaded.value = !isDownloaded.value;
   }
 }

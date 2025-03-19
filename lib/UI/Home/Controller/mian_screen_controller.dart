@@ -20,8 +20,8 @@ class MainScreenController extends GetxController {
   final List<Widget> screens = [
     HomeScreen(),
     SearchScreen(),
-    WishlistPage(),
-    CompleteProfileScreen(),
-    // ProfileScreen(),
+    ShowWishlistPage(),
+    // CompleteProfileScreen(),
+    ProfileScreen(),
   ];
 }

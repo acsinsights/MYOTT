@@ -27,7 +27,7 @@ class ProfileService {
     final token= prefs.getString("access_token");
 
     return await _apiService.postWithImage(
-      "/upload-user-data",
+      "profileupdate",
       data: formData,
       token: token,
     );

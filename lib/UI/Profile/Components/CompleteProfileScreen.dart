@@ -15,6 +15,7 @@ class CompleteProfileScreen extends StatelessWidget {
 
   final RxString emailError = "".obs;
   final RxString phoneError = "".obs;
+  final RxString nameError = "".obs;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,8 @@ class CompleteProfileScreen extends StatelessWidget {
             children: [
               _buildProfileImage(),
               const SizedBox(height: 20),
-              _buildTextField("Name", profileController.nameController),
+              Obx(() => _buildTextField("Name", profileController.nameController,
+                  errorText: nameError.value)),
               SizedBox(height: 12.h),
               Obx(() => _buildTextField("Email", profileController.emailController,
                   errorText: emailError.value)),
@@ -42,20 +44,23 @@ class CompleteProfileScreen extends StatelessWidget {
               Obx(() => _buildTextField("Phone Number", profileController.phoneController,
                   errorText: phoneError.value)),
               SizedBox(height: 24.h),
-              CustomButton(
-                text: "Submit",
-                onPressed: () async{
-                  if (_validateInputs()) {
-                    if (profileController.selectedImage.value != null) {
-                      SharedPreferences pref=await SharedPreferences.getInstance();
-                      print(pref.getString("access_token"));
-                      profileController.sendUserData();
-                    } else {
-                      Get.snackbar("Error", "Please select an image");
+              Obx(() {
+                return profileController.isLoading.value
+                    ? const CircularProgressIndicator(color: Colors.white) // ✅ Loading spinner
+                    : CustomButton(
+                  text: "Submit",
+                  onPressed: () async {
+                    if (_validateInputs()) {
+                      if (profileController.selectedImage.value != null) {
+                        profileController.sendUserData();
+                      } else {
+                        Get.snackbar("Error", "Please select an image");
+                      }
                     }
-                  }
-                },
-              ),
+                  },
+                );
+              }),
+
             ],
           ),
         ),
@@ -66,6 +71,8 @@ class CompleteProfileScreen extends StatelessWidget {
   /// 🔹 Validation Logic
   bool _validateInputs() {
     bool isValid = true;
+    String name = profileController.nameController.text.trim();
+
     String email = profileController.emailController.text.trim();
     String phone = profileController.phoneController.text.trim();
 
@@ -84,6 +91,13 @@ class CompleteProfileScreen extends StatelessWidget {
     } else {
       phoneError.value = "";
     }
+    if (!_isValidName(name)) {
+      nameError.value = "Name can't be empty or invalid";
+      isValid = false;
+    } else {
+      nameError.value = "";
+    }
+
 
     return isValid;
   }
@@ -100,6 +114,14 @@ class CompleteProfileScreen extends StatelessWidget {
     final RegExp phoneRegex = RegExp(r"^\d{10}$"); // Only 10 digits allowed
     return phoneRegex.hasMatch(phone);
   }
+  bool _isValidName(String name) {
+    if (name.isEmpty) {
+      return false; // ❌ Empty name
+    }
+    final RegExp nameRegex = RegExp(r"^[a-zA-Z\s]+$"); // ✅ Only letters & spaces allowed
+    return nameRegex.hasMatch(name);
+  }
+
 
   Widget _buildTextField(String label, TextEditingController controller,
       {String? errorText}) {

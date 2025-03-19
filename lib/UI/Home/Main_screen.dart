@@ -2,82 +2,77 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/Core//Utils/app_colors.dart';
 
 import 'Controller/mian_screen_controller.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   final MainScreenController controller = Get.put(MainScreenController());
-  DateTime? lastBackPress; // Stores last back press time
+  int selectedIndex = 0; // ✅ Yaha store hoga proper index
+  DateTime? lastBackPress;
+
+  Future<bool> onBackPressed() async {
+    if (selectedIndex != 0) {
+      setState(() {
+        selectedIndex = 0;
+      });
+      return false;
+    } else {
+      DateTime now = DateTime.now();
+      if (lastBackPress == null || now.difference(lastBackPress!) > Duration(seconds: 2)) {
+        lastBackPress = now;
+        Fluttertoast.showToast(
+          msg: "Press back again to exit",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.black54,
+          textColor: Colors.white,
+        );
+        return false;
+      }
+      SystemNavigator.pop();
+      return true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        if (controller.selectedIndex.value != 0) {
-          controller.changeIndex(0);
-          return false;
-        } else {
-          DateTime now = DateTime.now();
-          if (lastBackPress == null || now.difference(lastBackPress!) > Duration(seconds: 2)) {
-            lastBackPress = now;
-            Fluttertoast.showToast(
-              msg: "Press back again to exit",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              backgroundColor: Colors.black54,
-              textColor: Colors.white,
-            );
-            return false;
-          }
-          SystemNavigator.pop();
-          return true;
-        }
-      },
+      onWillPop: () => onBackPressed(),
       child: Scaffold(
-        body: Obx(() => controller.screens[controller.selectedIndex.value]),
-
+        body: controller.screens[selectedIndex], // ✅ GetX nahi use kiya yaha
         bottomNavigationBar: BottomAppBar(
           color: AppColors.background,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Obx(() => Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  icon: Icon(Icons.home,
-                      color: controller.selectedIndex.value == 0
-                          ? AppColors.primary2
-                          : AppColors.white),
-                  onPressed: () => controller.changeIndex(0),
-                ),
-                IconButton(
-                  icon: Icon(Icons.search,
-                      color: controller.selectedIndex.value == 1
-                          ? AppColors.primary2
-                          : AppColors.white),
-                  onPressed: () => controller.changeIndex(1),
-                ),
-                IconButton(
-                  icon: Icon(Icons.favorite,
-                      color: controller.selectedIndex.value == 2
-                          ? AppColors.primary2
-                          : AppColors.white),
-                  onPressed: () => controller.changeIndex(2),
-                ),
-                IconButton(
-                  icon: Icon(Icons.person,
-                      color: controller.selectedIndex.value == 3
-                          ? AppColors.primary2
-                          : AppColors.white),
-                  onPressed: () => controller.changeIndex(3),
-                ),
+                _buildNavItem(Icons.home, 0),
+                _buildNavItem(Icons.search, 1),
+                _buildNavItem(Icons.favorite, 2),
+                _buildNavItem(Icons.person, 3),
               ],
-            )),
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildNavItem(IconData icon, int index) {
+    return IconButton(
+      icon: Icon(icon, color: selectedIndex == index ? AppColors.primary2 : AppColors.white),
+      onPressed: () {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
     );
   }
 }
