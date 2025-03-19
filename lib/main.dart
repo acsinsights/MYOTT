@@ -48,8 +48,8 @@ class MyApp extends StatelessWidget {
           locale: TranslationService.getLocale(savedLang),
           fallbackLocale: Locale('en'),
           initialBinding: AuthBinding(),
-          home: MainScreen(),
-          // home: SplashScreen(),
+          // home: MainScreen(),
+          home: SplashScreen(),
         );
 
       },

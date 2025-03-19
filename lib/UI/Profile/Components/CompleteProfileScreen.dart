@@ -1,76 +1,196 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:myott/UI/Components/custom_button.dart';
 import 'package:myott/services/api_service.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../services/ProfileService.dart';
 import '../Controller/ProfileController.dart';
 
 class CompleteProfileScreen extends StatelessWidget {
-  final ProfileController profileController = Get.put(ProfileController(ProfileService(ApiService())));
+  final ProfileController profileController =
+      Get.put(ProfileController(ProfileService(ApiService())));
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+
+  final RxString emailError = "".obs;
+  final RxString phoneError = "".obs;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Complete Profile", style: TextStyle(color: Colors.white)),
+        title: const Text("Complete Profile",
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.black,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       backgroundColor: Colors.black,
-      body: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTextField("Name", nameController),
-            SizedBox(height: 12.h),
-            _buildTextField("Email", emailController),
-            SizedBox(height: 12.h),
-            _buildTextField("Phone Number", phoneController),
-            SizedBox(height: 24.h),
-            Obx(() => ElevatedButton(
-              onPressed: profileController.isLoading.value
-                  ? null
-                  : () {
-                profileController.createProfile(
-                  nameController.text,
-                  emailController.text,
-                  phoneController.text,
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent,
-                minimumSize: Size(double.infinity, 50.h),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildProfileImage(),
+              const SizedBox(height: 20),
+              _buildTextField("Name", profileController.nameController),
+              SizedBox(height: 12.h),
+              Obx(() => _buildTextField("Email", profileController.emailController,
+                  errorText: emailError.value)),
+              SizedBox(height: 12.h),
+              Obx(() => _buildTextField("Phone Number", profileController.phoneController,
+                  errorText: phoneError.value)),
+              SizedBox(height: 24.h),
+              CustomButton(
+                text: "Submit",
+                onPressed: () async{
+                  if (_validateInputs()) {
+                    if (profileController.selectedImage.value != null) {
+                      SharedPreferences pref=await SharedPreferences.getInstance();
+                      print(pref.getString("access_token"));
+                      profileController.sendUserData();
+                    } else {
+                      Get.snackbar("Error", "Please select an image");
+                    }
+                  }
+                },
               ),
-              child: profileController.isLoading.value
-                  ? CircularProgressIndicator(color: Colors.white)
-                  : Text("Submit", style: TextStyle(fontSize: 16.sp)),
-            )),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(color: Colors.white54),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white54),
-          borderRadius: BorderRadius.circular(8.r),
+  /// 🔹 Validation Logic
+  bool _validateInputs() {
+    bool isValid = true;
+    String email = profileController.emailController.text.trim();
+    String phone = profileController.phoneController.text.trim();
+
+    // Email validation
+    if (!_isValidEmail(email)) {
+      emailError.value = "Enter a valid email address";
+      isValid = false;
+    } else {
+      emailError.value = "";
+    }
+
+    // Phone number validation
+    if (!_isValidPhone(phone)) {
+      phoneError.value = "Enter a valid 10-digit phone number";
+      isValid = false;
+    } else {
+      phoneError.value = "";
+    }
+
+    return isValid;
+  }
+
+  /// 🔹 Email Validation Helper
+  bool _isValidEmail(String email) {
+    final RegExp emailRegex =
+        RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+    return emailRegex.hasMatch(email);
+  }
+
+  /// 🔹 Phone Validation Helper
+  bool _isValidPhone(String phone) {
+    final RegExp phoneRegex = RegExp(r"^\d{10}$"); // Only 10 digits allowed
+    return phoneRegex.hasMatch(phone);
+  }
+
+  Widget _buildTextField(String label, TextEditingController controller,
+      {String? errorText}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: controller,
+          keyboardType: label == "Phone Number"
+              ? TextInputType.number
+              : TextInputType.text,
+          style: const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            labelText: label,
+            labelStyle: const TextStyle(color: Colors.white54),
+            errorText: (errorText != null && errorText.isNotEmpty)
+                ? errorText
+                : null, // ✅ Fixed
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white54),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(8.r),
+        if (errorText != null && errorText.isNotEmpty) ...[
+          SizedBox(height: 5.h),
+          // Text(errorText, style: TextStyle(color: Colors.red, fontSize: 12.sp)),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildProfileImage() {
+    return Obx(() => Stack(
+          alignment: Alignment.bottomRight,
+          children: [
+            CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.grey[300],
+              backgroundImage: profileController.selectedImage.value != null
+                  ? FileImage(profileController.selectedImage.value!)
+                      as ImageProvider
+                  : const NetworkImage('https://via.placeholder.com/150'),
+            ),
+            InkWell(
+              onTap: () => _showImagePickerDialog(),
+              child: const CircleAvatar(
+                radius: 18,
+                backgroundColor: Colors.white,
+                child:
+                    Icon(Icons.camera_alt, color: Color(0xff50ba80), size: 20),
+              ),
+            ),
+          ],
+        ));
+  }
+
+  /// 🔹 Image Picker Dialog
+  void _showImagePickerDialog() {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera),
+              title: const Text("Take Photo"),
+              onTap: () => profileController.pickImage(ImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(Icons.image),
+              title: const Text("Choose from Gallery"),
+              onTap: () => profileController.pickImage(ImageSource.gallery),
+            ),
+          ],
         ),
       ),
     );

@@ -16,6 +16,7 @@ import 'Component/ExpandableDescription.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   final int movieId;
+
   const MovieDetailsPage({super.key, required this.movieId});
 
   @override
@@ -26,7 +27,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final MovieController movieController =
-        Get.put(MovieController(MoviesService(ApiService())));
+    Get.put(MovieController(MoviesService(ApiService())));
     movieController.fetchMovieDetails(widget.movieId);
 
     return Scaffold(
@@ -40,9 +41,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           if (movieController.movieDetails.value == null) {
             return Center(
                 child: Text(
-              "No movie details available",
-              style: AppTextStyles.SubHeading2,
-            ));
+                  "No movie details available",
+                  style: AppTextStyles.SubHeading2,
+                ));
           }
           final movie = movieController.movieDetails.value;
           return SingleChildScrollView(
@@ -107,7 +108,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                   width: 200.w,
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       SizedBox(
@@ -131,8 +132,12 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                         onPressed: () {
                                           // final vurl="https://videos.pexels.com/video-files/4620568/4620568-uhd_2732_1440_25fps.mp4";
 
-                                          Get.to(VideoPlayerPage(videoUrl: movie.movie.movieUploadUrl,subtitles: movie.movie.subtitles,dubbedLanguages: movie.movie.dubbedLanguages));
-
+                                          Get.to(VideoPlayerPage(
+                                              videoUrl: movie.movie
+                                                  .movieUploadUrl,
+                                              subtitles: movie.movie.subtitles,
+                                              dubbedLanguages: movie.movie
+                                                  .dubbedLanguages));
                                         },
                                         backgroundColor: Color(0xff290b0b),
                                         borderColor: Colors.white,
@@ -144,7 +149,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                         width: 180.w,
                                         text: "Trailer",
                                         onPressed: () {
-                                          Get.to(VideoPlayerPage(videoUrl: movie.movie.trailerUrl,subtitles: movie.movie.subtitles,dubbedLanguages: movie.movie.dubbedLanguages,));
+                                          Get.to(VideoPlayerPage(
+                                            videoUrl: movie.movie.trailerUrl,
+                                            subtitles: movie.movie.subtitles,
+                                            dubbedLanguages: movie.movie
+                                                .dubbedLanguages,));
                                         },
                                         backgroundColor: Colors.black,
                                         borderColor: Colors.white,
@@ -165,35 +174,53 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Column(
-                      children: [
-                        Icon(
-                          CupertinoIcons.add,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
-                          "WishList",
-                          style: AppTextStyles.SubHeadingb3,
-                        )
-                      ],
+                    GestureDetector(
+                      onTap: (){
+                        movieController.toggleWishlist(movie.movie.id, "M");
+                      },
+                      child: Column(
+                        children: [
+                          Obx(() => Icon(
+                            movieController.isWishlisted.value
+                                ? CupertinoIcons.heart_fill
+                                : CupertinoIcons.add,
+                            color: movieController.isWishlisted.value
+                                ? Colors.red // Change color when wishlisted
+                                : Colors.white, // Default color
+                          )),
+
+                          SizedBox(height: 10),
+                          Obx(() =>
+                              Text(
+                                movieController.isWishlisted.value
+                                    ? "Wishlisted"
+                                    : "WishList",
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        ],
+                      ),
                     ),
-                    Column(
-                      children: [
-                        Icon(
-                          CupertinoIcons.star,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
-                          "Rate",
-                          style: AppTextStyles.SubHeadingb3,
-                        )
-                      ],
+                    GestureDetector(
+                      onTap: movieController.toggleRate,
+                      child: Column(
+                        children: [
+                          Obx(() =>
+                              Icon(
+                                movieController.isRated.value
+                                    ? CupertinoIcons.star_fill
+                                    : CupertinoIcons.star,
+                                color: Colors.white,
+                              )),
+                          SizedBox(height: 10),
+                          Obx(() =>
+                              Text(
+                                movieController.isRated.value
+                                    ? "Rated"
+                                    : "Rate",
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        ],
+                      ),
                     ),
                     Column(
                       children: [
@@ -210,20 +237,31 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         )
                       ],
                     ),
-                    Column(
-                      children: [
-                        Icon(
-                          Icons.download,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
-                          "Download",
-                          style: AppTextStyles.SubHeadingb3,
-                        )
-                      ],
+                    GestureDetector(
+                      onTap: () {
+                        movieController.toggleDownload();
+                      },
+                      child: Column(
+                        children: [
+                          Obx(() {
+                            return Icon(
+                              movieController.isDownloaded.value
+                                  ? Icons.download_done : Icons.download,
+                              color: Colors.white,
+                            );
+                          }),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Obx(() {
+                            return Text(
+                              movieController.isDownloaded.value
+                              ? "Downloaded" : "Download",
+                              style: AppTextStyles.SubHeadingb3,
+                            );
+                          })
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -260,13 +298,13 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                 child: Image.network(
                                   actor.image,
                                   width:
-                                      70, // Explicitly setting width and height
+                                  70, // Explicitly setting width and height
                                   height: 70,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
                                     return Icon(Icons.error,
                                         color:
-                                            Colors.red); // Placeholder on error
+                                        Colors.red); // Placeholder on error
                                   },
                                 ),
                               ),
@@ -313,13 +351,13 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                               child: Image.network(
                                 director.image,
                                 width:
-                                    70, // Explicitly setting width and height
+                                70, // Explicitly setting width and height
                                 height: 70,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Icon(Icons.error,
                                       color:
-                                          Colors.red); // Placeholder on error
+                                      Colors.red); // Placeholder on error
                                 },
                               ),
                             ),
@@ -409,7 +447,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     controller: movieController.commentController,
                     hintText: "Enter Your Comment",
                     suffixIcon:
-                        IconButton(onPressed: () {}, icon: Icon(Icons.send)),
+                    IconButton(onPressed: () {}, icon: Icon(Icons.send)),
                   ),
                 )
               ],

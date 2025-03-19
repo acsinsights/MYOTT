@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:myott/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,26 +11,29 @@ class ProfileService {
 
   ProfileService(this._apiService);
 
+  Future<Response?> uploadUserData({
+    required File imageFile,
+    required String email,
+    required String name,
+    required String phone,
+  }) async {
+    FormData formData = FormData.fromMap({
+      'email': email,
+      'name': name,
+      'phone': phone,
+      'image': await MultipartFile.fromFile(imageFile.path, filename: imageFile.path.split('/').last),
+    });
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    final token= prefs.getString("access_token");
 
-  Future<Profile?> createProfile(Profile profile) async {
-    try {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      final token = preferences.getString("access_token");
-      print(token);
-
-      final response = await _apiService.post("profileupdate", data: profile.toJson(), token: token);
-
-      if (response != null && response.data != null && response.data is Map<String, dynamic>) {
-        print("API Response: ${response.data}");
-
-        return Profile.fromJson(response.data);
-
-      }
-
-      return null;
-    } catch (e) {
-      print("Profile creation failed: $e");
-      return null;
-    }
+    return await _apiService.postWithImage(
+      "/upload-user-data",
+      data: formData,
+      token: token,
+    );
   }
+
+
+
+
 }

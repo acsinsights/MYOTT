@@ -51,6 +51,25 @@ class ApiService {
     }
   }
 
+  Future<Response?> postWithImage(String endpoint, {dynamic data, String? token}) async {
+    try {
+      return await _dio.post(
+        endpoint,
+        data: data,  // Accepts FormData now
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+            "Content-Type": "multipart/form-data",
+          },
+        ),
+      );
+    } on DioException catch (e) {
+      _handleError(e);
+      return null;
+    }
+  }
+
+
   Future<Response?> putRequest(String endpoint, Map<String, dynamic> data) async {
     try {
       Response response = await _dio.put(endpoint, data: data);

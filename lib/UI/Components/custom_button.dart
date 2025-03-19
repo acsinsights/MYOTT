@@ -4,7 +4,8 @@ import '../../Core/Utils/app_colors.dart';
 import '../../Core/Utils/app_text_styles.dart';
 
 class CustomButton extends StatelessWidget {
-  final String text;
+  final String? text;
+  final Widget? child;
   final double? width;
   final VoidCallback onPressed;
   final Color? backgroundColor;
@@ -13,13 +14,15 @@ class CustomButton extends StatelessWidget {
 
   const CustomButton({
     Key? key,
-    required this.text,
+    this.text,
+    this.child,
     required this.onPressed,
     this.backgroundColor,
     this.borderRadius,
     this.borderColor,
     this.width,
-  }) : super(key: key);
+  })  : assert(text != null || child != null, 'Either text or child must be provided'),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +31,14 @@ class CustomButton extends StatelessWidget {
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? AppColors.primary, // Default to primary color
+          backgroundColor: backgroundColor ?? AppColors.primary,
           shape: RoundedRectangleBorder(
-            borderRadius: borderRadius ?? BorderRadius.circular(10), // Default 10px
-            side: BorderSide(color: borderColor ?? Colors.transparent, width: 2), // Border color
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            side: BorderSide(color: borderColor ?? Colors.transparent, width: 2),
           ),
         ),
         onPressed: onPressed,
-        child: Text(text, style: AppTextStyles.buttonText),
+        child: child ?? Text(text!, style: AppTextStyles.buttonText),
       ),
     );
   }

@@ -21,7 +21,7 @@ class MainScreenController extends GetxController {
     HomeScreen(),
     SearchScreen(),
     WishlistPage(),
-    // CompleteProfileScreen(),
-    ProfileScreen(),
+    CompleteProfileScreen(),
+    // ProfileScreen(),
   ];
 }
