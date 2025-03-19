@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../video_player/component/Video_palyer_widget.dart';
 import '../../Components/network_image_widget.dart';
 
 class MoviePoster extends StatelessWidget {

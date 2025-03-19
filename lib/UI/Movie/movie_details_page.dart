@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,13 +10,8 @@ import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/services/MovieService.dart';
 import 'package:myott/services/api_service.dart';
-import 'package:myott/video_player/component/Custom_videoPlayer.dart';
-import 'package:myott/video_player/component/SonylivStylePlayer.dart';
+import 'package:myott/video_player/component/Video_player_page.dart';
 
-
-import '../../video_player/component/Video_palyer_widget.dart';
-import '../../video_player/component/universalVideoPlayer.dart';
-import '../../video_player/component/videoPlayerScreen.dart';
 import 'Component/ExpandableDescription.dart';
 
 class MovieDetailsPage extends StatefulWidget {
@@ -30,10 +23,8 @@ class MovieDetailsPage extends StatefulWidget {
 }
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
-
   @override
   Widget build(BuildContext context) {
-
     final MovieController movieController =
         Get.put(MovieController(MoviesService(ApiService())));
     movieController.fetchMovieDetails(widget.movieId);
@@ -63,7 +54,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     height: 400.h,
                     child: Stack(
                       children: [
-
                         Positioned.fill(
                           child: Stack(
                             children: [
@@ -116,7 +106,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                 Container(
                                   width: 200.w,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       SizedBox(
@@ -138,18 +129,10 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                         width: 180.w,
                                         text: "Play Now",
                                         onPressed: () {
-                                          final vurl="https://videos.pexels.com/video-files/4620568/4620568-uhd_2732_1440_25fps.mp4";
-                                         final subtitleUrl="https://templatecookies.com/ott/public/uploads/movies/subtitles/fr_1741589524.srt";
-                                         final subtitleUrl1="https://templatecookies.com/ott/public/uploads/movies/subtitles/en_1741589524.srt";
+                                          // final vurl="https://videos.pexels.com/video-files/4620568/4620568-uhd_2732_1440_25fps.mp4";
 
-                                          // Get.to(VideoPlayerScreen(videoUrl: vurl, movieDetails: movie));
-                                          // Get.to(MoviePlayer(videoUrl: vurl,subtitlePath: "https://templatecookies.com/ott/public/uploads/movies/subtitles/fr_1741589524.srt",));
-Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
-                                          // Get.to(SonyLIVStyleVideoPlayer(videoUrl: vurl, movie: movie));
-                                          // Get.to(CustomVideoPlayer(videoUrl: vurl,));
-                                           //Get.to(UniversalVideoPlayer(videoUrl: vurl));
+                                          Get.to(VideoPlayerPage(videoUrl: movie.movie.movieUploadUrl,subtitles: movie.movie.subtitles,dubbedLanguages: movie.movie.dubbedLanguages));
 
-                                          // Get.to(VideoPlayerWidget(thumbnailUrl: movie.movie.thumbnailImg,videoUrl: movie.movie.movieUploadUrl,));
                                         },
                                         backgroundColor: Color(0xff290b0b),
                                         borderColor: Colors.white,
@@ -161,10 +144,8 @@ Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
                                         width: 180.w,
                                         text: "Trailer",
                                         onPressed: () {
-                                          // Get.to(UniversalVideoPlayer(videoUrl: movie.movie.trailerUrl));
-
-
-                                              },
+                                          Get.to(VideoPlayerPage(videoUrl: movie.movie.trailerUrl,subtitles: movie.movie.subtitles,dubbedLanguages: movie.movie.dubbedLanguages,));
+                                        },
                                         backgroundColor: Colors.black,
                                         borderColor: Colors.white,
                                       )
@@ -256,7 +237,9 @@ Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
                     style: AppTextStyles.SubHeadingb1,
                   ),
                 ),
-                SizedBox(height: 10.h,),
+                SizedBox(
+                  height: 10.h,
+                ),
                 SizedBox(
                   height: 100.h,
                   child: ListView.builder(
@@ -268,34 +251,42 @@ Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
                       return Padding(
                         padding: const EdgeInsets.only(right: 12.0),
                         child: GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Get.to(ActorsDetailedScreen(actors: actor));
-
                           },
                           child: Column(
                             children: [
                               ClipOval(
                                 child: Image.network(
                                   actor.image,
-                                  width: 70, // Explicitly setting width and height
+                                  width:
+                                      70, // Explicitly setting width and height
                                   height: 70,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
-                                    return Icon(Icons.error, color: Colors.red); // Placeholder on error
+                                    return Icon(Icons.error,
+                                        color:
+                                            Colors.red); // Placeholder on error
                                   },
                                 ),
                               ),
-                              SizedBox(height: 5.h,),
-                              Text(actor.name,style: AppTextStyles.SubHeading2,)
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Text(
+                                actor.name,
+                                style: AppTextStyles.SubHeading2,
+                              )
                             ],
                           ),
                         ),
-
                       );
                     },
                   ),
                 ),
-                SizedBox(height: 10.h,),
+                SizedBox(
+                  height: 10.h,
+                ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
@@ -303,7 +294,9 @@ Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
                     style: AppTextStyles.SubHeadingb1,
                   ),
                 ),
-                SizedBox(height: 10.h,),
+                SizedBox(
+                  height: 10.h,
+                ),
                 SizedBox(
                   height: 100.h,
                   child: ListView.builder(
@@ -319,24 +312,33 @@ Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
                             ClipOval(
                               child: Image.network(
                                 director.image,
-                                width: 70, // Explicitly setting width and height
+                                width:
+                                    70, // Explicitly setting width and height
                                 height: 70,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
-                                  return Icon(Icons.error, color: Colors.red); // Placeholder on error
+                                  return Icon(Icons.error,
+                                      color:
+                                          Colors.red); // Placeholder on error
                                 },
                               ),
                             ),
-                            SizedBox(height: 5.h,),
-                            Text(director.name,style: AppTextStyles.SubHeading2,)
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Text(
+                              director.name,
+                              style: AppTextStyles.SubHeading2,
+                            )
                           ],
                         ),
-
                       );
                     },
                   ),
                 ),
-                SizedBox(height: 20.h,),
+                SizedBox(
+                  height: 20.h,
+                ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
@@ -346,7 +348,6 @@ Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
                 ),
                 // SizedBox(height: 10.h,),
                 Padding(
-                  
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
@@ -354,35 +355,51 @@ Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Devendra Bharambe",style: AppTextStyles.SubHeading2,),
-                            SizedBox(height: 5.h,),
-                           Text("I already watched this movie but the movie is awesome and having a fantastic darama.Hero is so cool and one of my favourite person.",
-                                style: AppTextStyles.SubHeadingGrey2,
-
-                              ),
-                            SizedBox(height: 5.h,),
-
+                            Text(
+                              "Devendra Bharambe",
+                              style: AppTextStyles.SubHeading2,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Text(
+                              "I already watched this movie but the movie is awesome and having a fantastic darama.Hero is so cool and one of my favourite person.",
+                              style: AppTextStyles.SubHeadingGrey2,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
                           ],
                         ),
                       ),
-                      Divider(height: 1.h,color: CupertinoColors.white,),
-                      SizedBox(height: 5.h,),
+                      Divider(
+                        height: 1.h,
+                        color: CupertinoColors.white,
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
                       Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Devendra Bharambe",style: AppTextStyles.SubHeading2,),
-                            SizedBox(height: 5.h,),
-                            Text("I already watched this movie but the movie is awesome and having a fantastic darama.Hero is so cool and one of my favourite person.",
-                              style: AppTextStyles.SubHeadingGrey2,
-
+                            Text(
+                              "Devendra Bharambe",
+                              style: AppTextStyles.SubHeading2,
                             ),
-                            SizedBox(height: 5.h,),
-
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Text(
+                              "I already watched this movie but the movie is awesome and having a fantastic darama.Hero is so cool and one of my favourite person.",
+                              style: AppTextStyles.SubHeadingGrey2,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
                           ],
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -391,11 +408,10 @@ Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
                   child: CustomTextField(
                     controller: movieController.commentController,
                     hintText: "Enter Your Comment",
-                    suffixIcon: IconButton(onPressed: (){},
-                        icon: Icon(Icons.send)),
+                    suffixIcon:
+                        IconButton(onPressed: () {}, icon: Icon(Icons.send)),
                   ),
                 )
-
               ],
             ),
           );
@@ -404,5 +420,3 @@ Get.to(VideoPlayerScreenSub(videoUrl: vurl, subtitleUrl: subtitleUrl1  ));
     );
   }
 }
-
-

@@ -25,8 +25,8 @@ void main() async {
 
   final box = GetStorage();
   String savedLang = box.read('language') ?? 'en';
-  Get.put(AuthController(AuthService(ApiService()))); // Inject AuthController
-  Get.put(SettingController(SettingService(ApiService()))); // Inject AuthController
+  Get.put(AuthController(AuthService(ApiService())));
+  Get.put(SettingController(SettingService(ApiService())));
   runApp(MyApp(savedLang: savedLang));
 }
 
