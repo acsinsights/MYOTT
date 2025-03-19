@@ -21,16 +21,15 @@ class AccountSettingsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Subscription Banner
             Container(
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color(0xB0EDB71C), // Slightly less transparent
-                borderRadius: BorderRadius.circular(12), // Increased for smoother look
+                color: const Color(0xB0EDB71C),
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: const Color(0xFFEDB71C),
-                  width: 1.2, // Slightly thicker border
+                  width: 1.2,
                 ),
               ),
               child: Row(

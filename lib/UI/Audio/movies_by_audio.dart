@@ -128,7 +128,6 @@ class MoviesByAudio extends StatelessWidget {
   }
 }
 
-// Widget for displaying Movie/TV Series items
 class MovieOrTvItem extends StatelessWidget {
   final String imageUrl;
   final String title;

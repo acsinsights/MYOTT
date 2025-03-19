@@ -18,7 +18,7 @@ class ComingSoonController extends GetxController {
   }
 
   void startAutoScroll() {
-    _timer?.cancel(); // Cancel previous timer before starting a new one
+    _timer?.cancel();
     _timer = Timer.periodic(Duration(seconds: 3), (timer) {
       if (comingSoonMovies.isEmpty) return;
 

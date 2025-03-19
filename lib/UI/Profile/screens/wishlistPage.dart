@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class WatchlistScreen extends StatelessWidget {
   final List<String> moviePosters = [
-    'assets/images/latest-2.png', // Replace with actual paths
+    'assets/images/latest-2.png',
     'assets/images/latest-3.png',
   ];
 

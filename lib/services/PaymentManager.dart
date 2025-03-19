@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:uuid/uuid.dart';
 
 enum PaymentMethod { Razorpay, Stripe, PayPal }
 
@@ -17,7 +19,6 @@ class PaymentManager {
     PaymentMethod.PayPal: PayPalService(),
   };
 
-  /// **Start Payment**
   Future<void> startPayment(PaymentMethod method, double amount) async {
     PaymentService? service = _paymentServices[method];
     if (service != null) {

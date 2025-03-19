@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/UI/Movie/Model/movie_model.dart';
 
 class MovieListComponent extends StatelessWidget {
-  final List<MovieModel> movies; // Updated to accept MovieModel list
+  final List<MovieModel> movies;
   final bool isContinueWatching;
 
   MovieListComponent({required this.movies, required this.isContinueWatching});
@@ -25,7 +25,7 @@ class MovieListComponent extends StatelessWidget {
                 color: Colors.grey[900],
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: AssetImage(movies[index].bannerUrl), // Use movie poster URL
+                  image: AssetImage(movies[index].bannerUrl),
                   fit: BoxFit.cover,
                 ),
               ),

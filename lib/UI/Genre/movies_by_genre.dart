@@ -60,7 +60,6 @@ class MoviesByGenre extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Movies Section
                 if (movies.isNotEmpty) ...[
                   Text(
                     "Movies",
@@ -129,7 +128,6 @@ class MoviesByGenre extends StatelessWidget {
   }
 }
 
-// Widget for displaying Movie/TV Series items
 class MovieOrTvItem extends StatelessWidget {
   final String imageUrl;
   final String title;

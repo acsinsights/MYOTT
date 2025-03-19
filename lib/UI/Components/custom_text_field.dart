@@ -90,18 +90,18 @@
         obscureText: obscureText,
         cursorColor: Colors.red,
 
-        style: const TextStyle(color: Colors.white), // White text
+        style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           suffixIcon: suffixIcon,
           hintText: hintText,
-          hintStyle: TextStyle(color: Colors.white70), // Slightly faded white hint
+          hintStyle: TextStyle(color: Colors.white70),
           enabledBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white), // White underline
+            borderSide: BorderSide(color: Colors.white),
           ),
           focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: 2.0), // Thicker white underline on focus
+            borderSide: BorderSide(color: Colors.white, width: 2.0),
           ),
-          border: InputBorder.none, // No additional border
+          border: InputBorder.none,
         ),
       );
     }
@@ -130,10 +130,10 @@
           ),
         ),
         initialCountryCode: 'IN', // Default country
-        dropdownIcon: Icon(Icons.arrow_drop_down, color: Colors.white), // ✅ White Dropdown Icon
-        style: TextStyle(color: Colors.white), // ✅ Phone number text color
+        dropdownIcon: Icon(Icons.arrow_drop_down, color: Colors.white),
+        style: TextStyle(color: Colors.white),
 
-        dropdownTextStyle: TextStyle(color: Colors.white), // ✅ Country code text color
+        dropdownTextStyle: TextStyle(color: Colors.white),
         showDropdownIcon: true,
 
         onChanged: (PhoneNumber phone) {
@@ -141,17 +141,17 @@
         },
 
         pickerDialogStyle: PickerDialogStyle(
-          backgroundColor: Colors.black, // ✅ Dialog Background to Black
+          backgroundColor: Colors.black,
           searchFieldInputDecoration: InputDecoration(
             hintText: "Search country...",
-            hintStyle: TextStyle(color: Colors.white54), // ✅ Search hint color
+            hintStyle: TextStyle(color: Colors.white54),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.white),
             ),
           ),
-          countryNameStyle: TextStyle(color: Colors.white), // ✅ Country Name Color
-          countryCodeStyle: TextStyle(color: Colors.white), // ✅ Country Code Color
+          countryNameStyle: TextStyle(color: Colors.white),
+          countryCodeStyle: TextStyle(color: Colors.white),
           searchFieldCursorColor: Colors.white
         ),
       );

@@ -62,7 +62,7 @@ class PrivacyPolicy extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        page.description, // Display description
+                        page.description,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white70,

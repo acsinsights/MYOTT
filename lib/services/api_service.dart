@@ -40,8 +40,8 @@ class ApiService {
         data: data,
         options: Options(
           headers: {
-            "Authorization": "Bearer $token", // Add Bearer Token
-            "Content-Type": "application/json", // Ensure JSON data
+            "Authorization": "Bearer $token",
+            "Content-Type": "application/json",
           },
         ),
       );

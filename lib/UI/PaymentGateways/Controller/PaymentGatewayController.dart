@@ -12,14 +12,14 @@ import '../Model/PaymentGateway.dart';
 class PaymentGatewayController extends GetxController {
   final PaymentService _paymentService = PaymentService(ApiService());
 
-  var paymentGateways = <PaymentGateway>[].obs; // Store fetched data
-  var isLoading = false.obs; // Handle loading state
-  var errorMessage = ''.obs; // Store error message if any
+  var paymentGateways = <PaymentGateway>[].obs;
+  var isLoading = false.obs;
+  var errorMessage = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchPaymentGatewaysKeysAndSecrets(); // Automatically fetch on controller init
+    fetchPaymentGatewaysKeysAndSecrets();
   }
 
   Future<void> fetchPaymentGatewaysKeysAndSecrets() async {

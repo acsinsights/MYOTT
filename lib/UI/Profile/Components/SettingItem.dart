@@ -6,7 +6,7 @@ class SettingItem extends StatelessWidget {
   final String? subtitle;
   final IconData icon;
   final bool isLogout;
-  final VoidCallback? onTap; // Callback function for onTap
+  final VoidCallback? onTap;
 
   const SettingItem({
     Key? key,

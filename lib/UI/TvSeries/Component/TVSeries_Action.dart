@@ -36,19 +36,19 @@ class TvSeiesActionButton extends StatelessWidget {
         _buildActionButton(
           icon: Icons.share,
           label: "Share",
-          onPressed: () {}, // Implement sharing functionality
+          onPressed: () {},
           color: Colors.white,
         ),
         _buildActionButton(
           icon: Icons.picture_in_picture_alt,
           label: "pip",
-          onPressed: () {}, // Implement sharing functionality
+          onPressed: () {},
           color: Colors.white,
         ),
         _buildActionButton(
           icon: Icons.cast,
           label: "cast",
-          onPressed: () {}, // Implement sharing functionality
+          onPressed: () {},
           color: Colors.white,
         ),
       ],

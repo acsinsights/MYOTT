@@ -13,9 +13,8 @@ import 'Model/blog_model.dart';
 import 'blog_controller.dart';
 
 class BlogScreen extends StatelessWidget {
-  // Register controller lazily to avoid unnecessary re-initialization
   final BlogController blogController = Get.put(
-    BlogController(SettingService(ApiService())), // Ensure SettingService is injected globally
+    BlogController(SettingService(ApiService())),
   );
 
   @override

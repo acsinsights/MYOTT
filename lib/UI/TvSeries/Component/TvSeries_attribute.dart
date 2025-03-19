@@ -17,7 +17,7 @@ class TVseriesAttributes extends StatefulWidget {
 }
 
 class _TVseriesAttributesState extends State<TVseriesAttributes> {
-  Set<String> selectedItems = {}; // Stores selected items
+  Set<String> selectedItems = {};
 
   @override
   Widget build(BuildContext context) {

@@ -42,7 +42,7 @@ class SubscriptionCard extends StatelessWidget {
               SizedBox(height: 12),
               Radio<int>(
                 value: index,
-                groupValue: isSelected ? index : -1, // ✅ Always compare with an actual int
+                groupValue: isSelected ? index : -1,
                 onChanged: (val) => onSelect(),
                 activeColor: Colors.red,
               ),

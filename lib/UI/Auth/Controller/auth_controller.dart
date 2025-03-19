@@ -17,7 +17,6 @@ import '../Otp/verify_otpModel.dart'; // Import Secure Storage
 
 class AuthController extends GetxController {
   final AuthService _authService;
-  final SecureStorageService _secureStorage = SecureStorageService(); // ✅ Add Secure Storage
 
   AuthController(this._authService);
 
@@ -50,17 +49,9 @@ class AuthController extends GetxController {
     await prefs.setString("expires_at", expiresAt);  // Save expiry correctly
   }
 
-  Future<String?> getAuthToken() async {
-    return await _secureStorage.read(key: "accessToken");
-  }
 
-  Future<void> clearAllSecureStorage() async {
-    List<String> keys = ["accessToken", "tokenType", "expiresIn", "refreshToken"];
 
-    for (String key in keys) {
-      await _secureStorage.delete(key: key);
-    }
-  }
+
 
   void toggleLoginMethod() {
     isPhoneLogin.value = !isPhoneLogin.value;
@@ -165,7 +156,7 @@ class AuthController extends GetxController {
         await saveAuthToken(
             response.token!,
             response.tokenType ?? "Bearer",
-            response.expiresAt ?? DateTime.now().toIso8601String() // ✅ Use expiresAt
+            response.expiresAt ?? DateTime.now().toIso8601String()
         );
         bool? isNewUser = prefs.getBool("creating_new_account");
         print("✅ OTP Verified. New Account: $isNewUser");
@@ -240,14 +231,14 @@ class AuthController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? expiresAt = prefs.getString("expires_at");
 
-    if (expiresAt == null) return true; // No expiry? Assume expired.
+    if (expiresAt == null) return true;
 
     DateTime expiryDate = DateTime.parse(expiresAt);
     DateTime now = DateTime.now();
 
     print("🕒 Token Expiry Date: $expiryDate | Current Time: $now");
 
-    return now.isAfter(expiryDate); // True if expired
+    return now.isAfter(expiryDate);
   }
 
 

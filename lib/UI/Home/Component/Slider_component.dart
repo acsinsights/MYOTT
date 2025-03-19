@@ -89,7 +89,6 @@ class MovieSlider extends StatelessWidget {
                           ),
                         ),
 
-                        // Buttons: "Watch Now" and "Watch Later"
                         Positioned(
                           left: 16.w,
                           bottom: 20.h,
@@ -147,16 +146,15 @@ class MovieSlider extends StatelessWidget {
                 viewportFraction: 0.9,
                 aspectRatio: 16 / 9,
                 onPageChanged: (index, reason) {
-                  movieSliderController.updatePage(index); // Updating index for indicators
+                  movieSliderController.updatePage(index);
                 },
               ),
             );
           }),
         ),
 
-        SizedBox(height: 10.h), // Responsive spacing
+        SizedBox(height: 10.h),
 
-        // Dot Indicator
         Obx(() {
           int currentIndex = movieSliderController.currentIndex.value;
           int totalSlides = homeController.homePageData.value!.slider.length;
@@ -177,9 +175,9 @@ class MovieSlider extends StatelessWidget {
             effect: ExpandingDotsEffect(
               activeDotColor: AppColors.primary,
               dotColor: Colors.white,
-              dotHeight: 8.h, // Responsive dot height
-              dotWidth: 8.w, // Responsive dot width
-              spacing: 6.w, // Responsive spacing
+              dotHeight: 8.h,
+              dotWidth: 8.w,
+              spacing: 6.w,
             ),
           );
         }),

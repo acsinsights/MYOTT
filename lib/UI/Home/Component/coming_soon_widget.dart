@@ -29,10 +29,10 @@ class ComingSoonWidget extends StatelessWidget {
           itemCount: homeController.homePageData.value!.upcomingMovies?.length,
           options: CarouselOptions(
             autoPlay: true,
-            viewportFraction: 0.85, // Adjusts width of each card
-            enlargeCenterPage: false, // Zoom effect
+            viewportFraction: 0.85,
+            enlargeCenterPage: false,
             autoPlayInterval: Duration(seconds: 5),
-            height: MediaQuery.of(context).size.height * 0.7, // ✅ Ensures it fits inside screen
+            height: MediaQuery.of(context).size.height * 0.7,
 
           ),
           itemBuilder: (context, index, realIndex) {
@@ -53,7 +53,7 @@ class ComingSoonWidget extends StatelessWidget {
                 ],
               ),
               child: Column(
-                mainAxisSize: MainAxisSize.min, // 🔹 Ensures dynamic height
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ClipRRect(
@@ -79,7 +79,7 @@ class ComingSoonWidget extends StatelessWidget {
                   Text(
                     movie.description,
                     textAlign: TextAlign.center,
-                    maxLines: 3, // Limit description lines
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(color: Colors.white, fontSize: 14),
                   ),

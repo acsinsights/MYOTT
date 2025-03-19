@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:myott/UI/PaymentGateways/Controller/PaymentGatewayController.dart';
-import 'package:myott/services/payment_service.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
+
 
 import '../../services/PaymentManager.dart';
 import '../Profile/screens/SubscriptionPackage/SubscriptionController.dart';
@@ -69,6 +67,7 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
 
               ),
             ),
+
           ],
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 
 class MovieActionButtons extends StatelessWidget {
@@ -51,7 +50,7 @@ class MovieActionButtons extends StatelessWidget {
           _buildActionButton(
             icon: Icons.cast,
             label: "cast",
-            onPressed: () {}, // Implement sharing functionality
+            onPressed: () {},
             color: Colors.white,
           ),
         ],

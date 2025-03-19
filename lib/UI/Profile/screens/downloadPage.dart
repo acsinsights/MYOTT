@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Downloadpage extends StatelessWidget {
   final List<String> moviePosters = [
-    'assets/images/latest-4.png', // Replace with actual paths
+    'assets/images/latest-4.png',
     'assets/images/latest-5.png',
   ];
 
@@ -28,10 +28,10 @@ class Downloadpage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, // 3 columns like in the image
+              crossAxisCount: 3,
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
-              childAspectRatio: 0.7, // Adjust for movie poster aspect ratio
+              childAspectRatio: 0.7,
             ),
             itemCount: moviePosters.length,
             itemBuilder: (context, index) {

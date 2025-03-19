@@ -25,14 +25,14 @@ class NetworkImageWidget extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
-      placeholder: (context, url) => ShimmerLoader(), // Shimmer effect
+      placeholder: (context, url) => ShimmerLoader(),
       errorWidget: (context, url, error) => Image.asset(
         errorAsset ?? 'assets/images/default_placeholder.png',
         width: width,
         height: height,
         fit: fit,
       ),
-      fadeInDuration: Duration(milliseconds: 500), // Fade-in effect
+      fadeInDuration: Duration(milliseconds: 500),
       fadeOutDuration: Duration(milliseconds: 200),
     );
   }

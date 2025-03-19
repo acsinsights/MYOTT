@@ -38,15 +38,15 @@ class AudioSelection extends StatelessWidget {
             },
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 3, // Showing 3 shimmer items as placeholders
-              padding: EdgeInsets.symmetric(horizontal: 16), // Optimized padding
+              itemCount: 3,
+              padding: EdgeInsets.symmetric(horizontal: 16),
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.only(right: 16.0), // Space between shimmer items
+                  padding: const EdgeInsets.only(right: 16.0),
                   child: ShimmerLoader(
-                    height: 160, // Same as CircleAvatar's diameter (radius * 2)
+                    height: 160,
                     width: 100,
-                    borderRadius: 12, // Fully rounded to match CircleAvatar
+                    borderRadius: 12,
                   ),
                 );
               },
@@ -74,7 +74,7 @@ class AudioSelection extends StatelessWidget {
                     width: 140,
                     height: 100,
                     decoration: BoxDecoration(
-                       color: Color(colors[index % colors.length]), // ✅ Provide default color if null
+                       color: Color(colors[index % colors.length]),
                       borderRadius: BorderRadius.circular(12),
 
                     ),

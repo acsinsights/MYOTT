@@ -7,9 +7,9 @@ class DynamicPageController extends GetxController {
   final SettingService _settingService = SettingService(ApiService()); // Proper DI
   var isLoading = false.obs;
 
-  var termsAndConditions = <CustomPage>[].obs; // Use CustomPage instead of PageModel
-  var privacyAndPolicy = <CustomPage>[].obs; // Use CustomPage instead of PageModel
-  var aboutUs = <CustomPage>[].obs; // Use CustomPage instead of PageModel
+  var termsAndConditions = <CustomPage>[].obs;
+  var privacyAndPolicy = <CustomPage>[].obs;
+  var aboutUs = <CustomPage>[].obs;
   @override
   void onInit() {
     super.onInit();
@@ -24,13 +24,13 @@ class DynamicPageController extends GetxController {
       var response = await _settingService.getPandP("Terms_And_Condition");
 
       if (response.isNotEmpty) {
-        termsAndConditions.value = response; // Store the list of CustomPage
+        termsAndConditions.value = response;
       } else {
-        termsAndConditions.clear(); // Clear if empty
+        termsAndConditions.clear();
       }
     } catch (e) {
       print("Error fetching page content: $e");
-      termsAndConditions.clear(); // Handle error
+      termsAndConditions.clear();
     } finally {
       isLoading(false);
     }
@@ -41,13 +41,13 @@ class DynamicPageController extends GetxController {
       var response = await _settingService.getPandP("Privacy_Policy");
 
       if (response.isNotEmpty) {
-        privacyAndPolicy.value = response; // Store the list of CustomPage
+        privacyAndPolicy.value = response;
       } else {
-        privacyAndPolicy.clear(); // Clear if empty
+        privacyAndPolicy.clear();
       }
     } catch (e) {
       print("Error fetching page content: $e");
-      privacyAndPolicy.clear(); // Handle error
+      privacyAndPolicy.clear();
     } finally {
       isLoading(false);
     }
@@ -58,13 +58,13 @@ class DynamicPageController extends GetxController {
       var response = await _settingService.getPandP("About_Us");
 
       if (response.isNotEmpty) {
-        aboutUs.value = response; // Store the list of CustomPage
+        aboutUs.value = response;
       } else {
-        aboutUs.clear(); // Clear if empty
+        aboutUs.clear();
       }
     } catch (e) {
       print("Error fetching page content: $e");
-      aboutUs.clear(); // Handle error
+      aboutUs.clear();
     } finally {
       isLoading(false);
     }

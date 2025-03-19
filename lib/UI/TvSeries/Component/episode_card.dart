@@ -26,7 +26,7 @@ class EpisodeCard extends StatelessWidget {
                 return Image.asset(
                   'assets/images/CommingSoon/comming_movie.png',
                   width: 120,
-                  height: 70,// Replace with your asset image path
+                  height: 70,
                   fit: BoxFit.cover,
                 );
               },

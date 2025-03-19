@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Get.offAll(LoginPage());
     } else {
       print("✅ Token is still valid, navigating to Home.${preferences.getString("access_token")}");
-      Get.offAll(MainScreen());  // Change as per your app's home screen
+      Get.offAll(MainScreen());
     }
   }
 

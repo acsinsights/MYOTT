@@ -5,13 +5,13 @@ import '../../Core/Utils/app_text_styles.dart';
 class SectionTitle extends StatelessWidget {
   final String title;
   final GestureTapCallback? onTap;
-  final bool showAll; // New parameter with default value
+  final bool showAll;
 
   const SectionTitle({
     Key? key,
     required this.title,
     this.onTap,
-    this.showAll = true, // Default value set to true
+    this.showAll = true,
   }) : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class SectionTitle extends StatelessWidget {
             title,
             style: AppTextStyles.SubHeadingb1,
           ),
-          if (showAll) // Conditionally show "Showall"
+          if (showAll)
             InkWell(
               onTap: onTap,
               child: Text(

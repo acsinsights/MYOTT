@@ -1,4 +1,3 @@
-import 'package:myott/UI/Model/Moviesmodel.dart';
 
 class ActorDetialsModel{
   List<ActorsMoviesModel> movies;

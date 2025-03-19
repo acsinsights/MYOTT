@@ -4,7 +4,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Components/custom_button.dart';
 import 'package:myott/UI/Profile/Controller/ProfileController.dart';
-import 'package:myott/services/Setting_service.dart';
 
 import '../../../../services/ProfileService.dart';
 import '../../../../services/api_service.dart';

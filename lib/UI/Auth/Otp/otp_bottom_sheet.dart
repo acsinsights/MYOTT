@@ -25,7 +25,7 @@ class OtpBottomSheet extends StatelessWidget {
           color: Colors.black,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           border: Border(
-            top: BorderSide(color: Colors.white, width: 3), // White Stroke on Top
+            top: BorderSide(color: Colors.white, width: 3),
           ),
         ),
         child: Column(
@@ -46,7 +46,7 @@ class OtpBottomSheet extends StatelessWidget {
             SizedBox(height: 20),
 
             TextField(
-              controller: otpController.otpController, // ✅ Use OtpController's input
+              controller: otpController.otpController,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,

@@ -72,7 +72,7 @@ class LoginPage extends StatelessWidget {
                         text: "Get OTP".tr,
                         onPressed: () async {
                           if (authController.isPhoneLogin.value) {
-                            String fullPhoneNumber = authController.mobileNumber.value.trim(); // ✅ This now includes country code
+                            String fullPhoneNumber = authController.mobileNumber.value.trim();
 
                             if (fullPhoneNumber.isEmpty || !fullPhoneNumber.startsWith("+")) {
                               Get.snackbar("Error", "Please enter a valid phone number",

@@ -89,7 +89,8 @@ class SearchScreen extends StatelessWidget {
             Get.to(() => TvSeriesDetailsPage(seriesId: content.id));
             break;
           case ContentType.audio:
-          // Implement navigation for audio content
+            // Get.to(()=> AudioDetailsPage(audioId: content.id));
+
             break;
         }
       },

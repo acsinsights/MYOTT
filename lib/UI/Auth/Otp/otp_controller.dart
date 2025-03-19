@@ -13,7 +13,6 @@ class OtpController extends GetxController {
     super.onInit();
   }
 
-  /// **Start Countdown Timer**
   void startTimer() {
     timerValue.value = 30;
     _timer?.cancel();
@@ -26,7 +25,6 @@ class OtpController extends GetxController {
     });
   }
 
-  /// **Reset Timer When OTP is Resent**
   void resetTimer() {
     timerValue.value = 30;
     startTimer();

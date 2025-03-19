@@ -48,16 +48,16 @@ class ProfileScreen extends StatelessWidget {
             UserProfile(),
             SizedBox(height: 16),
 
-            Text(
-              "ContinueWatching".tr,
-              style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: 10,
-            ),
+            // Text(
+            //   "ContinueWatching".tr,
+            //   style: GoogleFonts.poppins(
+            //       color: Colors.white,
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.bold),
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             // MovieListComponent(movies: movieController.movies, isContinueWatching: true),
           ],
         ),

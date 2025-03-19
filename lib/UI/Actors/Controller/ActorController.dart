@@ -19,12 +19,11 @@ class ActorController extends GetxController {
     super.onInit();
     fetchActorDetails();
 
-    // Listen to scroll changes
     scrollController.addListener(() {
       if (scrollController.offset > 300) {
-        showTitle.value = true; // Show title when scrolled down
+        showTitle.value = true;
       } else {
-        showTitle.value = false; // Hide title when at top
+        showTitle.value = false;
       }
     });
   }

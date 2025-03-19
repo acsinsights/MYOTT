@@ -1,9 +1,5 @@
 import 'dart:convert';
-import 'package:http/http.dart'as http;
-import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:get/get.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
+
 
 import '../UI/PaymentGateways/Model/PaymentGateway.dart';
 import 'api_service.dart';

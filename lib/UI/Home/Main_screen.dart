@@ -16,11 +16,9 @@ class MainScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         if (controller.selectedIndex.value != 0) {
-          // If not on the home screen, go to home screen
           controller.changeIndex(0);
-          return false; // Prevent app from closing
+          return false;
         } else {
-          // If already on home, handle double back press to exit
           DateTime now = DateTime.now();
           if (lastBackPress == null || now.difference(lastBackPress!) > Duration(seconds: 2)) {
             lastBackPress = now;
@@ -31,9 +29,9 @@ class MainScreen extends StatelessWidget {
               backgroundColor: Colors.black54,
               textColor: Colors.white,
             );
-            return false; // Prevent exit on first back press
+            return false;
           }
-          SystemNavigator.pop(); // Exit the app
+          SystemNavigator.pop();
           return true;
         }
       },

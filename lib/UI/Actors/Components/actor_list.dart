@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
-import 'package:myott/UI/Actors/Controller/ActorController.dart';
-import 'package:myott/UI/Components/network_image_widget.dart';
+
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
-import 'package:myott/services/ActorService.dart';
 
 import '../../../services/Home_service.dart';
 import '../../../services/api_service.dart';
@@ -59,11 +57,11 @@ class ActorList extends StatelessWidget {
                             ClipOval(
                               child: Image.network(
                                 actor.image,
-                                width: 70, // Explicitly setting width and height
+                                width: 70,
                                 height: 70,
                                 fit: BoxFit.fill,
                                 errorBuilder: (context, error, stackTrace) {
-                                  return Icon(Icons.error, color: Colors.red); // Placeholder on error
+                                  return Icon(Icons.error, color: Colors.red);
                                 },
                               ),
                             ),

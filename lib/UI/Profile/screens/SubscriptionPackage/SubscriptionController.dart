@@ -49,7 +49,6 @@ class SubscriptionController extends GetxController {
 
     final selectedPlan = plans[selectedPlanIndex.value!];
 
-    // Convert int amount to string before passing it
     paymentGatewayController.initiatePayment(
       amount: selectedPlan.amount.toString(),
       currency: "INR",

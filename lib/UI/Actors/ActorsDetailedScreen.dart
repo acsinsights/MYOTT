@@ -26,7 +26,7 @@ class ActorsDetailedScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: SafeArea(
         child: NestedScrollView(
-          controller: actorController.scrollController, // ✅ Attach scroll controller
+          controller: actorController.scrollController,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
@@ -42,7 +42,7 @@ class ActorsDetailedScreen extends StatelessWidget {
                 ),
                 title: Obx(() => actorController.showTitle.value
                     ? Text(actors.name, style: AppTextStyles.SubHeadingb2)
-                    : SizedBox.shrink()), // ✅ Show title only when scrolled
+                    : SizedBox.shrink()),
                 flexibleSpace: FlexibleSpaceBar(
                   background: Stack(
                     fit: StackFit.expand,
@@ -185,10 +185,10 @@ class ActorsDetailedScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, // 3 columns like in the image
+                            crossAxisCount: 3,
                             crossAxisSpacing: 8,
                             mainAxisSpacing: 8,
-                            childAspectRatio: 0.5, // Adjust for movie poster aspect ratio
+                            childAspectRatio: 0.5,
                           ),
                           itemCount: actorController.actorData.value!.tvSeries.length,
                           itemBuilder: (context, index) {
@@ -209,7 +209,7 @@ class ActorsDetailedScreen extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8.r),
                                       image: DecorationImage(
-                                        image: NetworkImage(series.thumbnailImg), // Use NetworkImage if from API
+                                        image: NetworkImage(series.thumbnailImg),
                                         fit: BoxFit.cover,
                                       ),
                                     ),

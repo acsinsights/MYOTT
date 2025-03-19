@@ -15,7 +15,6 @@ class TranslationService extends Translations {
 
   static Map<String, Map<String, String>> translations = {};
 
-  /// 🚀 **Load translations from JSON files**
   static Future<void> loadTranslations() async {
     for (var lang in langs) {
       try {
@@ -29,7 +28,6 @@ class TranslationService extends Translations {
     print("✅ Translations Loaded: ${translations.keys}");
   }
 
-  /// ✅ **GetX uses this for translations**
   @override
   Map<String, Map<String, String>> get keys => translations;
 

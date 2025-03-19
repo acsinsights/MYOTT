@@ -8,7 +8,7 @@ import 'package:dio/dio.dart';
 class MoviesService {
   final ApiService _apiService;
 
-  MoviesService(this._apiService); // ✅ Dependency Injection
+  MoviesService(this._apiService);
 
   /// 🔹 **Fetch Movie Details**
     Future<MovieDetailsModel> getMovieDetails(int movieId) async {

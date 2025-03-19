@@ -10,13 +10,12 @@ import '../../Genre/Model/genre_model.dart';
 import '../Model/HomePageModel.dart';
 
 class HomeController extends GetxController {
-  final HomeService _homeService; // ✅ Dependency Injection
+  final HomeService _homeService;
 
   var homePageData = Rxn<HomePageModel>();
 
   var isLoading = false.obs;
 
-  // ✅ Constructor - Pass HomeService
   HomeController(this._homeService);
 
   @override

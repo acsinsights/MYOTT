@@ -15,7 +15,6 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
     {"name": "Kids", "image": "assets/Avtars/person2.png"},
   ];
 
-  // Function to Update Name After Editing
   void _updateProfileName(int index, String newName) {
     setState(() {
       profiles[index]["name"] = newName;

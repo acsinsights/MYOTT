@@ -93,13 +93,12 @@ class MovieList extends StatelessWidget {
                     ],
                   ),
 
-                  // Show ranking image if isTop10 is true and within top 10 range
                   if (isTop10 && index < topRankImages.length)
                     Positioned(
                       bottom: 60,
                       right: 8,
                       child: Image.asset(
-                        topRankImages[index], // Load corresponding ranking image
+                        topRankImages[index],
                         width: 30,
                         height: 60,
                       ),

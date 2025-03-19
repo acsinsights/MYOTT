@@ -1,6 +1,4 @@
-// To parse this JSON data, do
-//
-//     final sendOtpModel = sendOtpModelFromJson(jsonString);
+
 
 import 'dart:convert';
 

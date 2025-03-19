@@ -5,7 +5,7 @@ import '../Model/searchable_content.dart';
 class CustomSearchController extends GetxController {
   final SearchService _searchService = SearchService();
 
-  var searchResults = <SearchableContent>[].obs; // Observable List
+  var searchResults = <SearchableContent>[].obs;
   var isLoading = false.obs;
   var query = "".obs;
 

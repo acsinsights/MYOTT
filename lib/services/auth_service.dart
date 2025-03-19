@@ -8,7 +8,7 @@ class AuthService {
   final ApiService _apiService;
   final ApiService apiService = ApiService();
 
-  AuthService(this._apiService); // Dependency Injection ✅
+  AuthService(this._apiService);
 
   Future<OtpResponseModel?> sendOtp({required String identifier}) async {
     try {

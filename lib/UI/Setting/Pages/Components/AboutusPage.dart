@@ -53,7 +53,7 @@ class AboutUsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        page.title, // Display page title
+                        page.title,
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -62,7 +62,7 @@ class AboutUsPage extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        page.description, // Display description
+                        page.description,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white70,

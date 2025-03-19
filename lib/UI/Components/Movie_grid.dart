@@ -30,10 +30,10 @@ class MovieGrid extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, // 3 columns
+            crossAxisCount: 3,
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
-            childAspectRatio: 0.5, // Adjust aspect ratio for movie posters
+            childAspectRatio: 0.5,
           ),
           itemCount: movies.length,
           itemBuilder: (context, index) {

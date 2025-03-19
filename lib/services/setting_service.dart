@@ -13,12 +13,12 @@ import 'api_service.dart';
 class SettingService {
   final ApiService _apiService;
 
-  SettingService(this._apiService); // ✅ Dependency Injection
+  SettingService(this._apiService);
 
 
   Future<SettingModel?> fetchSettingData() async {
     try {
-      Response? response = await _apiService.get("${APIEndpoints.settings}"); // API Endpoint
+      Response? response = await _apiService.get("${APIEndpoints.settings}");
 
       if (response != null && response.statusCode == 200) {
         return SettingModel.fromJson(response.data);
@@ -40,7 +40,7 @@ class SettingService {
         final data = response?.data["player_settings"] as Map<String, dynamic>?;
 
         if (data != null) {
-          return PlayerSettings.fromJson(data); // Convert map to PlayerSettings object
+          return PlayerSettings.fromJson(data);
         } else {
           throw Exception("Player settings data is null");
         }
@@ -103,8 +103,8 @@ class SettingService {
       if (response?.statusCode == 200) {
         final data = response?.data;
 
-        return (data["Pages"] as List<dynamic>? ?? []) // Ensure correct key
-            .map((e) => CustomPage.fromJson(e)) // Convert JSON to CustomPage
+        return (data["Pages"] as List<dynamic>? ?? [])
+            .map((e) => CustomPage.fromJson(e))
             .toList();
       } else {
         throw Exception("Failed to load pages");

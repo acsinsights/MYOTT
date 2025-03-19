@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'languageController.dart'; // Import your LanguageController
+import 'languageController.dart';
 
 class LanguageSelectionPage extends StatelessWidget {
   final LanguageController languageController = Get.put(LanguageController());
@@ -18,7 +18,6 @@ class LanguageSelectionPage extends StatelessWidget {
           return Center(child: CircularProgressIndicator(color: Colors.white));
         }
 
-        // Example: Replace this with your actual API-fetched language list
         List<Map<String, String>> langList = [
           {'code': 'en', 'name': 'English'},
           {'code': 'hi', 'name': 'हिन्दी'},

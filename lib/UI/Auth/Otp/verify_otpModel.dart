@@ -2,7 +2,7 @@ class VerifyOtpResponse {
   final String message;
   final String? token;
   final String? tokenType;
-  final String? expiresAt;  // Change expiresIn -> expiresAt (String)
+  final String? expiresAt;
 
   VerifyOtpResponse({
     required this.message,
@@ -11,7 +11,6 @@ class VerifyOtpResponse {
     this.expiresAt,  // Change this
   });
 
-  /// Convert JSON to Model
   factory VerifyOtpResponse.fromJson(Map<String, dynamic> json) {
     return VerifyOtpResponse(
       message: json['message'] ?? 'Something went wrong.',
