@@ -1,17 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Home/home_screen.dart';
-import 'package:myott/UI/Reels/reels_page.dart';
 import 'package:myott/UI/Wishlist/wishlist_page.dart';
-
-import '../../Profile/Components/CompleteProfileScreen.dart';
 import '../../Profile/profile_screen.dart';
 import '../../Search/search_screen.dart';
 
 
 
 class MainScreenController extends GetxController {
-  var selectedIndex = 0.obs; // Observable index
+  var selectedIndex = 0.obs;
 
   void changeIndex(int index) {
     selectedIndex.value = index;
@@ -21,7 +18,6 @@ class MainScreenController extends GetxController {
     HomeScreen(),
     SearchScreen(),
     ShowWishlistPage(),
-    // CompleteProfileScreen(),
     ProfileScreen(),
   ];
 }

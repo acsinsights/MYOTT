@@ -12,8 +12,10 @@ import '../../Components/custom_text_field.dart';
 import '../Controller/auth_controller.dart';
 import '../Otp/otp_bottom_sheet.dart';
 import '../Otp/otp_controller.dart';
+
 class LoginPage extends StatelessWidget {
-  final AuthController authController = Get.put(AuthController(AuthService(ApiService())));
+  final AuthController authController = Get.put(
+      AuthController(AuthService(ApiService())));
   final OtpController otpController = Get.put(OtpController());
 
   LoginPage({super.key});
@@ -26,12 +28,12 @@ class LoginPage extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
-              "assets/images/background.jpg",
+              AppImages.loginBackground,
               fit: BoxFit.cover,
             ),
           ),
           Container(
-            color: Colors.black.withOpacity(0.5), // Overlay for readability
+            color: Colors.black.withOpacity(0.5),
             child: SafeArea(
               child: Center(
                 child: SingleChildScrollView(
@@ -41,17 +43,16 @@ class LoginPage extends StatelessWidget {
                     children: [
                       SizedBox(height: 20.h),
 
-                      /// **App Logo**
                       Image.asset(AppImages.applogo, height: 40.h),
                       SizedBox(height: 20.h),
 
-                      /// **Welcome Text**
                       Text("welcome".tr, style: AppTextStyles.Headingb4),
                       SizedBox(height: 5.h),
                       Text("welcomeSub".tr, style: AppTextStyles.SubHeading2),
 
                       SizedBox(height: 30.h),
-                      Obx(() => authController.isPhoneLogin.value
+                      Obx(() =>
+                      authController.isPhoneLogin.value
                           ? PhoneNumberField(
                         controller: authController.inputController,
                         onChanged: (phone) {
@@ -67,54 +68,67 @@ class LoginPage extends StatelessWidget {
 
                       SizedBox(height: 20.h),
 
-                      CustomButton(
-                        width: double.infinity,
-                        text: "Get OTP".tr,
-                        onPressed: () async {
-                          if (authController.isPhoneLogin.value) {
-                            String fullPhoneNumber = authController.mobileNumber.value.trim();
+                      Obx(() {
+                        if(authController.isLoading.value){
+                          return Center(child: CircularProgressIndicator(color: AppColors.white,));
+                        }
+                        return CustomButton(
+                          width: double.infinity,
+                          text: "Get OTP".tr,
+                          onPressed: () async {
+                            if (authController.isPhoneLogin.value) {
+                              String fullPhoneNumber = authController
+                                  .mobileNumber.value.trim();
 
-                            if (fullPhoneNumber.isEmpty || !fullPhoneNumber.startsWith("+")) {
-                              Get.snackbar("Error", "Please enter a valid phone number",
-                                  snackPosition: SnackPosition.TOP,
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black);
-                              return;
-                            }
-
-                            await authController.sendOtp().then((_) {
-                              if (authController.otpSent.value) {
-                                Get.bottomSheet(OtpBottomSheet());
-                              } else {
-                                Get.snackbar("Error", "Failed to send OTP. Try again.",
+                              if (fullPhoneNumber.isEmpty ||
+                                  !fullPhoneNumber.startsWith("+")) {
+                                Get.snackbar("Error",
+                                    "Please enter a valid phone number",
                                     snackPosition: SnackPosition.TOP,
-                                    colorText: Colors.white,
-                                    backgroundColor: Colors.red);
+                                    colorText: AppColors.white,
+                                    backgroundColor: AppColors.background);
+                                return;
                               }
-                            });
-                          } else {
-                            String email = authController.inputController.text.trim();
-                            if (!GetUtils.isEmail(email)) {
-                              Get.snackbar("Error", "Please enter a valid email",
-                                  snackPosition: SnackPosition.TOP,
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black);
-                              return;
-                            }
 
-                            await authController.sendOtp();
-                          }
-                        },
-                      ),
+                              await authController.sendOtp().then((_) {
+                                if (authController.otpSent.value) {
+                                  Get.bottomSheet(OtpBottomSheet());
+                                } else {
+                                  Get.snackbar(
+                                      "Error", "Failed to send OTP. Try again.",
+                                      snackPosition: SnackPosition.TOP,
+                                      colorText: AppColors.white,
+                                      backgroundColor: AppColors.primary);
+                                }
+                              });
+                            } else {
+                              String email = authController.inputController.text
+                                  .trim();
+                              if (!GetUtils.isEmail(email)) {
+                                Get.snackbar(
+                                    "Error", "Please enter a valid email",
+                                    snackPosition: SnackPosition.TOP,
+                                    colorText: AppColors.white,
+                                    backgroundColor: AppColors.background);
+                                return;
+                              }
+
+                              await authController.sendOtp();
+                            }
+                          },
+                        );
+                      }),
+
+
                       SizedBox(height: 20.h),
 
-                      /// **OR Divider**
                       Row(
                         children: [
                           Expanded(child: Divider(color: Colors.white60)),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
-                            child: Text("or".tr, style: AppTextStyles.SubHeading2),
+                            child: Text(
+                                "or".tr, style: AppTextStyles.SubHeading2),
                           ),
                           Expanded(child: Divider(color: Colors.white60)),
                         ],
@@ -122,15 +136,15 @@ class LoginPage extends StatelessWidget {
 
                       SizedBox(height: 20.h),
 
-                      /// **Toggle Login Mode Button (Email <-> Phone)**
-                      Obx(() => CustomButton(
-                        width: double.infinity,
-                        backgroundColor: Color(0xff191818),
-                        text: authController.isPhoneLogin.value
-                            ? "Login Using Email".tr
-                            : "Login Using Phone".tr,
-                        onPressed: authController.toggleLoginMethod,
-                      )),
+                      Obx(() =>
+                          CustomButton(
+                            width: double.infinity,
+                            backgroundColor: Color(0xff191818),
+                            text: authController.isPhoneLogin.value
+                                ? "Login Using Email".tr
+                                : "Login Using Phone".tr,
+                            onPressed: authController.toggleLoginMethod,
+                          )),
                     ],
                   ),
                 ),

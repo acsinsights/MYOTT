@@ -24,7 +24,6 @@ class WishlistController extends GetxController {
   Future<void> fetchWishlistData() async {
     isLoading.value = true;
 
-    // 🔴 Yahaan local storage nahi, balki server se wishlist fetch karenge!
     var wishlist = await wishlistService.fetchWishlistFromServer();
 
     List<int> movieIds = wishlist.where((item) => item["movie_id"] != null).map((e) => e["movie_id"] as int).toList();

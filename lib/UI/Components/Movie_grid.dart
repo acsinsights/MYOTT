@@ -42,7 +42,8 @@ class MovieGrid extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 final movieId = movie.id;
-                Get.to(() => MovieDetailsPage(movieId: movieId),
+                final slug=movie.slug;
+                Get.to(() => MovieDetailsPage(movieId: movieId,slug: slug,),
                     binding: BindingsBuilder(() {
                       Get.put(MovieController(MoviesService(ApiService())));
                     }));

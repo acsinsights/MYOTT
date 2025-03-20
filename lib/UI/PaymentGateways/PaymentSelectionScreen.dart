@@ -14,7 +14,6 @@ class PaymentSelectionScreen extends StatefulWidget {
 }
 
 class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
-  final PaymentGatewayController paymentGatewayController=Get.put(PaymentGatewayController());
   final SubscriptionController controller = Get.put(SubscriptionController());
   PaymentManager paymentManager = PaymentManager();
 
@@ -32,8 +31,6 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
             
             InkWell(
               onTap: (){
-                // controller.proceedToPayment();
-
                 paymentManager.startPayment(PaymentMethod.Razorpay, 15.00);
 
               },
@@ -47,7 +44,6 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
             ),
             InkWell(
               onTap: (){
-                // paymentGatewayController.startPayPalPayment(context, 100);
                 paymentManager.startPayment(PaymentMethod.PayPal, 20.50);
 
               },
@@ -58,7 +54,6 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
             ),
             InkWell(
               onTap: ()async{
-                // await StripeService.startPayment(500); // Example: $5.00 (500 cents)
                 paymentManager.startPayment(PaymentMethod.Stripe, 10.99);
 
               },

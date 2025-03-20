@@ -18,8 +18,8 @@ class APIEndpoints {
       "genre/$genreId?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
 
 
-  static String movieDetails(int movieId) =>
-      "movie/$movieId?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
+  static String movieDetails(String slug) =>
+      "movie/$slug?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
 
   static  String searchMovies(String searchTerm) => "search?secret=06c51069-0171-4f23-bf8f-41c9cd86762d&searchTerm=$searchTerm";
   static  String pages (String pageName) => "pages/$pageName?secret=06c51069-0171-4f23-bf8f-41c9cd86762d ";

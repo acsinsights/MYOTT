@@ -10,7 +10,6 @@ import 'Model/PackageModel.dart';
 
 class SubscriptionController extends GetxController {
   final SettingService settingService = Get.put(SettingService(ApiService()));
-  final PaymentGatewayController paymentGatewayController=Get.put(PaymentGatewayController());
 
   var plans = <PackageModel>[].obs;
   var isLoading = true.obs;
@@ -40,24 +39,8 @@ class SubscriptionController extends GetxController {
     selectedPlanIndex.value = index;
   }
 
-  void proceedToPayment() {
-    if (selectedPlanIndex.value == null) {
-      Get.snackbar("Error", "Please select a subscription plan first",
-          backgroundColor: Colors.red, colorText: Colors.white);
-      return;
-    }
-
-    final selectedPlan = plans[selectedPlanIndex.value!];
-
-    paymentGatewayController.initiatePayment(
-      amount: selectedPlan.amount.toString(),
-      currency: "INR",
-    );
-  }
-
   @override
   void onClose() {
-    paymentGatewayController.dispose();
     super.onClose();
   }
 }

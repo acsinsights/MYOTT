@@ -44,7 +44,6 @@ class TVSeriesController extends GetxController {
     }
   }
 
-  /// Fetches TV Series Details by ID
   void fetchTVSeriesDetails(int seriesId) async {
     try {
       isDetailsLoading.value = true;

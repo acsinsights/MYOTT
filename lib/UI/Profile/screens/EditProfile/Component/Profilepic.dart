@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +9,11 @@ class ProfilePic extends StatelessWidget {
     required this.image,
     this.isShowPhotoUpload = false,
     this.imageUploadBtnPress,
+    this.localImage, // Local image file
   });
 
   final String image;
+  final File? localImage; // Nullable File
   final bool isShowPhotoUpload;
   final VoidCallback? imageUploadBtnPress;
 
@@ -29,7 +33,9 @@ class ProfilePic extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 50,
-            backgroundImage: NetworkImage(image),
+            backgroundImage: localImage != null
+                ? FileImage(localImage!) as ImageProvider
+                : NetworkImage(image), // Show local image if selected, else network image
           ),
           InkWell(
             onTap: imageUploadBtnPress,

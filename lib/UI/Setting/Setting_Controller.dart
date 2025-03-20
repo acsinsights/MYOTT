@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Setting/Models/SettingModel.dart';
 import '../../../services/Setting_service.dart';
+import '../Components/custom_button.dart';
 import 'Models/LanguageModel.dart';
 
 class SettingController extends GetxController {
@@ -22,6 +24,29 @@ class SettingController extends GetxController {
     getPlayerSettings();
 
   }
+
+
+  Future<void> deleteAccount() async {
+    try {
+      isLoading.value = true; // Show loading state
+      update();
+
+      String message = await _settingService.UserDeleteReq();
+
+      Get.snackbar("Success", message,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP);
+
+    } catch (e) {
+      Get.snackbar("Error", "Something went wrong!",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    } finally {
+      isLoading.value = false;
+      update();
+    }
+  }
+
 
   Future<void> fetchSettingData() async {
     try {

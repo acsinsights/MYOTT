@@ -1,4 +1,9 @@
 
+
+
+
+
+
 class ActorDetialsModel{
   List<ActorsMoviesModel> movies;
   List<ActorsTvSeriesModel> tvSeries;

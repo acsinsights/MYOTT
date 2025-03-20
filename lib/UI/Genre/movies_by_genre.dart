@@ -80,9 +80,10 @@ class MoviesByGenre extends StatelessWidget {
                       final movie = movies[index];
                       return GestureDetector(
                         onTap: () {
-                          Get.to(() => MovieDetailsPage(movieId: movie.id), binding: BindingsBuilder(() {
+                          Get.to(() => MovieDetailsPage(movieId: movie.id, slug: movie.slug), binding: BindingsBuilder(() {
                             Get.put(MovieController(MoviesService(ApiService())));
                           }));
+
                         },
                         child: MovieOrTvItem(imageUrl: movie.posterImg, title: movie.name),
                       );

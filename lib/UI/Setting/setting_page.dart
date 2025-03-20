@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:myott/Core/Utils/app_colors.dart';
 import 'package:myott/UI/Auth/Controller/auth_controller.dart';
+import 'package:myott/UI/Notification/NotificationScreen.dart';
 import 'package:myott/UI/Setting/Blogs/blog_page.dart';
 import 'package:myott/UI/Setting/Pages/Components/AboutusPage.dart';
+import 'package:myott/UI/Setting/Setting_Controller.dart';
 import 'package:myott/UI/Setting/Wallet/wallet_Screen.dart';
 import 'package:myott/UI/Setting/account_setting/AccountSettingsScreen.dart';
 import 'package:myott/UI/Setting/Subscription_History/Subscription_history_page.dart';
@@ -11,9 +14,11 @@ import 'package:myott/UI/Profile/screens/downloadPage.dart';
 import 'package:myott/UI/Setting/language/langSelectionScreen.dart';
 import 'package:myott/UI/Profile/screens/wishlistPage.dart';
 import 'package:myott/UI/Setting/Faq/faq_screen.dart';
+import 'package:myott/services/Setting_service.dart';
 import 'package:myott/services/api_service.dart';
 import 'package:myott/services/auth_service.dart';
 
+import '../Components/custom_button.dart';
 import '../Profile/Components/CompleteProfileScreen.dart';
 import '../Profile/Components/SettingItem.dart';
 import 'Components/FooterWidget.dart';
@@ -26,6 +31,7 @@ class HelpAndSettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SettingController settingController=SettingController(SettingService(ApiService()));
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -108,7 +114,9 @@ class HelpAndSettingScreen extends StatelessWidget {
               title: "Refund".tr,
               icon: Icons.receipt_long_outlined),
           SettingItem(
-            // onTap: ()=> Get.to(ComplateProfileScreen()),
+            onTap: (){},
+
+
               title: "Deletion".tr, icon: Icons.delete_outline),
           Divider(color: Colors.grey[800]),
 

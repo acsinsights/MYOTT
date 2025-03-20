@@ -43,7 +43,7 @@
           hintText: hintText,
           hintStyle: AppTextStyles.SubHeading2,
           filled: true,
-          fillColor: AppColors.inputField,
+          fillColor: AppColors.darkGrey,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,
@@ -123,7 +123,7 @@
           hintText: "Enter Phone No.".tr,
           hintStyle: AppTextStyles.SubHeading2,
           filled: true,
-          fillColor: AppColors.inputField,
+          fillColor: AppColors.darkGrey,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../services/MovieService.dart';
@@ -39,7 +40,7 @@ class MovieController extends GetxController {
     }).toList();
   }
 
-  Future<void> toggleWishlist(int movieId, String type) async {
+    Future<void> toggleWishlist(int movieId, String type) async {
     int value = isWishlisted.value ? 0 : 1; // 1 -> Add, 0 -> Remove
 
     bool success = await wishlistService.updateWishlist(
@@ -63,14 +64,11 @@ class MovieController extends GetxController {
     }
   }
 
-
-
-
-  void fetchMovieDetails(int movieId) async {
+  void fetchMovieDetails(int movieId,String slug) async {
     try {
       isLoading(true);
 
-      var fetchedMovieDetails = await moviesService.getMovieDetails(movieId);
+      var fetchedMovieDetails = await moviesService.getMovieDetails(slug);
 
       isWishlisted.value = wishlistItems.any((item) => item["id"] == movieId.toString());
 
@@ -82,13 +80,19 @@ class MovieController extends GetxController {
     }
   }
 
-
   void toggleRate() {
     isRated.value = !isRated.value;
 
   }
 
+
   void toggleDownload() {
     isDownloaded.value = !isDownloaded.value;
+  }
+  void shareContent(String title, String type, String url) {
+
+    String message = "Check out this $type: $title\n$url";
+
+    Share.share(message);
   }
 }

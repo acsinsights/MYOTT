@@ -80,9 +80,9 @@ class MoviesByAudio extends StatelessWidget {
                       final movie = movies[index];
                       return GestureDetector(
                         onTap: () {
-                          Get.to(() => MovieDetailsPage(movieId: movie.id), binding: BindingsBuilder(() {
-                            Get.put(MovieController(MoviesService(ApiService())));
-                          }));
+                          // Get.to(() => MovieDetailsPage(movieId: movie.id), binding: BindingsBuilder(() {
+                          //   Get.put(MovieController(MoviesService(ApiService())));
+                          // }));
                         },
                         child: MovieOrTvItem(imageUrl: movie.posterImg, title: movie.name),
                       );

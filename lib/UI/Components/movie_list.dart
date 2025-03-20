@@ -53,7 +53,9 @@ class MovieList extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               final movieId = movies[index].id;
-              Get.to(() => MovieDetailsPage(movieId: movieId),
+              final slug=movies[index].slug;
+
+              Get.to(() => MovieDetailsPage(movieId: movieId,slug: slug,),
                   binding: BindingsBuilder(() {
                     Get.put(MovieController(MoviesService(ApiService())));
                   }));

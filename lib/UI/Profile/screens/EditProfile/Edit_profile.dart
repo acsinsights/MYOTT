@@ -36,10 +36,18 @@ class EditProfileScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              ProfilePic(
-                image: 'https://i.postimg.cc/cCsYDjvj/user-2.png',
-                imageUploadBtnPress: () {},
-              ),
+              Obx(() =>
+
+
+                  ProfilePic(
+                image: profileController.user.value?.image ??
+                    'https://i.postimg.cc/cCsYDjvj/user-2.png', // ✅ Default if no image
+                localImage: profileController.selectedImage.value, // ✅ Show local image if updated
+                imageUploadBtnPress: () {
+                  profileController.showDialogue();
+                },
+              )),
+
               const Divider(),
               Form(
                 child: Column(
@@ -65,14 +73,6 @@ class EditProfileScreen extends StatelessWidget {
                         hintText: "Enter your Phone No.",
                       ),
                     ),
-                    UserInfoEditField(
-                      text: "Address",
-                      child: CustomTextFieldWithNoBg(
-                        controller: profileController.addressController,
-                        hintText: "Enter Your Address",
-                      ),
-                    ),
-
                   ],
                 ),
               ),
@@ -95,6 +95,10 @@ class EditProfileScreen extends StatelessWidget {
                     child: CustomButton(
                       text: "Save Update",
                       onPressed: () {
+                        if(profileController.validateFields()){
+                          profileController.sendUserData();
+
+                        }
                       },
                     ),
                   ),
@@ -106,6 +110,7 @@ class EditProfileScreen extends StatelessWidget {
       }),
     );
   }
+
 }
 
 

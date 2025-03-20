@@ -118,11 +118,14 @@ class ActorsDetailedScreen extends StatelessWidget {
                             return GestureDetector(
                               onTap: () {
                                 final movieId = movie.id;
-                                Get.to(() => MovieDetailsPage(movieId: movieId),
-                                    binding: BindingsBuilder(() {
-                                      Get.put(MovieController(MoviesService(ApiService())));
-                                    }));
+                                final slug = movie.slug;
+
+                                print("Tapped Movie ID: $movieId");
+                                print("Tapped Movie Slug: $slug");
+
+                                Get.to(() => MovieDetailsPage(movieId: movieId, slug: slug));
                               },
+
                               child: Column(
                                 children: [
                                   Container(

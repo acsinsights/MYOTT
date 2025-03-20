@@ -13,22 +13,38 @@ import 'package:myott/services/api_service.dart';
 import 'package:myott/video_player/component/Video_player_page.dart';
 
 import 'Component/ExpandableDescription.dart';
+import 'Component/RatingBottomSheet.dart';
+import 'Controller/ratingController.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   final int movieId;
+  final String slug;
 
-  const MovieDetailsPage({super.key, required this.movieId});
+  const MovieDetailsPage({super.key, required this.movieId, required this.slug});
 
   @override
   State<MovieDetailsPage> createState() => _MovieDetailsPageState();
 }
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
+  final MovieController movieController =
+  Get.put(MovieController(MoviesService(ApiService())));
+  @override
+  void initState() {
+    super.initState();
+
+    /// Fetch movie details **AFTER** the first frame is rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      movieController.fetchMovieDetails(widget.movieId,widget.slug);
+    });
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final MovieController movieController =
-    Get.put(MovieController(MoviesService(ApiService())));
-    movieController.fetchMovieDetails(widget.movieId);
+
+    movieController.fetchMovieDetails(widget.movieId,widget.slug);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -201,7 +217,12 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: movieController.toggleRate,
+                      onTap: (){
+                        Get.bottomSheet(
+                          RatingBottomSheet(movieId: movie.movie.id, type: "M"),
+                          isScrollControlled: true,
+                        );
+                      },
                       child: Column(
                         children: [
                           Obx(() =>
@@ -256,7 +277,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                           Obx(() {
                             return Text(
                               movieController.isDownloaded.value
-                              ? "Downloaded" : "Download",
+                                  ? "Downloaded" : "Download",
                               style: AppTextStyles.SubHeadingb3,
                             );
                           })

@@ -68,7 +68,6 @@ class CompleteProfileScreen extends StatelessWidget {
     );
   }
 
-  /// 🔹 Validation Logic
   bool _validateInputs() {
     bool isValid = true;
     String name = profileController.nameController.text.trim();
@@ -76,7 +75,6 @@ class CompleteProfileScreen extends StatelessWidget {
     String email = profileController.emailController.text.trim();
     String phone = profileController.phoneController.text.trim();
 
-    // Email validation
     if (!_isValidEmail(email)) {
       emailError.value = "Enter a valid email address";
       isValid = false;
@@ -84,7 +82,6 @@ class CompleteProfileScreen extends StatelessWidget {
       emailError.value = "";
     }
 
-    // Phone number validation
     if (!_isValidPhone(phone)) {
       phoneError.value = "Enter a valid 10-digit phone number";
       isValid = false;
@@ -102,23 +99,21 @@ class CompleteProfileScreen extends StatelessWidget {
     return isValid;
   }
 
-  /// 🔹 Email Validation Helper
   bool _isValidEmail(String email) {
     final RegExp emailRegex =
         RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
     return emailRegex.hasMatch(email);
   }
 
-  /// 🔹 Phone Validation Helper
   bool _isValidPhone(String phone) {
-    final RegExp phoneRegex = RegExp(r"^\d{10}$"); // Only 10 digits allowed
+    final RegExp phoneRegex = RegExp(r"^\d{10}$");
     return phoneRegex.hasMatch(phone);
   }
   bool _isValidName(String name) {
     if (name.isEmpty) {
       return false; // ❌ Empty name
     }
-    final RegExp nameRegex = RegExp(r"^[a-zA-Z\s]+$"); // ✅ Only letters & spaces allowed
+    final RegExp nameRegex = RegExp(r"^[a-zA-Z\s]+$");
     return nameRegex.hasMatch(name);
   }
 

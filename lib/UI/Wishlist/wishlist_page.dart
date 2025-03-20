@@ -75,7 +75,7 @@ class _ShowWishlistPageState extends State<ShowWishlistPage> {
           int Id = int.tryParse(item["id"].toString()) ?? 0; // Convert ID to int safely
 
           if (type == "movie") {
-            Get.to(() => MovieDetailsPage(movieId: Id));
+            // Get.to(() => MovieDetailsPage(movieId: Id));
           } else {
             Get.to(() => TvSeriesDetailsPage(seriesId: Id));
           }

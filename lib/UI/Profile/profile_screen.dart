@@ -25,7 +25,6 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
-        // elevation: 0,
         title:
             Text("Profile".tr, style: GoogleFonts.poppins(color: Colors.white)),
         actions: [

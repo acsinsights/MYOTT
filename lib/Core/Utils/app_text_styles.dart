@@ -26,8 +26,10 @@ class AppTextStyles {
       static TextStyle SubHeading= GoogleFonts.poppins(color: AppColors.white, fontSize: 18);
 
       static TextStyle SubHeadingb1= GoogleFonts.poppins(color: AppColors.white, fontSize: 16, fontWeight: FontWeight.bold,);
+      static TextStyle SubHeadingW1= GoogleFonts.poppins(color: AppColors.white, fontSize: 16);
       static TextStyle SubHeading1= GoogleFonts.poppins(color: AppColors.subwhite, fontSize: 16);
       static TextStyle SubHeadingRed1= GoogleFonts.poppins(color: AppColors.primary2, fontSize: 16);
+      static TextStyle SubHeadingRed1Bold= GoogleFonts.poppins(color: AppColors.primary2, fontSize: 16,fontWeight: FontWeight.bold);
       static TextStyle buttonText = GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.white);
 
       static TextStyle SubHeadingb2= GoogleFonts.poppins(color: AppColors.white, fontSize: 14, fontWeight: FontWeight.bold,);

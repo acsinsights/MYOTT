@@ -4,6 +4,7 @@ import 'package:myott/services/api_endpoints.dart';
 import 'package:myott/UI/Setting/Models/LanguageModel.dart';
 import 'package:myott/UI/Profile/screens/SubscriptionPackage/Model/PackageModel.dart';
 import 'package:myott/UI/Setting/Pages/Model/PageModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../UI/Setting/Blogs/Model/blog_detail_model.dart';
 import '../UI/Setting/Blogs/Model/blog_model.dart';
@@ -115,6 +116,25 @@ class SettingService {
     }
   }
 
+  Future<String> UserDeleteReq() async {
+    try {
+      SharedPreferences preferences=await SharedPreferences.getInstance();
+      final String? token=preferences.getString("access_token");
+
+      Response? response = await _apiService.post("account/delete",token: token);
+
+      if (response != null && response.statusCode == 200) {
+        print("✅ Request successful: ${response.data}");
+        return response.data['message'] ?? "Account deleted successfully";
+      } else {
+        print("❌ Request failed with status: ${response?.statusCode}");
+        return "Failed to delete account";
+      }
+    } catch (e) {
+      print("❌ Error sending request: $e");
+      return "Something went wrong!";
+    }
+  }
 
 
   //Blogs

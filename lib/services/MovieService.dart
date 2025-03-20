@@ -1,4 +1,5 @@
 import 'package:myott/UI/Movie/Model/movie_details_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../UI/Model/Moviesmodel.dart';
 import 'package:myott/services/api_service.dart';
@@ -10,10 +11,9 @@ class MoviesService {
 
   MoviesService(this._apiService);
 
-  /// 🔹 **Fetch Movie Details**
-    Future<MovieDetailsModel> getMovieDetails(int movieId) async {
+    Future<MovieDetailsModel> getMovieDetails(String slug) async {
     try {
-      final response = await _apiService.get(APIEndpoints.movieDetails(movieId));
+      final response = await _apiService.get(APIEndpoints.movieDetails(slug));
 
       if (response?.statusCode == 200) {
         final data=response?.data;
@@ -46,5 +46,36 @@ class MoviesService {
     }
   }
 
+  Future<bool> rateMovie({
+    required int movieId,
+    required String type, 
+    required String review,
+    required int rating,
+  }) async {
+    try {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      final String? token = preferences.getString("access_token");
+
+      Map<String, dynamic> data = {
+        "id": movieId,
+        "type": type,
+        "review": review,
+        "rating": rating,
+      };
+
+      Response? response = await _apiService.post("rating", data: data, token: token);
+
+      if (response != null && response.statusCode == 200) {
+        print("✅ Rating submitted: ${response.data}");
+        return true;
+      } else {
+        print("❌ Failed to submit rating: ${response?.statusCode}");
+        return false;
+      }
+    } catch (e) {
+      print("❌ Error submitting rating: $e");
+      return false;
+    }
+  }
 
 }

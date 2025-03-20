@@ -48,12 +48,8 @@ class OtpBottomSheet extends StatelessWidget {
             TextField(
               controller: otpController.otpController,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              cursorColor: Colors.red,
+              style: AppTextStyles.Headingb4,
+              cursorColor: AppColors.primary,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 hintText: "Enter OTP",
@@ -66,6 +62,7 @@ class OtpBottomSheet extends StatelessWidget {
                 ),
                 border: InputBorder.none,
               ),
+
             ),
 
             SizedBox(height: 10),
@@ -76,24 +73,17 @@ class OtpBottomSheet extends StatelessWidget {
               style: TextStyle(color: Colors.red, fontSize: 16),
             )
                 : GestureDetector(
-              onTap: () => authController.sendOtp(), // ✅ Resend OTP
+              onTap: () => authController.sendOtp(),
               child: RichText(
                 text: TextSpan(
                   children: [
                     TextSpan(
                       text: "Didn't get the OTP? ",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
+                      style: AppTextStyles.SubHeadingW1
                     ),
                     TextSpan(
                       text: "Resend OTP",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTextStyles.SubHeadingRed1Bold
                     ),
                   ],
                 ),
@@ -105,7 +95,6 @@ class OtpBottomSheet extends StatelessWidget {
             CustomButton(
               width: double.infinity,
               text: "Verify OTP".tr,
-
               onPressed: () => authController.verifyOtp(),
               backgroundColor: AppColors.primary,
             ),

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -31,6 +32,27 @@ class ProfileService {
       data: formData,
       token: token,
     );
+  }
+
+  Future<Map<String, dynamic>?> getUserDetails() async {
+    try {
+      final response = await _apiService.get("user-data");
+
+      if (response?.statusCode == 200) {
+        // Ensure response.body is properly decoded
+        if (response?.data is Map<String, dynamic>) {
+          return response?.data;
+        } else {
+          return jsonDecode(response?.data);
+        }
+      } else {
+        print("❌ Error: ${response?.statusCode} - ${response?.data}");
+        return null;
+      }
+    } catch (e) {
+      print("❌ Error Fetching User Details: $e");
+      return null;
+    }
   }
 
 

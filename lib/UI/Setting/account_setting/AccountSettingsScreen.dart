@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/UI/Profile/screens/SubscriptionPackage/subscription_page.dart';
+import 'package:myott/UI/Setting/Setting_Controller.dart';
+import 'package:myott/services/Setting_service.dart';
+import 'package:myott/services/api_service.dart';
+
+import '../../../Core/Utils/app_colors.dart';
+import '../../Components/custom_button.dart';
 
 class AccountSettingsScreen extends StatelessWidget {
+  SettingController settingController=SettingController(SettingService(ApiService()));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +116,49 @@ class AccountSettingsScreen extends StatelessWidget {
             // Delete Account
             Center(
               child: TextButton(
-                onPressed: () {},
+                onPressed: ()=>
+                    Get.defaultDialog(
+                      title: "Are you sure?",
+                      titleStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      backgroundColor: Colors.white,
+                      radius: 10,
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Do you really want to delete your account? This action cannot be undone.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          SizedBox(height: 20), // Space between text and buttons
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Cancel Button
+                              Expanded(
+                                child: CustomButton(
+                                  text: "Cancel",
+                                  onPressed: () => Get.back(),
+                                  backgroundColor: AppColors.transparent,
+                                  borderColor: Colors.white,
+                                ),
+                              ),
+                              SizedBox(width: 10), // Space between buttons
+                              // Yes (Delete) Button
+                              Expanded(
+                                child: CustomButton(
+                                  text: "Delete",
+                                  onPressed: () async {
+                                    Get.back();
+                                    await settingController.deleteAccount(); // Call delete method
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                 child: Text(
                   'Delete Account',
                   style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
