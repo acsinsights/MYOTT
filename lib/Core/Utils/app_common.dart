@@ -8,3 +8,6 @@ String formatDate(String dateStr) {
     return "Unknown Date"; // Fallback in case of an error
   }
 }
+
+enum PaymentType { subscription, ppv, coins }
+

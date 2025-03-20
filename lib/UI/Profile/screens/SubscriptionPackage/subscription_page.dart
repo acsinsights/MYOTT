@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/Core/Utils/app_text_styles.dart';
+import '../../../../Core/Utils/app_common.dart';
 import '../../../PaymentGateways/PaymentSelectionScreen.dart';
 import 'SubscriptionController.dart';
 import 'Component/SubscriptionCard.dart';
@@ -55,30 +57,78 @@ class SubscriptionScreen extends StatelessWidget {
         ),
       ),
 
-      bottomNavigationBar: Obx(() => controller.selectedPlanIndex.value != null
-          ? Container(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        color: Colors.red,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Pay ${controller.plans[controller.selectedPlanIndex.value!].amount}",
-              style: TextStyle(color: Colors.white, fontSize: 16),
+      bottomNavigationBar: Obx(() {
+        if (controller.selectedPlanIndex.value == null) {
+          return SizedBox.shrink();
+        }
+
+        var plan = controller.plans[controller.selectedPlanIndex.value!];
+        double displayedPrice = (plan.offerPrice ?? plan.amount).toDouble();
+        var currencySymbol = controller.selectedCurrency.value == "USD" ? "\$" : "₹";
+
+        // Agar INR select hai to convert price
+        if (controller.selectedCurrency.value == "INR") {
+          displayedPrice *= 83.0;
+        }
+
+        return SafeArea(// 👈 **SafeArea lagaya**
+          child: Container(
+            height: 100,
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            color: Colors.red,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Pay $currencySymbol ${displayedPrice.toStringAsFixed(2)}",
+                      style:AppTextStyles.SubHeadingW1,
+                    ),
+                    SizedBox(height: 5),
+                    // Currency Selection Dropdown
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: DropdownButton<String>(
+                        value: controller.selectedCurrency.value,
+                        dropdownColor: Colors.white,
+                        style: TextStyle(color: Colors.black),
+                        items: ["USD", "INR"].map((String currency) {
+                          return DropdownMenuItem<String>(
+                            value: currency,
+                            child: Text(currency),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          if (newValue != null) {
+                            controller.selectedCurrency.value = newValue;
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                  onPressed: () {
+                    Get.to(PaymentSelectionScreen(), arguments: {
+                      "paymentType": PaymentType.subscription.toString(),
+                      "paymentStatus": "active",
+                      "package_id": plan.id,
+                      "price": plan.amount,
+                      "offer_price": plan.offerPrice,
+                      "currency": controller.selectedCurrency.value,
+                    });
+                  },
+                  child: Text("Next", style: TextStyle(color: Colors.black)),
+                ),
+              ],
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
-              onPressed: () {
-                // Get.to(PaymentScreen());
-Get.to(PaymentSelectionScreen());                // Handle payment process
-              },
-              child: Text("Next", style: TextStyle(color: Colors.black)),
-            ),
-          ],
-        ),
-      )
-          : SizedBox.shrink(),
-      ),
+          ),
+        );
+      }),
+
     );
   }
 }

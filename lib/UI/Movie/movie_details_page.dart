@@ -11,10 +11,8 @@ import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/services/MovieService.dart';
 import 'package:myott/services/api_service.dart';
 import 'package:myott/video_player/component/Video_player_page.dart';
-
 import 'Component/ExpandableDescription.dart';
 import 'Component/RatingBottomSheet.dart';
-import 'Controller/ratingController.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   final int movieId;
@@ -33,7 +31,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   void initState() {
     super.initState();
 
-    /// Fetch movie details **AFTER** the first frame is rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
       movieController.fetchMovieDetails(widget.movieId,widget.slug);
     });
@@ -218,6 +215,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     ),
                     GestureDetector(
                       onTap: (){
+                        movieController.toggleRate();
                         Get.bottomSheet(
                           RatingBottomSheet(movieId: movie.movie.id, type: "M"),
                           isScrollControlled: true,

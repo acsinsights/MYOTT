@@ -10,6 +10,7 @@ import 'Model/PackageModel.dart';
 
 class SubscriptionController extends GetxController {
   final SettingService settingService = Get.put(SettingService(ApiService()));
+  var selectedCurrency = "USD".obs; // Default USD
 
   var plans = <PackageModel>[].obs;
   var isLoading = true.obs;
