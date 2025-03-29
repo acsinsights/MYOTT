@@ -241,20 +241,25 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         ],
                       ),
                     ),
-                    Column(
-                      children: [
-                        Icon(
-                          Icons.share,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
-                          "Share",
-                          style: AppTextStyles.SubHeadingb3,
-                        )
-                      ],
+                    GestureDetector(
+                      onTap: (){
+                        movieController.shareContent(movie.movie.name, "Movie", movie.movie.movieUploadUrl);
+                      },
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.share,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            "Share",
+                            style: AppTextStyles.SubHeadingb3,
+                          )
+                        ],
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -463,10 +468,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: CustomTextField(
+                    maxLines: 2,
+                    keyboardType: TextInputType.multiline,
                     controller: movieController.commentController,
                     hintText: "Enter Your Comment",
                     suffixIcon:
-                    IconButton(onPressed: () {}, icon: Icon(Icons.send)),
+                    IconButton(onPressed: () {
+                      movieController.addCommentForMovie(movieController.commentController.value.text, movie.movie.id);
+
+                    }, icon: Icon(Icons.send)),
                   ),
                 )
               ],

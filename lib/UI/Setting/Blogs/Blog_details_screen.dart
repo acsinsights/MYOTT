@@ -4,16 +4,15 @@ import '../../../Core/Utils/app_text_styles.dart';
 import 'blog_controller.dart';
 
 class BlogDetailsScreen extends StatelessWidget {
-  final int blogId;
+  final String blogSlug;
 
-  BlogDetailsScreen({required this.blogId});
+  BlogDetailsScreen({Key? key, required this.blogSlug}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final BlogController blogController = Get.find<BlogController>();
 
-
-    blogController.setBlogId(blogId);
+    blogController.setBlogSlug(blogSlug);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -31,9 +30,14 @@ class BlogDetailsScreen extends StatelessWidget {
         }
 
         final blog = blogController.blogDetails.value;
-        if (blog == null || blog.data == null) {
-          return Center(child: Text("Blog details not available", style: AppTextStyles.SubHeadingw3));
+
+        if (blog == null || blog.data.isEmpty) {
+          return Center(
+            child: Text("Blog details not available", style: AppTextStyles.SubHeadingw3),
+          );
         }
+
+        final blogData = blog.data.first; // Taking the first blog entry
 
         return Padding(
           padding: const EdgeInsets.all(12.0),
@@ -43,7 +47,7 @@ class BlogDetailsScreen extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  blog.data.thumbnailImg,
+                  blogData.bannerImg, // Corrected field
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -53,11 +57,11 @@ class BlogDetailsScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              Text(blog.data.title, style: AppTextStyles.Headingb1),
+              Text(blogData.title, style: AppTextStyles.Headingb1),
               SizedBox(height: 10),
               Expanded(
                 child: SingleChildScrollView(
-                  child: Text(blog.data.desc, style: AppTextStyles.SubHeadingw3),
+                  child: Text(blogData.description, style: AppTextStyles.SubHeadingw3), // Fixed field
                 ),
               ),
             ],

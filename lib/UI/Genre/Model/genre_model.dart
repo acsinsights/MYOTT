@@ -6,6 +6,7 @@
 class GenreModel {
   int id;
   String name;
+  String slug;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -13,6 +14,7 @@ class GenreModel {
   GenreModel({
     required this.id,
     required this.name,
+    required this.slug,
     required this.createdAt,
     required this.updatedAt,
 
@@ -24,6 +26,7 @@ class GenreModel {
     return GenreModel(
       id: id,
       name: json["name"],
+      slug: json["slug"],
       createdAt: DateTime.parse(json["created_at"]),
       updatedAt: DateTime.parse(json["updated_at"]),
 

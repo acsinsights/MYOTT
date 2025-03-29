@@ -12,7 +12,7 @@ import '../Controller/coming_soon_controller.dart';
 
 class ComingSoonWidget extends StatelessWidget {
   final ComingSoonController controller = Get.put(ComingSoonController());
-  final HomeController homeController = Get.put(HomeController(HomeService(ApiService())));
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {

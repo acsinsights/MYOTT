@@ -49,8 +49,8 @@ class BlogScreen extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 final BlogController controller = Get.find<BlogController>();
-                controller.setBlogId(blog.id); // Set the blog ID before navigation
-                Get.to(() => BlogDetailsScreen(blogId: blog.id));
+                controller.setBlogSlug(blog.slug); // Set the blog ID before navigation
+                Get.to(() => BlogDetailsScreen(blogSlug: blog.slug));
               },
 
               child: Card(

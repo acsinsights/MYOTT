@@ -24,12 +24,7 @@ class ProfileController extends GetxController {
   final nameController=TextEditingController();
   final emailController=TextEditingController();
   final phoneController=TextEditingController();
-  @override
-  void onInit() {
-    fetchProfileData();
-    // TODO: implement onInit
-    // fetchProfile();
-  }
+
 
 
 
@@ -39,6 +34,7 @@ class ProfileController extends GetxController {
     if (pickedFile != null) {
       selectedImage.value = File(pickedFile.path);
       update();
+      Get.back(canPop: true);
     }
   }
 
@@ -51,24 +47,24 @@ class ProfileController extends GetxController {
       File? imageFile = selectedImage.value;
       String email = emailController.text.trim();
       String name = nameController.text.trim();
-      String phone = phoneController.text.trim();
+ String phone = phoneController.text.trim().toString();
+
 
       var response = await profileService.uploadUserData(
-        imageFile: imageFile ?? File(''), // ✅ Provide default empty File if null
+        imageFile: imageFile ?? File(''),
         email: email,
         name: name,
         phone: phone,
       );
 
       if (response != null && response.statusCode == 200) {
-        fetchProfileData(); // ✅ Refresh data after upload
-        Get.snackbar("Success", "Profile updated successfully!");
+        Get.snackbar("Success", "Profile updated successfully!",backgroundColor: Colors.green,colorText: Colors.white);
       } else {
-        Get.snackbar("Error", "Failed to upload data");
+        Get.snackbar("Error", "Failed to upload data",backgroundColor: Colors.red,colorText: Colors.white);
       }
     } catch (e) {
       print("Error uploading user data: $e");
-      Get.snackbar("Error", "Something went wrong!");
+      // Get.snackbar("Error", "Something went wrong!");
     } finally {
       isLoading.value = false;
       update();
@@ -105,7 +101,7 @@ class ProfileController extends GetxController {
       }
     } catch (e) {
       print("Error uploading user data: $e");
-      Get.snackbar("Error", "Something went wrong!");
+      // Get.snackbar("Error", "Something went wrong!");
     } finally {
       isLoading.value = false;
       update();
@@ -156,13 +152,13 @@ class ProfileController extends GetxController {
         }
 
       } else {
-        Get.snackbar("Error", "Failed to load profile data",
+        Get.snackbar("Failed", "Failed to load profile data",
             backgroundColor: Colors.red, colorText: Colors.white);
       }
     } catch (e) {
       print("❌ Error Fetching Profile Data: $e");
-      Get.snackbar("Error", "An error occurred while loading profile data.",
-          backgroundColor: Colors.red, colorText: Colors.white);
+      // Get.snackbar("Error", "An error occurred while loading profile data.",
+      //     backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 

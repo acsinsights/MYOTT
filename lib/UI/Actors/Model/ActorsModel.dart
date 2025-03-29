@@ -5,12 +5,14 @@
   String name;
   String image;
   String? type;
+  String slug;
   String? description;
 
 
   ActorsModel({
     required this.id,
     required this.name,
+    required this.slug,
     required this.image,
      this.type,
      this.description,
@@ -21,6 +23,7 @@
     id: json["id"],
     name: json["name"],
     image: json["image"],
+    slug: json["slug"] ?? "",
     type: json["type"] ?? " ",
     description: json["description"] ?? " ",
   );
@@ -29,6 +32,7 @@
     "id": id,
     "name": name,
     "image": image,
+    "slug": slug,
     "type": type,
     "description": description,
 

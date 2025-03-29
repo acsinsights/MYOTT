@@ -14,10 +14,11 @@
     final String hintText;
     final bool isPassword;
     final TextInputType keyboardType;
+    final int maxLines; // Added maxLines parameter
     final IconData? prefixIcon;
     final IconButton? suffixIcon;
     final VoidCallback? onSuffixTap;
-    final ValueChanged<String>? onChanged; // Added onChanged callback
+    final ValueChanged<String>? onChanged;
 
     const CustomTextField({
       super.key,
@@ -25,10 +26,11 @@
       required this.hintText,
       this.isPassword = false,
       this.keyboardType = TextInputType.text,
+      this.maxLines = 1, // Default value to 1
       this.prefixIcon,
       this.suffixIcon,
       this.onSuffixTap,
-      this.onChanged, // Pass onChanged function
+      this.onChanged,
     });
 
     @override
@@ -37,8 +39,9 @@
         controller: controller,
         obscureText: isPassword,
         keyboardType: keyboardType,
+        maxLines: isPassword ? 1 : maxLines, // Ensuring password field has only 1 line
         style: GoogleFonts.poppins(color: AppColors.white),
-        onChanged: onChanged, // Assign onChanged callback
+        onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: AppTextStyles.SubHeading2,

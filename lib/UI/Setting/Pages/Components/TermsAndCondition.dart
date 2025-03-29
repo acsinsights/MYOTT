@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Setting/Pages/Controller/DynamicPageController.dart';
@@ -61,13 +62,8 @@ class TermsAndCondition extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 8),
-                      Text(
-                        page.description, // Display description
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white70,
-                        ),
-                      ),
+                      HtmlWidget(page.description,textStyle: TextStyle(color: Colors.white),)
+
                     ],
                   ),
                 ),

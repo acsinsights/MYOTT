@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:myott/services/commentService.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +10,7 @@ import '../Model/movie_details_model.dart';
 
 class MovieController extends GetxController {
   final MoviesService moviesService;
+  CommentService commentService=CommentService();
   MovieController(this.moviesService);
   final WishlistService wishlistService = WishlistService();
 
@@ -27,7 +29,16 @@ class MovieController extends GetxController {
     super.onInit();
     loadWishlistOnStartup();
   }
-  RxList<Map<String, String>> wishlistItems = <Map<String, String>>[].obs; // Stores Movie ID + Type
+  RxList<Map<String, String>> wishlistItems = <Map<String, String>>[].obs;
+
+  static Future<void> shareReport(String movieUrl) async {
+    try {
+      await Share.share("Check out this report: $movieUrl");
+    } catch (e) {
+      print(e);
+    }
+  }
+
 
   Future<void> loadWishlistOnStartup() async {
     List<Map<String, dynamic>> rawWishlist = await wishlistService.loadWishlist();
@@ -94,5 +105,23 @@ class MovieController extends GetxController {
     String message = "Check out this $type: $title\n$url";
 
     Share.share(message);
+  }
+
+
+  Future<void>addCommentForMovie(String comment,int movieId)async{
+    try {
+      isLoading(true);
+      Map<String,dynamic> formdata={
+        "comment":commentController.text.toString(),
+        "type":"M",
+        "id":movieId
+       };
+      var response = await commentService.sendComment(formdata);
+      isLoading(false);
+    }catch(e){
+
+    }finally{
+      isLoading(false);
+    }
   }
 }

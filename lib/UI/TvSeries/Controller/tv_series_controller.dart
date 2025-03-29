@@ -44,10 +44,10 @@ class TVSeriesController extends GetxController {
     }
   }
 
-  void fetchTVSeriesDetails(int seriesId) async {
+  void fetchTVSeriesDetails(String slug) async {
     try {
       isDetailsLoading.value = true;
-      tvSeriesDetails.value = await _tvSeriesService.fetchTVSeriesDetails(seriesId);
+      tvSeriesDetails.value = await _tvSeriesService.fetchTVSeriesDetails(slug);
     } catch (e) {
       print("Error fetching TV Series Details: $e");
     } finally {

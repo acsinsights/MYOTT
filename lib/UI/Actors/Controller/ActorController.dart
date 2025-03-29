@@ -5,14 +5,14 @@ import '../Model/ActorDetailsModel.dart';
 
 class ActorController extends GetxController {
   final ActorSerivce _actorService;
-  final int actorId;
+  final String actorSlug;
 
-  var actorData = Rxn<ActorDetialsModel>();
+  var actorData = Rxn<ActorDetailsModel>();
   var isLoading = false.obs;
   var showTitle = false.obs;
   ScrollController scrollController = ScrollController();
 
-  ActorController(this._actorService, this.actorId);
+  ActorController(this._actorService, this.actorSlug);
 
   @override
   void onInit() {
@@ -31,7 +31,7 @@ class ActorController extends GetxController {
   void fetchActorDetails() async {
     try {
       isLoading.value = true;
-      var fetchedActorDetails = await _actorService.fetchActorsDetails(actorId);
+      var fetchedActorDetails = await _actorService.fetchActorsDetails(actorSlug);
       if (fetchedActorDetails != null) {
         actorData.value = fetchedActorDetails;
       } else {

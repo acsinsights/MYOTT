@@ -1,47 +1,53 @@
-import 'dart:ui';
-
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:myott/UI/Home/Model/Audio_Model.dart';
-import 'package:myott/UI/Home/Model/SliderItemModel.dart';
-import 'package:myott/UI/Model/Moviesmodel.dart';
+import 'package:myott/UI/Home/Model/HomePageModel.dart';
 import '../../../services/Home_service.dart';
-import '../../Actors/Model/ActorsModel.dart';
-import '../../Genre/Model/genre_model.dart';
-import '../Model/HomePageModel.dart';
 
 class HomeController extends GetxController {
-  final HomeService _homeService;
+  final HomeService _homeService =HomeService();
 
-  var homePageData = Rxn<HomePageModel>();
-
+  var homePageData = Rx<HomePageModel?>(null);
   var isLoading = false.obs;
+  var errorMessage = RxnString();
 
-  HomeController(this._homeService);
 
   @override
   void onInit() {
     super.onInit();
     fetchHomePageData();
   }
+
   Future<void> fetchHomePageData() async {
     try {
-      isLoading(true);
+      isLoading.value = true;
+      errorMessage.value = null;
 
       final HomePageModel? data = await _homeService.fetchHomePageData();
 
       if (data != null) {
         homePageData.value = data;
-
+        debugPrint("✅ Home Page Data Loaded Successfully");
       } else {
-        print("No data received from API");
+        errorMessage.value = "No data available.";
+        debugPrint("⚠️ No data received from API");
       }
+    } on SocketException {
+      errorMessage.value = "No internet connection.";
+      debugPrint("🚨 Network error: No internet connection.");
+    } on TimeoutException {
+      errorMessage.value = "Request timed out. Please try again.";
+      debugPrint("⏳ Request timed out.");
     } catch (e) {
-      print("Error fetching HomePage data: $e");
+      errorMessage.value = "Something went wrong. Please try again.";
+      debugPrint("❌ Error fetching HomePage data: $e");
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 
-
-
+  Future<void> refreshHomePage() async {
+    await fetchHomePageData();
+  }
 }

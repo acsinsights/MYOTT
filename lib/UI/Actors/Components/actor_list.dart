@@ -17,7 +17,7 @@ class ActorList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeController homeController = Get.put(HomeController(HomeService(ApiService())));
+    final HomeController homeController = Get.put(HomeController());
 
     return SizedBox(
       height: 180,

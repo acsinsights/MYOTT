@@ -35,9 +35,8 @@ class TvSeriesMovieList extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              final seriesId = tvSeries[index].id;
-              print(seriesId);
-              Get.to(() => TvSeriesDetailsPage(seriesId: seriesId),
+              final slug = tvSeries[index].slug;
+              Get.to(() => TvSeriesDetailsPage(slug: slug),
                   binding: BindingsBuilder(() {
                     Get.put(TVSeriesController(TVSeriesService(ApiService())));
                   }));

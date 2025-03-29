@@ -14,13 +14,19 @@ import '../../services/MovieService.dart';
 import '../Movie/Controller/Movie_controller.dart';
 import '../Movie/Movie_details_page.dart';
 
-class ActorsDetailedScreen extends StatelessWidget {
+class ActorsDetailedScreen extends StatefulWidget {
   final ActorsModel actors;
   const ActorsDetailedScreen({Key? key, required this.actors}) : super(key: key);
 
   @override
+  State<ActorsDetailedScreen> createState() => _ActorsDetailedScreenState();
+}
+
+class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
+
+  @override
   Widget build(BuildContext context) {
-    final ActorController actorController = Get.put(ActorController(ActorSerivce(ApiService()), actors.id));
+    final ActorController actorController = Get.put(ActorController(ActorSerivce(ApiService()), widget.actors.slug));
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -41,14 +47,14 @@ class ActorsDetailedScreen extends StatelessWidget {
                   onPressed: () => Navigator.pop(context),
                 ),
                 title: Obx(() => actorController.showTitle.value
-                    ? Text(actors.name, style: AppTextStyles.SubHeadingb2)
+                    ? Text(widget.actors.name, style: AppTextStyles.SubHeadingb2)
                     : SizedBox.shrink()),
                 flexibleSpace: FlexibleSpaceBar(
                   background: Stack(
                     fit: StackFit.expand,
                     children: [
                       Image.network(
-                        actors.image,
+                        widget.actors.image,
                         fit: BoxFit.fill,
                       ),
                       Container(
@@ -65,7 +71,7 @@ class ActorsDetailedScreen extends StatelessWidget {
                         left: 16,
                         right: 16,
                         child: Text(
-                          actors.name,
+                          widget.actors.name,
                           style: AppTextStyles.SubHeadingb2,
                         ),
                       ),
@@ -81,7 +87,7 @@ class ActorsDetailedScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10),
-                Text(actors.description.toString(), style: AppTextStyles.SubHeading2),
+                Text(widget.actors.description.toString(), style: AppTextStyles.SubHeading2),
                 SizedBox(height: 10,),
 
                 Obx(() {
@@ -98,7 +104,7 @@ class ActorsDetailedScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "Movies of ${actors.name}",
+                          "Movies of ${widget.actors.name}",
                           style: AppTextStyles.SubHeadingb2,
                         ),
                         Divider(color: Colors.grey, thickness: 1),
@@ -123,7 +129,7 @@ class ActorsDetailedScreen extends StatelessWidget {
                                 print("Tapped Movie ID: $movieId");
                                 print("Tapped Movie Slug: $slug");
 
-                                Get.to(() => MovieDetailsPage(movieId: movieId, slug: slug));
+                                Get.off(() => MovieDetailsPage(movieId: movieId, slug: slug));
                               },
 
                               child: Column(
@@ -164,83 +170,83 @@ class ActorsDetailedScreen extends StatelessWidget {
                 }),
                 SizedBox(height: 10,),
 
-                Obx(() {
-                  final actorData = actorController.actorData.value;
-
-                  if (actorController.isLoading.value) {
-                    return MovieShrimmerLoader();
-                  }
-                  if(actorData!.tvSeries.isEmpty){
-                    return SizedBox();
-                  }
-
-
-                  return  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          "TvSeries of ${actors.name}",
-                          style: AppTextStyles.SubHeadingb2,
-                        ),
-                        Divider(color: Colors.grey, thickness: 1),
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 8,
-                            mainAxisSpacing: 8,
-                            childAspectRatio: 0.5,
-                          ),
-                          itemCount: actorController.actorData.value!.tvSeries.length,
-                          itemBuilder: (context, index) {
-                            final series = actorController.actorData.value!.tvSeries[index];
-
-                            return GestureDetector(
-                              onTap: () {
-                                final seriesId = series.id;
-                                Get.to(() => TvSeriesDetailsPage(seriesId: seriesId),
-                                    binding: BindingsBuilder(() {
-                                      Get.put(MovieController(MoviesService(ApiService())));
-                                    }));
-                              },
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 150.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      image: DecorationImage(
-                                        image: NetworkImage(series.thumbnailImg),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 6.h),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 4.w),
-                                    child: Text(
-                                      series.name,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+                // Obx(() {
+                //   final actorData = actorController.actorData.value;
+                //
+                //   if (actorController.isLoading.value) {
+                //     return MovieShrimmerLoader();
+                //   }
+                //   if(actorData!.tvSeries.isEmpty){
+                //     return SizedBox();
+                //   }
+                //
+                //
+                //   return  Padding(
+                //     padding: const EdgeInsets.all(12.0),
+                //     child: Column(
+                //       children: [
+                //         Text(
+                //           "TvSeries of ${widget.actors.name}",
+                //           style: AppTextStyles.SubHeadingb2,
+                //         ),
+                //         Divider(color: Colors.grey, thickness: 1),
+                //         GridView.builder(
+                //           shrinkWrap: true,
+                //           physics: NeverScrollableScrollPhysics(),
+                //           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                //             crossAxisCount: 3,
+                //             crossAxisSpacing: 8,
+                //             mainAxisSpacing: 8,
+                //             childAspectRatio: 0.5,
+                //           ),
+                //           itemCount: actorController.actorData.value!.tvSeries.length,
+                //           itemBuilder: (context, index) {
+                //             final series = actorController.actorData.value!.tvSeries[index];
+                //
+                //             return GestureDetector(
+                //               onTap: () {
+                //                 final slug = series.slug;
+                //                 Get.to(() => TvSeriesDetailsPage(slug: slug),
+                //                     binding: BindingsBuilder(() {
+                //                       Get.put(MovieController(MoviesService(ApiService())));
+                //                     }));
+                //               },
+                //               child: Column(
+                //                 children: [
+                //                   Container(
+                //                     height: 150.h,
+                //                     decoration: BoxDecoration(
+                //                       borderRadius: BorderRadius.circular(8.r),
+                //                       image: DecorationImage(
+                //                         image: NetworkImage(series.thumbnailImg),
+                //                         fit: BoxFit.cover,
+                //                       ),
+                //                     ),
+                //                   ),
+                //                   SizedBox(height: 6.h),
+                //                   Padding(
+                //                     padding: EdgeInsets.symmetric(horizontal: 4.w),
+                //                     child: Text(
+                //                       series.name,
+                //                       maxLines: 2,
+                //                       overflow: TextOverflow.ellipsis,
+                //                       textAlign: TextAlign.center,
+                //                       style: TextStyle(
+                //                         fontSize: 14.sp,
+                //                         fontWeight: FontWeight.w500,
+                //                         color: Colors.white,
+                //                       ),
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //             );
+                //           },
+                //         ),
+                //       ],
+                //     ),
+                //   );
+                // }),
 
               ],
             ),
@@ -249,4 +255,10 @@ class ActorsDetailedScreen extends StatelessWidget {
       ),
     );
   }
+
+  // @override
+  // void dispose() {
+  //   Get.delete<Moviecon
+  //
+  // }
 }

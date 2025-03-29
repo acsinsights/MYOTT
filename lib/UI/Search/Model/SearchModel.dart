@@ -155,7 +155,7 @@ class TvSeriesDatum extends SearchableContent {
     required this.deletedAt,
     required this.createdAt,
     required this.updatedAt,
-  }):super(id: id,name: name,posterImg: thumbnailImg,type: ContentType.tvSeries);
+  }):super(id: id,name: name,posterImg: thumbnailImg,type: ContentType.tvSeries,slug: slug);
 
   factory TvSeriesDatum.fromJson(Map<String, dynamic> json) => TvSeriesDatum(
     id: json["id"],
@@ -306,7 +306,7 @@ class AudioDatum extends SearchableContent{
     required this.deletedAt,
     required this.createdAt,
     required this.updatedAt,
-  }): super(id: id,name: name,posterImg: image,type: ContentType.movie);
+  }): super(id: id,name: name,posterImg: image,type: ContentType.movie,slug: slug);
 
   factory AudioDatum.fromJson(Map<String, dynamic> json) => AudioDatum(
     id: json["id"],
@@ -482,7 +482,7 @@ class MoviesDatum extends SearchableContent {
     required this.deletedAt,
     required this.createdAt,
     required this.updatedAt,
-  }): super(id: id,name: name,posterImg: posterImg,type: ContentType.movie);
+  }): super(id: id,name: name,posterImg: posterImg,type: ContentType.movie,slug: slug);
 
   factory MoviesDatum.fromJson(Map<String, dynamic> json) => MoviesDatum(
     id: json["id"],

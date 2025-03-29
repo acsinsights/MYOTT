@@ -32,16 +32,21 @@ class ApiService {
     }
   }
 
-  Future<Response?> post(String endpoint, {Map<String, dynamic>? data, String? token}) async {
+  Future<Response?> post(String endpoint, {
+    Map<String, dynamic>? data,
+    String? token,
+    Map<String, String>? headers, // 👈 Accept custom headers
+  }) async {
     try {
       return await _dio.post(
-
         endpoint,
         data: data,
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
             "Content-Type": "application/json",
+            "Accept": "application/json",
+            ...?headers,
           },
         ),
       );

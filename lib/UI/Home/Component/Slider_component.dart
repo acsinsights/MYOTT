@@ -16,7 +16,7 @@ import '../Controller/MovieSliderController.dart';
 
 class MovieSlider extends StatelessWidget {
   final MovieSliderController movieSliderController = Get.put(MovieSliderController());
-  final HomeController homeController = Get.put(HomeController(HomeService(ApiService())));
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class MovieSlider extends StatelessWidget {
                           width: double.infinity,
                           height: double.infinity,
                           errorBuilder: (context,child, error){
-                            return Icon(Icons.image_not_supported,color: Colors.white,);
+                            return Image.asset("assets/images/movies/SliderMovies/movie-1.png");
                           },
                           loadingBuilder: (context, child, progress) {
                             if (progress == null) return child;
@@ -118,11 +118,11 @@ class MovieSlider extends StatelessWidget {
                                   final content = homeController.homePageData.value!.slider[index].content;
 
                                   if (content.type == 'movie') {
-                                    // Get.to(MovieDetailsPage(movieId: content.id));
-                                  } else if (content.type == 'tvseries') {
-                                    Get.to(TvSeriesDetailsPage(seriesId: content.id));
+                                    Get.to(MovieDetailsPage(slug: content.slug,movieId: content.id,));
+                                  } else if (content.type == 'series') {
+                                    Get.to(TvSeriesDetailsPage(slug: content.slug));
                                   } else {
-                                    Get.snackbar("Error", "Unknown content type");
+                                    Get.snackbar("Comming soon", "Future Update",colorText: Colors.white,backgroundColor: Colors.green);
                                   }
                                 },
                                 icon: Icon(Icons.play_arrow, color: AppColors.white),

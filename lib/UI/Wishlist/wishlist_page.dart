@@ -77,7 +77,7 @@ class _ShowWishlistPageState extends State<ShowWishlistPage> {
           if (type == "movie") {
             // Get.to(() => MovieDetailsPage(movieId: Id));
           } else {
-            Get.to(() => TvSeriesDetailsPage(seriesId: Id));
+            // Get.to(() => TvSeriesDetailsPage(slug: Id));
           }
 
             },

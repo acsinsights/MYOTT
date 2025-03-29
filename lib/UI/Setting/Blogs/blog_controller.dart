@@ -12,21 +12,21 @@ class BlogController extends GetxController {
   var blogDetails = Rxn<BlogdetailsModel>();
   var isBlogsLoading = true.obs;
   var isBlogDetailsLoading = false.obs;
-  var blogId = 0.obs;
+  var blogslug ="".obs;
 
 
   @override
   void onInit() {
     super.onInit();
     fetchBlogs();
-    if (blogId.value != 0) {
-      fetchBlogDetails(blogId.value);
+    if (blogslug.value != 0) {
+      fetchBlogDetails(blogslug.value);
     }
   }
 
-  void setBlogId(int id) {
-    blogId.value = id;
-    fetchBlogDetails(id);
+  void setBlogSlug(String slug) {
+    blogslug.value = slug;
+    fetchBlogDetails(slug);
   }
 
 
@@ -45,15 +45,24 @@ class BlogController extends GetxController {
     }
   }
 
-  Future<void> fetchBlogDetails(int blogId) async {
+  Future<void> fetchBlogDetails(String slug) async {
     try {
       isBlogDetailsLoading(true);
-      var blog = await _settingService.fetchBlogDetails(blogId);
-      blogDetails.value = blog;
+
+      var blog = await _settingService.fetchBlogDetails(slug);
+
+      if (blog != null) {
+        blogDetails.value = blog;
+        blogDetails.refresh(); // Ensures UI updates if needed
+      } else {
+        print("Blog details response is null");
+      }
     } catch (e) {
       print("Error fetching blog details: $e");
+      // You could also use a snackbar or logging service instead of print
     } finally {
       isBlogDetailsLoading(false);
     }
   }
+
 }

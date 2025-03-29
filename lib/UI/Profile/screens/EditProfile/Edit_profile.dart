@@ -41,7 +41,7 @@ class EditProfileScreen extends StatelessWidget {
 
                   ProfilePic(
                 image: profileController.user.value?.image ??
-                    'https://i.postimg.cc/cCsYDjvj/user-2.png', // ✅ Default if no image
+                    'https://i.pravatar.cc/300', // ✅ Default if no image
                 localImage: profileController.selectedImage.value, // ✅ Show local image if updated
                 imageUploadBtnPress: () {
                   profileController.showDialogue();

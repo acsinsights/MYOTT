@@ -9,39 +9,46 @@ BlogdetailsModel blogdetailsModelFromJson(String str) => BlogdetailsModel.fromJs
 String blogdetailsModelToJson(BlogdetailsModel data) => json.encode(data.toJson());
 
 class BlogdetailsModel {
-  Data data;
+  bool status;
+  String message;
+  List<Datum> data;
 
   BlogdetailsModel({
+    required this.status,
+    required this.message,
     required this.data,
   });
 
   factory BlogdetailsModel.fromJson(Map<String, dynamic> json) => BlogdetailsModel(
-    data: Data.fromJson(json["data"]),
+    status: json["status"],
+    message: json["message"],
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "data": data.toJson(),
+    "status": status,
+    "message": message,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
 
-class Data {
+class Datum {
   int id;
   String title;
   String slug;
-  int categoryId;
+  String categoryId;
   String thumbnailImg;
   String bannerImg;
   int status;
   int approved;
   int sticky;
-  String desc;
+  String description;
   int position;
   int isFeatured;
-  dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
 
-  Data({
+  Datum({
     required this.id,
     required this.title,
     required this.slug,
@@ -51,15 +58,14 @@ class Data {
     required this.status,
     required this.approved,
     required this.sticky,
-    required this.desc,
+    required this.description,
     required this.position,
     required this.isFeatured,
-    required this.deletedAt,
     required this.createdAt,
     required this.updatedAt,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
     title: json["title"],
     slug: json["slug"],
@@ -69,10 +75,9 @@ class Data {
     status: json["status"],
     approved: json["approved"],
     sticky: json["sticky"],
-    desc: json["desc"],
+    description: json["description"],
     position: json["position"],
     isFeatured: json["is_featured"],
-    deletedAt: json["deleted_at"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
   );
@@ -87,10 +92,9 @@ class Data {
     "status": status,
     "approved": approved,
     "sticky": sticky,
-    "desc": desc,
+    "description": description,
     "position": position,
     "is_featured": isFeatured,
-    "deleted_at": deletedAt,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };

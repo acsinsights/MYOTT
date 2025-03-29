@@ -4,6 +4,7 @@ class   ContentModel {
   final String name;
   final String? description;
   final String? posterImg;
+  final String slug;
   final String? thumbnailImg;
   final String? trailerUrl;
   final String? movieUploadUrl;
@@ -13,6 +14,7 @@ class   ContentModel {
     required this.id,
     required this.type,
     required this.name,
+    required this.slug,
      this.description,
      this.posterImg,
      this.thumbnailImg,
@@ -27,6 +29,7 @@ class   ContentModel {
       type: json['type'] ?? 'unknown', // Default to 'unknown'
       name: json['name'] ?? 'Unknown',
       description: json['description'],
+      slug: json['slug'],
       posterImg: json['poster_img'] ?? '',
       thumbnailImg: json['thumbnail_img'] ?? '',
       trailerUrl: json['trailer_url'],

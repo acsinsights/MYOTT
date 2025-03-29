@@ -28,10 +28,14 @@ class SettingController extends GetxController {
 
   Future<void> deleteAccount() async {
     try {
-      isLoading.value = true; // Show loading state
+      isLoading.value = true;
       update();
 
       String message = await _settingService.UserDeleteReq();
+
+      if (message == "Failed to delete account" || message == "Something went wrong!") {
+        throw Exception("Account deletion failed");
+      }
 
       Get.snackbar("Success", message,
           backgroundColor: Colors.green,

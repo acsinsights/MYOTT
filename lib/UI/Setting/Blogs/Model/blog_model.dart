@@ -12,7 +12,7 @@ class BlogModel {
   int id;
   String title;
   String slug;
-  int categoryId;
+  String categoryId;
   String thumbnailImg;
   String bannerImg;
   int status;
@@ -21,7 +21,6 @@ class BlogModel {
   String desc;
   int position;
   int isFeatured;
-  dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -38,7 +37,6 @@ class BlogModel {
     required this.desc,
     required this.position,
     required this.isFeatured,
-    required this.deletedAt,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -47,16 +45,15 @@ class BlogModel {
     id: json["id"],
     title: json["title"],
     slug: json["slug"],
-    categoryId: json["category_id"],
-    thumbnailImg: json["thumbnail_img"],
-    bannerImg: json["banner_img"],
+    categoryId: json["category_id"]?? "",
+    thumbnailImg: json["thumbnail_img"] ?? "",
+    bannerImg: json["banner_img"]?? "",
     status: json["status"],
     approved: json["approved"],
     sticky: json["sticky"],
     desc: json["desc"],
     position: json["position"],
     isFeatured: json["is_featured"],
-    deletedAt: json["deleted_at"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
   );
@@ -74,7 +71,6 @@ class BlogModel {
     "desc": desc,
     "position": position,
     "is_featured": isFeatured,
-    "deleted_at": deletedAt,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };

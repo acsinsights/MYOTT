@@ -3,9 +3,10 @@ import 'package:myott/UI/Actors/Model/ActorsModel.dart';
 import 'package:myott/UI/Home/Model/Audio_Model.dart';
 import '../../Model/Moviesmodel.dart';
 import 'SliderItemModel.dart';
+import 'latestMandTModel.dart';
 
 class HomePageModel {
-  final List<MoviesModel> latest;
+  final LatestMandTModel latest;  // Updated: Now properly included as a map
   final List<MoviesModel> top10;
   final List<MoviesModel> newArrival;
   final List<MoviesModel>? upcomingMovies;
@@ -18,7 +19,7 @@ class HomePageModel {
     required this.latest,
     required this.top10,
     required this.newArrival,
-     this.upcomingMovies,
+    this.upcomingMovies,
     required this.slider,
     required this.actors,
     required this.audios,
@@ -27,7 +28,10 @@ class HomePageModel {
 
   factory HomePageModel.fromJson(Map<String, dynamic> json) {
     return HomePageModel(
-      latest: (json['latest'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
+      latest: json['latest'] != null
+          ? LatestMandTModel.fromJson(json['latest'])
+          : LatestMandTModel(movies: [], series: []), // Default empty values
+
       top10: (json['top_movies'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
       newArrival: (json['new_arrivals'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
       upcomingMovies: (json['upcoming_movie'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],

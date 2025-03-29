@@ -16,6 +16,8 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    profileController.fetchProfileData();
+
     return Obx(() {
       var user = profileController.user.value;
 

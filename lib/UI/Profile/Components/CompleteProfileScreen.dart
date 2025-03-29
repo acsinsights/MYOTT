@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myott/UI/Components/custom_button.dart';
+import 'package:myott/UI/Home/Main_screen.dart';
 import 'package:myott/services/api_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../services/ProfileService.dart';
 import '../Controller/ProfileController.dart';
 
@@ -53,6 +53,7 @@ class CompleteProfileScreen extends StatelessWidget {
                     if (_validateInputs()) {
                       if (profileController.selectedImage.value != null) {
                         profileController.sendUserData();
+                        Get.offAll(MainScreen());
                       } else {
                         Get.snackbar("Error", "Please select an image");
                       }

@@ -26,7 +26,6 @@ class MovieList extends StatelessWidget {
     'assets/Icons/top_10_icon/ic_eight.png',
     'assets/Icons/top_10_icon/ic_nine.png',
     'assets/Icons/top_10_icon/ic_ten.png',
-
   ];
 
   @override
@@ -50,12 +49,15 @@ class MovieList extends StatelessWidget {
         itemCount: movies.length,
         padding: const EdgeInsets.only(left: 16),
         itemBuilder: (context, index) {
+          final movie = movies[index];
+          final bool isFree = movie.package?.free ?? false; // Check if the movie is free
+
           return GestureDetector(
             onTap: () {
-              final movieId = movies[index].id;
-              final slug=movies[index].slug;
+              final movieId = movie.id;
+              final slug = movie.slug;
 
-              Get.to(() => MovieDetailsPage(movieId: movieId,slug: slug,),
+              Get.to(() => MovieDetailsPage(movieId: movieId, slug: slug),
                   binding: BindingsBuilder(() {
                     Get.put(MovieController(MoviesService(ApiService())));
                   }));
@@ -73,7 +75,7 @@ class MovieList extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
-                            image: NetworkImage(movies[index].posterImg),
+                            image: NetworkImage(movie.posterImg),
                             fit: BoxFit.cover,
                             onError: (exception, stackTrace) =>
                                 ShimmerLoader(height: 180, width: 120),
@@ -84,7 +86,7 @@ class MovieList extends StatelessWidget {
                       SizedBox(
                         width: 120,
                         child: Text(
-                          movies[index].name,
+                          movie.name,
                           style: AppTextStyles.SubHeading2,
                           textAlign: TextAlign.center,
                           maxLines: 2,
@@ -95,6 +97,7 @@ class MovieList extends StatelessWidget {
                     ],
                   ),
 
+                  // ✅ **TOP 10 BADGE** (if applicable)
                   if (isTop10 && index < topRankImages.length)
                     Positioned(
                       bottom: 60,
@@ -105,6 +108,27 @@ class MovieList extends StatelessWidget {
                         height: 60,
                       ),
                     ),
+
+                  // ✅ **FREE/PAID BADGE** (always show)
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: isFree ? Colors.green : Colors.red, // Green for free, Red for paid
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        isFree ? "FREE" : "PAID",
+                        style: AppTextStyles.SubHeading2.copyWith(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

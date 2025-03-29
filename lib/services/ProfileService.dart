@@ -21,7 +21,7 @@ class ProfileService {
     FormData formData = FormData.fromMap({
       'email': email,
       'name': name,
-      'phone': phone,
+      'mobile': phone,
       'image': await MultipartFile.fromFile(imageFile.path, filename: imageFile.path.split('/').last),
     });
     SharedPreferences prefs=await SharedPreferences.getInstance();
@@ -54,7 +54,6 @@ class ProfileService {
       return null;
     }
   }
-
 
 
 

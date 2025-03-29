@@ -27,9 +27,9 @@ class TVSeriesService {
     return [];
   }
 
-  Future<TvSeriesDetailsModel?> fetchTVSeriesDetails(int seriesId) async {
+  Future<TvSeriesDetailsModel?> fetchTVSeriesDetails(String slug) async {
     try {
-      final response = await apiService.get(APIEndpoints.tvSeriesDetails(seriesId));
+      final response = await apiService.get(APIEndpoints.tvSeriesDetails(slug));
 
       if (response?.statusCode == 200) {
         final data = response?.data;

@@ -16,15 +16,15 @@ class GenreController extends GetxController {
   void selectGenre(GenreModel genre) {
     if (selectedGenre.value?.id != genre.id) {
       selectedGenre.value = genre;
-      fetchMoviesByGenre(genre.id);
+      fetchMoviesByGenre(genre.slug);
     }
     Get.to(() => MoviesByGenre(), arguments: genre);
   }
 
-  void fetchMoviesByGenre(int genreId) async {
+  void fetchMoviesByGenre(String genreSlug) async {
     try {
       isLoading.value = true;
-      var data = await genreService.fetchMoviesByGenre(genreId);
+      var data = await genreService.fetchMoviesByGenre(genreSlug);
       if (data != null) {
         mAndtGenre.value = data;
       }else {

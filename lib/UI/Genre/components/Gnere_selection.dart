@@ -9,7 +9,7 @@ import '../Controller/genre_controller.dart';
 import '../Model/genre_model.dart';
 
 class GenreSelection extends StatelessWidget {
-  final HomeController homeController=Get.put(HomeController(HomeService(ApiService())));
+  final HomeController homeController = Get.put(HomeController());
   final GenreController genreController = Get.put(GenreController());
 
   @override

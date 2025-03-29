@@ -10,7 +10,7 @@ import '../Controller/Audio_controller.dart';
 import '../Model/Audio_Model.dart';
 
 class AudioSelection extends StatelessWidget {
-  final HomeController homeController = Get.put(HomeController(HomeService(ApiService())));
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {

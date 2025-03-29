@@ -11,16 +11,16 @@ import 'Component/TVSeries_synopsis.dart';
 import 'Component/TVSeries_attribute.dart';
 
 class TvSeriesDetailsPage extends StatelessWidget {
-  final int seriesId;
+  final String slug;
 
-  const TvSeriesDetailsPage({Key? key, required this.seriesId}) : super(key: key);
+  const TvSeriesDetailsPage({Key? key, required this.slug}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final TVSeriesController tvSeriesController = Get.find<TVSeriesController>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      tvSeriesController.fetchTVSeriesDetails(seriesId);
+      tvSeriesController.fetchTVSeriesDetails(slug);
     });
 
     return Scaffold(

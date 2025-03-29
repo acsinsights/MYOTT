@@ -118,14 +118,19 @@ class SettingService {
 
   Future<String> UserDeleteReq() async {
     try {
-      SharedPreferences preferences=await SharedPreferences.getInstance();
-      final String? token=preferences.getString("access_token");
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      final String? token = preferences.getString("access_token");
 
-      Response? response = await _apiService.post("account/delete",token: token);
+      Response? response = await _apiService.post("account/delete", token: token);
 
       if (response != null && response.statusCode == 200) {
-        print("✅ Request successful: ${response.data}");
-        return response.data['message'] ?? "Account deleted successfully";
+        if (response.data != null && response.data['success'] == true) {
+          print("✅ Request successful: ${response.data}");
+          return response.data['message'] ?? "Account deleted successfully";
+        } else {
+          print("❌ API returned success status but no success message.");
+          return "Failed to delete account";  // Treat it as failure
+        }
       } else {
         print("❌ Request failed with status: ${response?.statusCode}");
         return "Failed to delete account";
@@ -157,18 +162,21 @@ class SettingService {
     }
   }
 
-  Future<BlogdetailsModel> fetchBlogDetails(int blogId) async {
+  Future<BlogdetailsModel> fetchBlogDetails(String slug) async {
     try {
-      final response = await _apiService.get(APIEndpoints.blogDeatils(blogId));
+      final response = await _apiService.get(APIEndpoints.blogDeatils(slug));
 
-      if (response?.statusCode == 200) {
-        final data=response?.data;
-        return BlogdetailsModel.fromJson(data);
+      if (response == null) {
+        throw Exception("No response received from server.");
+      }
+
+      if (response.statusCode == 200) {
+        return BlogdetailsModel.fromJson(response.data);
       } else {
-        throw Exception("Failed to fetch blog details");
+        throw Exception("Failed to fetch blog details. Status Code: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Error fetching blog details: $e");
+      throw Exception("Error fetching blog details: ${e.toString()}");
     }
   }
 

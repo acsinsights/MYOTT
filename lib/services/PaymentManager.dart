@@ -53,20 +53,15 @@ class RazorpayService implements PaymentService {
   }
   @override
   Future<void> pay(PaymentData paymentData) async {
-    double conversionRate = 83.0; // 1 USD = 83 INR
+    double conversionRate = 83.0;
     double finalAmount = paymentData.finalAmount.toDouble();
-
-    print("🔵 Original Amount (USD): ${paymentData.finalAmount}");
-    print("🔵 Selected Currency: ${paymentData.currency}");
-
-    finalAmount = finalAmount * conversionRate;  // ✅ Hamesha INR me convert karna hai
-    print("🟢 Converted Amount in INR: $finalAmount");
+    finalAmount = finalAmount * conversionRate;
 
     var options = {
       "key": "rzp_test_Y2wDGdLutEecD5",
-      "amount": (finalAmount * 100).toInt(), // ✅ Razorpay ke liye paise me convert
+      "amount": (finalAmount * 100).toInt(),
       "name": "Your App",
-      "currency": "INR", // ✅ Razorpay sirf INR accept karta hai
+      "currency": "INR",
       "description": paymentData.description ?? "Payment for Content",
       "prefill": {
         "contact": paymentData.contact ?? "9876543210",
@@ -80,6 +75,8 @@ class RazorpayService implements PaymentService {
 
   void _handleSuccess(PaymentSuccessResponse response) {
     print("✅ Razorpay Success: ${response.paymentId}");
+
+
   }
 
   void _handleError(PaymentFailureResponse response) {
@@ -100,6 +97,7 @@ class StripeService implements PaymentService {
 
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
+
           paymentIntentClientSecret: clientSecret,
           merchantDisplayName: "Your App Name",
         ),
@@ -116,7 +114,6 @@ class StripeService implements PaymentService {
 
   static Future<String?> _createPaymentIntent(int amount) async {
     try {
-      // 🔹 Convert amount to cents and ensure it's an integer
       int amountInCents = (amount * 100).toInt();
 
       var response = await http.post(
@@ -126,7 +123,7 @@ class StripeService implements PaymentService {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: {
-          "amount": amountInCents.toString(), // ✅ Now it's an integer
+          "amount": amountInCents.toString(), 
           "currency": "usd",
           "payment_method_types[]": "card",
         },

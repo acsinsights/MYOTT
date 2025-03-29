@@ -113,7 +113,7 @@ class MoviesByGenre extends StatelessWidget {
                       final series = tvseries[index];
                       return GestureDetector(
                         onTap: () {
-                          Get.to(() => TvSeriesDetailsPage(seriesId: series.id));
+                          Get.to(() => TvSeriesDetailsPage(slug: series.slug));
                         },
                         child: MovieOrTvItem(imageUrl: series.thumbnailImg, title: series.name),
                       );
