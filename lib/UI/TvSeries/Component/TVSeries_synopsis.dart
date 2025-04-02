@@ -13,7 +13,7 @@ class TVseriesSynopsis extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Synopsis", style: AppTextStyles.SubHeadingb1),
+        Text("Description", style: AppTextStyles.SubHeadingb1),
         SizedBox(height: 5),
         Text(description, style: AppTextStyles.SubHeadingGrey2),
       ],

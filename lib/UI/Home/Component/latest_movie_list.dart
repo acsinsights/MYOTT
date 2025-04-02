@@ -64,7 +64,9 @@ class LatestMandSList extends StatelessWidget {
                       Get.put(MovieController());
                     }));
               } else if (item.type == MediaType.series) {
-                Get.to(() => TvSeriesDetailsPage(slug: item.slug));
+                Get.to(() => TvSeriesDetailsPage(),arguments: {
+                  "slug":item.slug
+                });
               }
             },
             child: Padding(

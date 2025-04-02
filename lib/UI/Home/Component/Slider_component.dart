@@ -122,7 +122,9 @@ class MovieSlider extends StatelessWidget {
                                       "slug":content.slug
                                     });
                                   } else if (content.type == 'series') {
-                                    Get.to(TvSeriesDetailsPage(slug: content.slug));
+                                    Get.to(TvSeriesDetailsPage(),arguments: {
+                                      "slug":content.slug
+                                    });
                                   } else {
                                     Get.snackbar("Comming soon", "Future Update",colorText: Colors.white,backgroundColor: Colors.green);
                                   }

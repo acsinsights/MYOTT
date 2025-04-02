@@ -27,6 +27,8 @@ class GenreController extends GetxController {
     Get.to(() => MoviesByGenre(), arguments: genre);
   }
 
+
+
   void fetchMoviesByGenre(String genreSlug) async {
     try {
       isLoading.value = true;

@@ -5,9 +5,8 @@ import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 
 class TVSeriesService {
-  final ApiService apiService;
+  final ApiService apiService=ApiService();
 
-  TVSeriesService(this.apiService);
 
   Future<List<TvSeriesModel>> fetchTVSeries() async {
     try {
@@ -27,13 +26,13 @@ class TVSeriesService {
     return [];
   }
 
-  Future<TvSeriesDetailsModel?> fetchTVSeriesDetails(String slug) async {
+  Future<SeriesDetailResponse?> fetchTVSeriesDetails(String slug) async {
     try {
       final response = await apiService.get(APIEndpoints.tvSeriesDetails(slug));
 
       if (response?.statusCode == 200) {
         final data = response?.data;
-        return TvSeriesDetailsModel.fromJson(data);
+        return SeriesDetailResponse.fromJson(data);
       } else {
         print("Error: ${response?.statusCode} - ${response?.statusMessage}");
       }

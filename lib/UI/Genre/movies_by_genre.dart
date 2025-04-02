@@ -49,14 +49,19 @@ class MoviesByGenre extends StatelessWidget {
             children: [
               if (movies.isNotEmpty)
                 ContentSection(title: "Movies", items: movies, onTap: (movie) {
-                  Get.to(() => MovieDetailsPage(), binding: BindingsBuilder(() {
+                  Get.to(() => MovieDetailsPage(),arguments: {
+                    "slug":movie.slug
+                  }, binding: BindingsBuilder(() {
                     Get.put(MovieController());
                   }));
                 }),
 
               if (tvseries.isNotEmpty)
                 ContentSection(title: "TV Series", items: tvseries, onTap: (series) {
-                  Get.to(() => TvSeriesDetailsPage(slug: series.slug));
+                  Get.to(() => TvSeriesDetailsPage(),
+                      arguments: {
+                    "slug":series.slug
+                  });
                 }),
 
               if (videos.isNotEmpty)

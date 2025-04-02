@@ -83,10 +83,14 @@ class SearchScreen extends StatelessWidget {
       onTap: () {
         switch (content.type) {
           case ContentType.movie:
-            Get.to(() => MovieDetailsPage());
+            Get.to(() => MovieDetailsPage(),arguments: {
+              "slug":content.slug
+            });
             break;
           case ContentType.tvSeries:
-            Get.to(() => TvSeriesDetailsPage(slug: content.slug));
+            Get.to(() => TvSeriesDetailsPage(),arguments: {
+              "slug":content.slug
+            });
             break;
           case ContentType.audio:
             // Get.to(()=> AudioDetailsPage(audioId: content.id));

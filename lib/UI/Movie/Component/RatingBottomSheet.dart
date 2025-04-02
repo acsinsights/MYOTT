@@ -52,7 +52,6 @@ class RatingBottomSheet extends StatelessWidget {
 
           SizedBox(height: 8),
 
-          // Rating Text (1 star - Poor, 5 stars - Excellent)
           Obx(() {
             String ratingText = "";
             switch (ratingController.selectedRating.value) {

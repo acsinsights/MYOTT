@@ -74,7 +74,9 @@ class MoviesByAudio extends StatelessWidget {
             "slug":item.slug
           });
         } else if (item is AudioSeries) {
-          Get.to(() => TvSeriesDetailsPage(slug: item.slug));
+          Get.to(() => TvSeriesDetailsPage(),arguments: {
+            "slug":item.slug
+          });
         } else if (item is AudioVideo) {
           // Get.to(() => VideoDetailsScreen(video: item));
         } else if (item is Audio) {

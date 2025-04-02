@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Home/Model/seriesModel.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
@@ -8,7 +9,7 @@ import '../../../services/api_service.dart';
 import '../../../services/tv_series_service.dart';
 
 class TvSeriesMovieList extends StatelessWidget {
-  final List<TvSeriesModel> tvSeries;
+  final List<HomeSeries> tvSeries;
 
   TvSeriesMovieList({Key? key, required this.tvSeries}) : super(key: key);
 
@@ -36,9 +37,12 @@ class TvSeriesMovieList extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               final slug = tvSeries[index].slug;
-              Get.to(() => TvSeriesDetailsPage(slug: slug),
+              Get.to(() => TvSeriesDetailsPage(),
+                  arguments: {
+                "slug":slug
+                  },
                   binding: BindingsBuilder(() {
-                    Get.put(TVSeriesController(TVSeriesService(ApiService())));
+                    Get.put(TVSeriesController());
                   }));
             },
             child: Padding(

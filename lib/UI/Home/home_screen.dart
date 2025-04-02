@@ -27,8 +27,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homeController = Get.put(HomeController());
-    final tvSeriesController =
-    Get.put(TVSeriesController(TVSeriesService(ApiService())));
+
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -93,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                       title: "TV Series".tr,
                     )),
                   ),
-                  TvSeriesMovieList(tvSeries: tvSeriesController.tvSeries),
+                  TvSeriesMovieList(tvSeries: homeData.series),
                 ],
 
                 if (homeData.audios.isNotEmpty) ...[

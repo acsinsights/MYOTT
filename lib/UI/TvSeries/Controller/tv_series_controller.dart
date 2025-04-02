@@ -2,62 +2,55 @@ import 'package:get/get.dart';
 import 'package:myott/services/tv_series_service.dart';
 import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TVSeriesController extends GetxController {
-  final TVSeriesService _tvSeriesService;
+  final TVSeriesService _tvSeriesService =TVSeriesService();
 
-  TVSeriesController(this._tvSeriesService);
-
-  // TV Series List
-  var tvSeries = <TvSeriesModel>[].obs;
-  var isLoading = true.obs;
-
-  // TV Series Details
-  var tvSeriesDetails = Rxn<TvSeriesDetailsModel>();
+  var isLoading = false.obs;
+  var tvSeriesDetails = Rxn<SeriesDetailResponse>();
   var isDetailsLoading = true.obs;
-
-  // Watchlist & Like State
+  var isDownloaded = false.obs;
   var isWatchlisted = false.obs;
   var isLiked = false.obs;
+  var isRated = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchTVSeries();
-  }
 
-  /// Fetches the list of TV Series
-  void fetchTVSeries() async {
-    try {
-      isLoading.value = true;
-      var fetchedSeries = await _tvSeriesService.fetchTVSeries();
-
-      if (fetchedSeries.isNotEmpty) {
-        tvSeries.assignAll(fetchedSeries);
-      } else {
-        print("No TV Series available.");
-      }
-    } catch (e) {
-      print("Error fetching TV Series: $e");
-    } finally {
-      isLoading.value = false;
+    final String slug = Get.arguments?["slug"] ?? ""; // Fetch slug from arguments
+    if (slug.isNotEmpty) {
+      fetchTVSeriesDetails(slug);
     }
   }
 
+
+
   void fetchTVSeriesDetails(String slug) async {
     try {
-      isDetailsLoading.value = true;
-      tvSeriesDetails.value = await _tvSeriesService.fetchTVSeriesDetails(slug);
+      isDetailsLoading.value = true; // ✅ Use isDetailsLoading, not isLoading
+
+      var fetchedTVSeriesDetails = await _tvSeriesService.fetchTVSeriesDetails(slug);
+      if (fetchedTVSeriesDetails != null) {
+        tvSeriesDetails.value = fetchedTVSeriesDetails;
+      }
     } catch (e) {
       print("Error fetching TV Series Details: $e");
     } finally {
       isDetailsLoading.value = false;
     }
   }
+  void shareContent(String title, String type, String url) {
 
-  /// Toggles the Watchlist status
+    String message = "Check out this $type: $title\n$url";
+
+    Share.share(message);
+  }
+
+
   void toggleWatchlist() => isWatchlisted.value = !isWatchlisted.value;
-
-  /// Toggles the Like status
+  void toggleDownload() => isDownloaded.value = !isDownloaded.value;
   void toggleLike() => isLiked.value = !isLiked.value;
+  void toggleRate() => isRated.value = !isRated.value;
 }

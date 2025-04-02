@@ -36,7 +36,9 @@ class TvSeriesGrid extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                Get.to(() => TvSeriesDetailsPage(slug: tvseries.slug));
+                Get.to(() => TvSeriesDetailsPage(),arguments: {
+                  "slug":tvseries.slug
+                });
               },
               child: Column(
                 children: [
