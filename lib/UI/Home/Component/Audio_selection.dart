@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/UI/Audio/movies_by_audio.dart';
-import 'package:myott/services/Home_service.dart';
-import 'package:myott/services/api_service.dart';
+import 'package:myott/UI/Audio/Controller/AudioController.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
 import '../../../Core/Utils/app_text_styles.dart';
-import '../../Audio/controller/AudioController.dart';
-import '../Model/Audio_Model.dart';
 
 class AudioSelection extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
