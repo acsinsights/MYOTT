@@ -87,25 +87,25 @@ class LatestMandSList extends StatelessWidget {
                         ),
                       ),
                       // Free/Paid Badge
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: item.isfree ? Colors.green : Colors.red,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            item.isfree ? "FREE" : "PAID",
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   top: 8,
+                      //   right: 8,
+                      //   child: Container(
+                      //     padding: const EdgeInsets.symmetric(
+                      //         horizontal: 8, vertical: 4),
+                      //     decoration: BoxDecoration(
+                      //       color: item.isfree ? Colors.green : Colors.red,
+                      //       borderRadius: BorderRadius.circular(6),
+                      //     ),
+                      //     child: Text(
+                      //       item.isfree ? "FREE" : "PAID",
+                      //       style: const TextStyle(
+                      //           color: Colors.white,
+                      //           fontSize: 12,
+                      //           fontWeight: FontWeight.bold),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 6),

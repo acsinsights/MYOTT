@@ -104,25 +104,25 @@ class MovieList extends StatelessWidget {
                     ),
 
                   // ✅ **FREE/PAID BADGE** (always show)
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: isFree ? Colors.green : Colors.red, // Green for free, Red for paid
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        isFree ? "FREE" : "PAID",
-                        style: AppTextStyles.SubHeading2.copyWith(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   top: 8,
+                  //   right: 8,
+                  //   child: Container(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  //     decoration: BoxDecoration(
+                  //       color: isFree ? Colors.green : Colors.red, // Green for free, Red for paid
+                  //       borderRadius: BorderRadius.circular(6),
+                  //     ),
+                  //     child: Text(
+                  //       isFree ? "FREE" : "PAID",
+                  //       style: AppTextStyles.SubHeading2.copyWith(
+                  //         color: Colors.white,
+                  //         fontSize: 12,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

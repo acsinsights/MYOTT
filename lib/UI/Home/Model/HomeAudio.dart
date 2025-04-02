@@ -8,7 +8,7 @@ class HomeAudio {
 
   HomeAudio({
     required this.id,
-    this.slug="hindi",
+    required this.slug,
     required this.name,
     required this.createdAt,
     required this.updatedAt,
@@ -19,6 +19,7 @@ class HomeAudio {
     return HomeAudio(
       id: id,
       name: json["name"],
+      slug: json["slug"],
       createdAt: DateTime.parse(json["created_at"]),
       updatedAt: DateTime.parse(json["updated_at"]),
     );

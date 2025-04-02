@@ -7,6 +7,7 @@ import 'package:myott/UI/Actors/Model/ActorsModel.dart';
 import 'package:myott/UI/Components/MovieListShrimerLoad.dart';
 import 'package:myott/UI/Components/Movie_grid.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
+import 'package:myott/UI/Video/video_Detials_page.dart';
 import 'package:myott/services/ActorService.dart';
 import 'package:myott/services/api_service.dart';
 
@@ -105,7 +106,7 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
                     title: "Videos of ${widget.actors.name}",
                     items: actorController.actorData.value?.videos ?? [],
                     isLoading: actorController.isLoading.value,
-                    onTap: (video) => Get.to(() => TvSeriesDetailsPage(slug: video.slug)),
+                    onTap: (video) => Get.to(() => VideoDetialsPage()),
                   )),
                 ],
               ),

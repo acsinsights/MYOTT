@@ -39,46 +39,6 @@ class AudioDeatilsResponseModel {
   };
 }
 
-
-class SeriesPackage {
-  int id;
-  int seriesId;
-  bool free; // ✅ Changed from int to bool
-  String selection;
-  int coinCost;
-  int planPrice;
-  int offerPrice;
-
-  SeriesPackage({
-    required this.id,
-    required this.seriesId,
-    required this.free,
-    required this.selection,
-    required this.coinCost,
-    required this.planPrice,
-    required this.offerPrice,
-  });
-
-  factory SeriesPackage.fromJson(Map<String, dynamic> json) => SeriesPackage(
-    id: json["id"] ?? 0,
-    seriesId: json["series_id"] ?? 0,
-    free: json["free"] == 1, // ✅ Convert 1 → true, 0 → false
-    selection: json["selection"]?.toString() ?? "",
-    coinCost: json["coin_cost"] ?? 0,
-    planPrice: json["plan_price"] ?? 0,
-    offerPrice: json["offer_price"] ?? 0,
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "series_id": seriesId,
-    "free": free ? 1 : 0, // ✅ Convert bool back to int (true → 1, false → 0)
-    "selection": selection,
-    "coin_cost": coinCost,
-    "plan_price": planPrice,
-    "offer_price": offerPrice,
-  };
-}
 class AuidoMovie {
   int id;
   String name;
