@@ -7,12 +7,14 @@ class GenreService{
   ApiService _apiService;
   GenreService(this._apiService);
 
-  Future<GenreMandTModel> fetchMoviesByGenre(String genreSlug) async {
+  Future<GenreDetailsResponseModel?> fetchMoviesByGenre(String genreSlug) async {
     try {
       final response = await _apiService.get(APIEndpoints.moviesByGenre(genreSlug));
       if(response?.statusCode==200 || response?.data!=null){
         final data=response?.data;
-        return GenreMandTModel.fromJson(data);
+        print("API Call URL: ${data}");
+
+        return GenreDetailsResponseModel.fromJson(data);
       }else{
         throw Exception("Failed to fetch movies by genre");
 

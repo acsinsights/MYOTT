@@ -15,7 +15,7 @@ class HomePageModel {
   final List<ActorsModel> actors;
   final List<HomeAudio> audios;
   final List<Video> video;
-  final List<GenreModel> genre;
+  final List<HomeGenreModel> genre;
 
   HomePageModel({
     required this.latest,
@@ -42,7 +42,7 @@ class HomePageModel {
       video: (json["videos"] as List?)?.map((e)=> Video.fromJson(e)).toList() ?? [],
       actors: (json['actors'] as List?)?.map((e) => ActorsModel.fromJson(e)).toList() ?? [],
       audios: (json['Audio'] as List?)?.map((e) => HomeAudio.fromJson(e)).toList() ?? [],
-      genre: (json['all_genres'] as List?)?.map((e) => GenreModel.fromJson(e)).toList() ?? [],
+      genre: (json['all_genres'] as List?)?.map((e) => HomeGenreModel.fromJson(e)).toList() ?? [],
     );
   }
 }

@@ -57,7 +57,7 @@ class GenreSelection extends StatelessWidget {
           itemCount: homeController.homePageData.value!.genre.length,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           itemBuilder: (context, index) {
-            GenreModel genre = homeController.homePageData.value!.genre[index];
+            HomeGenreModel genre = homeController.homePageData.value!.genre[index];
 
             return GestureDetector(
               onTap: () => genreController.selectGenre(genre),

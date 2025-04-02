@@ -6,9 +6,7 @@ import 'package:myott/UI/Genre/Controller/genre_controller.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/Movie_details_page.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
-
-import '../../services/MovieService.dart';
-import '../../services/api_service.dart';
+import 'package:myott/UI/Video/video_Detials_page.dart';
 
 class MoviesByGenre extends StatelessWidget {
   final GenreController genreController = Get.find<GenreController>();
@@ -27,25 +25,15 @@ class MoviesByGenre extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Obx(() {
         if (genreController.isLoading.value) {
-          return Padding(
-            padding: EdgeInsets.all(12.w),
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: ScreenUtil().screenWidth > 600 ? 4 : 3,
-                crossAxisSpacing: 12.w,
-                mainAxisSpacing: 12.h,
-                childAspectRatio: 2 / 3,
-              ),
-              itemCount: 20,
-              itemBuilder: (context, index) => ShimmerLoader(height: 150.h, width: 100.w),
-            ),
-          );
+          return ContentShimmer();
         }
 
-        final movies = genreController.mAndtGenre.value?.movies ?? [];
-        final tvseries = genreController.mAndtGenre.value?.tvSeries ?? [];
+        final movies = genreController.movies ?? [];
+        final tvseries = genreController.tvSeries ?? [];
+        final videos = genreController.videos ?? [];
+        final audios = genreController.audios ?? [];
 
-        if (movies.isEmpty && tvseries.isEmpty) {
+        if (movies.isEmpty && tvseries.isEmpty && videos.isEmpty && audios.isEmpty) {
           return Center(
             child: Text(
               "No content available in this genre",
@@ -55,73 +43,32 @@ class MoviesByGenre extends StatelessWidget {
         }
 
         return SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(12.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (movies.isNotEmpty) ...[
-                  Text(
-                    "Movies",
-                    style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8.h),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: ScreenUtil().screenWidth > 600 ? 4 : 3,
-                      crossAxisSpacing: 12.w,
-                      mainAxisSpacing: 12.h,
-                      childAspectRatio: 2 / 3,
-                    ),
-                    itemCount: movies.length,
-                    itemBuilder: (context, index) {
-                      final movie = movies[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Get.to(() => MovieDetailsPage(), binding: BindingsBuilder(() {
-                            Get.put(MovieController());
-                          }));
+          padding: EdgeInsets.all(12.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (movies.isNotEmpty)
+                ContentSection(title: "Movies", items: movies, onTap: (movie) {
+                  Get.to(() => MovieDetailsPage(), binding: BindingsBuilder(() {
+                    Get.put(MovieController());
+                  }));
+                }),
 
-                        },
-                        child: MovieOrTvItem(imageUrl: movie.posterImg, title: movie.name),
-                      );
-                    },
-                  ),
-                  SizedBox(height: 16.h),
-                ],
+              if (tvseries.isNotEmpty)
+                ContentSection(title: "TV Series", items: tvseries, onTap: (series) {
+                  Get.to(() => TvSeriesDetailsPage(slug: series.slug));
+                }),
 
-                // TV Series Section
-                if (tvseries.isNotEmpty) ...[
-                  Text(
-                    "TV Series",
-                    style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8.h),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: ScreenUtil().screenWidth > 600 ? 4 : 3,
-                      crossAxisSpacing: 12.w,
-                      mainAxisSpacing: 12.h,
-                      childAspectRatio: 2 / 3,
-                    ),
-                    itemCount: tvseries.length,
-                    itemBuilder: (context, index) {
-                      final series = tvseries[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Get.to(() => TvSeriesDetailsPage(slug: series.slug));
-                        },
-                        child: MovieOrTvItem(imageUrl: series.thumbnailImg, title: series.name),
-                      );
-                    },
-                  ),
-                ],
-              ],
-            ),
+              if (videos.isNotEmpty)
+                ContentSection(title: "Videos", items: videos, onTap: (video) {
+                  Get.to(() => VideoDetialsPage());
+                }),
+
+              if (audios.isNotEmpty)
+                ContentSection(title: "Audios", items: audios, onTap: (audio) {
+                  // Future implementation for audio playback
+                }),
+            ],
           ),
         );
       }),
@@ -129,6 +76,70 @@ class MoviesByGenre extends StatelessWidget {
   }
 }
 
+/// Reusable Widget for Movie, TV, Video, and Audio sections
+class ContentSection extends StatelessWidget {
+  final String title;
+  final List<dynamic> items;
+  final Function(dynamic) onTap;
+
+  const ContentSection({
+    Key? key,
+    required this.title,
+    required this.items,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8.h),
+        ContentGrid(items: items, onTap: onTap),
+        SizedBox(height: 16.h),
+      ],
+    );
+  }
+}
+
+/// Reusable GridView for displaying items
+class ContentGrid extends StatelessWidget {
+  final List<dynamic> items;
+  final Function(dynamic) onTap;
+
+  const ContentGrid({Key? key, required this.items, required this.onTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: ScreenUtil().screenWidth > 600 ? 4 : 3,
+        crossAxisSpacing: 12.w,
+        mainAxisSpacing: 12.h,
+        childAspectRatio: 2 / 3,
+      ),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final item = items[index];
+        return GestureDetector(
+          onTap: () => onTap(item),
+          child: MovieOrTvItem(
+            imageUrl: item.thumbnailImg ?? "",
+            title: item.name ?? "Unknown",
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Reusable Movie or TV Series Grid Item
 class MovieOrTvItem extends StatelessWidget {
   final String imageUrl;
   final String title;
@@ -162,6 +173,26 @@ class MovieOrTvItem extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Placeholder for Shimmer Loader (Skeleton UI)
+class ContentShimmer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(12.w),
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: ScreenUtil().screenWidth > 600 ? 4 : 3,
+          crossAxisSpacing: 12.w,
+          mainAxisSpacing: 12.h,
+          childAspectRatio: 2 / 3,
+        ),
+        itemCount: 20,
+        itemBuilder: (context, index) => ShimmerLoader(height: 150.h, width: 100.w),
+      ),
     );
   }
 }

@@ -9,14 +9,20 @@ import '../movies_by_genre.dart';
 
 class GenreController extends GetxController {
   final GenreService genreService = Get.put(GenreService(ApiService()));
-  var selectedGenre = Rxn<GenreModel>();
-  var mAndtGenre = Rxn<GenreMandTModel>();
+  var selectedGenre = Rxn<HomeGenreModel>();
   var isLoading = false.obs;
 
-  void selectGenre(GenreModel genre) {
+  var movies=<GenreMovieModel>[].obs;
+  var tvSeries=<GnereTvSeriesModel>[].obs;
+  var videos=<GenreVideoModel>[].obs;
+  var audios=<GenreAudioModel>[].obs;
+
+
+  void selectGenre(HomeGenreModel genre) {
     if (selectedGenre.value?.id != genre.id) {
       selectedGenre.value = genre;
       fetchMoviesByGenre(genre.slug);
+      print(genre.slug);
     }
     Get.to(() => MoviesByGenre(), arguments: genre);
   }
@@ -25,9 +31,14 @@ class GenreController extends GetxController {
     try {
       isLoading.value = true;
       var data = await genreService.fetchMoviesByGenre(genreSlug);
+      print("Fetched Data: $data"); // Debugging Line
       if (data != null) {
-        mAndtGenre.value = data;
-      }else {
+        movies.assignAll(data.movies ?? []);
+        tvSeries.assignAll(data.tvSeries ?? []);
+        videos.assignAll(data.videos ?? []);
+        audios.assignAll(data.audios ?? []);
+
+      } else {
         print("Failed to fetch genre movies");
       }
     } catch (e, stacktrace) {

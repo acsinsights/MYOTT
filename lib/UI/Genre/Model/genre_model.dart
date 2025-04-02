@@ -3,7 +3,7 @@
 
 
 
-class GenreModel {
+class HomeGenreModel {
   int id;
   String name;
   String slug;
@@ -11,7 +11,7 @@ class GenreModel {
   DateTime updatedAt;
 
 
-  GenreModel({
+  HomeGenreModel({
     required this.id,
     required this.name,
     required this.slug,
@@ -20,10 +20,10 @@ class GenreModel {
 
   });
 
-  factory GenreModel.fromJson(Map<String, dynamic> json) {
+  factory HomeGenreModel.fromJson(Map<String, dynamic> json) {
     int id = json["id"];
 
-    return GenreModel(
+    return HomeGenreModel(
       id: id,
       name: json["name"],
       slug: json["slug"],
