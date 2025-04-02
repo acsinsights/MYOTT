@@ -85,11 +85,11 @@ class HomeScreen extends StatelessWidget {
 
                 ActorList(),
 
-                if (tvSeriesController.tvSeries.isNotEmpty) ...[
+                if (homeData.series.isNotEmpty || homeData.series.isNotEmpty) ...[
                   SectionTitle(
                     title: "TV Series".tr,
                     onTap: () => Get.to(TvSeriesGrid(
-                      tvSeries: tvSeriesController.tvSeries,
+                      tvSeries: homeData.series,
                       title: "TV Series".tr,
                     )),
                   ),

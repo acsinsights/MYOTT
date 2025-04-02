@@ -1,6 +1,7 @@
 import 'package:myott/UI/Genre/Model/genre_model.dart';
 import 'package:myott/UI/Actors/Model/ActorsModel.dart';
 import 'package:myott/UI/Home/Model/HomeAudio.dart';
+import 'package:myott/UI/Home/Model/seriesModel.dart';
 import 'package:myott/UI/Home/Model/videoModel.dart';
 import '../../Model/Moviesmodel.dart';
 import 'SliderItemModel.dart';
@@ -13,6 +14,7 @@ class HomePageModel {
   final List<MoviesModel>? upcomingMovies;
   final List<SliderItemModel> slider;
   final List<ActorsModel> actors;
+  final List<HomeSeries> series;
   final List<HomeAudio> audios;
   final List<Video> video;
   final List<HomeGenreModel> genre;
@@ -23,6 +25,7 @@ class HomePageModel {
     required this.newArrival,
     this.upcomingMovies,
     required this.slider,
+    required this.series,
     required this.actors,
     required this.audios,
     required this.video,
@@ -40,6 +43,7 @@ class HomePageModel {
       upcomingMovies: (json['upcoming_movie'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
       slider: (json['slider'] as List?)?.map((e) => SliderItemModel.fromJson(e)).toList() ?? [],
       video: (json["videos"] as List?)?.map((e)=> Video.fromJson(e)).toList() ?? [],
+      series: (json["series"] as List?)?.map((e) => HomeSeries.fromJson(e)).toList() ?? [],
       actors: (json['actors'] as List?)?.map((e) => ActorsModel.fromJson(e)).toList() ?? [],
       audios: (json['Audio'] as List?)?.map((e) => HomeAudio.fromJson(e)).toList() ?? [],
       genre: (json['all_genres'] as List?)?.map((e) => HomeGenreModel.fromJson(e)).toList() ?? [],

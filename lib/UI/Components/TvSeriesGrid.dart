@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
+import 'package:myott/UI/Home/Model/seriesModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 
 class TvSeriesGrid extends StatelessWidget {
-  final List<TvSeriesModel> tvSeries;
+  final List<HomeSeries> tvSeries;
   final String? title;
 
   const TvSeriesGrid({Key? key, required this.tvSeries, this.title}) : super(key: key);
