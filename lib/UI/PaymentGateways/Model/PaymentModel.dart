@@ -1,4 +1,4 @@
-import '../../../services/PaymentManager.dart';
+import '../../../services/PaymentGateway/PaymentManager.dart';
 
 class PaymentData {
   final PaymentMethod method;

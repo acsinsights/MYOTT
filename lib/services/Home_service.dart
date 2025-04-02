@@ -15,7 +15,8 @@ class HomeService {
   Future<HomePageModel?> fetchHomePageData() async {
     try {
       Response? response = await _apiService.get(APIEndpoints.homeEndpoint);
-
+      print("🔍 Home API Response: ${response?.data}");
+      print("📌 Data Type: ${response?.data.runtimeType}");
       if (response?.statusCode == 200) {
         print("✅ Home Page Data Loaded Successfully!");
         return HomePageModel.fromJson(response?.data);

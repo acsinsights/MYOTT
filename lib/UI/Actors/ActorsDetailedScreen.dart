@@ -23,11 +23,16 @@ class ActorsDetailedScreen extends StatefulWidget {
 }
 
 class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
+  late final ActorController actorController;
+
+  @override
+  void initState() {
+    super.initState();
+    actorController = Get.put(ActorController(ActorSerivce(ApiService()), widget.actors.slug));
+  }
 
   @override
   Widget build(BuildContext context) {
-    final ActorController actorController = Get.put(ActorController(ActorSerivce(ApiService()), widget.actors.slug));
-
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -53,10 +58,7 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
                   background: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.network(
-                        widget.actors.image,
-                        fit: BoxFit.fill,
-                      ),
+                      Image.network(widget.actors.image, fit: BoxFit.fill),
                       Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -70,10 +72,7 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
                         bottom: 20,
                         left: 16,
                         right: 16,
-                        child: Text(
-                          widget.actors.name,
-                          style: AppTextStyles.SubHeadingb2,
-                        ),
+                        child: Text(widget.actors.name, style: AppTextStyles.SubHeadingb2),
                       ),
                     ],
                   ),
@@ -82,173 +81,34 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
             ];
           },
           body: SingleChildScrollView(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 10),
-                Text(widget.actors.description.toString(), style: AppTextStyles.SubHeading2),
-                SizedBox(height: 10,),
-
-                Obx(() {
-                  final actorData = actorController.actorData.value;
-
-                  if (actorController.isLoading.value) {
-                    return MovieShrimmerLoader();
-                  }
-                  if(actorData!.movies.isEmpty){
-                    return SizedBox();
-                  }
-                  return  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Movies of ${widget.actors.name}",
-                          style: AppTextStyles.SubHeadingb2,
-                        ),
-                        Divider(color: Colors.grey, thickness: 1),
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, // 3 columns like in the image
-                            crossAxisSpacing: 8,
-                            mainAxisSpacing: 8,
-                            childAspectRatio: 0.5, // Adjust for movie poster aspect ratio
-                          ),
-                          itemCount: actorController.actorData.value!.movies.length,
-                          itemBuilder: (context, index) {
-                            final movie = actorController.actorData.value!.movies[index];
-
-                            return GestureDetector(
-                              onTap: () {
-                                final movieId = movie.id;
-                                final slug = movie.slug;
-
-                                print("Tapped Movie ID: $movieId");
-                                print("Tapped Movie Slug: $slug");
-
-                                Get.off(() => MovieDetailsPage(movieId: movieId, slug: slug));
-                              },
-
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 150.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      image: DecorationImage(
-                                        image: NetworkImage(movie.posterImg), // Use NetworkImage if from API
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 6.h),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 4.w),
-                                    child: Text(
-                                      movie.name,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-                SizedBox(height: 10,),
-
-                // Obx(() {
-                //   final actorData = actorController.actorData.value;
-                //
-                //   if (actorController.isLoading.value) {
-                //     return MovieShrimmerLoader();
-                //   }
-                //   if(actorData!.tvSeries.isEmpty){
-                //     return SizedBox();
-                //   }
-                //
-                //
-                //   return  Padding(
-                //     padding: const EdgeInsets.all(12.0),
-                //     child: Column(
-                //       children: [
-                //         Text(
-                //           "TvSeries of ${widget.actors.name}",
-                //           style: AppTextStyles.SubHeadingb2,
-                //         ),
-                //         Divider(color: Colors.grey, thickness: 1),
-                //         GridView.builder(
-                //           shrinkWrap: true,
-                //           physics: NeverScrollableScrollPhysics(),
-                //           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                //             crossAxisCount: 3,
-                //             crossAxisSpacing: 8,
-                //             mainAxisSpacing: 8,
-                //             childAspectRatio: 0.5,
-                //           ),
-                //           itemCount: actorController.actorData.value!.tvSeries.length,
-                //           itemBuilder: (context, index) {
-                //             final series = actorController.actorData.value!.tvSeries[index];
-                //
-                //             return GestureDetector(
-                //               onTap: () {
-                //                 final slug = series.slug;
-                //                 Get.to(() => TvSeriesDetailsPage(slug: slug),
-                //                     binding: BindingsBuilder(() {
-                //                       Get.put(MovieController(MoviesService(ApiService())));
-                //                     }));
-                //               },
-                //               child: Column(
-                //                 children: [
-                //                   Container(
-                //                     height: 150.h,
-                //                     decoration: BoxDecoration(
-                //                       borderRadius: BorderRadius.circular(8.r),
-                //                       image: DecorationImage(
-                //                         image: NetworkImage(series.thumbnailImg),
-                //                         fit: BoxFit.cover,
-                //                       ),
-                //                     ),
-                //                   ),
-                //                   SizedBox(height: 6.h),
-                //                   Padding(
-                //                     padding: EdgeInsets.symmetric(horizontal: 4.w),
-                //                     child: Text(
-                //                       series.name,
-                //                       maxLines: 2,
-                //                       overflow: TextOverflow.ellipsis,
-                //                       textAlign: TextAlign.center,
-                //                       style: TextStyle(
-                //                         fontSize: 14.sp,
-                //                         fontWeight: FontWeight.w500,
-                //                         color: Colors.white,
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ],
-                //               ),
-                //             );
-                //           },
-                //         ),
-                //       ],
-                //     ),
-                //   );
-                // }),
-
-              ],
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10),
+                  Text(widget.actors.description, style: AppTextStyles.SubHeading2),
+                  SizedBox(height: 10),
+            
+                  // Movies Section
+                  Obx(() => buildMediaSection(
+                    title: "Movies of ${widget.actors.name}",
+                    items: actorController.actorData.value?.movies ?? [],
+                    isLoading: actorController.isLoading.value,
+                    onTap: (movie) => Get.to(() => MovieDetailsPage()),
+                  )),
+            
+                  SizedBox(height: 10),
+            
+                  // Videos Section
+                  Obx(() => buildMediaSection(
+                    title: "Videos of ${widget.actors.name}",
+                    items: actorController.actorData.value?.videos ?? [],
+                    isLoading: actorController.isLoading.value,
+                    onTap: (video) => Get.to(() => TvSeriesDetailsPage(slug: video.slug)),
+                  )),
+                ],
+              ),
             ),
           ),
         ),
@@ -256,9 +116,72 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
     );
   }
 
-  // @override
-  // void dispose() {
-  //   Get.delete<Moviecon
-  //
-  // }
+  /// **Reusable Widget for Movies/Videos Section**
+  Widget buildMediaSection({
+    required String title,
+    required List<dynamic> items,
+    required bool isLoading,
+    required Function(dynamic item) onTap,
+  }) {
+    if (isLoading) return MovieShrimmerLoader();
+    if (items.isEmpty) return SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: AppTextStyles.SubHeadingb2),
+          Divider(color: Colors.grey, thickness: 1),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              childAspectRatio: 0.5,
+            ),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+
+              return GestureDetector(
+                onTap: () => onTap(item),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 150.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.r),
+                        image: DecorationImage(
+                          image: NetworkImage(item.thumbnailImg),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: Text(
+                        item.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }

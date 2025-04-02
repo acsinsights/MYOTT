@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 String formatDate(String dateStr) {
@@ -11,3 +14,22 @@ String formatDate(String dateStr) {
 
 enum PaymentType { subscription, ppv, coins }
 
+enum ContentType{ M, S, V,A }
+enum MediaType { movie, series ,video,Audio }
+
+void showSnackbar(String title, String message, {bool isError = false}) {
+  Get.snackbar(
+    title,
+    message,
+    snackPosition: SnackPosition.TOP,
+    backgroundColor: isError ? Colors.red : Colors.green,
+    colorText: Colors.white,
+    margin: const EdgeInsets.all(12),
+    borderRadius: 8,
+    duration: const Duration(seconds: 2),
+    icon: Icon(
+      isError ? Icons.error : Icons.check_circle,
+      color: Colors.white,
+    ),
+  );
+}

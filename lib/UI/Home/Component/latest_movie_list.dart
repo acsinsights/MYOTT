@@ -5,9 +5,11 @@ import 'package:myott/services/api_service.dart';
 import 'package:myott/UI/Model/Moviesmodel.dart';
 import 'package:myott/UI/Movie/movie_details_page.dart';
 
+import '../../../Core/Utils/app_common.dart';
 import '../../../Core/Utils/app_text_styles.dart';
 import '../../../services/MovieService.dart';
 import '../../Components/ShimmerLoader.dart';
+import '../../Components/network_image_widget.dart';
 import '../../Movie/Controller/Movie_controller.dart';
 import '../../TvSeries/TvSeries_details_page.dart'; // Import Series Controller
 
@@ -54,9 +56,12 @@ class LatestMandSList extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               if (item.type == MediaType.movie) {
-                Get.to(() => MovieDetailsPage(movieId: item.id, slug: item.slug),
+                Get.to(() => MovieDetailsPage(),arguments: {
+                  "movieId": item.id,
+                  "slug": item.slug
+                },
                     binding: BindingsBuilder(() {
-                      Get.put(MovieController(MoviesService(ApiService())));
+                      Get.put(MovieController());
                     }));
               } else if (item.type == MediaType.series) {
                 Get.to(() => TvSeriesDetailsPage(slug: item.slug));
@@ -75,18 +80,16 @@ class LatestMandSList extends StatelessWidget {
                         height: 180,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            image: NetworkImage(item.imageUrl),
-                            fit: BoxFit.cover,
-                            onError: (exception, stackTrace) =>
-                                ShimmerLoader(height: 180, width: 120),
-                          ),
+
+                        ),
+                        child: NetworkImageWidget(imageUrl: item.imageUrl,
+                          errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
                         ),
                       ),
                       // Free/Paid Badge
                       Positioned(
                         top: 8,
-                        left: 8,
+                        right: 8,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 4),

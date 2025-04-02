@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Profile/Controller/ProfileController.dart';
-import '../../services/PaymentManager.dart';
+import '../../services/PaymentGateway/PaymentManager.dart';
 import '../Profile/screens/SubscriptionPackage/SubscriptionController.dart';
 import 'Model/PaymentModel.dart';
 

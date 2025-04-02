@@ -18,8 +18,6 @@ import 'Components/MovieListComponent.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final MovieController movieController =
-        Get.put(MovieController(MoviesService(ApiService())));
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -41,9 +39,7 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Subscription Banner
             SubscriptionBanner(),
-            // User Profile
             UserProfile(),
             SizedBox(height: 16),
 

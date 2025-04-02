@@ -6,7 +6,7 @@
   String image;
   String? type;
   String slug;
-  String? description;
+  String description;
 
 
   ActorsModel({
@@ -15,7 +15,7 @@
     required this.slug,
     required this.image,
      this.type,
-     this.description,
+    required this.description,
 
   });
 
@@ -25,7 +25,7 @@
     image: json["image"],
     slug: json["slug"] ?? "",
     type: json["type"] ?? " ",
-    description: json["description"] ?? " ",
+    description: json["description"]?.toString() ?? " ",
   );
 
   Map<String, dynamic> toJson() => {

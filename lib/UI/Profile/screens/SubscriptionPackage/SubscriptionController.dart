@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/PaymentGateways/Controller/PaymentGatewayController.dart';
 import 'package:myott/services/api_service.dart';
-import 'package:myott/services/payment_service.dart';
+import 'package:myott/services/PaymentGateway/payment_service.dart';
 import 'package:myott/services/setting_service.dart';
 
 import 'Model/PackageModel.dart';

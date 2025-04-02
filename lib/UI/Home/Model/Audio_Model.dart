@@ -4,9 +4,11 @@ class AudioModel {
   String name;
   DateTime createdAt;
   DateTime updatedAt;
+  final String slug;
 
   AudioModel({
     required this.id,
+    this.slug="hindi",
     required this.name,
     required this.createdAt,
     required this.updatedAt,

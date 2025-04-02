@@ -1,21 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:myott/UI/Movie/Movie_details_page.dart';
-import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
+import 'package:myott/UI/Wishlist/Model/wishlistModel.dart';
+import '../Movie/Movie_details_page.dart';
 import 'WishListController.dart';
 
-class ShowWishlistPage extends StatefulWidget {
-  @override
-  State<ShowWishlistPage> createState() => _ShowWishlistPageState();
-}
+class ShowWishlistPage extends StatelessWidget {
+  ShowWishlistPage({super.key});
 
-class _ShowWishlistPageState extends State<ShowWishlistPage> {
   final WishlistController wishlistController = Get.put(WishlistController());
 
   @override
   Widget build(BuildContext context) {
-
-
+    wishlistController.fetchWishlistData();
     return DefaultTabController(
       length: 2, // Movies & TV Series
       child: Scaffold(
@@ -35,26 +33,21 @@ class _ShowWishlistPageState extends State<ShowWishlistPage> {
         ),
         body: Obx(() {
           if (wishlistController.isLoading.value) {
-            return Center(child: CircularProgressIndicator(color: Colors.red));
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return TabBarView(
+              children: [
+                _buildSection("Movies", wishlistController.movies),
+                _buildSection("TV Series", wishlistController.tvSeries),
+              ],
+            );
           }
-
-          return TabBarView(
-            children: [
-              _buildSection("Movies", wishlistController.movies, "movie"),
-              _buildSection("TV Series", wishlistController.tvSeries, "tvseries"),
-            ],
-          );
         }),
       ),
     );
   }
 
-  @override
-  void initState() {
-    wishlistController.fetchWishlistData();
-  }
-
-  Widget _buildSection(String title, List<Map<String, dynamic>> items, String type) {
+  Widget _buildSection(String title, List<dynamic> items) {
     if (items.isEmpty) {
       return Center(
         child: Text("No $title in Wishlist",
@@ -62,46 +55,99 @@ class _ShowWishlistPageState extends State<ShowWishlistPage> {
       );
     }
 
-    return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        var item = items[index][type]; // Dynamic key based on type
-        return Card(
-          color: Colors.grey[900], // ✅ Dark Grey Card
-          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: GestureDetector(
-            onTap: () {
-          int Id = int.tryParse(item["id"].toString()) ?? 0; // Convert ID to int safely
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+          childAspectRatio: 0.5,
+        ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          var item = items[index];
+          if (item == null) return SizedBox(); // Prevents null errors
 
-          if (type == "movie") {
-            // Get.to(() => MovieDetailsPage(movieId: Id));
-          } else {
-            // Get.to(() => TvSeriesDetailsPage(slug: Id));
-          }
+          return Stack(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (item is Movie) {
+                    Get.to(() => MovieDetailsPage(), arguments: {
+                      "slug": item.slug
+                    });
+                  } else if (item is Series) {
+                    // Get.to(() => TvSeriesDetailsPage(slug: item.slug));
+                  }
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      height: 150.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: Image.network(
+                          item.thumbnailImg,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/movies/SliderMovies/movie-1.png',
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: Text(
+                        item.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
-            },
-            child: ListTile(
-              contentPadding: EdgeInsets.all(10),
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(item["poster_img"] ?? "",
-                    width: 60, height: 60, fit: BoxFit.cover),
+              /// 🔴 **Remove Button** (Top Right Corner)
+              Positioned(
+                top: 5,
+                right: 5,
+                child: GestureDetector(
+                  onTap: () async {
+                    if (item is Movie) {
+                      await wishlistController.removeMovieFromWishlist(item.slug);
+                    } else if (item is Series) {
+                      await wishlistController.removeSeriesFromWishlist(item.slug);
+                    }
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.black.withOpacity(0.6),
+                    radius: 15.r,
+                    child: Icon(
+                      CupertinoIcons.trash,
+                      color: Colors.red,
+                      size: 18.sp,
+                    ),
+                  ),
+                ),
               ),
-              title: Text(
-                item["name"] ?? "Unknown",
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), // ✅ White Text
-              ),
-              subtitle: Text("Release: ${item["release_year"] ?? "N/A"}",
-                  style: TextStyle(color: Colors.grey)), // ✅ Grey Subtitle
-              trailing: IconButton(
-                icon: Icon(Icons.delete, color: Colors.red), // ✅ Red Delete Icon
-                onPressed: () => wishlistController.removeFromWishlist(item["id"], type),
-              ),
-            ),
-          ),
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 }

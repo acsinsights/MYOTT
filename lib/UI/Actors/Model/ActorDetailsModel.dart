@@ -10,23 +10,32 @@ String actorDetailsModelToJson(ActorDetailsModel data) => json.encode(data.toJso
 
 class ActorDetailsModel {
   List<Movie> movies;
-  // List<Movie> tvSeries;
+  List<Video> videos;
   // List<Movie> videos;
   // List<Movie> audio;
 
   ActorDetailsModel({
     required this.movies,
     // required this.tvSeries,
-    // required this.videos,
+    required this.videos,
     // required this.audio,
   });
 
   factory ActorDetailsModel.fromJson(Map<String, dynamic> json) => ActorDetailsModel(
-    movies: List<Movie>.from(json["movies"].map((x) => Movie.fromJson(x))),
-    // tvSeries: List<Movie>.from(json["tv_series"].map((x) => x)),
-    // videos: List<Movie>.from(json["videos"].map((x) => x)),
-    // audio: List<Movie>.from(json["audio"].map((x) => x)),
+    movies: (json["movies"] != null)
+        ? List<Movie>.from(json["movies"].map((x) => Movie.fromJson(x)))
+        : [],
+    // tvSeries: (json["tv_series"] != null)
+    //     ? List<Movie>.from(json["tv_series"].map((x) => Movie.fromJson(x)))
+    //     : [],
+    videos: (json["videos"] != null)
+        ? List<Video>.from(json["videos"].map((x) => Video.fromJson(x)))
+        : [],
+    // audio: (json["audio"] != null)
+    //     ? List<Movie>.from(json["audio"].map((x) => Movie.fromJson(x)))
+    //     : [],
   );
+
 
   Map<String, dynamic> toJson() => {
     "movies": List<dynamic>.from(movies.map((x) => x.toJson())),
@@ -116,6 +125,93 @@ class Movie {
     "views": views,
     "fake_views": fakeViews,
     "release_year": "${releaseYear.year.toString().padLeft(4, '0')}-${releaseYear.month.toString().padLeft(2, '0')}-${releaseYear.day.toString().padLeft(2, '0')}",
+    "description": description,
+    "schedule_date": scheduleDate,
+    "schedule_time": scheduleTime,
+    "status": status,
+    "cast": cast.toJson(),
+  };
+}
+class Video {
+  int id;
+  String videoUploadType;
+  String videoUploadUrl;
+  dynamic videoUploadFiles;
+  String name;
+  String slug;
+  String thumbnailImg;
+  int audioLanguage;
+  String maturity;
+  dynamic trailerUrl;
+  DateTime releaseYear;
+  int views;
+  int fakeViews;
+  String durationTime;
+  String description;
+  dynamic scheduleDate;
+  dynamic scheduleTime;
+  int status;
+  Cast cast;
+
+  Video({
+    required this.id,
+    required this.videoUploadType,
+    required this.videoUploadUrl,
+    required this.videoUploadFiles,
+    required this.name,
+    required this.slug,
+    required this.thumbnailImg,
+    required this.audioLanguage,
+    required this.maturity,
+    required this.trailerUrl,
+    required this.releaseYear,
+    required this.views,
+    required this.fakeViews,
+    required this.durationTime,
+    required this.description,
+    required this.scheduleDate,
+    required this.scheduleTime,
+    required this.status,
+    required this.cast,
+  });
+
+  factory Video.fromJson(Map<String, dynamic> json) => Video(
+    id: (json["id"]??0),
+    videoUploadType: json["video_upload_type"]?.toString() ??"",
+    videoUploadUrl: json["video_upload_url"]?.toString() ??"",
+    videoUploadFiles: json["video_upload_files"]?.toString() ??"",
+    name: json["name"]?.toString() ??"",
+    slug: json["slug"]?.toString() ??"",
+    thumbnailImg: json["thumbnail_img"]?.toString() ??"",
+    audioLanguage: json["audio_language"],
+    maturity: json["maturity"]?.toString() ??"",
+    trailerUrl: json["trailer_url"]?.toString() ??"",
+    releaseYear: DateTime.parse(json["release_year"]),
+    views: json["views"],
+    fakeViews: json["fake_views"],
+    durationTime: json["duration_time"]?.toString() ??"",
+    description: json["description"]?.toString() ??"",
+    scheduleDate: json["schedule_date"]?.toString() ??"",
+    scheduleTime: json["schedule_time"]?.toString() ??"",
+    status: json["status"],
+    cast: Cast.fromJson(json["cast"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "video_upload_type": videoUploadType,
+    "video_upload_url": videoUploadUrl,
+    "video_upload_files": videoUploadFiles,
+    "name": name,
+    "slug": slug,
+    "thumbnail_img": thumbnailImg,
+    "audio_language": audioLanguage,
+    "maturity": maturity,
+    "trailer_url": trailerUrl,
+    "release_year": "${releaseYear.year.toString().padLeft(4, '0')}-${releaseYear.month.toString().padLeft(2, '0')}-${releaseYear.day.toString().padLeft(2, '0')}",
+    "views": views,
+    "fake_views": fakeViews,
+    "duration_time": durationTime,
     "description": description,
     "schedule_date": scheduleDate,
     "schedule_time": scheduleTime,

@@ -1,18 +1,20 @@
 import 'dart:convert';
 
 
-import '../UI/PaymentGateways/Model/PaymentGateway.dart';
-import 'api_service.dart';
+import 'package:myott/services/api_endpoints.dart';
 
-class PaymentService {
-  ApiService _apiService;
-  PaymentService(this._apiService);
+import '../../UI/PaymentGateways/Model/PaymentGateway.dart';
+import '../api_service.dart';
+
+class PaymentGatewayService {
+  ApiService _apiService = ApiService();
+
 
 
   String SecretKey = "sk_test_51R3woGCG37UV7MBErZBjcgAzaobE3U81kiJFlIiCMkUBwXJmS3Qsa92aJdI17kr9igY6epdd6PhHtLO1tU1WsNe500E2OiuT78";
   String Publishable="pk_test_51R3woGCG37UV7MBEuZDyX1QGvAqSY4yxaBUduJyQRX18ucxrozR6ezq6CPSWF0VzJ0JfmlJYeO5KAuAfTYFl8HSp00zD5Er2RF";
   Future<List<PaymentGateway>> fetchPaymentGateways() async {
-    final response = await _apiService.get("paymentgateway-keys?secret=06c51069-0171-4f23-bf8f-41c9cd86762d");
+    final response = await _apiService.get(APIEndpoints.paymentGateways);
 
     if (response?.statusCode == 200) {
       print("API Response: ${response?.data}"); // Debugging

@@ -7,9 +7,8 @@ import 'api_endpoints.dart';
 import 'package:dio/dio.dart';
 
 class MoviesService {
-  final ApiService _apiService;
+  final ApiService _apiService=ApiService();
 
-  MoviesService(this._apiService);
 
     Future<MovieDetailsModel> getMovieDetails(String slug) async {
     try {

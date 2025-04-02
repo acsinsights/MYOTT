@@ -7,8 +7,8 @@ import '../Controller/CustomVideoController.dart';
 
 class VideoPlayerPage extends StatelessWidget {
   final String videoUrl;
-  final Map<String, String> subtitles;
-  final Map<String, String> dubbedLanguages;
+  final Map<String, dynamic> subtitles;
+  final Map<String, dynamic> dubbedLanguages;
 
   const VideoPlayerPage({
     Key? key,
@@ -54,4 +54,5 @@ class VideoPlayerPage extends StatelessWidget {
   Widget _buildBetterPlayer(CustomVideoPlayerController controller) {
     return BetterPlayer(controller: controller.betterPlayerController!);
   }
+
 }

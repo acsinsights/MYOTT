@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Components/VideoList.dart';
 import '../../services/Home_service.dart';
 import '../../services/api_service.dart';
 import '../../services/tv_series_service.dart';
@@ -37,7 +38,18 @@ class HomeScreen extends StatelessWidget {
             if (homeController.isLoading.value) {
               return Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: ShimmerLoader(height: 400.h),
+                child: Column(
+                  children: [
+                    ShimmerLoader(height: 400.h),
+                    SizedBox(height: 20,),
+                    MovieShrimmerLoader(),
+                    SizedBox(height: 20,),
+                    MovieShrimmerLoader(),
+                    SizedBox(height: 20,),
+                    MovieShrimmerLoader(),
+                    SizedBox(height: 20,),
+                  ],
+                ),
               );
             }
 
@@ -55,6 +67,7 @@ class HomeScreen extends StatelessWidget {
                 if (homeData.latest.movies.isNotEmpty || homeData.latest.series.isNotEmpty) ...[
                   SectionTitle(
                     title: "Latest".tr,
+                    showAll: false,
                   ),
                   LatestMandSList(movies: homeData.latest.movies, series: homeData.latest.series)
                 ],
@@ -84,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                 ],
 
                 if (homeData.audios.isNotEmpty) ...[
-                  SectionTitle(title: "Languages".tr),
+                  SectionTitle(title: "Languages".tr,showAll: false,),
                   AudioSelection(),
                 ],
 
@@ -98,9 +111,16 @@ class HomeScreen extends StatelessWidget {
                   ),
                   MovieList(movies: homeData.newArrival),
                 ],
+                if (homeData.video.isNotEmpty) ...[
+                  SectionTitle(
+                    title: "Videos".tr,
+                    showAll: false,
+                  ),
+                  VideoList(videos: homeData.video),
+                ],
 
                 if (homeData.genre.isNotEmpty) ...[
-                  SectionTitle(title: "Genre".tr),
+                  SectionTitle(title: "Genre".tr,showAll: false,),
                   GenreSelection(),
                 ],
 

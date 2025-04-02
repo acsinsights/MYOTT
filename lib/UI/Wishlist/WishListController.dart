@@ -1,17 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
-import 'package:myott/services/MovieService.dart';
-import 'package:myott/services/api_service.dart';
-
-import '../../services/wishlistService.dart';
+import 'package:myott/UI/Wishlist/Model/wishlistModel.dart';
+import 'package:myott/services/wishlistService.dart';
 
 class WishlistController extends GetxController {
   final WishlistService wishlistService = WishlistService();
-  final MovieController movieController=MovieController(MoviesService(ApiService()));
 
-  var movies = <Map<String, dynamic>>[].obs;
-  var tvSeries = <Map<String, dynamic>>[].obs;
+  var wishlist = <WishlistModel>[].obs; // Keep the RxList of WishlistModel
   var isLoading = false.obs;
 
   @override
@@ -20,59 +14,59 @@ class WishlistController extends GetxController {
     fetchWishlistData();
   }
 
-  // ✅ Wishlist Data Fetch
   Future<void> fetchWishlistData() async {
     isLoading.value = true;
 
-    var wishlist = await wishlistService.fetchWishlistFromServer();
+    var response = await wishlistService.fetchWatchList();
 
-    List<int> movieIds = wishlist.where((item) => item["movie_id"] != null).map((e) => e["movie_id"] as int).toList();
-    List<int> tvSeriesIds = wishlist.where((item) => item["tvseries_id"] != null).map((e) => e["tvseries_id"] as int).toList();
-
-    print("🎬 Movie IDs: $movieIds");
-    print("📺 TV Series IDs: $tvSeriesIds");
-
-    var movieDetails = await wishlistService.fetchMovieDetails(movieIds);
-    var tvSeriesDetails = await wishlistService.fetchTvSeriesDetails(tvSeriesIds);
-
-    print("✅ Movie Details: $movieDetails");
-    print("✅ TV Series Details: $tvSeriesDetails");
-
-    movies.value = movieDetails;
-    tvSeries.value = tvSeriesDetails;
+    if (response != null && response.isNotEmpty) {
+      wishlist.clear();
+      wishlist.addAll(response);
+    } else {
+      print("No data or empty list returned"); // Debugging line
+    }
 
     isLoading.value = false;
   }
 
-  void removeFromWishlist(int itemId, String type) async {
-    try {
-      isLoading.value = true;
+  List<Movie> get movies {
+    return wishlist
+        .where((item) => item.movie != null && item.movie.name.isNotEmpty)
+        .map((item) => item.movie)
+        .toList();
+  }
 
-      final success = await wishlistService.removeFromWishlist(itemId, type);
+  List<Series> get tvSeries {
+    return wishlist
+        .where((item) => item.series != null && item.series.name.isNotEmpty)
+        .map((item) => item.series)
+        .toList();
+  }
 
-      if (success) {
-        if (type == "movie") {
-          movies.removeWhere((item) => item["movie"]["id"] == itemId);
-          movieController.wishlistItems.removeWhere((item) => item["id"] == itemId.toString());
+  Future<void> removeMovieFromWishlist(String movieSlug) async {
+    WishlistModel? wishlistItem = wishlist.firstWhereOrNull((item) => item.movie.slug == movieSlug);
 
-          movies.refresh();
-        } else {
-          tvSeries.removeWhere((item) => item["series"]["id"] == itemId);
-          movieController.wishlistItems.removeWhere((item) => item["id"] == itemId.toString());
+    if (wishlistItem != null) {
+      print(wishlistItem.id);
+      bool removed = await wishlistService.removeMovieFromWatchlist(id: wishlistItem.id);
 
-          tvSeries.refresh();
-        }
-        await wishlistService.saveWishlist(movieController.wishlistItems);
-
-        Get.snackbar("✅ Success", "Item removed from wishlist", backgroundColor: Colors.green, colorText: Colors.white);
-      } else {
-        Get.snackbar("❌ Error", "Failed to remove item", backgroundColor: Colors.red, colorText: Colors.white);
+      if (removed) {
+        wishlist.remove(wishlistItem); // Remove the whole wishlist entry
       }
-    } catch (e) {
-      Get.snackbar("⚠️ Error", "Something went wrong", backgroundColor: Colors.red, colorText: Colors.white);
-    } finally {
-      isLoading.value = false;
     }
   }
+
+  Future<void> removeSeriesFromWishlist(String seriesSlug) async {
+    WishlistModel? wishlistItem = wishlist.firstWhereOrNull((item) => item.series.slug == seriesSlug);
+
+    if (wishlistItem != null) {
+      bool removed = await wishlistService.removeSeriesFromWatchlist(id: wishlistItem.id);
+      if (removed) {
+        wishlist.remove(wishlistItem); // Remove the whole wishlist entry
+      }
+    }
+  }
+
+
 
 }

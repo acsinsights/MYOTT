@@ -6,7 +6,7 @@ import '../Components/custom_button.dart';
 import 'Models/LanguageModel.dart';
 
 class SettingController extends GetxController {
-  var langList=<LanguageModel>[].obs;
+  var langList=<Language>[].obs;
   var playerSetting=<PlayerSettings>[].obs;
   var isLoading = false.obs;
   var selectedLanguage = "en".obs; // Store selected language

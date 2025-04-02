@@ -12,7 +12,7 @@ import '../Controller/ratingController.dart';
 class RatingBottomSheet extends StatelessWidget {
   final int movieId;
   final String type;
-  final RatingController ratingController = Get.put(RatingController(MoviesService(ApiService())));
+  final RatingController ratingController = Get.put(RatingController());
 
   RatingBottomSheet({required this.movieId, required this.type});
 

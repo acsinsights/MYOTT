@@ -1,6 +1,7 @@
 
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:myott/UI/Actors/Model/ActorsModel.dart';
 
@@ -11,15 +12,18 @@ String movieDetailsModelToJson(MovieDetailsModel data) => json.encode(data.toJso
 class MovieDetailsModel {
   Movie movie;
   String status;
+  List<Comment> comment;
 
   MovieDetailsModel({
     required this.movie,
     required this.status,
+    required this.comment,
   });
 
   factory MovieDetailsModel.fromJson(Map<String, dynamic> json) => MovieDetailsModel(
     movie: Movie.fromJson(json["movie"]),
     status: json["status"],
+    comment: (json["comment"] as List?)?.map((e) => Comment.fromJson(e)).toList() ?? [],
   );
 
   Map<String, dynamic> toJson() => {
@@ -48,8 +52,8 @@ class Movie {
   dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
-  List<ActorsModel> actors;
-  List<ActorsModel> directors;
+  List<Ctor> actors;
+  List<Ctor> directors;
   List<dynamic> genres;
   final Map<String, String> subtitles;
   final Map<String, String> dubbedLanguages;
@@ -101,9 +105,8 @@ class Movie {
     deletedAt: json["deleted_at"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    actors: List<ActorsModel>.from(json["actors"].map((x) => ActorsModel.fromJson(x))),
-    directors:
-    List<ActorsModel>.from(json["directors"].map((x) => ActorsModel.fromJson(x))),
+    actors: List<Ctor>.from(json["actors"].map((x) => Ctor.fromJson(x))),
+    directors: List<Ctor>.from(json["directors"].map((x) => Ctor.fromJson(x))),
     genres: List<dynamic>.from(json["genres"].map((x) => x)),
     subtitles: _parseMap(json['subtitles']),
     dubbedLanguages: _parseMap(json['dubbed_languages']),
@@ -161,5 +164,71 @@ class Subtitles {
 
   Map<String, dynamic> toJson() => {
     "hi": hi,
+  };
+}
+class Ctor {
+  final int id;
+  final String name;
+  final String image;
+
+  Ctor({
+   required this.id,
+    required this.name,
+    required this.image,
+  });
+
+  factory Ctor.fromJson(Map<String, dynamic> json) => Ctor(
+    id: json["id"] ?? 0, // Default ID to 0 if null
+    name: json["name"] ?? "Unknown", // Default name if null
+    image: json["image"] ?? "", // Default empty string if null
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "image": image,
+  };
+}
+class Comment {
+  int id;
+  int userId;
+  String name;
+  String email;
+  int movieId;
+  String comment;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  Comment({
+    required this.id,
+    required this.userId,
+    required this.name,
+    required this.email,
+    required this.movieId,
+    required this.comment,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory Comment.fromJson(Map<String, dynamic> json) => Comment(
+    id: json["id"] ?? 0,
+    userId: json["user_id"] ?? 0,
+    name: json["name"] ?? "Unknown",
+    email: json["email"] ?? "unknown@example.com",
+    movieId: json["movie_id"] ?? 0,
+    comment: json["comment"] ?? "No comment",
+    createdAt: json["created_at"] != null ? DateTime.tryParse(json["created_at"] ?? "") : null,
+    updatedAt: json["updated_at"] != null ? DateTime.tryParse(json["updated_at"] ?? "") : null,
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "name": name,
+    "email": email,
+    "movie_id": movieId,
+    "comment": comment,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
   };
 }

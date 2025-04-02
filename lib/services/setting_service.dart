@@ -54,7 +54,7 @@ class SettingService {
     }
   }
 
-  Future<List<LanguageModel>> getLanguages({int page=1,int perPage=10})async{
+  Future<List<Language>> getLanguages({int page=1,int perPage=10})async{
     try {
       final response = await _apiService.get(APIEndpoints.settings, params: {
         "page": page,
@@ -62,7 +62,7 @@ class SettingService {
       });
       if (response?.statusCode == 200) {
         return (response?.data["languages"] as List<dynamic>? ?? [])
-            .map((e) => LanguageModel.fromJson(e))
+            .map((e) => Language.fromJson(e))
             .toList();
       }else{
         throw Exception("Failed to load languages");

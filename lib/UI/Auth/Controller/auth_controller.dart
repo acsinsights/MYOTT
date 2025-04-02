@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Auth/Login/login_page.dart';
 import 'package:myott/UI/Profile/Components/CompleteProfileScreen.dart';
-import 'package:myott/UI/Profile/screens/EditProfile/Edit_profile.dart';
+import 'package:myott/UI/Profile/screens/EditProfile/EditProfileScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../services/SecureStorageService.dart';
 import '../../Home/Main_screen.dart';

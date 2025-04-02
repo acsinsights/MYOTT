@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../Components/network_image_widget.dart';
 
 class ProfilePic extends StatelessWidget {
   const ProfilePic({
@@ -31,11 +34,22 @@ class ProfilePic extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: localImage != null
-                ? FileImage(localImage!) as ImageProvider
-                : NetworkImage(image), // Show local image if selected, else network image
+          Container(
+            height: 100.w,
+            width: 100.w,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(60),
+                color: Colors.red
+            ),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(60),
+                child: localImage != null
+                    ? Image.file(localImage!, fit: BoxFit.cover) // ✅ Show selected image
+                    : NetworkImageWidget(
+                  imageUrl: image,
+                  errorAsset: "assets/Avtars/avtar.jpg",
+                ),
+            ),
           ),
           InkWell(
             onTap: imageUploadBtnPress,

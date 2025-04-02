@@ -1,7 +1,8 @@
 
 
 import 'dart:convert';
-enum MediaType { movie, series }
+
+import '../../../Core/Utils/app_common.dart';
 
 class MediaItem {
   final int id;
@@ -47,95 +48,43 @@ class LatestMandTModel {
 
 class Movie {
   int id;
-  String movieUploadType;
-  String movieUploadUrl;
   String name;
   String slug;
   String posterImg;
   String thumbnailImg;
-  int audioLanguage;
-  String maturity;
-  String trailerUrl;
-  DateTime releaseYear;
-  String description;
-  String duration;
   final String contentType;
-  int status;
-  DateTime createdAt;
-  DateTime updatedAt;
-  List<Actor> directors;
-  List<Actor> actors;
-  List<Actor> genre;
   Package package;
 
   Movie({
     required this.id,
-    required this.movieUploadType,
-    required this.movieUploadUrl,
     required this.name,
     required this.slug,
     required this.posterImg,
     required this.thumbnailImg,
-    required this.audioLanguage,
-    required this.maturity,
-    required this.trailerUrl,
-    required this.releaseYear,
-    required this.description,
-    required this.duration,
     this.contentType = "movie",
-
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.directors,
-    required this.actors,
-    required this.genre,
     required this.package,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) => Movie(
-    id: json["id"],
-    movieUploadType: json["movie_upload_type"],
-    movieUploadUrl: json["movie_upload_url"],
-    name: json["name"],
-    slug: json["slug"],
-    posterImg: json["poster_img"],
-    thumbnailImg: json["thumbnail_img"],
-    audioLanguage: json["audio_language"],
-    maturity: json["maturity"],
-    trailerUrl: json["trailer_url"],
-    releaseYear: DateTime.parse(json["release_year"]),
-    description: json["description"],
-    duration: json["duration"],
-    status: json["status"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    directors: List<Actor>.from(json["directors"].map((x) => Actor.fromJson(x))),
-    actors: List<Actor>.from(json["actors"].map((x) => Actor.fromJson(x))),
-    genre: List<Actor>.from(json["genre"].map((x) => Actor.fromJson(x))),
+    id: json["id"]??0,
+
+    name: json["name"]??"",
+    slug: json["slug"]??"",
+    posterImg: json["poster_img"]??"",
+    thumbnailImg: json["thumbnail_img"]??"",
+
+
     package: Package.fromJson(json["package"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "movie_upload_type": movieUploadType,
-    "movie_upload_url": movieUploadUrl,
+
     "name": name,
     "slug": slug,
     "poster_img": posterImg,
     "thumbnail_img": thumbnailImg,
-    "audio_language": audioLanguage,
-    "maturity": maturity,
-    "trailer_url": trailerUrl,
-    "release_year": "${releaseYear.year.toString().padLeft(4, '0')}-${releaseYear.month.toString().padLeft(2, '0')}-${releaseYear.day.toString().padLeft(2, '0')}",
-    "description": description,
-    "duration": duration,
-    "status": status,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-    "directors": List<dynamic>.from(directors.map((x) => x.toJson())),
-    "actors": List<dynamic>.from(actors.map((x) => x.toJson())),
-    "genre": List<dynamic>.from(genre.map((x) => x.toJson())),
+
     "package": package.toJson(),
     "content_type": contentType, // Include type in JSON
 
@@ -221,15 +170,15 @@ class Package {
     "offer_price": offerPrice,
   };
 }
+
 class SeriesPackage {
   int id;
   int seriesId;
-  bool free;
+  bool free; // ✅ Changed from int to bool
   String selection;
   int coinCost;
   int planPrice;
   int offerPrice;
-
 
   SeriesPackage({
     required this.id,
@@ -239,29 +188,26 @@ class SeriesPackage {
     required this.coinCost,
     required this.planPrice,
     required this.offerPrice,
-
   });
 
   factory SeriesPackage.fromJson(Map<String, dynamic> json) => SeriesPackage(
-    id: (json["id"]?? 0),
-    seriesId: (json["series_id"]??0),
-    free: json["free"] ?? false,
+    id: json["id"] ?? 0,
+    seriesId: json["series_id"] ?? 0,
+    free: json["free"] == 1, // ✅ Convert 1 → true, 0 → false
     selection: json["selection"]?.toString() ?? "",
-    coinCost: (json["coin_cost"] ?? 0),
-    planPrice: (json["plan_price"] ?? 0),
-    offerPrice: (json["offer_price"] ?? 0),
-
+    coinCost: json["coin_cost"] ?? 0,
+    planPrice: json["plan_price"] ?? 0,
+    offerPrice: json["offer_price"] ?? 0,
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "series_id": seriesId,
-    "free": free,
+    "free": free ? 1 : 0, // ✅ Convert bool back to int (true → 1, false → 0)
     "selection": selection,
     "coin_cost": coinCost,
     "plan_price": planPrice,
     "offer_price": offerPrice,
-
   };
 }
 

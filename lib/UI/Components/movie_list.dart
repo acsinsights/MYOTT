@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/services/api_service.dart';
 import 'package:myott/UI/Model/Moviesmodel.dart';
 import 'package:myott/UI/Movie/movie_details_page.dart';
@@ -54,13 +55,12 @@ class MovieList extends StatelessWidget {
 
           return GestureDetector(
             onTap: () {
-              final movieId = movie.id;
               final slug = movie.slug;
+              debugPrint(slug);
 
-              Get.to(() => MovieDetailsPage(movieId: movieId, slug: slug),
-                  binding: BindingsBuilder(() {
-                    Get.put(MovieController(MoviesService(ApiService())));
-                  }));
+              Get.to(() => MovieDetailsPage(),arguments: {
+                'slug': slug,
+              });
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 12.0),
@@ -72,14 +72,8 @@ class MovieList extends StatelessWidget {
                       Container(
                         width: 120,
                         height: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            image: NetworkImage(movie.posterImg),
-                            fit: BoxFit.cover,
-                            onError: (exception, stackTrace) =>
-                                ShimmerLoader(height: 180, width: 120),
-                          ),
+                        child: NetworkImageWidget(imageUrl: movie.thumbnailImg,
+                        errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
                         ),
                       ),
                       const SizedBox(height: 6),

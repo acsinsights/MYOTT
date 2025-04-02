@@ -118,7 +118,7 @@ class MovieSlider extends StatelessWidget {
                                   final content = homeController.homePageData.value!.slider[index].content;
 
                                   if (content.type == 'movie') {
-                                    Get.to(MovieDetailsPage(slug: content.slug,movieId: content.id,));
+                                    // Get.to(MovieDetailsPage(slug: content.slug,movieId: content.id,));
                                   } else if (content.type == 'series') {
                                     Get.to(TvSeriesDetailsPage(slug: content.slug));
                                   } else {

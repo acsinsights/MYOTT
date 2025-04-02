@@ -1,12 +1,14 @@
 import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:vimeo_video_player/vimeo_video_player.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class CustomVideoPlayerController extends GetxController {
   final String videoUrl;
-  final Map<String, String> subtitles;
-  final Map<String, String> dubbedLanguages;
+  final Map<String, dynamic> subtitles;
+  final Map<String, dynamic> dubbedLanguages;
   BetterPlayerController? betterPlayerController;
   YoutubePlayerController? youtubePlayerController;
   bool isYouTube = false;
@@ -24,6 +26,7 @@ class CustomVideoPlayerController extends GetxController {
       _initBetterPlayer();
     }
   }
+
 
   void _initYouTubePlayer() {
     String? videoId = YoutubePlayer.convertUrlToId(videoUrl);
@@ -69,6 +72,8 @@ class CustomVideoPlayerController extends GetxController {
       }
     });
   }
+
+
 
   // Fetch subtitle sources
   List<BetterPlayerSubtitlesSource> _getSubtitleSources() {

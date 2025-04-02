@@ -5,7 +5,12 @@ class APIEndpoints {
 
 
   static const String homeEndpoint = "home?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
+  static const String paymentGateways = "paymentgateway-keys?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
   static const String addcomment = "addcomment?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
+  static const String addwishlist = "addwishlist?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
+  static const String showWishlist = "showwishlist";
+  static const String removeMovie = "removemovie";
+  static const String removeSeries = "removeseason";
   //TvSeries
     static const String tvSeries = "tv-series?secret=06c51069-0171-4f23-bf8f-41c9cd86762d&currency=INR";
     static String tvSeriesDetails(String slug) =>
@@ -17,6 +22,12 @@ class APIEndpoints {
     //Genre
   static String moviesByGenre(String genreSlug) =>
       "genre/$genreSlug?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
+
+  static String moviesByAudio(String audioSlug) =>
+      "language/$audioSlug?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
+
+  static String videiodetails(String videoSlug) =>
+      "video/${videoSlug}?secret=06c51069-0171-4f23-bf8f-41c9cd86762d";
 
 
   static String movieDetails(String slug) =>

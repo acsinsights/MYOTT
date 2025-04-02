@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:myott/services/api_service.dart';
-import 'package:myott/services/payment_service.dart';
+import 'package:myott/services/PaymentGateway/payment_service.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../Model/PaymentGateway.dart';
 
 class PaymentGatewayController extends GetxController {
-  final PaymentService _paymentService = PaymentService(ApiService());
+  final PaymentGatewayService _paymentService = PaymentGatewayService();
 
   var paymentGateways = <PaymentGateway>[].obs;
   var isLoading = false.obs;

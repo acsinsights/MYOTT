@@ -6,11 +6,12 @@ import 'package:myott/services/api_service.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Home/Controller/Home_controller.dart';
 import '../../../Core/Utils/app_text_styles.dart';
-import '../Controller/Audio_controller.dart';
+import '../../Audio/controller/AudioController.dart';
 import '../Model/Audio_Model.dart';
 
 class AudioSelection extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
+  final AudioController audioController = Get.put(AudioController());
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class AudioSelection extends StatelessWidget {
           height: 60, // Ensures proper alignment
           child: GestureDetector(
             onTap: (){
-              Get.to(MoviesByAudio());
+
             },
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -65,7 +66,7 @@ class AudioSelection extends StatelessWidget {
             var audio = homeController.homePageData.value!.audios[index];
 
             return GestureDetector(
-              // onTap: () => homeController.selectaudiouage(audio),
+              onTap: () => audioController.selectAudio(audio),
               child: Padding(
                 padding: const EdgeInsets.only(right: 12.0),
                 child: ClipRRect(

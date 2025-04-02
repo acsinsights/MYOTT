@@ -6,20 +6,26 @@ class ActorSerivce{
   ApiService _apiService;
   ActorSerivce(this._apiService);
 
-  Future<ActorDetailsModel> fetchActorsDetails(actorSlug) async {
+  Future<ActorDetailsModel?> fetchActorsDetails(String actorSlug) async {
     try {
-      final response= await _apiService.get("${APIEndpoints.actorDetails(actorSlug)}");
-      if(response !=null || response?.statusCode==200){
-        final data=response?.data;
-        return ActorDetailsModel.fromJson(data);
-      }else{
-        throw Exception("Failed to fetch actor details");
+      final response = await _apiService.get("${APIEndpoints.actorDetails(actorSlug)}");
 
+      if (response != null && response.statusCode == 200) {
+        final data = response.data;
+
+        if (data != null && data is Map<String, dynamic>) {
+          return ActorDetailsModel.fromJson(data);
+        } else {
+          throw Exception("Invalid response format: Expected JSON object but got null or incorrect data type.");
+        }
+      } else {
+        throw Exception("Failed to fetch actor details. Status Code: ${response?.statusCode ?? 'Unknown'}");
       }
-    } on Exception catch (e) {
-      throw Exception("Error in fetchActorsDetails: $e");
-
+    } catch (e) {
+      print("Error in fetchActorsDetails: $e");
+      return null;
     }
   }
+
 
 }

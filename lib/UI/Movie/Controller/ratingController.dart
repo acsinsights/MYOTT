@@ -10,9 +10,8 @@ class RatingController extends GetxController {
   RxSet<int> ratedMovies = <int>{}.obs;
   var selectedRating = 0.obs;
   var reviewText = "".obs;
-  final MoviesService movieService;
+  final MoviesService movieService=MoviesService();
 
-  RatingController(this.movieService);
 
 
   @override

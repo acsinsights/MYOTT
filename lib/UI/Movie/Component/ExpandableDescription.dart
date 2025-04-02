@@ -16,7 +16,7 @@ class ExpandableDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MovieController controller =
-    Get.put(MovieController(MoviesService(ApiService())));
+    Get.put(MovieController());
 
     final textSpan = TextSpan(
       text: description,

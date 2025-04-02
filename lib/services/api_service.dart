@@ -7,8 +7,8 @@ class ApiService {
   ApiService()
       : _dio = Dio(BaseOptions(
     baseUrl: "https://templatecookies.com/ott/public/api/",
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 10),
+    connectTimeout: const Duration(seconds: 100),
+    receiveTimeout: const Duration(seconds: 100),
   ));
 
 

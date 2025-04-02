@@ -43,10 +43,10 @@ class MovieGrid extends StatelessWidget {
               onTap: () {
                 final movieId = movie.id;
                 final slug=movie.slug;
-                Get.to(() => MovieDetailsPage(movieId: movieId,slug: slug,),
-                    binding: BindingsBuilder(() {
-                      Get.put(MovieController(MoviesService(ApiService())));
-                    }));
+                // Get.to(() => MovieDetailsPage(movieId: movieId,slug: slug,),
+                //     binding: BindingsBuilder(() {
+                //       Get.put(MovieController(MoviesService(ApiService())));
+                //     }));
               },
               child: Column(
                 children: [
