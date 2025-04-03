@@ -9,7 +9,7 @@ import 'Model/PackageModel.dart';
 
 
 class SubscriptionController extends GetxController {
-  final SettingService settingService = Get.put(SettingService(ApiService()));
+  final SettingService settingService = Get.put(SettingService());
   var selectedCurrency = "USD".obs; // Default USD
 
   var plans = <PackageModel>[].obs;
@@ -38,7 +38,9 @@ class SubscriptionController extends GetxController {
 
   void selectPlan(int index) {
     selectedPlanIndex.value = index;
+    selectedPlanIndex.refresh(); // Ensures UI updates
   }
+
 
   @override
   void onClose() {

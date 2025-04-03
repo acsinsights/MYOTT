@@ -7,9 +7,7 @@ class FAQController extends GetxController {
   var isLoading = true.obs;
   var expandedIndexes = <int, RxBool>{}.obs; // Tracks which FAQ items are expanded
 
-  final SettingService _settingService;
-
-    FAQController(this._settingService);
+  final SettingService _settingService=SettingService();
 
   @override
   void onInit() {

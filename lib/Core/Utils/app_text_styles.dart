@@ -45,6 +45,7 @@ class AppTextStyles {
 
       static TextStyle SubHeadingb4= GoogleFonts.poppins(color: AppColors.white, fontSize: 10, fontWeight: FontWeight.bold,);
       static TextStyle SubHeading4= GoogleFonts.poppins(color: AppColors.white, fontSize: 10);
+      // static TextStyle SubHeading4= GoogleFonts.poppins(color: AppColors.white, fontSize: 10);
       static TextStyle SubHeadingRed4= GoogleFonts.poppins(color: AppColors.primary2, fontSize: 10);
       static TextStyle SubHeadingSubW4= GoogleFonts.poppins(color: AppColors.subwhite, fontSize: 10);
 

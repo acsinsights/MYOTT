@@ -16,7 +16,7 @@ class CommentService {
       }
 
       Response? response = await apiService.post(
-        APIEndpoints.addcomment,
+        APIEndpoints.addComment,
         token: token,
         data: comment,
       );

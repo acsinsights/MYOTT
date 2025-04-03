@@ -4,7 +4,7 @@ import 'package:myott/services/api_service.dart';
 import '../Model/PageModel.dart';
 
 class DynamicPageController extends GetxController {
-  final SettingService _settingService = SettingService(ApiService()); // Proper DI
+  final SettingService _settingService = SettingService(); // Proper DI
   var isLoading = false.obs;
 
   var termsAndConditions = <CustomPage>[].obs;

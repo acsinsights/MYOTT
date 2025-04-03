@@ -36,7 +36,6 @@ class Movie {
   int id;
   String movieUploadType;
   String movieUploadUrl;
-  dynamic movieUploadFiles;
   String name;
   String slug;
   String posterImg;
@@ -46,10 +45,9 @@ class Movie {
   String trailerUrl;
   String releaseYear;
   String description;
-  dynamic scheduleDate;
-  dynamic scheduleTime;
+  MoviePackage packages;
+
   int status;
-  dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
   List<Ctor> actors;
@@ -62,7 +60,6 @@ class Movie {
     required this.id,
     required this.movieUploadType,
     required this.movieUploadUrl,
-    required this.movieUploadFiles,
     required this.name,
     required this.slug,
     required this.posterImg,
@@ -72,10 +69,9 @@ class Movie {
     required this.trailerUrl,
     required this.releaseYear,
     required this.description,
-    required this.scheduleDate,
-    required this.scheduleTime,
+    required this.packages,
+
     required this.status,
-    required this.deletedAt,
     required this.createdAt,
     required this.updatedAt,
     required this.actors,
@@ -89,7 +85,6 @@ class Movie {
     id: json["id"],
     movieUploadType: json["movie_upload_type"],
     movieUploadUrl: json["movie_upload_url"],
-    movieUploadFiles: json["movie_upload_files"],
     name: json["name"],
     slug: json["slug"],
     posterImg: json["poster_img"],
@@ -99,10 +94,11 @@ class Movie {
     trailerUrl: json["trailer_url"],
     releaseYear: json["release_year"],
     description: json["description"],
-    scheduleDate: json["schedule_date"],
-    scheduleTime: json["schedule_time"],
+    packages: json["packages"] != null
+        ? MoviePackage.fromJson(json["packages"])
+        : MoviePackage(id: 0, movieId: 0, free: false, selection: "", coinCost: 0, planPrice: 0, offerPrice: 0),
+
     status: json["status"],
-    deletedAt: json["deleted_at"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
     actors: List<Ctor>.from(json["actors"].map((x) => Ctor.fromJson(x))),
@@ -116,7 +112,6 @@ class Movie {
     "id": id,
     "movie_upload_type": movieUploadType,
     "movie_upload_url": movieUploadUrl,
-    "movie_upload_files": movieUploadFiles,
     "name": name,
     "slug": slug,
     "poster_img": posterImg,
@@ -126,10 +121,8 @@ class Movie {
     "trailer_url": trailerUrl,
     "release_year": releaseYear,
     "description": description,
-    "schedule_date": scheduleDate,
-    "schedule_time": scheduleTime,
+
     "status": status,
-    "deleted_at": deletedAt,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
     "actors": List<dynamic>.from(actors.map((x) => x.toJson())),
@@ -151,21 +144,39 @@ class Movie {
 }
 
 
-class Subtitles {
-  String hi;
 
-  Subtitles({
-    required this.hi,
+class MoviePackage {
+  int id;
+  int movieId;
+  bool free;
+  String selection;
+  int coinCost;
+  int planPrice;
+  int offerPrice;
+
+  MoviePackage({
+    required this.id,
+    required this.movieId,
+    required this.free,
+    required this.selection,
+    required this.coinCost,
+    required this.planPrice,
+    required this.offerPrice,
   });
 
-  factory Subtitles.fromJson(Map<String, dynamic> json) => Subtitles(
-    hi: json["hi"],
+  factory MoviePackage.fromJson(Map<String, dynamic> json) => MoviePackage(
+    id: json["id"]??0,
+    movieId: json["movie_id"]??0,
+    free: json["free"]?? false,
+    selection: json["selection"]??"",
+    coinCost: json["coin_cost"]??0,
+    planPrice: json["plan_price"]??0,
+    offerPrice: json["offer_price"]??0,
   );
 
-  Map<String, dynamic> toJson() => {
-    "hi": hi,
-  };
+
 }
+
 class Ctor {
   final int id;
   final String name;

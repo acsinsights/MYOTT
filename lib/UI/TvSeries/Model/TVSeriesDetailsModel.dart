@@ -28,9 +28,8 @@ class Episode {
   String title;
   String description;
   String poster;
-  String isFree;
+  bool isFree; // ✅ Changed from String to bool
   String uploadUrl;
-
 
   Episode({
     required this.id,
@@ -40,20 +39,27 @@ class Episode {
     required this.poster,
     required this.isFree,
     required this.uploadUrl,
-
   });
 
   factory Episode.fromJson(Map<String, dynamic> json) => Episode(
-    id: json["id"]??0,
-    episodeNumber: json["episode_number"]??0,
-    title: json["title"]??"",
-    description: json["description"]??"",
-    poster: json["poster"]??"",
-    isFree: json["is_free"]??"",
-    uploadUrl: json["upload_url"]??"",
+    id: json["id"] ?? 0,
+    episodeNumber: json["episode_number"] ?? 0,
+    title: json["title"] ?? "",
+    description: json["description"] ?? "",
+    poster: json["poster"] ?? "",
+    isFree: json["is_free"]?.toLowerCase() == "yes", // ✅ Convert "yes"/"no" to bool
+    uploadUrl: json["upload_url"] ?? "",
   );
 
-
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "episode_number": episodeNumber,
+    "title": title,
+    "description": description,
+    "poster": poster,
+    "is_free": isFree ? "yes" : "no", // ✅ Convert bool back to string
+    "upload_url": uploadUrl,
+  };
 }
 
 
@@ -63,7 +69,7 @@ class Package {
   int coinCost;
   int planPrice;
   int offerPrice;
-  String isFree;
+  bool isFree; // ✅ Changed from String to bool
 
   Package({
     required this.id,
@@ -75,12 +81,12 @@ class Package {
   });
 
   factory Package.fromJson(Map<String, dynamic> json) => Package(
-    id: json["id"]??0,
-    selection: json["selection"]??"",
-    coinCost: json["coin_cost"]??0,
-    planPrice: json["plan_price"]??0,
-    offerPrice: json["offer_price"]??0,
-    isFree: json["is_free"]??"",
+    id: json["id"] ?? 0,
+    selection: json["selection"] ?? "",
+    coinCost: json["coin_cost"] ?? 0,
+    planPrice: json["plan_price"] ?? 0,
+    offerPrice: json["offer_price"] ?? 0,
+    isFree: json["is_free"]?.toLowerCase() == "yes", // ✅ Convert "yes"/"no" to bool
   );
 
   Map<String, dynamic> toJson() => {
@@ -89,7 +95,7 @@ class Package {
     "coin_cost": coinCost,
     "plan_price": planPrice,
     "offer_price": offerPrice,
-    "is_free": isFree,
+    "is_free": isFree ? "yes" : "no", // ✅ Convert bool back to string
   };
 }
 

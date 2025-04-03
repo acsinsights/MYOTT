@@ -9,7 +9,7 @@ import 'faq_controller.dart';
 class FAQScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final FAQController faqController = Get.put(FAQController(SettingService(ApiService())));
+    final FAQController faqController = Get.put(FAQController());
 
     return Scaffold(
       backgroundColor: Colors.black,

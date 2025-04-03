@@ -16,3 +16,5 @@ abstract class SearchableContent {
 }
 
 enum ContentType { movie, tvSeries, audio }
+
+

@@ -1,5 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:myott/UI/Setting/HelpAndSupport/Model/AddSupportModel.dart';
+import 'package:myott/UI/Setting/HelpAndSupport/Model/SupportTypeModel.dart';
+import 'package:myott/UI/Setting/HelpAndSupport/supportType.dart';
 import 'package:myott/UI/Setting/Models/SettingModel.dart';
+import 'package:myott/UI/Setting/PaymentHistory/Model/payment_history_model.dart';
 import 'package:myott/services/api_endpoints.dart';
 import 'package:myott/UI/Setting/Models/LanguageModel.dart';
 import 'package:myott/UI/Profile/screens/SubscriptionPackage/Model/PackageModel.dart';
@@ -12,9 +16,8 @@ import '../UI/Setting/Faq/Model/FAQModel.dart';
 import 'api_service.dart';
 
 class SettingService {
-  final ApiService _apiService;
+  final ApiService _apiService=ApiService();
 
-  SettingService(this._apiService);
 
 
   Future<SettingModel?> fetchSettingData() async {
@@ -164,7 +167,7 @@ class SettingService {
 
   Future<BlogdetailsModel> fetchBlogDetails(String slug) async {
     try {
-      final response = await _apiService.get(APIEndpoints.blogDeatils(slug));
+      final response = await _apiService.get(APIEndpoints.blogDetails(slug));
 
       if (response == null) {
         throw Exception("No response received from server.");
@@ -183,12 +186,12 @@ class SettingService {
 
   Future<List<PackageModel>> fetchPackages({int page = 1, int perPage = 10}) async {
     try {
-      final response = await _apiService.get(APIEndpoints.Packages, params: {
+      final response = await _apiService.get(APIEndpoints.packages, params: {
         "page": page,
         "per_page": perPage,
       });
 
-      if (response?.statusCode == 200) {
+      if (response?.statusCode == 200 ) {
         return (response?.data["Packages"] as List<dynamic>? ?? [])
             .map((e) => PackageModel.fromJson(e))
             .toList();
@@ -201,5 +204,64 @@ class SettingService {
     }
   }
 
+
+  //Help and Support
+  Future<SupportTypeModel> getHelpAndSupport() async {
+    try {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      final token = preferences.getString("access_token");
+
+      var response = await _apiService.get(APIEndpoints.supportType);
+
+      if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
+        return SupportTypeModel.fromJson(response.data);
+      } else {
+        throw Exception("Something went wrong: ${response?.statusCode}");
+      }
+    } catch (e) {
+      print("Error in getHelpAndSupport: $e");
+      throw Exception("Failed to load support types");
+    }
+  }
+
+  Future<AddSupportModel> addSupport(int supportId, String message) async {
+    try {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      final token = preferences.getString("access_token");
+
+      var response = await _apiService.post(
+        APIEndpoints.addSupport,
+        token: token,
+        data: {
+          "support_id": supportId,
+          "message": message,
+        },
+      );
+
+      if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
+        return AddSupportModel.fromJson(response.data);
+      } else {
+        throw Exception("API Error: ${response?.statusCode} - ${response?.data}");
+      }
+    } catch (e) {
+      print("Error in addSupport: $e");
+      throw Exception("Failed to send support request");
+    }
+  }
+
+  //Payment and Subscription
+  Future<PaymentHistoryModel> getPaymentHistory() async {
+    try{
+      var response=await _apiService.get(APIEndpoints.paymentHistory);
+      if(response!=null && (response.statusCode==200 || response.statusCode==201)){
+        return PaymentHistoryModel.fromJson(response.data);
+      }else{
+        throw Exception("Something went wrong: ${response?.statusCode}");
+      }
+    }catch(e){
+      print("Error in getHelpAndSupport: $e");
+      throw Exception("Failed to load support types");
+    }
+}
 
 }

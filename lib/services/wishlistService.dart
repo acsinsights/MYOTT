@@ -32,7 +32,7 @@ class WishlistService {
       final token= prefs.getString("access_token");
       final response = await apiService.post(
         token: token,
-        APIEndpoints.addwishlist,
+        APIEndpoints.addWishlist,
         data: {
           "type": type,
           "id": id,

@@ -15,7 +15,7 @@ class PaymentSelectionScreen extends StatelessWidget {
     final Map<String, dynamic> args = Get.arguments ?? {};
     final String paymentType = args['paymentType'] ?? 0.0;
     final int packageid = args['package_id'] ?? "";
-    final String packagestatus = args['paymentStatus'] ?? "";
+    final String packagestatus = args['packageStatus'] ?? "";
     final int price = args['price'] ?? "";
     final int offer_price = args['offer_price'] ?? "";
     final String currency = args['currency'] ?? "";
@@ -70,8 +70,8 @@ class PaymentSelectionScreen extends StatelessWidget {
                     price: price,
                     packageid: packageid,
                     packageType: packagestatus,
-                    currency: currency,                    paymentType: paymentType,
-
+                    currency: currency,
+                    paymentType: paymentType,
                     email: profileController.user.value!.email,
                     contact:  profileController.user.value!.mobile,
                   ))

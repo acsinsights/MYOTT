@@ -9,7 +9,7 @@ class VideoService{
 
   Future<VideoDetailsModel?> getVideosDetails(String videoSlug) async{
     try {
-      final response = await apiService.get(APIEndpoints.videiodetails(videoSlug));
+      final response = await apiService.get(APIEndpoints.videoDetails(videoSlug));
       if(response!.statusCode ==200){
         final data = response.data;
         return VideoDetailsModel.fromJson(data);

@@ -66,7 +66,9 @@ class MoviesByGenre extends StatelessWidget {
 
               if (videos.isNotEmpty)
                 ContentSection(title: "Videos", items: videos, onTap: (video) {
-                  Get.to(() => VideoDetialsPage());
+                  Get.to(() => VideoDetialsPage(),arguments: {
+                    "slug":video.slug
+                  });
                 }),
 
               if (audios.isNotEmpty)

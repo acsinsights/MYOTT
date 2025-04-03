@@ -1,62 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/Core/Utils/app_text_styles.dart';
-import 'package:myott/UI/Search/search_Controller.dart';
+import 'package:myott/UI/Components/network_image_widget.dart';
+import 'package:myott/UI/Movie/Movie_details_page.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
-import '../Model/searchable_content.dart';
-import '../Movie/Movie_details_page.dart';
+import 'package:myott/UI/Video/video_Detials_page.dart';
+import 'Model/SearchModel.dart';
+import 'search_controller.dart';
 
 class SearchScreen extends StatelessWidget {
-  final CustomSearchController searchController = Get.put(CustomSearchController());
-  final TextEditingController textEditingController = TextEditingController();
+  final CustomSearchController controller = Get.put(CustomSearchController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.black, // Dark background
       appBar: AppBar(
-        foregroundColor: Colors.white,
+        title: Text("Search", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.black,
-        title: Text("Search", style: AppTextStyles.Headingb4),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              controller: textEditingController,
-              onChanged: searchController.fetchResults,
+              onChanged: (value) {
+                controller.searchQuery.value = value;
+                controller.fetchSearchResults(value);
+              },
+              style: TextStyle(color: Colors.white), // Light text input
               decoration: InputDecoration(
-                labelText: "Search...",
-                labelStyle: TextStyle(color: Colors.white54),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-                prefixIcon: Icon(Icons.search, color: Colors.white54),
+                hintText: "Search movies, TV shows, audio, videos...",
+                hintStyle: TextStyle(color: Colors.white54),
+                prefixIcon: Icon(Icons.search, color: Colors.white),
                 filled: true,
-                fillColor: Colors.white12,
+                fillColor: Colors.grey[900],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
               ),
-              style: TextStyle(color: Colors.white),
             ),
           ),
           Expanded(
             child: Obx(() {
-              if (searchController.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
+              if (controller.isLoading.value) {
+                return Center(child: CircularProgressIndicator(color: Colors.redAccent));
               }
 
-              final results = searchController.searchResults;
+              var results = controller.searchResults.value.results;
 
-              if (results.isEmpty) {
-                return Center(child: Text("No results found", style: AppTextStyles.SubHeading2));
+              // Combine all content into a single list
+              List<Map<String, dynamic>> allItems = [];
+
+              allItems.addAll(results.movies.map((e) => {"item": e, "type": "movie"}));
+              allItems.addAll(results.tvSeries.map((e) => {"item": e, "type": "tv"}));
+              allItems.addAll(results.audio.map((e) => {"item": e, "type": "audio"}));
+              allItems.addAll(results.videos.map((e) => {"item": e, "type": "video"}));
+
+              if (allItems.isEmpty) {
+                return Center(
+                  child: Text(
+                    "No results found",
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                );
               }
 
               return ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: results.length,
+                itemCount: allItems.length,
                 itemBuilder: (context, index) {
-                  return buildSearchResultItem(results[index]);
+                  var item = allItems[index]["item"] as SearchMTVA;
+                  var type = allItems[index]["type"] as String;
+
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Container(
+                      child: ListTile(
+                        tileColor: Colors.grey[900],
+                        leading: item.thumbnailImg != null && item.thumbnailImg!.isNotEmpty
+                            ? ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: NetworkImageWidget(imageUrl: item.thumbnailImg,height: 100,width: 100,))
+                            : Icon(Icons.image, size: 50, color: Colors.white70),
+                        title: Text(item.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white)),
+                        subtitle: Text(
+                          "Maturity: ${item.maturity},\nRelease: ${item.releaseYear.year}",
+                          style: TextStyle(color: Colors.white60),
+                        ),
+                        trailing: Icon(Icons.arrow_forward_ios, color: Colors.white54),
+                        onTap: () => _navigateToDetails(item, type),
+                      ),
+                    ),
+                  );
                 },
               );
-
             }),
           ),
         ],
@@ -65,40 +103,20 @@ class SearchScreen extends StatelessWidget {
   }
 
 
-  Widget buildSearchResultItem(SearchableContent content) {
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: Image.network(
-          content.posterImg,
-          fit: BoxFit.cover,
-          width: 60,
-          height: 90,
-          errorBuilder: (context, error, stackTrace) =>
-              Image.asset("assets/images/movies/SliderMovies/movie-3.png", width: 60, height: 90),
-        ),
-      ),
-      title: Text(content.name, style: TextStyle(color: Colors.white)),
-      onTap: () {
-        switch (content.type) {
-          case ContentType.movie:
-            Get.to(() => MovieDetailsPage(),arguments: {
-              "slug":content.slug
-            });
-            break;
-          case ContentType.tvSeries:
-            Get.to(() => TvSeriesDetailsPage(),arguments: {
-              "slug":content.slug
-            });
-            break;
-          case ContentType.audio:
-            // Get.to(()=> AudioDetailsPage(audioId: content.id));
-
-            break;
-        }
-      },
-    );
+  void _navigateToDetails(SearchMTVA item, String type) {
+    switch (type) {
+      case "movie":
+        Get.to(() => MovieDetailsPage(), arguments: {"slug": item.slug});
+        break;
+      case "tv":
+        Get.to(() => TvSeriesDetailsPage(), arguments: {"slug": item.slug});
+        break;
+      case "audio":
+      // Get.to(() => AudioDetailsPage(), arguments: {"slug": item.slug});
+        break;
+      case "video":
+        Get.to(() => VideoDetialsPage(), arguments: {"slug": item.slug});
+        break;
+    }
   }
-
 }

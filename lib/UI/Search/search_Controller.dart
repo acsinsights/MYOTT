@@ -1,46 +1,41 @@
 import 'package:get/get.dart';
+
 import '../../services/Search_service.dart';
-import '../Model/searchable_content.dart';
+import 'Model/SearchModel.dart';
+
 
 class CustomSearchController extends GetxController {
   final SearchService _searchService = SearchService();
 
-  var searchResults = <SearchableContent>[].obs;
+  var searchResults = SearchModel(results: SearchResults(movies: [], tvSeries: [], audio: [], videos: [])).obs;
   var isLoading = false.obs;
-  var query = "".obs;
+  var searchQuery = "".obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    debounce(query, (_) {
-      if (query.value.isNotEmpty) {
-        fetchResults(query.value);
-      } else {
-        searchResults.clear();
-      }
-    }, time: Duration(milliseconds: 500));
-  }
-
-  void fetchResults(String value) async {
-    isLoading.value = true;
+  Future<void> fetchSearchResults(String query) async {
+    if (query.isEmpty) return;
 
     try {
-      final results = await _searchService.fetchSearchResults(value);
-      if (results.isNotEmpty) {
-        searchResults.assignAll(results); // Efficient list update
+      isLoading.value = true;
+      var response = await _searchService.fetchSearchResults(query);
+
+      print("Raw API Response: ${response}");
+      print("Parsed Movies: ${searchResults.value.results.movies}");
+      print("Parsed TV Series: ${searchResults.value.results.tvSeries}");
+      print("Parsed Audio: ${searchResults.value.results.audio}");
+      print("Parsed Videos: ${searchResults.value.results.videos}");
+
+
+      if (response != null) {
+        searchResults.value = response;
       } else {
-        searchResults.clear();
+        searchResults.value = SearchModel(
+          results: SearchResults(movies: [], tvSeries: [], audio: [], videos: []),
+        );
       }
     } catch (e) {
-      print("Search error: $e");
+      print("Error fetching search results: $e");
     } finally {
       isLoading.value = false;
-    }
-  }
-
-  void updateQuery(String value) {
-    if (query.value != value) {
-      query.value = value;
     }
   }
 }

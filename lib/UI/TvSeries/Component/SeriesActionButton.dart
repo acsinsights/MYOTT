@@ -10,7 +10,7 @@ import '../../../Core/Utils/app_text_styles.dart';
 import '../../Movie/Component/RatingBottomSheet.dart';
 import '../Model/TVSeriesDetailsModel.dart';
 
-  class seriessActionButtons extends StatelessWidget {
+class seriessActionButtons extends StatelessWidget {
   const seriessActionButtons({
     super.key,
     required this.tvseriesController,
@@ -27,15 +27,15 @@ import '../Model/TVSeriesDetailsModel.dart';
       children: [
         GestureDetector(
           onTap: (){
-            // tvseriesController.toggleWishlist(series!.series.id, "M");
+            tvseriesController.toggleWishlist(series!.series.id, "S");
           },
           child: Column(
             children: [
               Obx(() => Icon(
-                tvseriesController.isWatchlisted.value
+                tvseriesController.isWishlisted.value
                     ? CupertinoIcons.heart_fill
                     : CupertinoIcons.add,
-                color: tvseriesController.isWatchlisted.value
+                color: tvseriesController.isWishlisted.value
                     ? Colors.red
                     : Colors.white,
               )),
@@ -43,7 +43,7 @@ import '../Model/TVSeriesDetailsModel.dart';
               SizedBox(height: 10),
               Obx(() =>
                   Text(
-                    tvseriesController.isWatchlisted.value
+                    tvseriesController.isWishlisted.value
                         ? "Wishlisted"
                         : "WishList",
                     style: TextStyle(color: Colors.white),
@@ -55,7 +55,7 @@ import '../Model/TVSeriesDetailsModel.dart';
           onTap: (){
             tvseriesController.toggleRate();
             Get.bottomSheet(
-              RatingBottomSheet(movieId: series!.series.id, type: "M"),
+              RatingBottomSheet(movieId: series!.series.id, type: "T"),
               isScrollControlled: true,
             );
           },

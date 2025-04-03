@@ -5,7 +5,9 @@ import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
-import 'Component/TVSeries_Info.dart';
+import '../../video_player/component/Video_player_page.dart';
+import '../Components/custom_button.dart';
+import 'Component/SeriesActionButton.dart';
 import 'Component/TvSeries_Seasons.dart';
 import 'Component/TVSeries_synopsis.dart';
 import 'Model/TVSeriesDetailsModel.dart';
@@ -17,7 +19,7 @@ class TvSeriesDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final slug = Get.arguments['slug'];
     tvSeriesController.fetchTVSeriesDetails(slug);
-
+    tvSeriesController.checkWishlistStatus(slug);
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -26,10 +28,10 @@ class TvSeriesDetailsPage extends StatelessWidget {
             return Center(child: CircularProgressIndicator(color: Colors.white,)); // Replace with Shimmer if needed
           }
 
-          if (tvSeriesController.tvSeriesDetails.value == null) {
-            return Center(child: Text("TV Series details not available", style: AppTextStyles.SubHeading2));
-          }
-          final tvdetails = tvSeriesController.tvSeriesDetails.value;
+            if (tvSeriesController.tvSeriesDetails.value == null) {
+              return Center(child: Text("TV Series details not available", style: AppTextStyles.SubHeading2));
+            }
+            final tvdetails = tvSeriesController.tvSeriesDetails.value;
 
           return SingleChildScrollView(
             child: Column(
@@ -39,7 +41,7 @@ class TvSeriesDetailsPage extends StatelessWidget {
                  children: [
                    Container(
                      height: 200,
-                     width: double.infinity, // Ensures proper layout
+                     width: double.infinity,
                      child: NetworkImageWidget(imageUrl: tvdetails!.series.thumbnailImg),
                    ),
                    Positioned(
@@ -63,10 +65,35 @@ class TvSeriesDetailsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(tvdetails.series.name,style: AppTextStyles.Headingb4,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            tvdetails.series.name,
+                            style: AppTextStyles.Headingb4,
+                          ),
+                          tvdetails.packages.isNotEmpty && !tvdetails.packages.first.isFree
+                              ? Icon(
+                            Icons.workspace_premium, // Premium icon
+                            color: Colors.amber, // Gold/Yellow color for premium
+                            size: 20.w, // Adjust size as needed
+                          )
+                              : SizedBox.shrink(), // Show nothing if free
+
+                        ],
+                      ),
                       Divider(color: Colors.white,),
                       seriessActionButtons(tvseriesController: tvSeriesController, series: tvdetails),
                       Divider(color: Colors.white,),
+                      SizedBox(height: 5.h,),
+                      CustomButton(
+                        width: double.infinity,
+                        text: "Play Now",
+                        onPressed: () {
+                        },
+                        backgroundColor: Color(0xff290b0b),
+                        borderColor: Colors.white,
+                      ),
                       TvSeriesEpisode(tvSeries: tvdetails),
                       TVseriesSynopsis(description: tvdetails.series.description),
                       SizedBox(height: 5.h,),
@@ -87,10 +114,6 @@ class TvSeriesDetailsPage extends StatelessWidget {
       ),
     );
   }
-
-
-
-
 }
 
 class SeriesGenreList extends StatelessWidget {

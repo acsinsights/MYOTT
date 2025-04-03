@@ -16,7 +16,7 @@ class PayPalService implements PaymentService {
       transactions: [
         {
           "amount": {
-            "total": paymentData.price.toString(),
+            "total": paymentData.finalAmount.toString(),
             "currency": paymentData.currency,
           },
           "description": paymentData.description ?? "Payment for Subscription",

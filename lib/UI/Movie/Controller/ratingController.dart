@@ -68,7 +68,7 @@ class RatingController extends GetxController {
       saveRatedMovie(movieId);
       Get.snackbar("Success", "Your rating has been submitted!",colorText: AppColors.white,backgroundColor: AppColors.green);
     } else {
-      Get.snackbar("Error", "Failed to submit rating. Please try again.");
+      Get.snackbar("Error", "Failed to submit rating. Please try again.",colorText: AppColors.primary,backgroundColor: AppColors.green);
     }
   }
 }

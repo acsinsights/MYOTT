@@ -68,7 +68,7 @@ class MovieController extends GetxController {
       }
     }
   }
-  void fetchMovieDetails(String slug) async {
+  void fetchMovieDetails(String slug) async   {
     try {
       isLoading(true);
 

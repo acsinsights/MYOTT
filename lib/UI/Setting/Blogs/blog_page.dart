@@ -14,7 +14,7 @@ import 'blog_controller.dart';
 
 class BlogScreen extends StatelessWidget {
   final BlogController blogController = Get.put(
-    BlogController(SettingService(ApiService())),
+    BlogController(SettingService()),
   );
 
   @override

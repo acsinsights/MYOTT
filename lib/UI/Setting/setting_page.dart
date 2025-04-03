@@ -5,6 +5,7 @@ import 'package:myott/Core/Utils/app_colors.dart';
 import 'package:myott/UI/Auth/Controller/auth_controller.dart';
 import 'package:myott/UI/Notification/NotificationScreen.dart';
 import 'package:myott/UI/Setting/Blogs/blog_page.dart';
+import 'package:myott/UI/Setting/HelpAndSupport/supportType.dart';
 import 'package:myott/UI/Setting/Pages/Components/AboutusPage.dart';
 import 'package:myott/UI/Setting/Setting_Controller.dart';
 import 'package:myott/UI/Setting/Wallet/wallet_Screen.dart';
@@ -24,6 +25,7 @@ import '../Profile/Components/SettingItem.dart';
 import 'Components/FooterWidget.dart';
 import 'Pages/Components/PrivacyPolicy.dart';
 import 'Pages/Components/TermsAndCondition.dart';
+import 'PaymentHistory/Payment_historypage.dart';
 
 
 class HelpAndSettingScreen extends StatelessWidget {
@@ -31,7 +33,7 @@ class HelpAndSettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SettingController settingController=SettingController(SettingService(ApiService()));
+    SettingController settingController=SettingController();
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -66,25 +68,21 @@ class HelpAndSettingScreen extends StatelessWidget {
           ),
           SettingItem(
               onTap: (){
-                Get.to(WatchlistScreen());
-              },
-              title: "Watchlist".tr, icon: Icons.add),
-          SettingItem(
-              onTap: (){
                 Get.to(WalletScreen());
               },
               title: "Wallet".tr, icon: Icons.wallet),
-          SettingItem(
-              onTap: (){
-                Get.to(Downloadpage());
-              },
-              title: "Downloads".tr, icon: Icons.download),
           SettingItem(
               onTap: (){
                 Get.to(SubscriptionHistoryScreen());
 
               },
               title: "Subscription".tr, icon: Icons.history),
+          SettingItem(
+              onTap: (){
+                Get.to(PaymentHistoryPage());
+
+              },
+              title: "Payment History".tr, icon: Icons.history),
           SettingItem(
               onTap: (){
                 Get.to(FAQScreen());
@@ -109,12 +107,61 @@ class HelpAndSettingScreen extends StatelessWidget {
               Get.to(TermsAndCondition());
             },
               title: "Terms".tr, icon: Icons.article_outlined),
-          SettingItem(title: "Support".tr, icon: Icons.help),
+          SettingItem(title: "Support".tr, icon: Icons.help,
+            onTap: (){
+            Get.to(SupportTypePage());
+            },
+          ),
           SettingItem(
               title: "Refund".tr,
               icon: Icons.receipt_long_outlined),
           SettingItem(
-            onTap: (){},
+            onTap: ()async{
+              Get.defaultDialog(
+                title: "Are you sure?",
+                titleStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                backgroundColor: Colors.white,
+                radius: 10,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Do you really want to delete your account? This action cannot be undone.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 20), // Space between text and buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Cancel Button
+                        Expanded(
+                          child: CustomButton(
+                            text: "Cancel",
+                            onPressed: () => Get.back(),
+                            backgroundColor: AppColors.transparent,
+                            borderColor: Colors.white,
+                          ),
+                        ),
+                        SizedBox(width: 10), // Space between buttons
+                        // Yes (Delete) Button
+                        Expanded(
+                          child: CustomButton(
+                            text: "Delete",
+                            onPressed: () async {
+                              Get.back();
+                              await settingController.deleteAccount();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+
+
+            },
 
 
               title: "Deletion".tr, icon: Icons.delete_outline),

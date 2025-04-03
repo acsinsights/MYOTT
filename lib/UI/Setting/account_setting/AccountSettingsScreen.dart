@@ -10,7 +10,7 @@ import '../../../Core/Utils/app_colors.dart';
 import '../../Components/custom_button.dart';
 
 class AccountSettingsScreen extends StatelessWidget {
-  SettingController settingController=SettingController(SettingService(ApiService()));
+  SettingController settingController=SettingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,7 +150,6 @@ class AccountSettingsScreen extends StatelessWidget {
                                   text: "Delete",
                                   onPressed: () async {
                                     Get.back();
-                                    await settingController.deleteAccount(); // Call delete method
                                   },
                                 ),
                               ),

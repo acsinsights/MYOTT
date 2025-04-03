@@ -2,16 +2,19 @@ import 'package:get/get.dart';
 import 'package:myott/services/tv_series_service.dart';
 import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
+import 'package:myott/services/wishlistService.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../../Wishlist/Model/wishlistModel.dart';
 
 class TVSeriesController extends GetxController {
   final TVSeriesService _tvSeriesService =TVSeriesService();
-
+final WishlistService wishlistService=WishlistService();
   var isLoading = false.obs;
   var tvSeriesDetails = Rxn<SeriesDetailResponse>();
   var isDetailsLoading = true.obs;
   var isDownloaded = false.obs;
-  var isWatchlisted = false.obs;
+  var isWishlisted = false.obs;
   var isLiked = false.obs;
   var isRated = false.obs;
 
@@ -29,16 +32,17 @@ class TVSeriesController extends GetxController {
 
   void fetchTVSeriesDetails(String slug) async {
     try {
-      isDetailsLoading.value = true; // ✅ Use isDetailsLoading, not isLoading
+      isLoading.value = true; // ✅ Use isDetailsLoading, not isLoading
 
       var fetchedTVSeriesDetails = await _tvSeriesService.fetchTVSeriesDetails(slug);
       if (fetchedTVSeriesDetails != null) {
         tvSeriesDetails.value = fetchedTVSeriesDetails;
       }
+      isLoading(false);
     } catch (e) {
       print("Error fetching TV Series Details: $e");
     } finally {
-      isDetailsLoading.value = false;
+      isLoading.value = false;
     }
   }
   void shareContent(String title, String type, String url) {
@@ -48,8 +52,34 @@ class TVSeriesController extends GetxController {
     Share.share(message);
   }
 
-
-  void toggleWatchlist() => isWatchlisted.value = !isWatchlisted.value;
+  Future<void> checkWishlistStatus(String slug) async {
+    try {
+      List<WishlistModel> wishlist = await wishlistService.fetchWatchList();
+      bool exists = wishlist.any((item) => item.series.slug == slug);
+      isWishlisted.value = exists;
+    } catch (e) {
+      print("Error fetching wishlist: $e");
+    }
+  }
+  Future<void> toggleWishlist(int movieId, String type) async {
+    if (isWishlisted.value) {
+      /// ✅ Remove from Wishlist
+      bool removed = await wishlistService.removeMovieFromWatchlist(id: movieId);
+      if (removed) {
+        isWishlisted.value = false; // Update UI
+      }
+    } else {
+      /// ✅ Add to Wishlist
+      bool added = await wishlistService.addToWishlist(
+        type: type,
+        id: movieId,
+        value: 1,
+      );
+      if (added) {
+        isWishlisted.value = true; // Update UI
+      }
+    }
+  }
   void toggleDownload() => isDownloaded.value = !isDownloaded.value;
   void toggleLike() => isLiked.value = !isLiked.value;
   void toggleRate() => isRated.value = !isRated.value;

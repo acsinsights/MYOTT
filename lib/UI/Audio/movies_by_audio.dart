@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:myott/UI/Audio/Controller/AudioController.dart';
 import 'package:myott/UI/Movie/Movie_details_page.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
+import 'package:myott/UI/Video/video_Detials_page.dart';
 
 import '../../Core/Utils/app_text_styles.dart';
 import 'Model/AudioDeatilsResponseModel.dart';
@@ -78,7 +79,9 @@ class MoviesByAudio extends StatelessWidget {
             "slug":item.slug
           });
         } else if (item is AudioVideo) {
-          // Get.to(() => VideoDetailsScreen(video: item));
+          Get.to(() => VideoDetialsPage(),arguments: {
+            "slug":item.slug
+          });
         } else if (item is Audio) {
           // Get.to(() => AudioDetailsScreen(audio: item));
         }

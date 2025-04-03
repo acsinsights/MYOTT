@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Actors/Controller/ActorController.dart';
@@ -88,7 +89,7 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 10),
-                  Text(widget.actors.description, style: AppTextStyles.SubHeading2),
+                  HtmlWidget(widget.actors.description, textStyle: AppTextStyles.SubHeading2),
                   SizedBox(height: 10),
             
                   // Movies Section
@@ -96,7 +97,9 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
                     title: "Movies of ${widget.actors.name}",
                     items: actorController.actorData.value?.movies ?? [],
                     isLoading: actorController.isLoading.value,
-                    onTap: (movie) => Get.to(() => MovieDetailsPage()),
+                    onTap: (movie) => Get.to(() => MovieDetailsPage(),arguments: {
+                      "slug":movie.slug,
+                    }),
                   )),
             
                   SizedBox(height: 10),
@@ -106,7 +109,9 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
                     title: "Videos of ${widget.actors.name}",
                     items: actorController.actorData.value?.videos ?? [],
                     isLoading: actorController.isLoading.value,
-                    onTap: (video) => Get.to(() => VideoDetialsPage()),
+                    onTap: (video) => Get.to(() => VideoDetialsPage(),arguments: {
+                      "slug":video.slug,
+                    }),
                   )),
                 ],
               ),
@@ -132,6 +137,7 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Text(title, style: AppTextStyles.SubHeadingb2),
           Divider(color: Colors.grey, thickness: 1),
           GridView.builder(

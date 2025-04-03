@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Actors/ActorsDetailedScreen.dart';
 import 'package:myott/UI/Actors/Model/ActorsModel.dart';
@@ -88,28 +89,31 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     itemBuilder: (context, index) {
                       final comment = movie.comment[index];
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Container(
-                          padding: EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            border:  Border.all(
-                              color: Colors.white
-                            )
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 comment.name,
-                                style: AppTextStyles.SubHeading2,
+                                style: AppTextStyles.SubHeading1,
                               ),
+                              SizedBox(height: 5.h),
+                              Text(
+                                DateFormat("dd-MM-yyyy").format(comment.createdAt ?? DateTime.now()),
+                                style: AppTextStyles.SubHeadingSubW4,
+                              ),
+
                               SizedBox(height: 5.h),
                               Text(
                                 comment.comment,
                                 style: AppTextStyles.SubHeadingGrey2,
                               ),
                               SizedBox(height: 5.h),
+                              Divider(color: Colors.white,)
                             ],
                           ),
                         ),
@@ -242,6 +246,15 @@ class MovieBanner extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            SizedBox(width: 10.w,),
+                            movie!.movie.packages.free
+                                ? SizedBox.shrink() // Show nothing if free
+                                : Icon(
+                              Icons.workspace_premium, // Use premium-related icon
+                              color: Colors.amber, // Highlighted color for premium
+                              size: 25.w, // Adjust size as needed
+                            ),
+
                           ],
                         ),
                         SizedBox(height: 10.h),
