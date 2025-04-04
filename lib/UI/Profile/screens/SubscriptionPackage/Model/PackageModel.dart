@@ -2,11 +2,8 @@
 //
 //     final packageModel = packageModelFromJson(jsonString);
 
-import 'dart:convert';
 
-List<PackageModel> packageModelFromJson(String str) => List<PackageModel>.from(json.decode(str).map((x) => PackageModel.fromJson(x)));
 
-String packageModelToJson(List<PackageModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class PackageModel {
   int id;
@@ -16,7 +13,7 @@ class PackageModel {
   int amount;
   String currency;
   int offerPrice;
-  String features;
+  List<String> features;
   int status;
   DateTime createdAt;
   DateTime updatedAt;
@@ -36,30 +33,17 @@ class PackageModel {
   });
 
   factory PackageModel.fromJson(Map<String, dynamic> json) => PackageModel(
-    id: json["id"],
-    planId: json["plan_id"],
-    name: json["name"],
-    planUnit: json["plan_unit"],
-    amount: json["amount"],
-    currency: json["currency"],
-    offerPrice: json["offer_price"],
-    features: json["features"],
-    status: json["status"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-  );
+    id: json["id"]??0,
+    planId: json["plan_id"]??0,
+    name: json["name"]??"",
+    planUnit: json["plan_unit"]??"",
+    amount: json["amount"]??0,
+    currency: json["currency"]??"",
+    offerPrice: json["offer_price"]??0,
+    features: json["features"]!=null ?List<String>.from(json["features"].map((x) => x)):[],
+    status: json["status"]??"",
+    createdAt: json["created_at"]!=null? DateTime.parse(json["created_at"]):DateTime.now(),
+    updatedAt: json["updated_at"]!=null? DateTime.parse(json["updated_at"]):DateTime.now());
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "plan_id": planId,
-    "name": name,
-    "plan_unit": planUnit,
-    "amount": amount,
-    "currency": currency,
-    "offer_price": offerPrice,
-    "features": features,
-    "status": status,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-  };
+
 }

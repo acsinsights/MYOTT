@@ -140,7 +140,6 @@ class WishlistVideo {
     "slug": slug,
   };
 }
-
 class WishlistAudio {
   int id;
   String name;

@@ -13,7 +13,7 @@ import '../../../services/ProfileService.dart';
 
 class UserProfile extends StatelessWidget {
   final ProfileController profileController =
-  Get.put(ProfileController(ProfileService(ApiService())));
+      Get.put(ProfileController(ProfileService(ApiService())));
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,9 @@ class UserProfile extends StatelessWidget {
         children: [
           // ✅ User Profile Section
           InkWell(
-            onTap: () => Get.to(() => EditProfileScreen()),
+            onTap: () {
+              Get.to(() => EditProfileScreen());
+            },
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -47,11 +49,13 @@ class UserProfile extends StatelessWidget {
                     width: 60.w,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        color: Colors.red
-                    ),
+                        color: Colors.red),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
-                        child: NetworkImageWidget(imageUrl: user.image,errorAsset: "assets/Avtars/avtar.jpg",)),
+                        child: NetworkImageWidget(
+                          imageUrl: user.image,
+                          errorAsset: "assets/Avtars/avtar.jpg",
+                        )),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -117,14 +121,15 @@ class UserProfile extends StatelessWidget {
                   height: 60.w,
                   width: 60.w,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.red
-                  ),
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.red),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                      child: NetworkImageWidget(imageUrl: user.image,errorAsset: "assets/Avtars/avtar.jpg",)),
+                      borderRadius: BorderRadius.circular(30),
+                      child: NetworkImageWidget(
+                        imageUrl: user.image,
+                        errorAsset: "assets/Avtars/avtar.jpg",
+                      )),
                 ),
-
                 const SizedBox(height: 6),
                 Text(
                   textAlign: TextAlign.center,

@@ -7,7 +7,6 @@ import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Actors/ActorsDetailedScreen.dart';
 import 'package:myott/UI/Actors/Model/ActorsModel.dart';
 import 'package:myott/UI/Components/custom_button.dart';
-import 'package:myott/UI/Components/custom_text_field.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/Model/movie_details_model.dart';
@@ -25,17 +24,23 @@ class MovieDetailsPage extends StatefulWidget {
   State<MovieDetailsPage> createState() => _MovieDetailsPageState();
 }
 
+
+
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
+
   final MovieController movieController =
   Get.put(MovieController());
 
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     final slug = Get.arguments['slug'];
     movieController.fetchMovieDetails(slug);
     movieController.checkWishlistStatus(slug);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -202,9 +207,10 @@ class MovieBanner extends StatelessWidget {
                           width: 180.w,
                           text: "Play Now",
                           onPressed: () {
+                            print(movie!.movie.movieUploadUrl);
                             Get.to(
                                 VideoPlayerPage(
-                              videoUrl: "https://videos.pexels.com/video-files/4620568/4620568-uhd_2732_1440_25fps.mp4",
+                              videoUrl: movie!.movie.movieUploadUrl,
                               subtitles: movie!.movie.subtitles,
                               dubbedLanguages: movie!.movie.dubbedLanguages,
                             ));

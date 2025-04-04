@@ -20,7 +20,7 @@ class UserModel {
     name: json["name"] ?? "Unknown", // Default to "Unknown" if null
     email: json["email"] ?? "No Email", // Default value
     mobile: json["mobile"] ?? "No Mobile", // Default value
-    image: (json["image"] ?? "https://i.pravatar.cc/300").trim(), // Trim the image URL or path
+    image: json["image"] ?? "", // Trim the image URL or path
     role: json["role"] ?? "User", // Default to "User"
   );
 

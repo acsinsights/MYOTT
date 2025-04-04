@@ -55,14 +55,12 @@ class LatestMandSList extends StatelessWidget {
 
           return GestureDetector(
             onTap: () {
+              print("Clikedddd");
               if (item.type == MediaType.movie) {
                 Get.to(() => MovieDetailsPage(),arguments: {
                   "movieId": item.id,
                   "slug": item.slug
-                },
-                    binding: BindingsBuilder(() {
-                      Get.put(MovieController());
-                    }));
+                });
               } else if (item.type == MediaType.series) {
                 Get.to(() => TvSeriesDetailsPage(),arguments: {
                   "slug":item.slug

@@ -2,7 +2,7 @@ import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../../UI/PaymentGateways/Model/PaymentModel.dart';
+import '../../UI/PaymentGateways/Model/PaymentData.dart';
 import 'PaymentManager.dart';
 
 class PayPalService implements PaymentService {

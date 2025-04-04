@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:myott/UI/Movie/Movie_details_page.dart';
 import 'package:myott/UI/Profile/Components/CompleteProfileScreen.dart';
 
 import '../Binding/auth_binding.dart';
@@ -13,5 +14,7 @@ class AppPages {
     GetPage(name: AppRoutes.LOGIN, page: () => LoginPage(), binding: AuthBinding()),
     GetPage(name: AppRoutes.PROFILE_CREATION, page: () => CompleteProfileScreen(), binding: AuthBinding()),
     GetPage(name: AppRoutes.HOME, page: () => MainScreen()),
+    GetPage(name: AppRoutes.MOVIES, page: () => MovieDetailsPage(),arguments: {}),
+    GetPage(name: AppRoutes.SPLASH, page: () => MainScreen()),
   ];
 }

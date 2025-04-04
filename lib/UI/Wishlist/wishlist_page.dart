@@ -16,7 +16,7 @@ class ShowWishlistPage extends StatelessWidget {
   Widget build(BuildContext context) {
     wishlistController.fetchWishlistData();
     return DefaultTabController(
-      length: 4, // Movies & TV Series
+      length: 3, // Movies & TV Series
       child: Scaffold(
         backgroundColor: Colors.black, // ✅ Background Black
         appBar: AppBar(
@@ -29,7 +29,7 @@ class ShowWishlistPage extends StatelessWidget {
             tabs: [
               Tab(icon: Icon(Icons.movie, color: Colors.white), text: "Movies"),
               Tab(icon: Icon(Icons.tv, color: Colors.white), text: "TV Series"),
-              Tab(icon: Icon(Icons.audiotrack, color: Colors.white), text: "Audio"),
+              // Tab(icon: Icon(Icons.audiotrack, color: Colors.white), text: "Audio"),
               Tab(icon: Icon(Icons.video_library, color: Colors.white), text: "Video"),
             ],
           ),
@@ -43,7 +43,7 @@ class ShowWishlistPage extends StatelessWidget {
               children: [
                 _buildSection("Movies", wishlistController.movies),
                 _buildSection("TV Series", wishlistController.tvSeries),
-                _buildSection("Audio", wishlistController.audios),
+                // _buildSection("Audio", wishlistController.audios),
                 _buildSection("Video", wishlistController.videos),
               ],
             );

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart'as http;
-import '../../UI/PaymentGateways/Model/PaymentModel.dart';
+import '../../UI/PaymentGateways/Model/PaymentData.dart';
 import 'PaymentManager.dart';
 
 class StripeService implements PaymentService {

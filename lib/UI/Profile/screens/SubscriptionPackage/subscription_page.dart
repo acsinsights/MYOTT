@@ -87,15 +87,23 @@ class SubscriptionScreen extends StatelessWidget {
                                     ],
                                   ),
                                   SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.check_circle, color: Colors.green, size: 16),
-                                      SizedBox(width: 5),
-                                      Expanded(
-                                        child: Text(plan.features, style: TextStyle(color: Colors.white)),
+                                  ...List.generate(plan.features.length, (i) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 2.0),
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.check_circle, color: Colors.green, size: 16),
+                                          SizedBox(width: 5),
+                                          Expanded(
+                                            child: Text(
+                                              plan.features[i],
+                                              style: TextStyle(color: Colors.white),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    );
+                                  }),
                                   SizedBox(height: 8),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

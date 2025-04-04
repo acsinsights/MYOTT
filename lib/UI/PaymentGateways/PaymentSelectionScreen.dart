@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:myott/UI/Profile/Controller/ProfileController.dart';
 import '../../services/PaymentGateway/PaymentManager.dart';
 import '../Profile/screens/SubscriptionPackage/SubscriptionController.dart';
-import 'Model/PaymentModel.dart';
+import 'Model/PaymentData.dart';
 
 class PaymentSelectionScreen extends StatelessWidget {
   final SubscriptionController controller = Get.find<SubscriptionController>(); // ✅ Get.find use karo
@@ -66,6 +66,22 @@ class PaymentSelectionScreen extends StatelessWidget {
               "Stripe",
                   () => paymentManager.startPayment(PaymentData(
                     method: PaymentMethod.Stripe,
+                    offerprice: offer_price,
+                    price: price,
+                    packageid: packageid,
+                    packageType: packagestatus,
+                    currency: currency,
+                    paymentType: paymentType,
+                    email: profileController.user.value!.email,
+                    contact:  profileController.user.value!.mobile,
+                  ))
+            ),
+
+            _paymentOption(
+              "https://cdn.iconscout.com/icon/free/png-512/free-stripe-logo-icon-download-in-svg-png-gif-file-formats--technology-social-media-vol-6-pack-logos-icons-2945188.png?f=webp&w=512",
+              "PhonePe",
+                  () => paymentManager.startPayment(PaymentData(
+                    method: PaymentMethod.PhonePe,
                     offerprice: offer_price,
                     price: price,
                     packageid: packageid,
