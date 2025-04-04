@@ -16,21 +16,24 @@ class ShowWishlistPage extends StatelessWidget {
   Widget build(BuildContext context) {
     wishlistController.fetchWishlistData();
     return DefaultTabController(
-      length: 2, // Movies & TV Series
+      length: 4, // Movies & TV Series
       child: Scaffold(
         backgroundColor: Colors.black, // ✅ Background Black
         appBar: AppBar(
           title: Text("My Wishlist", style: TextStyle(color: Colors.white)),
           backgroundColor: Colors.black, // ✅ AppBar Black
           bottom: TabBar(
-            indicatorColor: Colors.red, // ✅ Red Indicator
-            labelColor: Colors.white, // ✅ White Active Text
-            unselectedLabelColor: Colors.grey, // ✅ Grey Inactive Text
+            indicatorColor: Colors.red,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(icon: Icon(Icons.movie, color: Colors.white), text: "Movies"),
               Tab(icon: Icon(Icons.tv, color: Colors.white), text: "TV Series"),
+              Tab(icon: Icon(Icons.audiotrack, color: Colors.white), text: "Audio"),
+              Tab(icon: Icon(Icons.video_library, color: Colors.white), text: "Video"),
             ],
           ),
+
         ),
         body: Obx(() {
           if (wishlistController.isLoading.value) {
@@ -40,8 +43,11 @@ class ShowWishlistPage extends StatelessWidget {
               children: [
                 _buildSection("Movies", wishlistController.movies),
                 _buildSection("TV Series", wishlistController.tvSeries),
+                _buildSection("Audio", wishlistController.audios),
+                _buildSection("Video", wishlistController.videos),
               ],
             );
+
           }
         }),
       ),
@@ -74,11 +80,11 @@ class ShowWishlistPage extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  if (item is Movie) {
+                  if (item is WishlistMovie) {
                     Get.to(() => MovieDetailsPage(), arguments: {
                       "slug": item.slug
                     });
-                  } else if (item is Series) {
+                  } else if (item is WishlistSeries) {
                     // Get.to(() => TvSeriesDetailsPage(slug: item.slug));
                   }
                 },
@@ -121,20 +127,27 @@ class ShowWishlistPage extends StatelessWidget {
                   ],
                 ),
               ),
-
-              /// 🔴 **Remove Button** (Top Right Corner)
               Positioned(
                 top: 5,
                 right: 5,
                 child: GestureDetector(
                   onTap: () async {
-                    if (item is Movie) {
+                    if (item is WishlistMovie) {
                       await WishlistService().removeMovieFromWatchlist(id: item.id);
-                      print(item.id);
-                    } else if (item is Series) {
+                      wishlistController.fetchWishlistData(); // ✅ Refresh UI
+                    } else if (item is WishlistSeries) {
                       await wishlistController.removeSeriesFromWishlist(item.id);
+                      wishlistController.fetchWishlistData(); // ✅ Refresh UI
+                    }
+                    else if (item is WishlistAudio) {
+                      // await wishlistController.removeAudioFromWishlist(item.id);
+                      wishlistController.fetchWishlistData(); // ✅ Refresh UI
+                    } else if (item is WishlistVideo) {
+                      // await wishlistController.removeVideoFromWishlist(item.id);
+                      wishlistController.fetchWishlistData(); // ✅ Refresh UI
                     }
                   },
+
                   child: CircleAvatar(
                     backgroundColor: Colors.black.withOpacity(0.6),
                     radius: 15.r,

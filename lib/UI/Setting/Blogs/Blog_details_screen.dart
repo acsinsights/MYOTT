@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Core/Utils/app_text_styles.dart';
+import '../../Components/Comment_section.dart';
 import 'blog_controller.dart';
 
 class BlogDetailsScreen extends StatelessWidget {
@@ -11,7 +12,6 @@ class BlogDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BlogController blogController = Get.find<BlogController>();
-
     blogController.setBlogSlug(blogSlug);
 
     return Scaffold(
@@ -26,7 +26,7 @@ class BlogDetailsScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (blogController.isBlogDetailsLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         final blog = blogController.blogDetails.value;
@@ -37,32 +37,66 @@ class BlogDetailsScreen extends StatelessWidget {
           );
         }
 
-        final blogData = blog.data.first; // Taking the first blog entry
+        final blogData = blog.data.first;
 
-        return Padding(
-          padding: const EdgeInsets.all(12.0),
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  blogData.bannerImg, // Corrected field
+                  blogData.bannerImg,
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                    return Icon(Icons.image_not_supported, size: 100, color: Colors.grey);
+                    return const Icon(Icons.image_not_supported, size: 100, color: Colors.grey);
                   },
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
+
+              // Title
               Text(blogData.title, style: AppTextStyles.Headingb1),
-              SizedBox(height: 10),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Text(blogData.description, style: AppTextStyles.SubHeadingw3), // Fixed field
+              const SizedBox(height: 8),
+
+              // Category badge
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple.shade700,
+                  borderRadius: BorderRadius.circular(20),
                 ),
+                child: Text(
+                  blogData.categoryId.toUpperCase(), // assuming categoryId is like "Tech", "Life"
+                  style: AppTextStyles.SubHeadingw3.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+              Divider(color: Colors.white.withOpacity(0.3)),
+              const SizedBox(height: 12),
+
+              // Blog Description
+              Text(
+                blogData.description,
+                style: AppTextStyles.SubHeadingw3.copyWith(height: 1.5),
+              ),
+              Divider(color: Colors.grey,),
+
+              // Comment Section
+              CommentSection(
+                comments: blog.comments,
+                controller: blogController.commentController,
+                onSend: () {
+                  blogController.addCommentForBlog(blogData.id, blogData.slug);
+                },
               ),
             ],
           ),

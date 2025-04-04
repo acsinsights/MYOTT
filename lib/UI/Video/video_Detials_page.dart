@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:myott/UI/Movie/Component/ExpandableDescription.dart';
 import 'package:myott/UI/Video/Controller/VideoDetailsController.dart';
 import 'package:myott/UI/Video/Model/VideoDetailsModel.dart';
 
@@ -33,7 +34,7 @@ class VideoDetialsPage extends StatelessWidget {
             }
             if (videoDetailsController.videoDetails.value == null) {
               return Center(
-                  child: Text("TV Series details not available",
+                  child: Text("TV video details not available",
                       style: AppTextStyles.SubHeading2));
             }
             final videoDetails = videoDetailsController.videoDetails.value;
@@ -41,61 +42,19 @@ class VideoDetialsPage extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                  Stack(
-                    children: [
-                      Container(
-                        height: 200,
-                        width: double.infinity, // Ensures proper layout
-                        child: NetworkImageWidget(
-                            imageUrl: videoDetails!.thumbnailImg),
-                      ),
-                      Positioned(
-                          top: 10,
-                          left: 10,
-                          child: IconButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              icon: Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                              ))),
-                    ],
-                  ),
-                  SizedBox(height: 10),
+                      VideoBanner(video: videoDetails!,),
+                      SizedBox(height: 10),
+                  ExpandableDescription(description: videoDetails.description),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          videoDetails.name,
-                          style: AppTextStyles.SubHeadingb,
-                        ),
-                        Divider(
-                          color: Colors.white,
-                        ),
-                        SizedBox(height: 5.h,),
-                        CustomButton(
-                          width: double.infinity,
-                          text: "Play Now",
-                          onPressed: () {
-                            Get.to(VideoPlayerPage(videoUrl: videoDetails.trailerUrl,dubbedLanguages: {},
-                              subtitles: {},
-                            ));
-                          },
-                          backgroundColor: Color(0xff290b0b),
-                          borderColor: Colors.white,
-                        ),
-                        SizedBox(height: 5.h,),
 
-                        // videoActionButtons(
-                        //     videodetailsController: videoDetailsController,
-                        //     videos: videoDetails),
-                        // Divider(
-                        //   color: Colors.white,
-                        // ),
-                        VideoDescription(videoDetails: videoDetails),
+                        videoActionButtons(
+                            videodetailsController: videoDetailsController,
+                            videos: videoDetails),
+
                         SizedBox(height: 5.h,),
                         VideoActorListWidget(actors: videoDetails.cast.actors, label: "Actors"),
                         SizedBox(height: 10.h,),
@@ -199,7 +158,131 @@ class VideosGenreList extends StatelessWidget {
     );
   }
 }
+class VideoBanner extends StatelessWidget {
+  const VideoBanner({
+    super.key,
+    required this.video,
+  });
 
+  final VideoDetailsModel? video;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 400.h,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Stack(
+                children: [
+                  NetworkImageWidget(
+                    imageUrl: video!.thumbnailImg,
+                    width: double.infinity,
+                    height: 400.h,
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 400.h,
+                    color: Colors.black.withOpacity(
+                        0.7), // Black overlay with 50% opacity
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+                top: 10,
+                left: 10,
+                child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ))),
+            Positioned(
+              bottom: 20,
+              left: 10,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 200.h,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: NetworkImageWidget(
+                      imageUrl: video!.thumbnailImg,
+                        fit: BoxFit.cover,
+                        width: 140.w,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 20.w),
+                  Container(
+                    width: 200.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20.h),
+                        Text(
+                          video!.name,
+                          style: AppTextStyles.Headingb4,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              video!.releaseYear, // Release Year
+                              style: AppTextStyles.SubHeadingb3,
+                            ),
+                            SizedBox(width: 10.w), // Space between year and maturity
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                              decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Text(
+                                video!.maturity, // Maturity Rating
+                                style: AppTextStyles.SubHeadingb3.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10.w,),
+
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        CustomButton(
+                          width: 180.w,
+                          text: "Play Now",
+                          onPressed: () {
+                            Get.to(
+                                VideoPlayerPage(
+                                  videoUrl: video!.trailerUrl,
+                                  subtitles: {},
+                                  dubbedLanguages: {},
+                                ));
+                          },
+                          backgroundColor: Color(0xff290b0b),
+                          borderColor: Colors.white,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+}
 class videoActionButtons extends StatelessWidget {
   const videoActionButtons(
       {super.key, required this.videodetailsController, required this.videos});
@@ -213,7 +296,7 @@ class videoActionButtons extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            // videodetailsController.toggleWishlist(series!.series.id, "M");
+            videodetailsController.toggleWishlist(videos!.id, "V");
           },
           child: Column(
             children: [
@@ -253,34 +336,6 @@ class videoActionButtons extends StatelessWidget {
                 "Share",
                 style: AppTextStyles.SubHeadingb3,
               )
-            ],
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            videodetailsController.toggleDownload();
-          },
-          child: Column(
-            children: [
-              Obx(() {
-                return Icon(
-                  videodetailsController.isDownloaded.value
-                      ? Icons.download_done
-                      : Icons.download,
-                  color: Colors.white,
-                );
-              }),
-              SizedBox(
-                height: 10.h,
-              ),
-              Obx(() {
-                return Text(
-                  videodetailsController.isDownloaded.value
-                      ? "Downloaded"
-                      : "Download",
-                  style: AppTextStyles.SubHeadingb3,
-                );
-              })
             ],
           ),
         ),

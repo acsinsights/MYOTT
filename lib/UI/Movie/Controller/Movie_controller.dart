@@ -16,7 +16,7 @@ class MovieController extends GetxController {
   final WishlistService wishlistService = WishlistService();
   TextEditingController commentController = TextEditingController();
 
-  var comments = <Comment>[].obs;
+  var comments = <MovieComments>[].obs;
   RxBool isWishlisted = false.obs;
   RxList<Map<String, String>> wishlistItems = <Map<String, String>>[].obs;
 

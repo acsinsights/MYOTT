@@ -13,9 +13,7 @@ import 'Model/blog_model.dart';
 import 'blog_controller.dart';
 
 class BlogScreen extends StatelessWidget {
-  final BlogController blogController = Get.put(
-    BlogController(SettingService()),
-  );
+  final BlogController blogController = Get.put(BlogController(),);
 
   @override
   Widget build(BuildContext context) {

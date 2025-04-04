@@ -21,6 +21,8 @@ class APIEndpoints {
   static const String showWishlist = "showwishlist";
   static const String removeMovie = "removemovie";
   static const String removeSeries = "removeseason";
+  static const String removeVideo = "removevideo";
+  static const String removeAudio = "removeaudio";
 
   // TV Series
   static const String tvSeries = "tv-series?secret=$_secretKey&currency=INR";

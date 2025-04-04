@@ -99,32 +99,6 @@ class seriessActionButtons extends StatelessWidget {
             ],
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            tvseriesController.toggleDownload();
-          },
-          child: Column(
-            children: [
-              Obx(() {
-                return Icon(
-                  tvseriesController.isDownloaded.value
-                      ? Icons.download_done : Icons.download,
-                  color: Colors.white,
-                );
-              }),
-              SizedBox(
-                height: 10.h,
-              ),
-              Obx(() {
-                return Text(
-                  tvseriesController.isDownloaded.value
-                      ? "Downloaded" : "Download",
-                  style: AppTextStyles.SubHeadingb3,
-                );
-              })
-            ],
-          ),
-        ),
       ],
     );
   }

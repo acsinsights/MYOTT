@@ -12,6 +12,7 @@ import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/Model/movie_details_model.dart';
 import 'package:myott/video_player/component/Video_player_page.dart';
+import '../Components/Comment_section.dart';
 import 'Component/ExpandableDescription.dart';
 import 'Component/RatingBottomSheet.dart';
 
@@ -72,76 +73,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 SizedBox(
                   height: 20.h,
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    "Comments",
-                    style: AppTextStyles.SubHeadingb1,
-                  ),
-                ),
-                SizedBox(
-                  height: 200,
-                  child: movie.comment.isNotEmpty
-                      ? ListView.builder(
-                    itemCount: movie.comment.length,
-                    shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final comment = movie.comment[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                comment.name,
-                                style: AppTextStyles.SubHeading1,
-                              ),
-                              SizedBox(height: 5.h),
-                              Text(
-                                DateFormat("dd-MM-yyyy").format(comment.createdAt ?? DateTime.now()),
-                                style: AppTextStyles.SubHeadingSubW4,
-                              ),
 
-                              SizedBox(height: 5.h),
-                              Text(
-                                comment.comment,
-                                style: AppTextStyles.SubHeadingGrey2,
-                              ),
-                              SizedBox(height: 5.h),
-                              Divider(color: Colors.white,)
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                      : Center(
-                    child: Text(
-                      "No comments available",
-                      style: AppTextStyles.SubHeadingGrey2,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: CustomTextField(
-                    controller: movieController.commentController,
-                    hintText: "Write a comment",
-                    keyboardType: TextInputType.multiline,
-                  maxLines: 2,
-                    suffixIcon: IconButton(onPressed: (){
-                      movieController.addCommentForMovie(movie.movie.id,movie.movie.slug);
-
-                    },
-                        icon: Icon(Icons.send,color: Colors.grey,)),
-                  ),
-
+                CommentSection(
+                  comments: movie.comment, // List<Comment> implements BaseCommentModel
+                  controller: movieController.commentController,
+                  onSend: () {
+                    movieController.addCommentForMovie(movie.movie.id, movie.movie.slug);
+                  },
                 )
+
 
               ],
             ),
@@ -296,7 +236,6 @@ class MovieBanner extends StatelessWidget {
         ));
   }
 }
-
 class MoviesActionButtons extends StatelessWidget {
   const MoviesActionButtons({
     super.key,
@@ -386,38 +325,10 @@ class MoviesActionButtons extends StatelessWidget {
             ],
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            movieController.toggleDownload();
-          },
-          child: Column(
-            children: [
-              Obx(() {
-                return Icon(
-                  movieController.isDownloaded.value
-                      ? Icons.download_done : Icons.download,
-                  color: Colors.white,
-                );
-              }),
-              SizedBox(
-                height: 10.h,
-              ),
-              Obx(() {
-                return Text(
-                  movieController.isDownloaded.value
-                      ? "Downloaded" : "Download",
-                  style: AppTextStyles.SubHeadingb3,
-                );
-              })
-            ],
-          ),
-        ),
       ],
     );
   }
 }
-
-
 class ActorListWidget extends StatelessWidget {
   final List<Ctor> actors;
   final String label;

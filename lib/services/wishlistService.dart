@@ -61,6 +61,7 @@ class WishlistService {
 
       if (response != null && response.statusCode == 200) {
         print("✅ Successfully removed movie from wishlist: $id");
+        fetchWatchList();
         return true;
       } else {
         print("❌ Failed to remove from wishlist: ${response?.statusCode}");
@@ -78,6 +79,40 @@ class WishlistService {
 
       if (response != null && response.statusCode == 200) {
         print("✅ Successfully removed movie from wishlist: $id");
+        return true;
+      } else {
+        print("❌ Failed to remove from wishlist: ${response?.statusCode}");
+        return false;
+      }
+    } catch (e) {
+      print("❌ Error removing from wishlist: $e");
+      return false;
+    }
+  }
+
+  Future<bool> removeVideoFromWatchlist({required int id}) async {
+    try {
+      final response = await apiService.get("${APIEndpoints.removeVideo}/$id");
+
+      if (response != null && response.statusCode == 200) {
+        print("✅ Successfully removed video from wishlist: $id");
+        return true;
+      } else {
+        print("❌ Failed to remove from wishlist: ${response?.statusCode}");
+        return false;
+      }
+    } catch (e) {
+      print("❌ Error removing from wishlist: $e");
+      return false;
+    }
+  }
+
+  Future<bool> removeAudioFromWatchlist({required int id}) async {
+    try {
+      final response = await apiService.get("${APIEndpoints.removeAudio}/$id");
+
+      if (response != null && response.statusCode == 200) {
+        print("✅ Successfully removed Audio from wishlist: $id");
         return true;
       } else {
         print("❌ Failed to remove from wishlist: ${response?.statusCode}");

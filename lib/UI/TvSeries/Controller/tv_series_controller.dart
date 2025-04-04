@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:myott/services/tv_series_service.dart';
 import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
@@ -5,11 +6,14 @@ import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/services/wishlistService.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../Core/Utils/app_common.dart';
+import '../../../services/commentService.dart';
 import '../../Wishlist/Model/wishlistModel.dart';
 
 class TVSeriesController extends GetxController {
   final TVSeriesService _tvSeriesService =TVSeriesService();
 final WishlistService wishlistService=WishlistService();
+CommentService commentService=CommentService();
   var isLoading = false.obs;
   var tvSeriesDetails = Rxn<SeriesDetailResponse>();
   var isDetailsLoading = true.obs;
@@ -17,6 +21,7 @@ final WishlistService wishlistService=WishlistService();
   var isWishlisted = false.obs;
   var isLiked = false.obs;
   var isRated = false.obs;
+  TextEditingController commentController = TextEditingController();
 
   @override
   void onInit() {
@@ -83,4 +88,39 @@ final WishlistService wishlistService=WishlistService();
   void toggleDownload() => isDownloaded.value = !isDownloaded.value;
   void toggleLike() => isLiked.value = !isLiked.value;
   void toggleRate() => isRated.value = !isRated.value;
+
+
+  Future<void> addCommentForSeries(int seriesId, String slug) async {
+    if (commentController.text.trim().isEmpty) {
+      Get.snackbar("Error", "Comment cannot be empty");
+      return;
+    }
+
+    try {
+      isLoading(true);
+
+      Map<String, dynamic> formData = {
+        "comment": commentController.text.trim(),
+        "type": "T",
+        "id": seriesId
+      };
+
+      var response = await commentService.sendComment(formData);
+
+      if (response != null && response['status'] == "success") {
+        commentController.clear();
+        showSnackbar("Success", response['message'] ?? "Comment added successfully");
+        fetchTVSeriesDetails(slug);
+      } else {
+        showSnackbar("Error", response['message'] ?? "Failed to add comment",isError: true);
+      }
+    } catch (e) {
+      print("Error adding comment: $e");
+      showSnackbar("Error", "Something went wrong",isError: true);
+
+    } finally {
+      isLoading(false);
+    }
+  }
+
 }

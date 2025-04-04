@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:myott/UI/Actors/Model/ActorsModel.dart';
+import 'package:myott/UI/Model/BaseCommentsModel.dart';
 
 MovieDetailsModel movieDetailsModelFromJson(String str) => MovieDetailsModel.fromJson(json.decode(str));
 
@@ -12,7 +13,7 @@ String movieDetailsModelToJson(MovieDetailsModel data) => json.encode(data.toJso
 class MovieDetailsModel {
   Movie movie;
   String status;
-  List<Comment> comment;
+  List<MovieComments> comment;
 
   MovieDetailsModel({
     required this.movie,
@@ -23,7 +24,7 @@ class MovieDetailsModel {
   factory MovieDetailsModel.fromJson(Map<String, dynamic> json) => MovieDetailsModel(
     movie: Movie.fromJson(json["movie"]),
     status: json["status"],
-    comment: (json["comment"] as List?)?.map((e) => Comment.fromJson(e)).toList() ?? [],
+    comment: (json["comment"] as List?)?.map((e) => MovieComments.fromJson(e)).toList() ?? [],
   );
 
   Map<String, dynamic> toJson() => {
@@ -200,7 +201,8 @@ class Ctor {
     "image": image,
   };
 }
-class Comment {
+
+class MovieComments implements BaseCommentModel {
   int id;
   int userId;
   String name;
@@ -210,7 +212,7 @@ class Comment {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  Comment({
+  MovieComments({
     required this.id,
     required this.userId,
     required this.name,
@@ -221,7 +223,7 @@ class Comment {
     required this.updatedAt,
   });
 
-  factory Comment.fromJson(Map<String, dynamic> json) => Comment(
+  factory MovieComments.fromJson(Map<String, dynamic> json) => MovieComments(
     id: json["id"] ?? 0,
     userId: json["user_id"] ?? 0,
     name: json["name"] ?? "Unknown",

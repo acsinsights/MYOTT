@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
+import 'package:myott/UI/Components/Comment_section.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
+import 'package:myott/UI/Movie/Component/ExpandableDescription.dart';
 import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
 import '../../video_player/component/Video_player_page.dart';
 import '../Components/custom_button.dart';
@@ -37,79 +39,38 @@ class TvSeriesDetailsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-               Stack(
-                 children: [
-                   Container(
-                     height: 200,
-                     width: double.infinity,
-                     child: NetworkImageWidget(imageUrl: tvdetails!.series.thumbnailImg),
-                   ),
-                   Positioned(
-                       top: 10,
-                       left: 10,
-                       child: IconButton(
-                           onPressed: () {
-                             Get.back();
-                           },
-                           icon: Icon(
-                             Icons.arrow_back,
-                             color: Colors.white,
-                           ))),
-
-                 ],
-               ),
+                SeriesBanner(series: tvdetails!),
 
                  SizedBox(height: 10),
+                ExpandableDescription(description: tvdetails.series.description),
+                SizedBox(
+                  height: 10.h,
+                ),
+                seriessActionButtons(tvseriesController: tvSeriesController, series: tvdetails),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            tvdetails.series.name,
-                            style: AppTextStyles.Headingb4,
-                          ),
-                          tvdetails.packages.isNotEmpty && !tvdetails.packages.first.isFree
-                              ? Icon(
-                            Icons.workspace_premium, // Premium icon
-                            color: Colors.amber, // Gold/Yellow color for premium
-                            size: 20.w, // Adjust size as needed
-                          )
-                              : SizedBox.shrink(), // Show nothing if free
-
-                        ],
-                      ),
-                      Divider(color: Colors.white,),
-                      seriessActionButtons(tvseriesController: tvSeriesController, series: tvdetails),
-                      Divider(color: Colors.white,),
-                      SizedBox(height: 5.h,),
-                      CustomButton(
-                        width: double.infinity,
-                        text: "Play Now",
-                        onPressed: () {
-                          Get.to(VideoPlayerPage(videoUrl: tvdetails.series.trailerUrl,dubbedLanguages: {},
-                          subtitles: {},
-                          ));
-                        },
-                        backgroundColor: Color(0xff290b0b),
-                        borderColor: Colors.white,
-                      ),
                       TvSeriesEpisode(tvSeries: tvdetails),
-                      TVseriesSynopsis(description: tvdetails.series.description),
                       SizedBox(height: 5.h,),
                       ActorListWidget(actors: tvdetails.series.actors, label: "Artist"),
                       SizedBox(height: 5.h,),
                       ActorListWidget(actors: tvdetails.series.directors, label: "Directors"),
                       SeriesGenreList(tvdetails: tvdetails),
-                      SizedBox(height: 30.h,)
+                      SizedBox(height: 30.h,),
+
                       
 
                     ],
                   ),
                 ),
+                CommentSection(comments: tvdetails.comments,
+                    controller: tvSeriesController.commentController,
+                    onSend: (){
+                      tvSeriesController.addCommentForSeries(tvdetails.series.id, tvdetails.series.slug);
+                    })
               ],
             ),
           );
@@ -174,6 +135,151 @@ class SeriesGenreList extends StatelessWidget {
   }
 }
 
+class SeriesBanner extends StatelessWidget {
+  const SeriesBanner({
+    super.key,
+    required this.series,
+  });
+
+  final SeriesDetailResponse? series;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 400.h,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Stack(
+                children: [
+                  NetworkImageWidget(
+                    imageUrl: series!.series.thumbnailImg,
+                    width: double.infinity,
+                    height: 400.h,
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 400.h,
+                    color: Colors.black.withOpacity(
+                        0.7), // Black overlay with 50% opacity
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+                top: 10,
+                left: 10,
+                child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ))),
+            Positioned(
+              bottom: 20,
+              left: 10,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 200.h,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: NetworkImageWidget(
+                        imageUrl: series!.series.thumbnailImg,
+                        fit: BoxFit.cover,
+                        width: 140.w,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 20.w),
+                  Container(
+                    width: 200.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20.h),
+                        Text(
+                          series!.series.name,
+                          style: AppTextStyles.Headingb4,
+                          maxLines: 2,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              series!.series.releaseYear, // Release Year
+                              style: AppTextStyles.SubHeadingb3,
+                            ),
+                            SizedBox(width: 10.w), // Space between year and maturity
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                              decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Text(
+                                series!.series.maturity, // Maturity Rating
+                                style: AppTextStyles.SubHeadingb3.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10.w,),
+                            series!.packages.isNotEmpty && !series!.packages.first.isFree
+                                ? Icon(
+                              Icons.workspace_premium, // Premium icon
+                              color: Colors.amber,
+                              size: 25.w,
+                            )
+                                : SizedBox.shrink() // Hide if it's free
+
+
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        CustomButton(
+                          width: 180.w,
+                          text: "Play Now",
+                          onPressed: () {
+                            Get.to(
+                                VideoPlayerPage(
+                                  videoUrl: series!.series.trailerUrl,
+                                  subtitles: {},
+                                  dubbedLanguages: {},
+                                ));
+                          },
+                          backgroundColor: Color(0xff290b0b),
+                          borderColor: Colors.white,
+                        ),
+                        SizedBox(height: 10.h),
+                        CustomButton(
+                          width: 180.w,
+                          text: "Trailer",
+                          onPressed: () {
+                            Get.to(VideoPlayerPage(
+                              videoUrl: series!.series.trailerUrl,
+                              subtitles: {},
+                              dubbedLanguages: {},
+                            ));
+                          },
+                          backgroundColor: Colors.black,
+                          borderColor: Colors.white,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+}
 
 
 class ActorListWidget extends StatelessWidget {

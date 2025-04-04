@@ -1,13 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Setting/Blogs/Model/blog_detail_model.dart';
+import 'package:myott/services/commentService.dart';
+import '../../../Core/Utils/app_common.dart';
 import '../../../services/Setting_service.dart';
 import 'Model/blog_model.dart';
 
 class BlogController extends GetxController {
 
-  final SettingService _settingService;
-  BlogController(this._settingService);
-
+  final SettingService _settingService=SettingService();
+  final CommentService commentService=CommentService();
+  TextEditingController commentController = TextEditingController();
   var blogs = <BlogModel>[].obs;
   var blogDetails = Rxn<BlogdetailsModel>();
   var isBlogsLoading = true.obs;
@@ -64,5 +67,39 @@ class BlogController extends GetxController {
       isBlogDetailsLoading(false);
     }
   }
+
+  Future<void> addCommentForBlog(int blogId, String slug) async {
+    if (commentController.text.trim().isEmpty) {
+      Get.snackbar("Error", "Comment cannot be empty");
+      return;
+    }
+
+    try {
+      isBlogsLoading(true);
+
+      Map<String, dynamic> formData = {
+        "comment": commentController.text.trim(),
+        "type": "B",
+        "id": blogId
+      };
+
+      var response = await commentService.sendComment(formData);
+
+      if (response != null && response['status'] == "success") {
+        commentController.clear();
+        showSnackbar("Success", response['message'] ?? "Comment added successfully");
+        fetchBlogDetails(slug);
+      } else {
+        showSnackbar("Error", response['message'] ?? "Failed to add comment",isError: true);
+      }
+    } catch (e) {
+      print("Error adding comment: $e");
+      showSnackbar("Error", "Something went wrong",isError: true);
+
+    } finally {
+      isBlogsLoading(false);
+    }
+  }
+
 
 }

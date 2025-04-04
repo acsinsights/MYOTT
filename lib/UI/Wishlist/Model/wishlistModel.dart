@@ -10,8 +10,10 @@ class WishlistModel {
   int added;
   DateTime createdAt;
   DateTime updatedAt;
-  Movie movie;
-  Series series;
+  WishlistMovie movie;
+  WishlistSeries series;
+  WishlistAudio audio;
+  WishlistVideo video;
 
   WishlistModel({
     required this.id,
@@ -21,6 +23,8 @@ class WishlistModel {
     required this.updatedAt,
     required this.movie,
     required this.series,
+    required this.audio,
+    required this.video,
   });
 
   factory WishlistModel.fromJson(Map<String, dynamic> json) => WishlistModel(
@@ -29,8 +33,11 @@ class WishlistModel {
     added: json["added"] ?? 0,
     createdAt: json["created_at"] != null ? DateTime.parse(json["created_at"]) : DateTime.now(),
     updatedAt: json["updated_at"] != null ? DateTime.parse(json["updated_at"]) : DateTime.now(),
-    movie: json["movie"] != null ? Movie.fromJson(json["movie"]) : Movie.empty(), // Handle null movie
-    series: json["series"] !=null ? Series.fromJson(json["series"]): Series.empty(),  // Handle series as nullable
+    movie: json["movie"] != null ? WishlistMovie.fromJson(json["movie"]) : WishlistMovie.empty(), // Handle null movie
+    series: json["series"] !=null ? WishlistSeries.fromJson(json["series"]): WishlistSeries.empty(),  // Handle series as nullable
+    audio: json["audio"] !=null ? WishlistAudio.fromJson(json["audio"]): WishlistAudio.empty(),  // Handle series as nullable
+    video: json["video"] !=null ? WishlistVideo.fromJson(json["video"]): WishlistVideo.empty(),
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -44,13 +51,15 @@ class WishlistModel {
   };
 }
 
-class Movie {
+
+
+class WishlistMovie {
   int id;
   String name;
   String thumbnailImg;
   String slug;
 
-  Movie({
+  WishlistMovie({
     required this.id,
     required this.name,
     required this.thumbnailImg,
@@ -58,9 +67,9 @@ class Movie {
   });
 
   /// Factory constructor to create an empty Movie instance
-  factory Movie.empty() => Movie(name: "", thumbnailImg: "", slug: "",id: 0);
+  factory WishlistMovie.empty() => WishlistMovie(name: "", thumbnailImg: "", slug: "",id: 0);
 
-  factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+  factory WishlistMovie.fromJson(Map<String, dynamic> json) => WishlistMovie(
     id: json["id"]??"",
     name: json["name"] ?? "", // Default to empty string if null
     thumbnailImg: json["thumbnail_img"] ?? "",
@@ -73,13 +82,13 @@ class Movie {
     "slug": slug,
   };
 }
-class Series {
+class WishlistSeries {
   int id;
   String name;
   String thumbnailImg;
   String slug;
 
-  Series({
+  WishlistSeries({
     required this.id,
     required this.name,
     required this.thumbnailImg,
@@ -87,9 +96,9 @@ class Series {
   });
 
   /// Factory constructor to create an empty Movie instance
-  factory Series.empty() => Series(name: "", thumbnailImg: "", slug: "",id: 0);
+  factory WishlistSeries.empty() => WishlistSeries(name: "", thumbnailImg: "", slug: "",id: 0);
 
-  factory Series.fromJson(Map<String, dynamic> json) => Series(
+  factory WishlistSeries.fromJson(Map<String, dynamic> json) => WishlistSeries(
     id: json["id"]??0,
     name: json["name"] ?? "", // Default to empty string if null
     thumbnailImg: json["thumbnail_img"] ?? "",
@@ -102,4 +111,63 @@ class Series {
     "slug": slug,
   };
 }
+class WishlistVideo {
+  int id;
+  String name;
+  String thumbnailImg;
+  String slug;
+
+  WishlistVideo({
+    required this.id,
+    required this.name,
+    required this.thumbnailImg,
+    required this.slug,
+  });
+
+  /// Factory constructor to create an empty Movie instance
+  factory WishlistVideo.empty() => WishlistVideo(name: "", thumbnailImg: "", slug: "",id: 0);
+
+  factory WishlistVideo.fromJson(Map<String, dynamic> json) => WishlistVideo(
+    id: json["id"]??0,
+    name: json["name"] ?? "", // Default to empty string if null
+    thumbnailImg: json["thumbnail_img"] ?? "",
+    slug: json["slug"] ?? "",
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "thumbnail_img": thumbnailImg,
+    "slug": slug,
+  };
+}
+
+class WishlistAudio {
+  int id;
+  String name;
+  String thumbnailImg;
+  String slug;
+
+  WishlistAudio({
+    required this.id,
+    required this.name,
+    required this.thumbnailImg,
+    required this.slug,
+  });
+
+  factory WishlistAudio.empty() => WishlistAudio(name: "", thumbnailImg: "", slug: "",id: 0);
+
+  factory WishlistAudio.fromJson(Map<String, dynamic> json) => WishlistAudio(
+    id: json["id"]??0,
+    name: json["name"] ?? "", // Default to empty string if null
+    thumbnailImg: json["thumbnail_img"] ?? "",
+    slug: json["slug"] ?? "",
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "thumbnail_img": thumbnailImg,
+    "slug": slug,
+  };
+}
+
 

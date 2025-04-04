@@ -14,7 +14,7 @@ class VideoDetailsModel {
   int audioLanguage;
   String maturity;
   String trailerUrl;
-  DateTime releaseYear;
+  String releaseYear;
   int views;
   int fakeViews;
   String durationTime;
@@ -52,7 +52,7 @@ class VideoDetailsModel {
     audioLanguage: json["audio_language"],
     maturity: json["maturity"]?.toString() ?? "",
     trailerUrl: json["trailer_url"]?.toString() ?? "",
-    releaseYear: DateTime.parse(json["release_year"]),
+    releaseYear: json["release_year"]??"",
     views: (json["views"]??0),
     fakeViews: (json["fake_views"]??0),
     durationTime: json["duration_time"]?.toString() ?? "",

@@ -2,22 +2,28 @@
 
 import 'dart:convert';
 
+import '../../Model/BaseCommentsModel.dart';
+
 
 class SeriesDetailResponse {
   Series series;
   List<Episode> episodes;
   List<Package> packages;
+  List<SeriesComments> comments;
+
 
   SeriesDetailResponse({
     required this.series,
     required this.episodes,
     required this.packages,
+    required this.comments
   });
 
   factory SeriesDetailResponse.fromJson(Map<String, dynamic> json) => SeriesDetailResponse(
     series: Series.fromJson(json["series"]),
     episodes: json["episodes"]!=null? List<Episode>.from(json["episodes"].map((x) => Episode.fromJson(x))):[],
     packages: json["packages"]!=null ? List<Package>.from(json["packages"].map((x) => Package.fromJson(x))):[],
+    comments: json["comment"] != null ? List<SeriesComments>.from(json["comment"].map((x) => SeriesComments.fromJson(x))) : [],
   );
 
 }
@@ -112,7 +118,7 @@ class Series {
   String subAvailable;
   String dubAvailable;
   String uploadType;
-  DateTime releaseYear;
+  String releaseYear;
   int views;
   int fakeViews;
   String status;
@@ -154,7 +160,7 @@ class Series {
     subAvailable: json["sub_available"]??"",
     dubAvailable: json["dub_available"]??"",
     uploadType: json["upload_type"]??"",
-    releaseYear: json["release_year"]!=null?DateTime.parse(json["release_year"]):DateTime.now(),
+    releaseYear: json["release_year"]??"",
     views: json["views"]??"",
     fakeViews: json["fake_views"]??"",
     status: json["status"]??"",
@@ -175,7 +181,7 @@ class Series {
     "sub_available": subAvailable,
     "dub_available": dubAvailable,
     "upload_type": uploadType,
-    "release_year": "${releaseYear.year.toString().padLeft(4, '0')}-${releaseYear.month.toString().padLeft(2, '0')}-${releaseYear.day.toString().padLeft(2, '0')}",
+    "release_year": releaseYear,
     "views": views,
     "fake_views": fakeViews,
     "status": status,
@@ -212,6 +218,50 @@ class TvSeriesActor {
     "id": id,
     "name": name,
     "image": image,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+  };
+}
+
+class SeriesComments implements BaseCommentModel{
+  int id;
+  String name;
+  int userId;
+  String email;
+  int blogId;
+  String comment;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  SeriesComments({
+    required this.id,
+    required this.name,
+    required this.userId,
+    required this.email,
+    required this.blogId,
+    required this.comment,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory SeriesComments.fromJson(Map<String, dynamic> json) => SeriesComments(
+    id: json["id"]??"",
+    name: json["name"]??"",
+    userId: json["user_id"]??"",
+    email: json["email"]??"",
+    blogId: json["blog_id"]??"",
+    comment: json["comment"]??"",
+    createdAt:  json["create_at"]!=null?DateTime.parse(json["created_at"]):DateTime.now(),
+    updatedAt:  json["update_at"] !=null ? DateTime.parse(json["updated_at"]):DateTime.now(),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "user_id": userId,
+    "email": email,
+    "blog_id": blogId,
+    "comment": comment,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };

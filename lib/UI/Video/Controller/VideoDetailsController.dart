@@ -45,7 +45,6 @@ class VideoDetailsController extends GetxController{
 
   Future<void> toggleWishlist(int movieId, String type) async {
     if (isWishList.value) {
-      /// ✅ Remove from Wishlist
       bool removed = await wishlistService.removeMovieFromWatchlist(id: movieId);
       if (removed) {
         isWishList.value = false; // Update UI

@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 
+import '../../../video_player/component/Video_player_page.dart';
 import 'episode_card.dart';
 
 
@@ -37,7 +40,11 @@ class TvSeriesEpisode extends StatelessWidget {
             itemBuilder: (context, index) {
               final episode = tvSeries.episodes[index];
               print("Episode $index: ${episode.title}, ${episode.poster}"); // ✅ Debugging
-              return EpisodeCard(episode.title, episode.poster.toString());
+              return GestureDetector(
+                  onTap: (){
+                    Get.to(VideoPlayerPage(videoUrl: episode.uploadUrl, subtitles: {}, dubbedLanguages: {},));
+                  },
+                  child: EpisodeCard(episode.title, episode.poster.toString()));
             },
           ),
         ),
