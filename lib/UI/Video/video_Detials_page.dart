@@ -8,6 +8,7 @@ import 'package:myott/UI/Video/Model/VideoDetailsModel.dart';
 
 import '../../Core/Utils/app_text_styles.dart';
 import '../../video_player/component/InlineVideoPlayer.dart';
+import '../../video_player/component/Video_player_page.dart';
 import '../Components/custom_button.dart';
 import '../Components/network_image_widget.dart';
 import '../Movie/Component/RatingBottomSheet.dart';
@@ -79,7 +80,9 @@ class VideoDetialsPage extends StatelessWidget {
                           width: double.infinity,
                           text: "Play Now",
                           onPressed: () {
-
+                            Get.to(VideoPlayerPage(videoUrl: videoDetails.trailerUrl,dubbedLanguages: {},
+                              subtitles: {},
+                            ));
                           },
                           backgroundColor: Color(0xff290b0b),
                           borderColor: Colors.white,

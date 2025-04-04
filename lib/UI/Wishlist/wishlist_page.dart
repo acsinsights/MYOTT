@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Wishlist/Model/wishlistModel.dart';
+import '../../services/wishlistService.dart';
 import '../Movie/Movie_details_page.dart';
 import 'WishListController.dart';
 
@@ -128,9 +129,10 @@ class ShowWishlistPage extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () async {
                     if (item is Movie) {
-                      await wishlistController.removeMovieFromWishlist(item.slug);
+                      await WishlistService().removeMovieFromWatchlist(id: item.id);
+                      print(item.id);
                     } else if (item is Series) {
-                      await wishlistController.removeSeriesFromWishlist(item.slug);
+                      await wishlistController.removeSeriesFromWishlist(item.id);
                     }
                   },
                   child: CircleAvatar(

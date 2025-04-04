@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'Controller/PaymentHistorycontroller.dart';
 
 class PaymentHistoryPage extends StatelessWidget {
@@ -10,10 +12,10 @@ class PaymentHistoryPage extends StatelessWidget {
     final PaymentHistoryController controller = Get.put(PaymentHistoryController());
 
     return Scaffold(
-      backgroundColor: Colors.black, // Dark Theme
+      backgroundColor: Colors.black,
       appBar: AppBar(
         foregroundColor: Colors.white,
-        title: const Text("Payment History",),
+        title: const Text("Payment History"),
         backgroundColor: Colors.black,
       ),
       body: Obx(() {
@@ -34,39 +36,50 @@ class PaymentHistoryPage extends StatelessWidget {
           itemBuilder: (context, index) {
             var payment = controller.paymentHistoryList[index];
 
-            return Card(
-              color: Colors.grey[900], // Dark Card
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              child: ListTile(
-                title: Text(payment.orderId, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Invoice: ${payment.invoiceNo}", style: const TextStyle(color: Colors.white70)),
-                    Text("Transaction: ${payment.transactionId}", style: const TextStyle(color: Colors.white70)),
-                    Text("Payment Method: ${payment.paymentMethod}", style: const TextStyle(color: Colors.white70)),
-                    Text("Price: ₹${payment.price} | Offer: ₹${payment.offerPrice}",
-                        style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
-                    Text("Status: ${payment.transactionStatus}",
-                        style: TextStyle(
-                          color: payment.transactionStatus == "success" ? Colors.green : Colors.red,
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ],
-                ),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Start: ${payment.startDate.toString().split(' ')[0]}",
-                      style: const TextStyle(color: Colors.white70),
+            return GestureDetector(
+              onTap: (){
+                print("================================");
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                child: Card(
+                  color: Colors.grey[900],
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  child: ListTile(
+                    title: Text(payment.orderId, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Invoice: ${payment.invoiceNo}", style: const TextStyle(color: Colors.white70)),
+                        Text("Transaction: ${payment.transactionId}", style: const TextStyle(color: Colors.white70)),
+                        Text("Payment Method: ${payment.paymentMethod}", style: const TextStyle(color: Colors.white70)),
+                        Text("Price: ₹${payment.price} | Offer: ₹${payment.offerPrice}",
+                            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                        Text("Status: ${payment.transactionStatus}",
+                            style: TextStyle(
+                              color: payment.transactionStatus == "success" ? Colors.green : Colors.red,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      ],
                     ),
-                    Text(
-                      "End: ${payment.endDate.toString().split(' ')[0]}",
-                      style: const TextStyle(color: Colors.white70),
+                    onTap: (){
+                      controller.downloadAndOpenPDF(payment.id);
+                    },
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Start: ${payment.startDate.toString().split(' ')[0]}",
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                        Text(
+                          "End: ${payment.endDate.toString().split(' ')[0]}",
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             );

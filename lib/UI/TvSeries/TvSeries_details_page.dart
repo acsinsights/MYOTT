@@ -90,6 +90,9 @@ class TvSeriesDetailsPage extends StatelessWidget {
                         width: double.infinity,
                         text: "Play Now",
                         onPressed: () {
+                          Get.to(VideoPlayerPage(videoUrl: tvdetails.series.trailerUrl,dubbedLanguages: {},
+                          subtitles: {},
+                          ));
                         },
                         backgroundColor: Color(0xff290b0b),
                         borderColor: Colors.white,

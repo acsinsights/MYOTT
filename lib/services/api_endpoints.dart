@@ -1,6 +1,7 @@
 class APIEndpoints {
   // Secret Key
   static const String _secretKey = "06c51069-0171-4f23-bf8f-41c9cd86762d";
+  static const String _baseurl="https://templatecookies.com/ott/public/api";
 
   // Authentication
   static const String sendOtp = "send-otp";
@@ -9,7 +10,7 @@ class APIEndpoints {
   static const String stripePublishableKey = "pk_test_51R3woGCG37UV7MBEuZDyX1QGvAqSY4yxaBUduJyQRX18ucxrozR6ezq6CPSWF0VzJ0JfmlJYeO5KAuAfTYFl8HSp00zD5Er2RF";
   static const String paymentGateways = "paymentgateway-keys?secret=$_secretKey";
   static const String paymentHistory = "payment-history";
-  static const String invoice = "invoice/1?secret=$_secretKey";
+  static  String invoice(int orderID) => "$_baseurl/invoice/$orderID?secret=$_secretKey";
 
   // Home
   static const String homeEndpoint = "home?secret=$_secretKey";

@@ -53,6 +53,7 @@ class MovieController extends GetxController {
     if (isWishlisted.value) {
       /// ✅ Remove from Wishlist
       bool removed = await wishlistService.removeMovieFromWatchlist(id: movieId);
+      print(movieId);
       if (removed) {
         isWishlisted.value = false; // Update UI
       }

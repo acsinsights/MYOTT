@@ -1,6 +1,8 @@
     <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+        <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
 
     <application
         android:label="myott"
@@ -36,7 +38,18 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
-<!--        <meta-data android:name="com.phonepe.android.sdk.isUAT" android:value="true"/>-->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+
+        <!--        <meta-data android:name="com.phonepe.android.sdk.isUAT" android:value="true"/>-->
 <!--        <meta-data android:name="com.phonepe.android.sdk.isSimulator" android:value="true"/>-->
 <!--        <meta-data android:name="com.phonepe.android.sdk.MerchantId" android:value="merchantId"/>-->
 <!--        <meta-data android:name="com.phonepe.android.sdk.AppId" android:value="appId"/>-->

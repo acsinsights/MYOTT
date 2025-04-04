@@ -43,29 +43,20 @@ class WishlistController extends GetxController {
         .toList();
   }
 
-  Future<void> removeMovieFromWishlist(String movieSlug) async {
-    WishlistModel? wishlistItem = wishlist.firstWhereOrNull((item) => item.movie.slug == movieSlug);
-
-    if (wishlistItem != null) {
-      print(wishlistItem.id);
-      bool removed = await wishlistService.removeMovieFromWatchlist(id: wishlistItem.id);
-
-      if (removed) {
-        wishlist.remove(wishlistItem); // Remove the whole wishlist entry
-      }
+  Future<void> removeMovieFromWishlist(int id) async {
+    bool removed = await wishlistService.removeMovieFromWatchlist(id: id);
+    if (removed) {
+      wishlist.removeWhere((item) => item.id == id); // Remove movie by id
     }
   }
 
-  Future<void> removeSeriesFromWishlist(String seriesSlug) async {
-    WishlistModel? wishlistItem = wishlist.firstWhereOrNull((item) => item.series.slug == seriesSlug);
-
-    if (wishlistItem != null) {
-      bool removed = await wishlistService.removeSeriesFromWatchlist(id: wishlistItem.id);
-      if (removed) {
-        wishlist.remove(wishlistItem); // Remove the whole wishlist entry
-      }
+  Future<void> removeSeriesFromWishlist(int id) async {
+    bool removed = await wishlistService.removeSeriesFromWatchlist(id: id);
+    if (removed) {
+      wishlist.removeWhere((item) => item.id == id); // Remove series by id
     }
   }
+
 
 
 

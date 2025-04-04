@@ -45,20 +45,23 @@ class WishlistModel {
 }
 
 class Movie {
+  int id;
   String name;
   String thumbnailImg;
   String slug;
 
   Movie({
+    required this.id,
     required this.name,
     required this.thumbnailImg,
     required this.slug,
   });
 
   /// Factory constructor to create an empty Movie instance
-  factory Movie.empty() => Movie(name: "", thumbnailImg: "", slug: "");
+  factory Movie.empty() => Movie(name: "", thumbnailImg: "", slug: "",id: 0);
 
   factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+    id: json["id"]??"",
     name: json["name"] ?? "", // Default to empty string if null
     thumbnailImg: json["thumbnail_img"] ?? "",
     slug: json["slug"] ?? "",
@@ -71,20 +74,23 @@ class Movie {
   };
 }
 class Series {
+  int id;
   String name;
   String thumbnailImg;
   String slug;
 
   Series({
+    required this.id,
     required this.name,
     required this.thumbnailImg,
     required this.slug,
   });
 
   /// Factory constructor to create an empty Movie instance
-  factory Series.empty() => Series(name: "", thumbnailImg: "", slug: "");
+  factory Series.empty() => Series(name: "", thumbnailImg: "", slug: "",id: 0);
 
   factory Series.fromJson(Map<String, dynamic> json) => Series(
+    id: json["id"]??0,
     name: json["name"] ?? "", // Default to empty string if null
     thumbnailImg: json["thumbnail_img"] ?? "",
     slug: json["slug"] ?? "",
