@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:better_player_plus/better_player_plus.dart';
+import 'package:video_player/video_player.dart';
 
 import '../Controller/CustomVideoController.dart';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:video_player/video_player.dart';
+
+import '../Controller/CustomVideoController.dart';
+import 'SimpleVideoPlayerWidget.dart';
 
 class VideoPlayerPage extends StatelessWidget {
   final String videoUrl;
@@ -31,9 +39,8 @@ class VideoPlayerPage extends StatelessWidget {
                   aspectRatio: 16 / 9,
                   child: controller.isYouTube
                       ? _buildYouTubePlayer(controller)
-                      : _buildBetterPlayer(controller),
+                      : _buildSimpleVideoPlayer(controller),
                 ),
-                // Additional UI elements (optional)
               ],
             ),
           ),
@@ -41,18 +48,20 @@ class VideoPlayerPage extends StatelessWidget {
       },
     );
   }
+  Widget _buildSimpleVideoPlayer(CustomVideoPlayerController controller) {
+    if (!controller.isInitialized.value || controller.videoPlayerController == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return SimpleVideoPlayerWidget(controller: controller.videoPlayerController!);
+  }
+
 
   Widget _buildYouTubePlayer(CustomVideoPlayerController controller) {
     return YoutubePlayerBuilder(
       player: YoutubePlayer(controller: controller.youtubePlayerController!),
-      builder: (context, player) {
-        return player;
-      },
+      builder: (context, player) => player,
     );
   }
-
-  Widget _buildBetterPlayer(CustomVideoPlayerController controller) {
-    return BetterPlayer(controller: controller.betterPlayerController!);
-  }
-
 }
+

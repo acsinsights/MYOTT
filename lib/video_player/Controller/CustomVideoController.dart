@@ -1,17 +1,17 @@
-import 'package:better_player_plus/better_player_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:vimeo_video_player/vimeo_video_player.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class CustomVideoPlayerController extends GetxController {
   final String videoUrl;
   final Map<String, dynamic> subtitles;
   final Map<String, dynamic> dubbedLanguages;
-  BetterPlayerController? betterPlayerController;
+
+  VideoPlayerController? videoPlayerController;
   YoutubePlayerController? youtubePlayerController;
+
   bool isYouTube = false;
+  RxBool isInitialized = false.obs;
 
   CustomVideoPlayerController(this.videoUrl, this.subtitles, this.dubbedLanguages);
 
@@ -23,74 +23,33 @@ class CustomVideoPlayerController extends GetxController {
     if (isYouTube) {
       _initYouTubePlayer();
     } else {
-      _initBetterPlayer();
+      _initSimplePlayer();
     }
   }
 
-
   void _initYouTubePlayer() {
-    String? videoId = YoutubePlayer.convertUrlToId(videoUrl);
+    final videoId = YoutubePlayer.convertUrlToId(videoUrl);
     if (videoId != null) {
       youtubePlayerController = YoutubePlayerController(
         initialVideoId: videoId,
-        flags: const YoutubePlayerFlags(
-          autoPlay: true,
-          mute: false,
-          enableCaption: true,
-        ),
+        flags: const YoutubePlayerFlags(autoPlay: true),
       );
     }
   }
 
-  void _initBetterPlayer() {
-    betterPlayerController = BetterPlayerController(
-      BetterPlayerConfiguration(
-        autoPlay: true,
-        aspectRatio: 16 / 9,
-        fullScreenAspectRatio: 16 / 9,
-        handleLifecycle: true,
-        allowedScreenSleep: false,
-        autoDetectFullscreenAspectRatio: true,
-        controlsConfiguration: BetterPlayerControlsConfiguration(
-          enableFullscreen: true,
-          enablePlayPause: true,
-        ),
-      ),
-      betterPlayerDataSource: BetterPlayerDataSource(
-        BetterPlayerDataSourceType.network,
-        videoUrl,
-        subtitles: _getSubtitleSources(), // Subtitles added here
-      ),
-    );
-
-    // Handle fullscreen exit properly
-    betterPlayerController!.addEventsListener((event) {
-      if (event.betterPlayerEventType == BetterPlayerEventType.hideFullscreen) {
-        Future.delayed(Duration(milliseconds: 300), () {
-          update(); // Updates UI after exiting fullscreen
-        });
-      }
-    });
-  }
-
-
-
-  // Fetch subtitle sources
-  List<BetterPlayerSubtitlesSource> _getSubtitleSources() {
-    return subtitles.entries
-        .map((entry) => BetterPlayerSubtitlesSource(
-      type: BetterPlayerSubtitlesSourceType.network,
-      urls: [entry.value],
-      name: entry.key,
-    ))
-        .toList();
+  void _initSimplePlayer() {
+    videoPlayerController = VideoPlayerController.network(videoUrl)
+      ..initialize().then((_) {
+        videoPlayerController?.play();
+        isInitialized.value = true;
+        update();
+      });
   }
 
   @override
   void onClose() {
-    youtubePlayerController?.pause();
     youtubePlayerController?.dispose();
-    betterPlayerController?.dispose();
+    videoPlayerController?.dispose();
     super.onClose();
   }
 }

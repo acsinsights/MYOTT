@@ -5,6 +5,8 @@
 import 'package:myott/services/PaymentGateway/phonepeService.dart';
   import 'package:myott/services/PaymentGateway/razorpay_service.dart';
   import 'package:myott/services/PaymentGateway/stripe_service.dart';
+import 'package:myott/services/api_endpoints.dart';
+import 'package:myott/services/api_service.dart';
   import 'package:razorpay_flutter/razorpay_flutter.dart';
   import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
   import 'package:get/get.dart';
@@ -17,7 +19,10 @@ import 'package:myott/services/PaymentGateway/phonepeService.dart';
   abstract class PaymentService {
     Future<void> pay(PaymentData paymentData);
   }
+
+
   class PaymentManager {
+
     final Map<PaymentMethod, PaymentService> _paymentServices = {
       PaymentMethod.Razorpay: RazorpayService(),
       PaymentMethod.Stripe: StripeService(),
@@ -42,7 +47,6 @@ import 'package:myott/services/PaymentGateway/phonepeService.dart';
         Get.snackbar("Error", "Invalid Payment Method Selected");
       }
     }
-
 
 
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/Core/Utils/app_common.dart';
 import 'package:myott/UI/Profile/Controller/ProfileController.dart';
 import '../../services/PaymentGateway/PaymentManager.dart';
 import '../Profile/screens/SubscriptionPackage/SubscriptionController.dart';
@@ -13,12 +14,18 @@ class PaymentSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> args = Get.arguments ?? {};
-    final String paymentType = args['paymentType'] ?? 0.0;
-    final int packageid = args['package_id'] ?? "";
+
+    final String paymentType = args['paymentType'] ?? "";
+    final int packageid = args['package_id'] ?? 0;
     final String packagestatus = args['packageStatus'] ?? "";
-    final int price = args['price'] ?? "";
-    final int offer_price = args['offer_price'] ?? "";
+    final int price = args['price'] ?? 0;
+    final int offer_price = args['offer_price'] ?? 0;
     final String currency = args['currency'] ?? "";
+    final int contentId = args['content_id'] ?? 0;
+
+    final MediaType contentType = args['content_type'] is MediaType
+        ? args['content_type']
+        : MediaType.movie; // fallback default
 
     return Scaffold(
       appBar: AppBar(title: Text("Select Payment Gateway")),
@@ -37,10 +44,12 @@ class PaymentSelectionScreen extends StatelessWidget {
                     price: price,
                     paymentType: paymentType,
                     packageid: packageid,
-                    packageType: packagestatus,
+                    packageStatus: packagestatus,
                     currency: currency,
                     email: profileController.user.value!.email,
                     contact:  profileController.user.value!.mobile,
+                     contentId: contentId,
+                     contentType: contentType
                   ));
                    print(currency);
 

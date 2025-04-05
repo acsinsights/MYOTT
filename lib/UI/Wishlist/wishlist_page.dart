@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Video/video_Detials_page.dart';
 import 'package:myott/UI/Wishlist/Model/wishlistModel.dart';
 import '../../services/wishlistService.dart';
 import '../Movie/Movie_details_page.dart';
+import '../TvSeries/TvSeries_details_page.dart';
 import 'WishListController.dart';
 
 class ShowWishlistPage extends StatelessWidget {
@@ -85,7 +87,13 @@ class ShowWishlistPage extends StatelessWidget {
                       "slug": item.slug
                     });
                   } else if (item is WishlistSeries) {
-                    // Get.to(() => TvSeriesDetailsPage(slug: item.slug));
+                    Get.to(() => TvSeriesDetailsPage(),arguments: {
+                      "slug":item.slug
+                    });
+                  }else if(item is WishlistVideo){
+                    Get.to(VideoDetialsPage(),arguments: {
+                      "slug":item.slug
+                    });
                   }
                 },
                 child: Column(
@@ -140,10 +148,10 @@ class ShowWishlistPage extends StatelessWidget {
                       wishlistController.fetchWishlistData(); // ✅ Refresh UI
                     }
                     else if (item is WishlistAudio) {
-                      // await wishlistController.removeAudioFromWishlist(item.id);
+                      await wishlistController.removeAudioFromWishlist(item.id);
                       wishlistController.fetchWishlistData(); // ✅ Refresh UI
                     } else if (item is WishlistVideo) {
-                      // await wishlistController.removeVideoFromWishlist(item.id);
+                      await wishlistController.removeVideoFromWishlist(item.id);
                       wishlistController.fetchWishlistData(); // ✅ Refresh UI
                     }
                   },

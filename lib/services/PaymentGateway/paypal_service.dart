@@ -1,11 +1,16 @@
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:myott/UI/PaymentGateways/Controller/PaymentGatewayController.dart';
 
+import '../../Core/Utils/app_common.dart';
+import '../../UI/Home/Main_screen.dart';
 import '../../UI/PaymentGateways/Model/PaymentData.dart';
 import 'PaymentManager.dart';
 
 class PayPalService implements PaymentService {
+
+  PaymentGatewayController paymentGatewayController=Get.find<PaymentGatewayController>();
   @override
   Future<void> pay(PaymentData paymentData) async {
     Get.to(() => PaypalCheckoutView(
@@ -17,15 +22,28 @@ class PayPalService implements PaymentService {
         {
           "amount": {
             "total": paymentData.finalAmount.toString(),
-            "currency": paymentData.currency,
+            "currency": "USD",
           },
-          "description": paymentData.description ?? "Payment for Subscription",
+          "description": "Payment for Subscription",
         }
       ],
       note: "Thank you for your purchase!",
-      onSuccess: (Map params) {
-        print("✅ Payment Successful: $params");
-      },
+      onSuccess: (Map params) async{
+        print("✅ PayPal Success: $params");
+
+        final updatedData = paymentData.copyWith(
+          transactionID: params["paymentId"] ?? "unknown_paypal_id",
+          transactionStatus: "success",
+        );
+
+        try {
+          await paymentGatewayController.sendPaymentToBackendWithFeedback(updatedData);
+          showSnackbar("Success", "Payment Successful");
+
+          Get.offAll(() => MainScreen());
+        } catch (e) {
+          showSnackbar("Error", "Failed to send data to backend");
+        }      },
       onCancel: () {
         print("⚠️ Payment Cancelled");
       },

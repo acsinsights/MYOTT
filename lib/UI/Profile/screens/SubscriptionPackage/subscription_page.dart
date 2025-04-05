@@ -176,14 +176,16 @@ class SubscriptionScreen extends StatelessWidget {
                     width:double.infinity,
                     child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
                    onPressed: () {
-                    Get.to(PaymentSelectionScreen(), arguments: {
-                      "paymentType": PaymentType.subscription.toString(),
-                      "packageStatus": "active",
-                      "package_id": plan.id,
-                      "price": plan.amount,
-                      "offer_price": plan.offerPrice,
-                      "currency": plan.currency,
-                    });
+                     Get.to(PaymentSelectionScreen(), arguments: {
+                       "paymentType": PaymentType.subscription.name,
+                       "packageStatus": "active",
+                       "package_id": plan.id,
+                       "price": plan.amount,
+                       "offer_price": plan.offerPrice,
+                       "currency": plan.currency,
+                       "content_id": 0, // default dummy
+                       "content_type": MediaType.movie, // dummy default enum
+                     });
                   },),
 
                   // Next Button

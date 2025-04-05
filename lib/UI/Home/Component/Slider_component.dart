@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:myott/Core/Utils/app_common.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Movie/Movie_details_page.dart';
+import 'package:myott/UI/Video/video_Detials_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:myott/services/Home_service.dart';
@@ -125,8 +127,12 @@ class MovieSlider extends StatelessWidget {
                                     Get.to(TvSeriesDetailsPage(),arguments: {
                                       "slug":content.slug
                                     });
-                                  } else {
-                                    Get.snackbar("Comming soon", "Future Update",colorText: Colors.white,backgroundColor: Colors.green);
+                                  } else if (content.type =="video"){
+                                    Get.to(VideoDetialsPage(),arguments: {
+                                      "slug":content.slug
+                                    });
+                                  }else{
+                                    showSnackbar("Comming Soon", "Future update....");
                                   }
                                 },
                                 icon: Icon(Icons.play_arrow, color: AppColors.white),

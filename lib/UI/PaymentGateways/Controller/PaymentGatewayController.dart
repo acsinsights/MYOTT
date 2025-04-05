@@ -4,17 +4,23 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:myott/services/api_service.dart';
-import 'package:myott/services/PaymentGateway/payment_service.dart';
+import 'package:myott/services/PaymentGateway/payment_Gateway_service.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../../../Core/Utils/app_common.dart';
+import '../Model/PaymentData.dart';
 import '../Model/PaymentGateway.dart';
 
 class PaymentGatewayController extends GetxController {
   final PaymentGatewayService _paymentService = PaymentGatewayService();
 
-  var paymentGateways = <PaymentGateway>[].obs;
+  var paymentGateways = <String, dynamic>{}.obs;
   var isLoading = false.obs;
   var errorMessage = ''.obs;
+  var razorpayKey="".obs;
+  var razorpaySecret="".obs;
+  var paypalClientId="".obs;
+  var stripeKey="".obs;
 
   @override
   void onInit() {
@@ -29,12 +35,19 @@ class PaymentGatewayController extends GetxController {
       isLoading(true);
       errorMessage.value = '';
 
-      List<PaymentGateway> gateways = await _paymentService.fetchPaymentGateways();
+      final gateway = await _paymentService.fetchPaymentGateway();
 
-      print("Raw Response: ${gateways.toString()}"); // Debugging
+      print("Raw Response: ${gateway.toString()}"); // Debugging
 
-      if (gateways.isNotEmpty) {
-        paymentGateways.assignAll(gateways);
+      if (gateway != null) {
+        paymentGateways.assignAll(gateway.toJson());
+
+        // Now set individual keys
+        razorpayKey.value = gateway.razorpayKey;
+        razorpaySecret.value = gateway.razorpaySecret;
+        paypalClientId.value = gateway.paypalClientId;
+        stripeKey.value = gateway.stripeKey;
+        // Add more as needed...
       } else {
         errorMessage.value = "No payment gateways found!";
       }
@@ -42,6 +55,15 @@ class PaymentGatewayController extends GetxController {
       errorMessage.value = "Error: $e";
     } finally {
       isLoading(false);
+    }
+  }
+
+  Future<void> sendPaymentToBackendWithFeedback(PaymentData data) async {
+    try {
+      await _paymentService.sendPaymentDataToBackend(data);
+      showSnackbar("Success", "Payment data sent successfully");
+    } catch (e) {
+      showSnackbar("Error", "Failed to send payment data", isError: true);
     }
   }
 

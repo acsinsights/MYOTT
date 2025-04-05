@@ -10,7 +10,13 @@ class APIEndpoints {
   static const String stripePublishableKey = "pk_test_51R3woGCG37UV7MBEuZDyX1QGvAqSY4yxaBUduJyQRX18ucxrozR6ezq6CPSWF0VzJ0JfmlJYeO5KAuAfTYFl8HSp00zD5Er2RF";
   static const String paymentGateways = "paymentgateway-keys?secret=$_secretKey";
   static const String paymentHistory = "payment-history";
+  static const  String createOrderPackage = "create-order/package";
+  static const  String createOrderCoin = "create-order/coin";
+  static const  String createOrderPPV = "create-order/ppv";
+
   static  String invoice(int orderID) => "$_baseurl/invoice/$orderID?secret=$_secretKey";
+
+
 
   // Home
   static const String homeEndpoint = "home?secret=$_secretKey";
