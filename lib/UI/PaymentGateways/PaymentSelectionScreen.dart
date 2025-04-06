@@ -15,12 +15,13 @@ class PaymentSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = Get.arguments ?? {};
 
+    // Extract values with safe defaults
     final String paymentType = args['paymentType'] ?? "";
-    final int packageid = args['package_id'] ?? 0;
-    final String packagestatus = args['packageStatus'] ?? "";
+    final int packageId = args['package_id'] ?? 0;
+    final String packageStatus = args['packageStatus'] ?? "";
     final int price = args['price'] ?? 0;
-    final int offer_price = args['offer_price'] ?? 0;
-    final String currency = args['currency'] ?? "";
+    final int offerPrice = args['offer_price'] ?? 0;
+    final String currency = args['currency'] ?? "INR";
     final int contentId = args['content_id'] ?? 0;
 
     final MediaType contentType = args['content_type'] is MediaType
@@ -39,17 +40,27 @@ class PaymentSelectionScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
+            _buildTransactionSummary(
+              paymentType: paymentType,
+              price: price,
+              offerPrice: offerPrice,
+              currency: currency,
+              packageId: packageId,
+              packageStatus: packageStatus,
+              contentId: contentId,
+              contentType: contentType,
+            ),
             _buildPaymentCard(
               context,
               "Razorpay",
               "https://cdn.iconscout.com/icon/free/png-512/free-razorpay-logo-icon-download-in-svg-png-gif-file-formats--payment-gateway-brand-logos-icons-1399875.png?f=webp&w=512",
                   () => paymentManager.startPayment(PaymentData(
                 method: PaymentMethod.Razorpay,
-                offerprice: offer_price,
+                offerprice: offerPrice,
                 price: price,
                 paymentType: paymentType,
-                packageid: packageid,
-                packageStatus: packagestatus,
+                packageid: packageId,
+                packageStatus: packageStatus,
                 currency: currency,
                 contentId: contentId,
                 contentType: contentType,
@@ -61,12 +72,12 @@ class PaymentSelectionScreen extends StatelessWidget {
               "https://cdn.iconscout.com/icon/free/png-512/free-paypal-icon-download-in-svg-png-gif-file-formats--company-brand-logo-social-media-3-pack-logos-icons-10439207.png?f=webp&w=512",
                   () => paymentManager.startPayment(PaymentData(
                 method: PaymentMethod.PayPal,
-                offerprice: offer_price,
+                offerprice: offerPrice,
                 price: price,
-                paymentType: paymentType,
-                packageid: packageid,
-                packageType: packagestatus,
+                packageid: packageId,
+                packageStatus: packageStatus,
                 currency: currency,
+                paymentType: paymentType,
                 email: profileController.user.value?.email,
                 contact: profileController.user.value?.mobile,
               )),
@@ -77,27 +88,26 @@ class PaymentSelectionScreen extends StatelessWidget {
               "https://cdn.iconscout.com/icon/free/png-512/free-stripe-logo-icon-download-in-svg-png-gif-file-formats--technology-social-media-vol-6-pack-logos-icons-2945188.png?f=webp&w=512",
                   () => paymentManager.startPayment(PaymentData(
                 method: PaymentMethod.Stripe,
-                offerprice: offer_price,
+                offerprice: offerPrice,
                 price: price,
-                packageid: packageid,
-                packageType: packagestatus,
+                packageid: packageId,
+                packageStatus: packageStatus,
                 currency: currency,
                 paymentType: paymentType,
                 email: profileController.user.value?.email,
                 contact: profileController.user.value?.mobile,
               )),
             ),
-            // 🟣 PhonePe (last & styled differently)
             _buildPaymentCard(
               context,
               "PhonePe",
-              "https://cdn.iconscout.com/icon/free/png-512/free-phonepe-logo-icon-download-in-svg-png-gif-file-formats--payment-app-application-indian-companies-pack-logos-icons-2249157.png?f=webp&w=512", // Better resolution logo
+              "https://cdn.iconscout.com/icon/free/png-512/free-phonepe-logo-icon-download-in-svg-png-gif-file-formats--payment-app-application-indian-companies-pack-logos-icons-2249157.png?f=webp&w=512",
                   () => paymentManager.startPayment(PaymentData(
                 method: PaymentMethod.PhonePe,
-                offerprice: offer_price,
+                offerprice: offerPrice,
                 price: price,
-                packageid: packageid,
-                packageType: packagestatus,
+                packageid: packageId,
+                packageStatus: packageStatus,
                 currency: currency,
                 paymentType: paymentType,
                 email: profileController.user.value?.email,
@@ -111,7 +121,69 @@ class PaymentSelectionScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentCard(BuildContext context, String name, String imageUrl, VoidCallback onTap, {bool isLast = false}) {
+  Widget _buildTransactionSummary({
+    required String paymentType,
+    required int price,
+    required int offerPrice,
+    required String currency,
+    int? contentId,
+    int? packageId,
+    String? packageStatus,
+    MediaType? contentType,
+  }) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: const Color(0xFF1E1E1E),
+      elevation: 10,
+      margin: const EdgeInsets.only(bottom: 20),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("🧾 Transaction Summary", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+            SizedBox(height: 12),
+            _buildSummaryRow("💳 Payment Type:", paymentType.capitalizeFirst ?? "", color: Colors.cyanAccent),
+            if (paymentType != "wallet" && packageStatus != null && packageStatus.isNotEmpty)
+              _buildSummaryRow("📦 Package Status:", packageStatus.capitalizeFirst ?? ""),
+            if (packageId != null && packageId > 0)
+              _buildSummaryRow("📦 Package ID:", packageId.toString()),
+            // if (contentId != null && contentId > 0)
+            //   _buildSummaryRow("🎬 Content ID:", contentId.toString()),
+            // if (contentType != null)
+            //   _buildSummaryRow("🎞 Content Type:", contentType.name),
+            _buildSummaryRow("💰 Price:", "$currency $price"),
+            _buildSummaryRow("🔥 Offer Price:", "$currency $offerPrice"),
+            SizedBox(height: 6),
+            Divider(color: Colors.white24),
+            SizedBox(height: 6),
+            Text("Choose a payment gateway below 👇", style: TextStyle(fontSize: 14, color: Colors.white70)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSummaryRow(String label, String value, {Color color = Colors.white}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: TextStyle(fontSize: 14, color: Colors.white60)),
+          Text(value, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: color)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentCard(
+      BuildContext context,
+      String name,
+      String imageUrl,
+      VoidCallback onTap, {
+        bool isLast = false,
+      }) {
     return Card(
       margin: EdgeInsets.only(bottom: isLast ? 30 : 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

@@ -183,8 +183,8 @@ class SubscriptionScreen extends StatelessWidget {
                        "price": plan.amount,
                        "offer_price": plan.offerPrice,
                        "currency": plan.currency,
-                       "content_id": 0, // default dummy
-                       "content_type": MediaType.movie, // dummy default enum
+                       "content_id": 0,
+                       "content_type": MediaType.movie,
                      });
                   },),
 

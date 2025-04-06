@@ -30,10 +30,9 @@ class WalletController extends GetxController {
   void proceedToPayment() {
     final double amount = double.tryParse(moneyController.text) ?? 0.0;
 
-    // Validation: Check if amount is greater than 0
     if (amount <= 0) {
       showSnackbar("Invalid Amount", "Please enter a valid amount greater than zero.",isError: true);
-      return; // Prevent navigation if the amount is invalid
+      return;
     }
 
     final String currency = "INR";

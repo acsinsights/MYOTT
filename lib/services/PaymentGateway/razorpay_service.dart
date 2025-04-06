@@ -9,6 +9,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../UI/Home/Controller/Home_controller.dart';
 import '../../UI/PaymentGateways/Model/PaymentData.dart';
+import '../../UI/PaymentGateways/paymentSuccesScreen.dart';
 import 'PaymentManager.dart';
 
 class RazorpayService implements PaymentService {
@@ -64,8 +65,6 @@ class RazorpayService implements PaymentService {
       );
       try {
         await paymentGatewayController.sendPaymentToBackendWithFeedback(updatedData);
-        Get.off(() => MainScreen());
-
       } catch (e) {
         showSnackbar("Error", "Not sended data to backend");
       }

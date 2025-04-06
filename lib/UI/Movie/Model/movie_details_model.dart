@@ -88,7 +88,7 @@ class Movie {
     audioLanguage: json["audio_language"],
     maturity: json["maturity"],
     trailerUrl: json["trailer_url"],
-    movieOrder: MOrder.fromJson({"order": json["order"] ?? {}}),
+    movieOrder: MOrder.fromJson(json["order"] ?? {}),
 
     releaseYear: json["release_year"],
     description: json["description"],
@@ -287,4 +287,3 @@ class MOrder {
   );
 
 }
-

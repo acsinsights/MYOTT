@@ -10,6 +10,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../Core/Utils/app_common.dart';
 import '../Model/PaymentData.dart';
 import '../Model/PaymentGateway.dart';
+import '../paymentSuccesScreen.dart';
 
 class PaymentGatewayController extends GetxController {
   final PaymentGatewayService _paymentService = PaymentGatewayService();
@@ -60,9 +61,13 @@ class PaymentGatewayController extends GetxController {
 
   Future<void> sendPaymentToBackendWithFeedback(PaymentData data) async {
     try {
+      showLoading();
       await _paymentService.sendPaymentDataToBackend(data);
+      Get.off(() => PaymentSuccessScreen(transactionId: data.transactionID ?? ""));
+dismissLoading();
       showSnackbar("Success", "Payment successfully");
     } catch (e) {
+      dismissLoading();
       showSnackbar("Error", "Failed to send payment data", isError: true);
     }
   }
