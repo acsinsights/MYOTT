@@ -11,7 +11,7 @@ class APIEndpoints {
   static const String paymentGateways = "paymentgateway-keys?secret=$_secretKey";
   static const String paymentHistory = "payment-history";
   static const  String createOrderPackage = "create-order/package";
-  static const  String createOrderCoin = "create-order/coin";
+  static const  String createOrderCoin = "create-order/coins";
   static const  String createOrderPPV = "create-order/ppv";
 
   static  String invoice(int orderID) => "$_baseurl/invoice/$orderID?secret=$_secretKey";
@@ -29,6 +29,8 @@ class APIEndpoints {
   static const String removeSeries = "removeseason";
   static const String removeVideo = "removevideo";
   static const String removeAudio = "removeaudio";
+  static const String addWallet= "user-wallet";
+
 
   // TV Series
   static const String tvSeries = "tv-series?secret=$_secretKey&currency=INR";
@@ -61,4 +63,5 @@ class APIEndpoints {
 
   // Packages
   static const String packages = "package?secret=$_secretKey";
+
 }

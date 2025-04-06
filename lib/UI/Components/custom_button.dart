@@ -38,7 +38,7 @@ class CustomButton extends StatelessWidget {
           ),
         ),
         onPressed: onPressed,
-        child: child ?? Text(text!, style: AppTextStyles.buttonText),
+        child: child ?? Text(text!, style: AppTextStyles.buttonText,textAlign: TextAlign.center,),
       ),
     );
   }

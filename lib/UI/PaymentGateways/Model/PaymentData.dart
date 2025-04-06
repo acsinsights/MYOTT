@@ -18,6 +18,7 @@ class PaymentData {
   final String? contact;
   final int? contentId;
   final MediaType? contentType;
+  final int? totalamnt;
   final Map<String, dynamic>? extraData;
 
   PaymentData({
@@ -31,6 +32,8 @@ class PaymentData {
     this.packageType,
     this.paymentType,
     this.packageid,
+
+    this.totalamnt,
     this.email,
     this.contact,
     this.contentId,
@@ -43,26 +46,35 @@ class PaymentData {
 
   /// ✅ Converts object to JSON map based on payment type
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {
-      'payment_method': method.name.toLowerCase(),
-      'price': price,
-      'offer_price': offerprice,
-      'currency_name': currency,
-      'transaction_id': transactionID,
-      'transaction_status': transactionStatus,
-      'payment_method': paymentType,
-      'contact': contact,
-      'email': email,
-      'extraData': extraData,
-    };
+    final Map<String, dynamic> data = {};
 
-    if (paymentType == 'subscription') {
-      data['packageType'] = packageType;
-      data['package_id'] = packageid;
-      data['package_status'] = packageStatus;
-    } else if (paymentType == 'coin' || paymentType == 'ppv') {
-      data['content_id'] = contentId;
-      data['content_type'] = contentType?.name.toLowerCase();
+    if (paymentType == 'wallet') {
+      data['total_amount'] = price;
+      data['currency_name'] = currency;
+      data['transaction_type'] = paymentType;
+      data['transaction_id'] = transactionID;
+    } else {
+      data['payment_method'] = method.name.toLowerCase();
+      data['price'] = price;
+      data['offer_price'] = offerprice;
+      data['currency_name'] = currency;
+      data['transaction_id'] = transactionID;
+      data['transaction_status'] = transactionStatus;
+      data['payment_method'] = paymentType;
+      data['contact'] = contact;
+      data['email'] = email;
+      data['extraData'] = extraData;
+
+      if (paymentType == 'subscription') {
+        data['packageType'] = packageType;
+        data['package_id'] = packageid;
+        data['package_status'] = packageStatus;
+      } else if (paymentType == 'coin' || paymentType == 'ppv') {
+        data['content_id'] = contentId;
+        data['content_type'] = contentType?.name.toLowerCase();
+        data['package_status'] = packageStatus;
+
+      }
     }
 
     return data;

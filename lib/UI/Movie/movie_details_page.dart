@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:myott/Core/Utils/app_common.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
-import 'package:myott/UI/Actors/ActorsDetailedScreen.dart';
-import 'package:myott/UI/Actors/Model/ActorsModel.dart';
+
 import 'package:myott/UI/Components/custom_button.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/Model/movie_details_model.dart';
 import 'package:myott/video_player/component/Video_player_page.dart';
 import '../Components/Comment_section.dart';
+import '../Components/buildAccessButton.dart';
 import 'Component/ExpandableDescription.dart';
 import 'Component/RatingBottomSheet.dart';
 
@@ -95,6 +95,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    Get.delete<MovieController>();
+  }
 }
 
 class MovieBanner extends StatelessWidget {
@@ -104,9 +109,34 @@ class MovieBanner extends StatelessWidget {
   });
 
   final MovieDetailsModel? movie;
+  bool _checkHasAccess(MOrder? order) {
+    if (order == null) return false;
+
+    final now = DateTime.now();
+    return order.endDate.isAfter(now);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+    final MOrder? order = movie!.movie.movieOrder; // or movie!.movie.order if renamed
+
+    print("🔥 DEBUG VALUES 🔥");
+    print("🎬 isFree: ${movie!.movie.packages.free}");
+    print("📦 selection: ${movie!.movie.packages.selection}");
+    print("🔐 hasAccess: ${_checkHasAccess(order)}");
+
+    if (order != null) {
+      print("📦 Orders Count: 1");
+      print("📄 Order ID: ${order.orderId}");
+      print("🗓️ Start: ${order.startDate} - End: ${order.endDate}");
+      print("✅ Is Active: ${order.endDate.isAfter(DateTime.now())}");
+    } else {
+      print("❌ No Order Found");
+    }
+
+
     return Container(
         height: 400.h,
         child: Stack(
@@ -203,20 +233,21 @@ class MovieBanner extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 10.h),
-                        CustomButton(
-                          width: 180.w,
-                          text: "Play Now",
-                          onPressed: () {
-                            print(movie!.movie.movieUploadUrl);
-                            Get.to(
-                                VideoPlayerPage(
-                              videoUrl: movie!.movie.movieUploadUrl,
-                              subtitles: movie!.movie.subtitles,
-                              dubbedLanguages: movie!.movie.dubbedLanguages,
-                            ));
-                          },
-                          backgroundColor: Color(0xff290b0b),
-                          borderColor: Colors.white,
+
+                        ContentAccessButton(
+                          coinPrice: movie!.movie.packages.coinCost,
+                          slug: movie!.movie.slug,
+                          isFree: movie!.movie.packages.free,
+                          selection: movie!.movie.packages.selection.toString(),
+                          hasAccess: _checkHasAccess(movie!.movie.movieOrder),
+                          videoUrl: movie!.movie.movieUploadUrl,
+                          subtitles: movie!.movie.subtitles,
+                          // dubbedLanguages: movie!.movie.dubbedLanguages,
+                          contentId: movie!.movie.id,
+                          contentCost: movie!.movie.packages.coinCost,
+                          contentType: MediaType.movie.name,
+                          planPrice: movie!.movie.packages.planPrice,
+                          offerPrice: movie!.movie.packages.offerPrice,
                         ),
                         SizedBox(height: 10.h),
                         CustomButton(
@@ -226,7 +257,7 @@ class MovieBanner extends StatelessWidget {
                             Get.to(VideoPlayerPage(
                               videoUrl: movie!.movie.trailerUrl,
                               subtitles: movie!.movie.subtitles,
-                              dubbedLanguages: movie!.movie.dubbedLanguages,
+                              dubbedLanguages: {},
                             ));
                           },
                           backgroundColor: Colors.black,
@@ -392,4 +423,5 @@ class ActorListWidget extends StatelessWidget {
       ],
     );
   }
+
 }

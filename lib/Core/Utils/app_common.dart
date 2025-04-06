@@ -14,8 +14,9 @@ String formatDate(String dateStr) {
 
 enum PaymentType { subscription, ppv, coins }
 
-enum ContentType{ M, S, V,A }
-enum MediaType { movie, series ,video,Audio }
+enum ContentType { M, S, V, A }
+
+enum MediaType { movie, series, video, Audio }
 
 void showSnackbar(String title, String message, {bool isError = false}) {
   Get.snackbar(
@@ -32,4 +33,37 @@ void showSnackbar(String title, String message, {bool isError = false}) {
       color: Colors.white,
     ),
   );
+}
+
+void showLoading({String? message}) {
+  if (Get.isDialogOpen ?? false) return;
+
+  Get.dialog(
+    Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const CircularProgressIndicator(
+            color: Colors.redAccent,
+          ),
+          if (message != null) ...[
+            const SizedBox(height: 16),
+            Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ]
+        ],
+      ),
+    ),
+    barrierDismissible: false,
+    useSafeArea: true,
+    barrierColor: Colors.black.withOpacity(0.5),
+  );
+}
+
+void dismissLoading() {
+  if (Get.isDialogOpen ?? false) {
+    Get.back();
+  }
 }

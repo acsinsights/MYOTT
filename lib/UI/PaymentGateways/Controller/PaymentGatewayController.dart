@@ -61,7 +61,7 @@ class PaymentGatewayController extends GetxController {
   Future<void> sendPaymentToBackendWithFeedback(PaymentData data) async {
     try {
       await _paymentService.sendPaymentDataToBackend(data);
-      showSnackbar("Success", "Payment data sent successfully");
+      showSnackbar("Success", "Payment successfully");
     } catch (e) {
       showSnackbar("Error", "Failed to send payment data", isError: true);
     }

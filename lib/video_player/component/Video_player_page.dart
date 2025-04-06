@@ -1,3 +1,4 @@
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -30,38 +31,61 @@ class VideoPlayerPage extends StatelessWidget {
     return GetBuilder<CustomVideoPlayerController>(
       init: CustomVideoPlayerController(videoUrl, subtitles, dubbedLanguages),
       builder: (controller) {
-        return Scaffold(
-          backgroundColor: Colors.black,
-          body: SafeArea(
-            child: Column(
-              children: [
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: controller.isYouTube
-                      ? _buildYouTubePlayer(controller)
-                      : _buildSimpleVideoPlayer(controller),
-                ),
-              ],
+        if (controller.isYouTube) {
+          return YoutubePlayerBuilder(
+            player: YoutubePlayer(
+              controller: controller.youtubePlayerController!,
+              showVideoProgressIndicator: true,
+              onReady: () {
+                print("YouTube Player is ready");
+              },
             ),
-          ),
-        );
+            builder: (context, player) {
+              return Scaffold(
+                backgroundColor: Colors.black,
+                body: SafeArea(
+                  child: Column(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: player, // Embed player here
+                      ),
+                      // You can show description, title, subtitle etc below if needed
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        } else {
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: SafeArea(
+              child: Column(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: _buildBetterPlayer(controller),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
       },
     );
   }
-  Widget _buildSimpleVideoPlayer(CustomVideoPlayerController controller) {
-    if (!controller.isInitialized.value || controller.videoPlayerController == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
 
-    return SimpleVideoPlayerWidget(controller: controller.videoPlayerController!);
-  }
-
-
-  Widget _buildYouTubePlayer(CustomVideoPlayerController controller) {
-    return YoutubePlayerBuilder(
-      player: YoutubePlayer(controller: controller.youtubePlayerController!),
-      builder: (context, player) => player,
-    );
+  Widget _buildBetterPlayer(CustomVideoPlayerController controller) {
+    return BetterPlayer(controller: controller.betterPlayerController!);
   }
 }
 
+
+Widget _buildSimpleVideoPlayer(CustomVideoPlayerController controller) {
+  if (!controller.isInitialized.value || controller.videoPlayerController == null) {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  return SimpleVideoPlayerWidget(controller: controller.videoPlayerController!);
+}

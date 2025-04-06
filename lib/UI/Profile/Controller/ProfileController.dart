@@ -13,10 +13,8 @@ import '../Model/ProfileModel.dart';
 import '../Model/UserModel.dart';
 
 class ProfileController extends GetxController {
-  final ProfileService profileService;
+  final ProfileService profileService=ProfileService();
 
-  ProfileController(this.profileService);
-  var profile = Rxn<Profile>(); // Observable Profile Object
   var user=Rxn<UserModel>();
   Rx<File?> selectedImage = Rx<File?>(null);
   final RxBool isLoading = false.obs; // ✅ Loading state
@@ -26,7 +24,10 @@ class ProfileController extends GetxController {
   final phoneController=TextEditingController();
 
 
-
+  @override
+  void onInit() {
+    fetchProfileData();
+  }
 
   Future<void> pickImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
@@ -165,6 +166,21 @@ class ProfileController extends GetxController {
 
 
 
+  Future<void> refreshUser() async {
+    try {
+      final response = await profileService.getUserDetails();
+
+      if (response != null && response['user'] != null) {
+        user.value = UserModel.fromJson(response['user']);
+        update(); // To refresh any widgets listening to user changes
+      } else {
+        Get.snackbar("Error", "Unable to refresh user data",
+            backgroundColor: Colors.red, colorText: Colors.white);
+      }
+    } catch (e) {
+      print("❌ Error refreshing user data: $e");
+    }
+  }
 
 
   void showDialogue() {
@@ -193,37 +209,4 @@ class ProfileController extends GetxController {
     );
   }
 
-// // Fetch Profile
-  // Future<void> fetchProfile() async {
-  //   try {
-  //     isLoading.value = true;
-  //     final fetchedProfile = await _profileService.getProfile();
-  //     if (fetchedProfile != null) {
-  //       profile.value = fetchedProfile;
-  //     }
-  //   } catch (e) {
-  //     print("Error fetching profile: $e");
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-  //
-  // // Update Profile
-  // Future<void> updateProfile() async {
-  //   try {
-  //     isLoading.value = true;
-  //     SharedPreferences prefs=await SharedPreferences.getInstance();
-  //     final token= prefs.getString("access_token");
-  //     bool success = await _profileService.updateProfile(profile.value,token!);
-  //     if (success) {
-  //       print("Profile updated successfully");
-  //     } else {
-  //       print("Profile update failed");
-  //     }
-  //   } catch (e) {
-  //     print("Error updating profile: $e");
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
 }

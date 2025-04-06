@@ -7,6 +7,7 @@ import 'package:myott/UI/Movie/movie_details_page.dart';
 
 import '../../Core/Utils/app_text_styles.dart';
 import '../../services/MovieService.dart';
+import '../../video_player/component/Video_player_page.dart';
 import '../Movie/Controller/Movie_controller.dart';
 import 'ShimmerLoader.dart';
 
@@ -57,7 +58,7 @@ class MovieList extends StatelessWidget {
             onTap: () {
               final slug = movie.slug;
               debugPrint(slug);
-
+      
               Get.to(() => MovieDetailsPage(),arguments: {
                 'slug': slug,
               });

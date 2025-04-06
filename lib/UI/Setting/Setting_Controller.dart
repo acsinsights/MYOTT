@@ -32,6 +32,7 @@ class SettingController extends GetxController {
     super.onInit();
     getLang();
     getPlayerSettings();
+    fetchSettingData();
 
   }
 

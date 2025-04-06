@@ -7,6 +7,7 @@ import 'package:myott/UI/PaymentGateways/Controller/PaymentGatewayController.dar
 import 'package:myott/services/PaymentGateway/payment_Gateway_service.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../../UI/Home/Controller/Home_controller.dart';
 import '../../UI/PaymentGateways/Model/PaymentData.dart';
 import 'PaymentManager.dart';
 
@@ -34,7 +35,7 @@ class RazorpayService implements PaymentService {
     }
     final key=paymentGatewayController.razorpayKey.value;
     var options = {
-      "key": key,
+      "key": "rzp_test_Y2wDGdLutEecD5",
       "amount": (finalAmount * 100).toInt(),
       "name": "Your App",
       "currency": "INR",
@@ -55,20 +56,20 @@ class RazorpayService implements PaymentService {
     _razorpay.open(options);
   }
 
-  void _handleSuccess(PaymentSuccessResponse response) async{
-    print("✅ Razorpay Success: ${response.paymentId}");
-    final updatedData = _currentPaymentData.copyWith(
-      transactionID: response.paymentId,
-      transactionStatus: "success",
-    );
-    try {
-      await paymentGatewayController.sendPaymentToBackendWithFeedback(updatedData);
+    void _handleSuccess(PaymentSuccessResponse response) async{
+      print("✅ Razorpay Success: ${response.paymentId}");
+      final updatedData = _currentPaymentData.copyWith(
+        transactionID: response.paymentId,
+        transactionStatus: "success",
+      );
+      try {
+        await paymentGatewayController.sendPaymentToBackendWithFeedback(updatedData);
+        Get.off(() => MainScreen());
 
-      Get.off(MainScreen()); // or use Get.toNamed('/successPage')
-    } catch (e) {
-      showSnackbar("Error", "Not sended data to backend");
+      } catch (e) {
+        showSnackbar("Error", "Not sended data to backend");
+      }
     }
-  }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
     print("External Wallet: ${response.walletName}");

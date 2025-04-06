@@ -10,7 +10,7 @@ import '../Controller/ProfileController.dart';
 
 class CompleteProfileScreen extends StatelessWidget {
   final ProfileController profileController =
-      Get.put(ProfileController(ProfileService(ApiService())));
+      Get.put(ProfileController());
 
 
   final RxString emailError = "".obs;

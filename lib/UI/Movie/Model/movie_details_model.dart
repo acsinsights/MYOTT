@@ -6,9 +6,7 @@ import 'dart:io';
 import 'package:myott/UI/Actors/Model/ActorsModel.dart';
 import 'package:myott/UI/Model/BaseCommentsModel.dart';
 
-MovieDetailsModel movieDetailsModelFromJson(String str) => MovieDetailsModel.fromJson(json.decode(str));
 
-String movieDetailsModelToJson(MovieDetailsModel data) => json.encode(data.toJson());
 
 class MovieDetailsModel {
   Movie movie;
@@ -27,10 +25,7 @@ class MovieDetailsModel {
     comment: (json["comment"] as List?)?.map((e) => MovieComments.fromJson(e)).toList() ?? [],
   );
 
-  Map<String, dynamic> toJson() => {
-    "movie": movie.toJson(),
-    "status": status,
-  };
+
 }
 
 class Movie {
@@ -47,7 +42,7 @@ class Movie {
   String releaseYear;
   String description;
   MoviePackage packages;
-
+  MOrder movieOrder;
   int status;
   DateTime createdAt;
   DateTime updatedAt;
@@ -55,7 +50,7 @@ class Movie {
   List<Ctor> directors;
   List<dynamic> genres;
   final Map<String, String> subtitles;
-  final Map<String, String> dubbedLanguages;
+  // final Map<String, String> dubbedLanguages;
 
   Movie({
     required this.id,
@@ -71,7 +66,7 @@ class Movie {
     required this.releaseYear,
     required this.description,
     required this.packages,
-
+    required this.movieOrder,
     required this.status,
     required this.createdAt,
     required this.updatedAt,
@@ -79,7 +74,7 @@ class Movie {
     required this.directors,
     required this.genres,
     required this.subtitles,
-    required this.dubbedLanguages,
+    // required this.dubbedLanguages,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) => Movie(
@@ -93,11 +88,14 @@ class Movie {
     audioLanguage: json["audio_language"],
     maturity: json["maturity"],
     trailerUrl: json["trailer_url"],
+    movieOrder: MOrder.fromJson({"order": json["order"] ?? {}}),
+
     releaseYear: json["release_year"],
     description: json["description"],
-    packages: json["packages"] != null
-        ? MoviePackage.fromJson(json["packages"])
+    packages: json["movie_package"] != null
+        ? MoviePackage.fromJson(json["movie_package"])
         : MoviePackage(id: 0, movieId: 0, free: false, selection: "", coinCost: 0, planPrice: 0, offerPrice: 0),
+
 
     status: json["status"],
     createdAt: DateTime.parse(json["created_at"]),
@@ -106,32 +104,9 @@ class Movie {
     directors: List<Ctor>.from(json["directors"].map((x) => Ctor.fromJson(x))),
     genres: List<dynamic>.from(json["genres"].map((x) => x)),
     subtitles: _parseMap(json['subtitles']),
-    dubbedLanguages: _parseMap(json['dubbed_languages']),
+    // dubbedLanguages: _parseMap(json['dubbed_languages']),
   );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "movie_upload_type": movieUploadType,
-    "movie_upload_url": movieUploadUrl,
-    "name": name,
-    "slug": slug,
-    "poster_img": posterImg,
-    "thumbnail_img": thumbnailImg,
-    "audio_language": audioLanguage,
-    "maturity": maturity,
-    "trailer_url": trailerUrl,
-    "release_year": releaseYear,
-    "description": description,
-
-    "status": status,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-    "actors": List<dynamic>.from(actors.map((x) => x.toJson())),
-    "directors": List<dynamic>.from(directors.map((x) => x.toJson())),
-    "genres": List<dynamic>.from(genres.map((x) => x)),
-    "subtitles": subtitles,
-    "dubbed_languages": dubbedLanguages,
-  };
 
   static Map<String, String> _parseMap(dynamic data) {
     if (data == null) {
@@ -245,3 +220,71 @@ class MovieComments implements BaseCommentModel {
     "updated_at": updatedAt?.toIso8601String(),
   };
 }
+
+
+
+
+
+class MOrder {
+  int id;
+  String orderId;
+  String invoiceNo;
+  int userId;
+  int packageId;
+  int contentId;
+  int contentType;
+  String packageType;
+  String transactionId;
+  String paymentMethod;
+  int price;
+  int offerPrice;
+  String currencyName;
+  String transactionStatus;
+  String packageStatus;
+  DateTime startDate;
+  DateTime endDate;
+
+
+  MOrder({
+    required this.id,
+    required this.orderId,
+    required this.invoiceNo,
+    required this.userId,
+    required this.packageId,
+    required this.contentId,
+    required this.contentType,
+    required this.packageType,
+    required this.transactionId,
+    required this.paymentMethod,
+    required this.price,
+    required this.offerPrice,
+    required this.currencyName,
+    required this.transactionStatus,
+    required this.packageStatus,
+    required this.startDate,
+    required this.endDate,
+
+  });
+
+  factory MOrder.fromJson(Map<String, dynamic> json) => MOrder(
+    id: json["id"]??0,
+    orderId: json["order_id"]??"",
+    invoiceNo: json["invoice_no"]??"",
+    userId: json["user_id"]??0,
+    packageId: json["package_id"]??0,
+    contentId: json["content_id"]??0,
+    contentType: json["content_type"]??0,
+    packageType: json["package_type"]??"",
+    transactionId: json["transaction_id"]??"",
+    paymentMethod: json["payment_method"]??"",
+    price: json["price"]??0,
+    offerPrice: json["offer_price"]??0,
+    currencyName: json["currency_name"]??"",
+    transactionStatus: json["transaction_status"]??"",
+    packageStatus: json["package_status"]??"",
+    startDate: json["start_date"]!=null? DateTime.parse(json["start_date"]): DateTime.now(),
+    endDate: json["end_date"] !=null?DateTime.parse(json["end_date"]):DateTime.now(),
+  );
+
+}
+

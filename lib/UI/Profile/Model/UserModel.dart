@@ -5,6 +5,7 @@ class UserModel {
   String mobile;
   String role;
   String image;
+  int? coins;
 
   UserModel({
     required this.id,
@@ -13,6 +14,7 @@ class UserModel {
     required this.mobile,
     required this.role,
     required this.image,
+    required this.coins
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -22,6 +24,7 @@ class UserModel {
     mobile: json["mobile"] ?? "No Mobile", // Default value
     image: json["image"] ?? "", // Trim the image URL or path
     role: json["role"] ?? "User", // Default to "User"
+    coins: json["coins"]??0
   );
 
   Map<String, dynamic> toJson() => {

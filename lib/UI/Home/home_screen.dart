@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/Components/VideoList.dart';
+import 'package:myott/UI/Profile/Controller/ProfileController.dart';
 import '../../services/Home_service.dart';
 import '../../services/api_service.dart';
 import '../../services/tv_series_service.dart';
@@ -27,6 +28,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homeController = Get.put(HomeController());
+    ProfileController profileController=Get.put(ProfileController());
 
 
     return Scaffold(

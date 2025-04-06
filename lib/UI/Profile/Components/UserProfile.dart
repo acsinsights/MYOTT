@@ -13,7 +13,7 @@ import '../../../services/ProfileService.dart';
 
 class UserProfile extends StatelessWidget {
   final ProfileController profileController =
-      Get.put(ProfileController(ProfileService(ApiService())));
+      Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {

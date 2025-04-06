@@ -6,8 +6,9 @@ class Profile {
   final String? name;
   final String? email;
   final String? mobile;
+  final int? coins;
 
-  Profile({required this.id, this.image, this.name, this.email, this.mobile});
+  Profile({required this.id, this.image, this.name, this.email, this.mobile,this.coins});
 
   factory Profile.fromJson(Map<String, dynamic> json) {
     return Profile(
@@ -16,6 +17,7 @@ class Profile {
       name: json["name"] ?? "",
       email: json["email"] ?? "",
       mobile: json["mobile"] ?? "",
+      coins: json["coins"]??0
     );
   }
 

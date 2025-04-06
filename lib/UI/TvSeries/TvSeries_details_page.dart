@@ -7,21 +7,33 @@ import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Movie/Component/ExpandableDescription.dart';
 import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
+import '../../Core/Utils/app_common.dart';
 import '../../video_player/component/Video_player_page.dart';
+import '../Components/buildAccessButton.dart';
 import '../Components/custom_button.dart';
 import 'Component/SeriesActionButton.dart';
 import 'Component/TvSeries_Seasons.dart';
 import 'Component/TVSeries_synopsis.dart';
 import 'Model/TVSeriesDetailsModel.dart';
 
-class TvSeriesDetailsPage extends StatelessWidget {
+class TvSeriesDetailsPage extends StatefulWidget {
+  @override
+  State<TvSeriesDetailsPage> createState() => _TvSeriesDetailsPageState();
+}
+
+class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
   final TVSeriesController tvSeriesController = Get.put(TVSeriesController());
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     final slug = Get.arguments['slug'];
     tvSeriesController.fetchTVSeriesDetails(slug);
     tvSeriesController.checkWishlistStatus(slug);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+   
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -61,7 +73,7 @@ class TvSeriesDetailsPage extends StatelessWidget {
                       SeriesGenreList(tvdetails: tvdetails),
                       SizedBox(height: 30.h,),
 
-                      
+
 
                     ],
                   ),
@@ -143,6 +155,14 @@ class SeriesBanner extends StatelessWidget {
 
   final SeriesDetailResponse? series;
 
+  //
+  // bool _checkHasAccess(MovieOrder? movieOrder) {
+  //   final now = DateTime.now();
+  //
+  //   if (movieOrder == null || movieOrder.order.isEmpty) return false;
+  //
+  //   return movieOrder.order.any((order) => order.endDate.isAfter(now));
+  // }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -242,19 +262,20 @@ class SeriesBanner extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 10.h),
-                        CustomButton(
-                          width: 180.w,
-                          text: "Play Now",
-                          onPressed: () {
-                            Get.to(
-                                VideoPlayerPage(
-                                  videoUrl: series!.series.trailerUrl,
-                                  subtitles: {},
-                                  dubbedLanguages: {},
-                                ));
-                          },
-                          backgroundColor: Color(0xff290b0b),
-                          borderColor: Colors.white,
+                        ContentAccessButton(
+                          coinPrice: series!.packages.isNotEmpty ? series!.packages.first.coinCost : 0,
+                          isFree:  series!.packages.isNotEmpty ? !series!.packages.first.isFree: false,
+                          selection: series!.packages.isNotEmpty ? series!.packages.first.selection : "",
+                          hasAccess: false,
+                          videoUrl: series!.series.trailerUrl,
+                          subtitles: {},
+                          // dubbedLanguages: {},
+                          contentId: series!.series.id,
+                          contentCost: series!.packages.isNotEmpty ? series!.packages.first.coinCost : 0,
+                          contentType: MediaType.series.toString(),
+                          planPrice: series!.packages.isNotEmpty ? series!.packages.first.planPrice : 0,
+                          offerPrice: series!.packages.isNotEmpty ? series!.packages.first.offerPrice : 0,
+                          slug: series!.series.slug,
                         ),
                         SizedBox(height: 10.h),
                         CustomButton(

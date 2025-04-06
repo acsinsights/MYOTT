@@ -8,9 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../UI/Profile/Model/ProfileModel.dart';
 
 class ProfileService {
-  final ApiService _apiService;
+  final ApiService _apiService=ApiService();
 
-  ProfileService(this._apiService);
 
   Future<Response?> uploadUserData({
     required File imageFile,

@@ -39,12 +39,12 @@ class PaymentGatewayService {
         case "subscription":
           url = APIEndpoints.createOrderPackage;
           break;
-        case "coin":
-          url = APIEndpoints.createOrderCoin;
-          break;
         case "ppv":
           url = APIEndpoints.createOrderPPV;
           break;
+        case "wallet":
+          url = APIEndpoints.addWallet;
+        break;
         default:
           throw Exception("Invalid payment type");
       }
@@ -62,6 +62,33 @@ class PaymentGatewayService {
       rethrow;
     }
   }
+
+  Future<bool> buyMovieOrSeriesByCoins(Map<String, dynamic> req) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final token = sharedPreferences.getString("access_token");
+
+    try {
+      final response = await _apiService.post(
+        APIEndpoints.createOrderCoin,
+        token: token,
+        data: req,
+      );
+
+      if (response != null &&
+          (response.statusCode == 200 || response.statusCode == 201)) {
+        print("✅ Payment Data Sent Successfully: ${response.data}");
+        return true;
+      } else {
+        print("❌ Failed: ${response?.statusCode} - ${response?.data}");
+        return false;
+      }
+    } catch (e, st) {
+      print("❌ Exception while sending payment data: $e");
+      print("📍 Stacktrace: $st");
+      return false;
+    }
+  }
+
 
 
 // Future<void> sendPaymentData(Object req) async {

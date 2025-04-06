@@ -6,7 +6,6 @@ import 'dart:convert';
 
 SettingModel settingModelFromJson(String str) => SettingModel.fromJson(json.decode(str));
 
-String settingModelToJson(SettingModel data) => json.encode(data.toJson());
 
 class SettingModel {
   GeneralSettings generalSettings;
@@ -15,6 +14,7 @@ class SettingModel {
   List<Language> languages;
   PlayerSettings playerSettings;
   ComingSoon comingSoon;
+  coin coins;
 
   SettingModel({
     required this.generalSettings,
@@ -23,6 +23,7 @@ class SettingModel {
     required this.languages,
     required this.playerSettings,
     required this.comingSoon,
+    required this.coins,
   });
 
   factory SettingModel.fromJson(Map<String, dynamic> json) => SettingModel(
@@ -31,20 +32,31 @@ class SettingModel {
     seoSettings: SeoSettings.fromJson(json["seo_settings"] ?? {}),
     languages: (json["languages"] as List<dynamic>?)
         ?.map((x) => Language.fromJson(x))
-        .toList() ?? [], // Ensures an empty list if null
+        .toList() ?? [],
     playerSettings: PlayerSettings.fromJson(json["player_settings"] ?? {}),
-    comingSoon: ComingSoon.fromJson(json["coming_soon"]??{})
+    comingSoon: ComingSoon.fromJson(json["coming_soon"]??{}),
+      coins: coin.fromJson(json["coin"]??{})
   );
 
-  Map<String, dynamic> toJson() => {
-    "general_settings": generalSettings.toJson(),
-    "footer_settings": footerSettings.toJson(),
-    "seo_settings": seoSettings.toJson(),
-    "languages": List<dynamic>.from(languages.map((x) => x.toJson())),
-    "player_settings": playerSettings.toJson(),
-    "coming_soon": comingSoon.toJson(),
-  };
 }
+
+class coin {
+  final int id;
+  final int coins;
+
+  coin({
+    required this.id,
+    required this.coins,
+  });
+
+  factory coin.fromJson(Map<String, dynamic> json) {
+    return coin(
+      id: json['id'] ?? 0,
+      coins: json['coin'] ?? 0,
+    );
+  }
+}
+
 
 class ComingSoon {
   int id;
