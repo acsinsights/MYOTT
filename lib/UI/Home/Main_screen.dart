@@ -13,7 +13,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final MainScreenController controller = Get.put(MainScreenController());
-  int selectedIndex = 0; // ✅ Yaha store hoga proper index
+  int selectedIndex = 0; //
   DateTime? lastBackPress;
 
   Future<bool> onBackPressed() async {

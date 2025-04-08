@@ -42,7 +42,7 @@ class Movie {
   String releaseYear;
   String description;
   MoviePackage packages;
-  MOrder movieOrder;
+  MOrder? movieOrder;
   int status;
   DateTime createdAt;
   DateTime updatedAt;
@@ -88,8 +88,9 @@ class Movie {
     audioLanguage: json["audio_language"],
     maturity: json["maturity"],
     trailerUrl: json["trailer_url"],
-    movieOrder: MOrder.fromJson(json["order"] ?? {}),
-
+    movieOrder: (json["order"] != null && json["order"]["id"] != null)
+        ? MOrder.fromJson(json["order"])
+        : null,
     releaseYear: json["release_year"],
     description: json["description"],
     packages: json["movie_package"] != null

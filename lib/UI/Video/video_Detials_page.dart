@@ -7,21 +7,33 @@ import 'package:myott/UI/Movie/Component/ExpandableDescription.dart';
 import 'package:myott/UI/Video/Controller/VideoDetailsController.dart';
 import 'package:myott/UI/Video/Model/VideoDetailsModel.dart';
 
+import '../../Core/Utils/app_common.dart';
 import '../../Core/Utils/app_text_styles.dart';
 import '../../video_player/component/InlineVideoPlayer.dart';
 import '../../video_player/component/Video_player_page.dart';
+import '../Components/buildAccessButton.dart';
 import '../Components/custom_button.dart';
 import '../Components/network_image_widget.dart';
 import '../Movie/Component/RatingBottomSheet.dart';
 
-class VideoDetialsPage extends StatelessWidget {
+class VideoDetialsPage extends StatefulWidget {
+  @override
+  State<VideoDetialsPage> createState() => _VideoDetialsPageState();
+}
+
+class _VideoDetialsPageState extends State<VideoDetialsPage> {
   VideoDetailsController videoDetailsController =
       Get.put(VideoDetailsController());
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     var slug = Get.arguments["slug"];
     videoDetailsController.fetchVideoDetails(slug);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
     return Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
@@ -42,35 +54,46 @@ class VideoDetialsPage extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      VideoBanner(video: videoDetails!,),
-                      SizedBox(height: 10),
+                  VideoBanner(
+                    video: videoDetails!,
+                  ),
+                  SizedBox(height: 10),
                   ExpandableDescription(description: videoDetails.description),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         videoActionButtons(
                             videodetailsController: videoDetailsController,
                             videos: videoDetails),
-
-                        SizedBox(height: 5.h,),
-                        VideoActorListWidget(actors: videoDetails.cast.actors, label: "Actors"),
-                        SizedBox(height: 10.h,),
-                        VideoActorListWidget(actors: videoDetails.cast.directors, label: "Directors"),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        VideoActorListWidget(
+                            actors: videoDetails.cast.actors, label: "Actors"),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        VideoActorListWidget(
+                            actors: videoDetails.cast.directors,
+                            label: "Directors"),
                         VideosGenreList(videodetails: videoDetails),
-                        SizedBox(height: 30.h,)
-
-                        
-                        
-
+                        SizedBox(
+                          height: 30.h,
+                        )
                       ],
                     ),
                   )
                 ]));
           }),
         ));
+  }
+
+  @override
+  void dispose() {
+    Get.delete<VideoDetailsController>();
+
   }
 }
 
@@ -87,23 +110,23 @@ class VideoDescription extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Description",
-            style: AppTextStyles.SubHeadingb1),
-        
+        Text("Description", style: AppTextStyles.SubHeadingb1),
         SizedBox(height: 5),
         Row(
           children: [
-            Text("Rating: ${videoDetails!.maturity.toString()}",style: AppTextStyles.SubHeadingGrey2,)
+            Text(
+              "Rating: ${videoDetails!.maturity.toString()}",
+              style: AppTextStyles.SubHeadingGrey2,
+            )
           ],
         ),
         SizedBox(height: 5),
-
-        Text(videoDetails!.description,
-            style: AppTextStyles.SubHeadingGrey2),
+        Text(videoDetails!.description, style: AppTextStyles.SubHeadingGrey2),
       ],
     );
   }
 }
+
 class VideosGenreList extends StatelessWidget {
   const VideosGenreList({
     super.key,
@@ -118,10 +141,13 @@ class VideosGenreList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Genre",
+          Text(
+            "Genre",
             style: AppTextStyles.SubHeadingb1,
           ),
-          SizedBox(height: 10.h,),
+          SizedBox(
+            height: 10.h,
+          ),
           SizedBox(
             height: 35,
             child: ListView.builder(
@@ -142,10 +168,8 @@ class VideosGenreList extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Center(
-                        child:Text(
-                            genre.name,
-                            style: AppTextStyles.SubHeadingb2
-                        ),
+                        child:
+                            Text(genre.name, style: AppTextStyles.SubHeadingb2),
                       ),
                     ),
                   ),
@@ -158,6 +182,7 @@ class VideosGenreList extends StatelessWidget {
     );
   }
 }
+
 class VideoBanner extends StatelessWidget {
   const VideoBanner({
     super.key,
@@ -165,9 +190,40 @@ class VideoBanner extends StatelessWidget {
   });
 
   final VideoDetailsModel? video;
+  bool _checkHasAccess(VOrder? order, String contentType) {
+    contentType = contentType.trim();
+
+    if (contentType == "subsriptionSystem" || contentType == "pricingSection") {
+      return order != null && order.endDate != null && order.endDate!.isAfter(DateTime.now());
+    }
+
+    if (contentType == "coinCostSection") {
+      return order != null; // Only return true if order is created
+    }
+
+    return false;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+    final VOrder? order = video!.vOrder; // or movie!.movie.order if renamed
+
+    print("🔥 DEBUG VALUES 🔥");
+    print("🎬 isFree: ${video!.videoPackage.free}");
+    print("📦 selection: ${video!.videoPackage.selection}");
+    print("🔐 hasAccess: ${_checkHasAccess(order,video!.videoPackage.selection)}");
+
+    if (order != null) {
+      print("📦 Orders Count: 1");
+      print("📄 Order ID: ${order.orderId}");
+      print("🗓️ Start: ${order.startDate} - End: ${order.endDate}");
+      print("✅ Is Active: ${order.endDate.isAfter(DateTime.now())}");
+    } else {
+      print("❌ No Order Found");
+    }
+
     return Container(
         height: 400.h,
         child: Stack(
@@ -184,8 +240,8 @@ class VideoBanner extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     height: 400.h,
-                    color: Colors.black.withOpacity(
-                        0.7), // Black overlay with 50% opacity
+                    color: Colors.black
+                        .withOpacity(0.7), // Black overlay with 50% opacity
                   ),
                 ],
               ),
@@ -212,7 +268,7 @@ class VideoBanner extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: NetworkImageWidget(
-                      imageUrl: video!.thumbnailImg,
+                        imageUrl: video!.thumbnailImg,
                         fit: BoxFit.cover,
                         width: 140.w,
                       ),
@@ -239,9 +295,11 @@ class VideoBanner extends StatelessWidget {
                               video!.releaseYear, // Release Year
                               style: AppTextStyles.SubHeadingb3,
                             ),
-                            SizedBox(width: 10.w), // Space between year and maturity
+                            SizedBox(
+                                width: 10.w), // Space between year and maturity
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w, vertical: 2.h),
                               decoration: BoxDecoration(
                                 color: Colors.yellow,
                                 borderRadius: BorderRadius.circular(5),
@@ -254,24 +312,26 @@ class VideoBanner extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10.w,),
-
+                            SizedBox(
+                              width: 10.w,
+                            ),
                           ],
                         ),
                         SizedBox(height: 10.h),
-                        CustomButton(
-                          width: 180.w,
-                          text: "Play Now",
-                          onPressed: () {
-                            Get.to(
-                                VideoPlayerPage(
-                                  videoUrl: video!.trailerUrl,
-                                  subtitles: {},
-                                  dubbedLanguages: {},
-                                ));
-                          },
-                          backgroundColor: Color(0xff290b0b),
-                          borderColor: Colors.white,
+                        ContentAccessButton(
+                          coinPrice: video!.videoPackage.coinCost,
+                          slug: video!.slug,
+                          isFree:video!.videoPackage.free,
+                          selection: video!.videoPackage.selection.toString(),
+                          hasAccess: _checkHasAccess(video!.vOrder, video!.videoPackage.selection.toString()),
+                          videoUrl: video!.trailerUrl,
+                          subtitles: {},
+                          // dubbedLanguages: movie!.movie.dubbedLanguages,
+                          contentId: video!.id,
+                          contentCost: video!.videoPackage.coinCost,
+                          contentType: MediaType.video.name,
+                          planPrice: video!.videoPackage.planPrice,
+                          offerPrice: video!.videoPackage.offerPrice,
                         ),
                       ],
                     ),
@@ -283,6 +343,7 @@ class VideoBanner extends StatelessWidget {
         ));
   }
 }
+
 class videoActionButtons extends StatelessWidget {
   const videoActionButtons(
       {super.key, required this.videodetailsController, required this.videos});
@@ -343,11 +404,13 @@ class videoActionButtons extends StatelessWidget {
     );
   }
 }
+
 class VideoActorListWidget extends StatelessWidget {
   final List<VideoActor> actors;
   final String label;
 
-  const VideoActorListWidget({super.key, required this.actors,required this.label});
+  const VideoActorListWidget(
+      {super.key, required this.actors, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -370,8 +433,7 @@ class VideoActorListWidget extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.only(right: 12.0),
                 child: GestureDetector(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: Container(
                     width: 70.w,
                     height: 70.h,
@@ -379,12 +441,11 @@ class VideoActorListWidget extends StatelessWidget {
                       children: [
                         ClipOval(
                             child: NetworkImageWidget(
-                              height: 65.h,
-                              width: 65.w,
-                              imageUrl: actor.image,
-                              errorAsset: "assets/Avtars/person2.png",
-                            )
-                        ),
+                          height: 65.h,
+                          width: 65.w,
+                          imageUrl: actor.image,
+                          errorAsset: "assets/Avtars/person2.png",
+                        )),
                         SizedBox(height: 5.h),
                         Text(
                           overflow: TextOverflow.ellipsis,

@@ -109,23 +109,29 @@ class MovieBanner extends StatelessWidget {
   });
 
   final MovieDetailsModel? movie;
-  bool _checkHasAccess(MOrder? order) {
-    if (order == null) return false;
+  bool _checkHasAccess(MOrder? order, String contentType) {
+    contentType = contentType.trim();
 
-    final now = DateTime.now();
-    return order.endDate.isAfter(now);
+    if (contentType == "subsriptionSystem" || contentType == "pricingSection") {
+      return order != null && order.endDate != null && order.endDate!.isAfter(DateTime.now());
+    }
+
+    if (contentType == "coinCostSection") {
+      return order != null; // Only return true if order is created
+    }
+
+    return false;
   }
-
 
 
   @override
   Widget build(BuildContext context) {
-    final MOrder? order = movie!.movie.movieOrder; // or movie!.movie.order if renamed
+      final MOrder? order = movie!.movie.movieOrder; // or movie!.movie.order if renamed
 
     print("🔥 DEBUG VALUES 🔥");
     print("🎬 isFree: ${movie!.movie.packages.free}");
     print("📦 selection: ${movie!.movie.packages.selection}");
-    print("🔐 hasAccess: ${_checkHasAccess(order)}");
+    print("🔐 hasAccess: ${_checkHasAccess(order,movie!.movie.packages.selection)}");
 
     if (order != null) {
       print("📦 Orders Count: 1");
@@ -239,7 +245,7 @@ class MovieBanner extends StatelessWidget {
                           slug: movie!.movie.slug,
                           isFree: movie!.movie.packages.free,
                           selection: movie!.movie.packages.selection.toString(),
-                          hasAccess: _checkHasAccess(movie!.movie.movieOrder),
+                          hasAccess: _checkHasAccess(movie!.movie.movieOrder, movie!.movie.packages.selection.toString()),
                           videoUrl: movie!.movie.movieUploadUrl,
                           subtitles: movie!.movie.subtitles,
                           // dubbedLanguages: movie!.movie.dubbedLanguages,

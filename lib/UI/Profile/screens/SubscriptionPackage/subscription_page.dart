@@ -14,6 +14,7 @@ class SubscriptionScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        foregroundColor: Colors.white,
         backgroundColor: Colors.black,
         elevation: 0,
         centerTitle: true,
@@ -112,14 +113,16 @@ class SubscriptionScreen extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            plan.offerPrice != null ? "\$${plan.offerPrice}" : "\$${plan.amount}",
+                                            (plan.offerPrice != null && plan.offerPrice > 0)
+                                                ? "\$${plan.offerPrice}"
+                                                : "\$${plan.amount}",
                                             style: TextStyle(
                                               color: Colors.yellow,
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          if (plan.offerPrice != null)
+                                          if (plan.offerPrice != null && plan.offerPrice > 0)
                                             Text(
                                               "\$${plan.amount}",
                                               style: TextStyle(
@@ -130,7 +133,8 @@ class SubscriptionScreen extends StatelessWidget {
                                             ),
                                         ],
                                       ),
-                                      if (isSelected) Icon(Icons.check_circle, color: Colors.green, size: 24),
+                                      if (isSelected)
+                                        Icon(Icons.check_circle, color: Colors.green, size: 24),
                                     ],
                                   ),
                                 ],
@@ -152,7 +156,8 @@ class SubscriptionScreen extends StatelessWidget {
               }
 
               var plan = controller.plans[controller.selectedPlanIndex.value!];
-              double displayedPrice = (plan.offerPrice ?? plan.amount).toDouble();
+              bool hasOffer = plan.offerPrice != null && plan.offerPrice > 0;
+              double displayedPrice = hasOffer ? plan.offerPrice.toDouble() : plan.amount.toDouble();
               String currencySymbol = controller.selectedCurrency.value == "USD" ? "\$" : "₹";
 
               return Column(
@@ -172,45 +177,26 @@ class SubscriptionScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
 
-                  CustomButton(
-                    width:double.infinity,
-                    child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
-                   onPressed: () {
-                     Get.to(PaymentSelectionScreen(), arguments: {
-                       "paymentType": PaymentType.subscription.name,
-                       "packageStatus": "active",
-                       "package_id": plan.id,
-                       "price": plan.amount,
-                       "offer_price": plan.offerPrice,
-                       "currency": plan.currency,
-                       "content_id": 0,
-                       "content_type": MediaType.movie,
-                     });
-                  },),
-
                   // Next Button
-                  // Center(
-                  //   child: ElevatedButton(
-                  //     style: ElevatedButton.styleFrom(
-                  //       backgroundColor: Colors.red,
-                  //       padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                  //     ),
-                  //     onPressed: () {
-                  //       Get.to(PaymentSelectionScreen(), arguments: {
-                  //         "paymentType": PaymentType.subscription.toString(),
-                  //         "paymentStatus": "active",
-                  //         "package_id": plan.id,
-                  //         "price": plan.amount,
-                  //         "offer_price": plan.offerPrice,
-                  //         "currency": controller.selectedCurrency.value,
-                  //       });
-                  //     },
-                  //     child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
-                  //   ),
-                  // ),
+                  CustomButton(
+                    width: double.infinity,
+                    child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
+                    onPressed: () {
+                      Get.to(PaymentSelectionScreen(), arguments: {
+                        "paymentType": PaymentType.subscription.name,
+                        "packageStatus": "active",
+                        "package_id": plan.id,
+                        "price": plan.amount,
+                        "offer_price": hasOffer ? plan.offerPrice : null,
+                        "currency": plan.currency,
+                        "content_id": 0,
+                        "content_type": MediaType.movie,
+                      });
+                    },
+                  ),
                 ],
               );
-            }),
+            })
           ],
         ),
       ),

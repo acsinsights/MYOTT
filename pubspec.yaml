@@ -121,13 +121,10 @@ flutter:
     - assets/Icons/
     - assets/Icons/top_10_icon/
     - assets/Avtars/
-    - assets/images/language/
-    - assets/images/genre/
-    - assets/images/actors/
+
     - assets/images/CommingSoon/
     - assets/images/movies/
     - assets/images/movies/SliderMovies/
-    - assets/images/Sports/
     - assets/lang/
     - lib/services/
 

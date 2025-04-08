@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:myott/UI/Wishlist/Model/wishlistModel.dart';
 import 'package:myott/services/wishlistService.dart';
 
+import '../../Core/Utils/app_common.dart';
+
 class WishlistController extends GetxController {
   final WishlistService wishlistService = WishlistService();
 
@@ -59,31 +61,45 @@ class WishlistController extends GetxController {
   }
 
   Future<void> removeMovieFromWishlist(int id) async {
+    showLoading();
     bool removed = await wishlistService.removeMovieFromWatchlist(id: id);
     if (removed) {
       wishlist.removeWhere((item) => item.id == id); // Remove movie by id
     }
+    dismissLoading();
   }
 
   Future<void> removeSeriesFromWishlist(int id) async {
+    showLoading();
+
     bool removed = await wishlistService.removeSeriesFromWatchlist(id: id);
     if (removed) {
       wishlist.removeWhere((item) => item.id == id); // Remove series by id
     }
+    dismissLoading();
+
   }
 
   Future<void> removeAudioFromWishlist(int id) async {
+    showLoading();
+
     bool removed = await wishlistService.removeAudioFromWatchlist(id: id);
     if (removed) {
       wishlist.removeWhere((item) => item.audio != null && item.audio.id == id);
     }
+    dismissLoading();
+
   }
 
   Future<void> removeVideoFromWishlist(int id) async {
+    showLoading();
+
     bool removed = await wishlistService.removeVideoFromWatchlist(id: id);
     if (removed) {
       wishlist.removeWhere((item) => item.video != null && item.video.id == id);
     }
+    dismissLoading();
+
   }
 
 

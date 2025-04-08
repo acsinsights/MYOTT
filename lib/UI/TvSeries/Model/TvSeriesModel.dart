@@ -4,9 +4,6 @@
 
 import 'dart:convert';
 
-List<TvSeriesModel> tvSeriesModelFromJson(String str) => List<TvSeriesModel>.from(json.decode(str).map((x) => TvSeriesModel.fromJson(x)));
-
-String tvSeriesModelToJson(List<TvSeriesModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class TvSeriesModel {
   int id;
@@ -23,8 +20,6 @@ class TvSeriesModel {
   String releaseYear;
   int views;
   int fakeViews;
-  dynamic scheduleDate;
-  dynamic scheduleTime;
   bool status;
   DateTime createdAt;
   DateTime updatedAt;
@@ -50,8 +45,6 @@ class TvSeriesModel {
     required this.releaseYear,
     required this.views,
     required this.fakeViews,
-    required this.scheduleDate,
-    required this.scheduleTime,
     required this.status,
     required this.createdAt,
     required this.updatedAt,
@@ -78,8 +71,7 @@ class TvSeriesModel {
     releaseYear: json["release_year"],
     views: json["views"],
     fakeViews: json["fake_views"],
-    scheduleDate: json["schedule_date"],
-    scheduleTime: json["schedule_time"],
+
     status: json["status"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
@@ -91,33 +83,6 @@ class TvSeriesModel {
     episodes: List<Episode>.from(json["episodes"].map((x) => Episode.fromJson(x))),
   );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "slug": slug,
-    "thumbnail_img": thumbnailImg,
-    "audio_language": audioLanguage,
-    "maturity": maturity,
-    "trailer_url": trailerUrl,
-    "description": description,
-    "sub_available": subAvailable,
-    "dub_available": dubAvailable,
-    "series_upload_type": seriesUploadType,
-    "release_year": releaseYear,
-    "views": views,
-    "fake_views": fakeViews,
-    "schedule_date": scheduleDate,
-    "schedule_time": scheduleTime,
-    "status": status,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-    "genre": List<dynamic>.from(genre.map((x) => x)),
-    "actors": List<dynamic>.from(actors.map((x) => x)),
-    "directors": List<dynamic>.from(directors.map((x) => x)),
-    "region_restrictions": List<dynamic>.from(regionRestrictions.map((x) => x)),
-    "meta_data": metaData?.toJson(),
-    "episodes": List<dynamic>.from(episodes.map((x) => x.toJson())),
-  };
 }
 
 class Episode {

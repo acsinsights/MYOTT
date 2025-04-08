@@ -21,6 +21,8 @@ class VideoDetailsModel {
   String description;
   int status;
   VideoCast cast;
+  VideoPackage videoPackage;
+  VOrder? vOrder;
 
   VideoDetailsModel({
     required this.id,
@@ -37,7 +39,8 @@ class VideoDetailsModel {
     required this.fakeViews,
     required this.durationTime,
     required this.description,
-
+    required this.videoPackage,
+    required this.vOrder,
     required this.status,
     required this.cast,
   });
@@ -58,6 +61,10 @@ class VideoDetailsModel {
     durationTime: json["duration_time"]?.toString() ?? "",
     description: json["description"]?.toString() ?? "",
     status: json["status"],
+    videoPackage: VideoPackage.fromJson(json["video_package"]??{}),
+    vOrder: (json["order"] != null && json["order"]["id"] != null)
+        ? VOrder.fromJson(json["order"])
+        : null,
     cast: VideoCast.fromJson(json["cast"]),
   );
 
@@ -104,4 +111,106 @@ class VideoActor {
     "name": name,
     "image": image,
   };
+}
+class VideoPackage {
+  int id;
+  int movieId;
+  bool free;
+  String selection;
+  int coinCost;
+  int planPrice;
+  int offerPrice;
+
+  VideoPackage({
+    required this.id,
+    required this.movieId,
+    required this.free,
+    required this.selection,
+    required this.coinCost,
+    required this.planPrice,
+    required this.offerPrice,
+  });
+
+  factory VideoPackage.fromJson(Map<String, dynamic> json) => VideoPackage(
+    id: json["id"]??0,
+    movieId: json["movie_id"]??0,
+    free: json["free"]??false,
+    selection: json["selection"]??"",
+    coinCost: json["coin_cost"]??0,
+    planPrice: json["plan_price"]??0,
+    offerPrice: json["offer_price"]??0,
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "movie_id": movieId,
+    "free": free,
+    "selection": selection,
+    "coin_cost": coinCost,
+    "plan_price": planPrice,
+    "offer_price": offerPrice,
+  };
+}
+
+class VOrder {
+  int id;
+  String orderId;
+  String invoiceNo;
+  int userId;
+  int packageId;
+  int contentId;
+  int contentType;
+  String packageType;
+  String transactionId;
+  String paymentMethod;
+  int price;
+  int offerPrice;
+  String currencyName;
+  String transactionStatus;
+  String packageStatus;
+  DateTime startDate;
+  DateTime endDate;
+
+
+  VOrder({
+    required this.id,
+    required this.orderId,
+    required this.invoiceNo,
+    required this.userId,
+    required this.packageId,
+    required this.contentId,
+    required this.contentType,
+    required this.packageType,
+    required this.transactionId,
+    required this.paymentMethod,
+    required this.price,
+    required this.offerPrice,
+    required this.currencyName,
+    required this.transactionStatus,
+    required this.packageStatus,
+    required this.startDate,
+    required this.endDate,
+
+  });
+
+  factory VOrder.fromJson(Map<String, dynamic> json) => VOrder(
+    id: json["id"]??0,
+    orderId: json["order_id"]??"",
+    invoiceNo: json["invoice_no"]??"",
+    userId: json["user_id"]??0,
+    packageId: json["package_id"]??0,
+    contentId: json["content_id"]??0,
+    contentType: json["content_type"]??0,
+    packageType: json["package_type"]??"",
+    transactionId: json["transaction_id"]??"",
+    paymentMethod: json["payment_method"]??"",
+    price: json["price"]??0,
+    offerPrice: json["offer_price"]??0,
+    currencyName: json["currency_name"]??"",
+    transactionStatus: json["transaction_status"]??"",
+    packageStatus: json["package_status"]??"",
+    startDate: json["start_date"]!=null? DateTime.parse(json["start_date"]): DateTime.now(),
+    endDate: json["end_date"] !=null?DateTime.parse(json["end_date"]):DateTime.now(),
+  );
+
 }

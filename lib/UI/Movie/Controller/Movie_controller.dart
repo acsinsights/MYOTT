@@ -52,13 +52,17 @@ class MovieController extends GetxController {
   Future<void> toggleWishlist(int movieId, String type) async {
     if (isWishlisted.value) {
       /// ✅ Remove from Wishlist
+      showLoading();
       bool removed = await wishlistService.removeMovieFromWatchlist(id: movieId);
       print(movieId);
       if (removed) {
         isWishlisted.value = false; // Update UI
       }
+
+      dismissLoading();
     } else {
       /// ✅ Add to Wishlist
+      showLoading();
       bool added = await wishlistService.addToWishlist(
         type: type,
         id: movieId,
@@ -67,6 +71,8 @@ class MovieController extends GetxController {
       if (added) {
         isWishlisted.value = true; // Update UI
       }
+      dismissLoading();
+
     }
   }
   void fetchMovieDetails(String slug) async   {

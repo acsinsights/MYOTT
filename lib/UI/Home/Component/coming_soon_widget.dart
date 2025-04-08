@@ -65,7 +65,7 @@ class ComingSoonWidget extends StatelessWidget {
                       width: double.infinity,
                       fit: BoxFit.fitHeight,
                       errorBuilder: (context, error, stackTrace) =>
-                          Image.asset("assets/images/CommingSoon/bigmovie1.jpg"),
+                          Image.asset("assets/images/CommingSoon/comming_movie.jpg"),
                     ),
                   ),
                   SizedBox(height: 10),

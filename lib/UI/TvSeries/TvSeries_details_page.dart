@@ -155,16 +155,41 @@ class SeriesBanner extends StatelessWidget {
 
   final SeriesDetailResponse? series;
 
-  //
-  // bool _checkHasAccess(MovieOrder? movieOrder) {
-  //   final now = DateTime.now();
-  //
-  //   if (movieOrder == null || movieOrder.order.isEmpty) return false;
-  //
-  //   return movieOrder.order.any((order) => order.endDate.isAfter(now));
-  // }
+
+  bool _checkHasAccess(SOrder? order, String contentType) {
+    contentType = contentType.trim();
+
+    if (contentType == "subsriptionSystem" || contentType == "pricingSection") {
+      return order != null && order.endDate != null && order.endDate!.isAfter(DateTime.now());
+    }
+
+    if (contentType == "coinCostSection") {
+      return order != null; // Only return true if order is created
+    }
+
+    return false;
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+    final SOrder? order = series!.series.seriesorder; // or movie!.movie.order if renamed
+
+    print("🔥 DEBUG VALUES 🔥");
+    print("🎬 isFree: ${series!.packages.first.isFree}");
+    print("📦 selection: ${series!.packages.first.selection}");
+    print("🔐 hasAccess: ${_checkHasAccess(order,series!.packages.first.selection)}");
+
+    if (order != null) {
+      print("📦 Orders Count: 1");
+      print("📄 Order ID: ${order.orderId}");
+      print("🗓️ Start: ${order.startDate} - End: ${order.endDate}");
+      print("✅ Is Active: ${order.endDate.isAfter(DateTime.now())}");
+    } else {
+      print("❌ No Order Found");
+    }
+
     return Container(
         height: 400.h,
         child: Stack(
@@ -264,9 +289,9 @@ class SeriesBanner extends StatelessWidget {
                         SizedBox(height: 10.h),
                         ContentAccessButton(
                           coinPrice: series!.packages.isNotEmpty ? series!.packages.first.coinCost : 0,
-                          isFree:  series!.packages.isNotEmpty ? !series!.packages.first.isFree: false,
-                          selection: series!.packages.isNotEmpty ? series!.packages.first.selection : "",
-                          hasAccess: false,
+                          isFree: series!.packages.isNotEmpty ? series!.packages.first.isFree : false,
+                          selection: series!.packages.isNotEmpty? series!.packages.first.selection :"" ,
+                          hasAccess: _checkHasAccess(order, series!.packages.first.selection),
                           videoUrl: series!.series.trailerUrl,
                           subtitles: {},
                           // dubbedLanguages: {},
