@@ -14,6 +14,8 @@ class TVSeriesController extends GetxController {
   final TVSeriesService _tvSeriesService =TVSeriesService();
 final WishlistService wishlistService=WishlistService();
 CommentService commentService=CommentService();
+  var comments = <SeriesComments>[].obs;
+
   var isLoading = false.obs;
   var tvSeriesDetails = Rxn<SeriesDetailResponse>();
   var isDetailsLoading = true.obs;
@@ -42,12 +44,14 @@ CommentService commentService=CommentService();
       var fetchedTVSeriesDetails = await _tvSeriesService.fetchTVSeriesDetails(slug);
       if (fetchedTVSeriesDetails != null) {
         tvSeriesDetails.value = fetchedTVSeriesDetails;
+        comments.assignAll(fetchedTVSeriesDetails.comments); // Initialize comments separately
+
       }
-      isLoading(false);
     } catch (e) {
       print("Error fetching TV Series Details: $e");
     } finally {
-      isLoading.value = false;
+      isLoading(false);
+
     }
   }
   void shareContent(String title, String type, String url) {
@@ -69,11 +73,16 @@ CommentService commentService=CommentService();
   Future<void> toggleWishlist(int movieId, String type) async {
     if (isWishlisted.value) {
       /// ✅ Remove from Wishlist
+      showLoading();
       bool removed = await wishlistService.removeMovieFromWatchlist(id: movieId);
       if (removed) {
         isWishlisted.value = false; // Update UI
       }
+      dismissLoading();
+
     } else {
+      showLoading();
+
       /// ✅ Add to Wishlist
       bool added = await wishlistService.addToWishlist(
         type: type,
@@ -83,6 +92,8 @@ CommentService commentService=CommentService();
       if (added) {
         isWishlisted.value = true; // Update UI
       }
+      dismissLoading();
+
     }
   }
   void toggleDownload() => isDownloaded.value = !isDownloaded.value;
@@ -111,6 +122,7 @@ CommentService commentService=CommentService();
         commentController.clear();
         showSnackbar("Success", response['message'] ?? "Comment added successfully");
         dismissLoading();
+        fetchTVSeriesDetails(slug);
 
       } else {
         showSnackbar("Error", response['message'] ?? "Failed to add comment",isError: true);
@@ -120,7 +132,7 @@ CommentService commentService=CommentService();
       showSnackbar("Error", "Something went wrong",isError: true);
 
     } finally {
-dismissLoading();
+      dismissLoading();
     }
   }
   Future<void>deleteCommentForSeries(int commentId,String slug) async {
@@ -128,7 +140,7 @@ dismissLoading();
       showLoading();
       Map<String, dynamic> formData = {
         "comment_id": commentId,
-        "type": "S",
+        "type": "T",
       };
 
       var response = await commentService.deleteComment(formData);

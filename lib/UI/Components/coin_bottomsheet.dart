@@ -168,25 +168,28 @@ Future<void> _callCoinPurchaseApi({
 
     final success = await PaymentGatewayService().buyMovieOrSeriesByCoins(data);
 
-    dismissLoading();
 
     if (success) {
-      Get.snackbar("Success", "🎉 Content Unlocked!",
-          backgroundColor: Colors.green, colorText: Colors.white);
+
 
       if (contentType == MediaType.movie.toString()) {
-        final movieController = Get.find<MovieController>();
-        movieController.fetchMovieDetails(slug);
-      } else if (contentType == MediaType.series.toString()) {
+        final movieController = Get.put(MovieController());
+        movieController.refreshMovieDetails();
+      }
+      else if (contentType == MediaType.series.toString()) {
         final seriesController = Get.find<TVSeriesController>();
         seriesController.fetchTVSeriesDetails(slug);
-      }else{
+      }
+      else if(contentType == MediaType.video.toString()){
         final videoController = Get.find<VideoDetailsController>();
         videoController.fetchVideoDetails(slug);
       }
-
+      Get.snackbar("Success", "🎉 Content Unlocked!",
+          backgroundColor: Colors.green, colorText: Colors.white);
       final profileController = Get.find<ProfileController>();
       await profileController.refreshUser(); // 🔄 refresh user data
+      dismissLoading();
+
     } else {
       Get.snackbar("Error", "⚠️ Failed to unlock content.",
           backgroundColor: Colors.red, colorText: Colors.white);

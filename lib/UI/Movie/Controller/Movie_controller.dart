@@ -49,6 +49,30 @@ class MovieController extends GetxController {
       print("Error fetching wishlist: $e");
     }
   }
+
+
+
+  Future<void> fetchMovieDetails(String slug) async {
+    try {
+      isLoading.value = true;
+      var fetchedMovieDetails = await moviesService.getMovieDetails(slug);
+
+      if (fetchedMovieDetails != null) {
+        movieDetails.value = fetchedMovieDetails;
+        comments.assignAll(fetchedMovieDetails.comment);
+      }
+    } catch (e) {
+      print("Error fetching movie details: $e");
+    } finally {
+      isLoading(false);
+    }
+  }
+  Future<void> refreshMovieDetails() async {
+    await fetchMovieDetails(movieDetails.value!.movie.slug);
+  }
+
+
+
   Future<void> toggleWishlist(int movieId, String type) async {
     if (isWishlisted.value) {
       /// ✅ Remove from Wishlist
@@ -75,35 +99,13 @@ class MovieController extends GetxController {
 
     }
   }
-  void fetchMovieDetails(String slug) async   {
-    try {
-      isLoading=true.obs;
-      var fetchedMovieDetails = await moviesService.getMovieDetails(slug);
-
-      if(fetchedMovieDetails!=null){
-        movieDetails.value = fetchedMovieDetails;
-        comments.assignAll(fetchedMovieDetails.comment); // Initialize comments separately
-
-      }
-      dismissLoading();
-
-    } catch (e) {
-      print("Error fetching movie details: $e");
-    } finally {
-      isLoading(false);
-    }
-  }
-
   void toggleRate() {
     isRated.value = !isRated.value;
 
   }
-
-
   void toggleDownload() {
     isDownloaded.value = !isDownloaded.value;
   }
-
   void shareContent(String title, String type, String url) {
 
     String message = "Check out this $type: $title\n$url";
@@ -145,8 +147,6 @@ class MovieController extends GetxController {
       dismissLoading();
     }
   }
-
-
   Future<void>deleteCommentForMovie(int commentId,String slug) async {
     try {
       showLoading();

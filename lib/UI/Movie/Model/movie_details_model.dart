@@ -235,7 +235,7 @@ class MOrder {
   int userId;
   int packageId;
   int contentId;
-  int contentType;
+  String contentType;
   String packageType;
   String transactionId;
   String paymentMethod;
@@ -276,7 +276,7 @@ class MOrder {
     userId: json["user_id"]??0,
     packageId: json["package_id"]??0,
     contentId: json["content_id"]??0,
-    contentType: json["content_type"]??0,
+    contentType: json["content_type"]??"",
     packageType: json["package_type"]??"",
     transactionId: json["transaction_id"]??"",
     paymentMethod: json["payment_method"]??"",

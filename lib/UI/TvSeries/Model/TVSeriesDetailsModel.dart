@@ -205,7 +205,7 @@ class SOrder {
   int userId;
   int packageId;
   int contentId;
-  int contentType;
+  String contentType;
   String packageType;
   String transactionId;
   String paymentMethod;
@@ -246,7 +246,7 @@ class SOrder {
     userId: json["user_id"]??0,
     packageId: json["package_id"]??0,
     contentId: json["content_id"]??0,
-    contentType: json["content_type"]??0,
+    contentType: json["content_type"]??"",
     packageType: json["package_type"]??"",
     transactionId: json["transaction_id"]??"",
     paymentMethod: json["payment_method"]??"",
@@ -288,7 +288,7 @@ class SeriesComments implements BaseCommentModel{
     name: json["name"]??"",
     userId: json["user_id"]??"",
     email: json["email"]??"",
-    seriesId: json["series_id"]??"",
+    seriesId: json["tv_series_id"]??"",
     comment: json["comment"]??"",
     createdAt:  json["create_at"]!=null?DateTime.parse(json["created_at"]):DateTime.now(),
     updatedAt:  json["update_at"] !=null ? DateTime.parse(json["updated_at"]):DateTime.now(),

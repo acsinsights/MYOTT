@@ -28,6 +28,8 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
 
   @override
   void initState() {
+    profileController.fetchProfileData();
+
     final slug = Get.arguments['slug'];
     tvSeriesController.fetchTVSeriesDetails(slug);
     tvSeriesController.checkWishlistStatus(slug);
@@ -86,7 +88,7 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
                       tvSeriesController.addCommentForSeries(tvdetails.series.id, tvdetails.series.slug);
                     },
                   onDelete: (comments){
-                    tvSeriesController.deleteCommentForSeries(tvdetails.series.id, tvdetails.series.slug);
+                    tvSeriesController.deleteCommentForSeries(comments.id, tvdetails.series.slug);
 
                   },
                   currentUserId: profileController.user.value!.id,

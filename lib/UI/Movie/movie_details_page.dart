@@ -40,6 +40,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     final slug = Get.arguments['slug'];
     movieController.fetchMovieDetails(slug);
     movieController.checkWishlistStatus(slug);
+profileController.fetchProfileData();
   }
 
   @override
