@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Profile/Controller/ProfileController.dart';
 import '../../../Core/Utils/app_text_styles.dart';
 import '../../Components/Comment_section.dart';
 import 'blog_controller.dart';
@@ -97,6 +98,9 @@ class BlogDetailsScreen extends StatelessWidget {
                 onSend: () {
                   blogController.addCommentForBlog(blogData.id, blogData.slug);
                 },
+                onDelete: (comments){
+                  blogController.deleteCommentForBlog(comments.id, blogData.slug);
+                }, currentUserId: Get.find<ProfileController>().user.value!.id,
               ),
             ],
           ),

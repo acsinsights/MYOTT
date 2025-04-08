@@ -75,8 +75,7 @@ class BlogController extends GetxController {
     }
 
     try {
-      isBlogsLoading(true);
-
+      showLoading();
       Map<String, dynamic> formData = {
         "comment": commentController.text.trim(),
         "type": "B",
@@ -88,7 +87,9 @@ class BlogController extends GetxController {
       if (response != null && response['status'] == "success") {
         commentController.clear();
         showSnackbar("Success", response['message'] ?? "Comment added successfully");
-        fetchBlogDetails(slug);
+        dismissLoading();
+
+
       } else {
         showSnackbar("Error", response['message'] ?? "Failed to add comment",isError: true);
       }
@@ -97,7 +98,33 @@ class BlogController extends GetxController {
       showSnackbar("Error", "Something went wrong",isError: true);
 
     } finally {
-      isBlogsLoading(false);
+      dismissLoading();
+    }
+  }
+  Future<void>deleteCommentForBlog(int commentId,String slug) async {
+    try {
+      showLoading();
+      Map<String, dynamic> formData = {
+        "comment_id": commentId,
+        "type": "B",
+      };
+
+      var response = await commentService.deleteComment(formData);
+
+      if (response != null && response['status'] == "success") {
+        commentController.clear();
+        showSnackbar("Success", response['message'] ?? "Comment deleted successfully.");
+        dismissLoading();
+
+      } else {
+        showSnackbar("Error", response['message'] ?? "Failed to delete Comment.",isError: true);
+      }
+    } catch (e) {
+      print("Error deleting comment: $e");
+      showSnackbar("Error", "Something went wrong",isError: true);
+
+    } finally {
+      dismissLoading();
     }
   }
 

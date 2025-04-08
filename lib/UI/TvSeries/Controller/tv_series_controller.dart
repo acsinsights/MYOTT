@@ -97,7 +97,7 @@ CommentService commentService=CommentService();
     }
 
     try {
-      isLoading(true);
+      showLoading();
 
       Map<String, dynamic> formData = {
         "comment": commentController.text.trim(),
@@ -110,7 +110,8 @@ CommentService commentService=CommentService();
       if (response != null && response['status'] == "success") {
         commentController.clear();
         showSnackbar("Success", response['message'] ?? "Comment added successfully");
-        fetchTVSeriesDetails(slug);
+        dismissLoading();
+
       } else {
         showSnackbar("Error", response['message'] ?? "Failed to add comment",isError: true);
       }
@@ -119,7 +120,34 @@ CommentService commentService=CommentService();
       showSnackbar("Error", "Something went wrong",isError: true);
 
     } finally {
-      isLoading(false);
+dismissLoading();
+    }
+  }
+  Future<void>deleteCommentForSeries(int commentId,String slug) async {
+    try {
+      showLoading();
+      Map<String, dynamic> formData = {
+        "comment_id": commentId,
+        "type": "S",
+      };
+
+      var response = await commentService.deleteComment(formData);
+
+      if (response != null && response['status'] == "success") {
+        commentController.clear();
+        showSnackbar("Success", response['message'] ?? "Comment deleted successfully.");
+        dismissLoading();
+
+        fetchTVSeriesDetails(slug);
+      } else {
+        showSnackbar("Error", response['message'] ?? "Failed to delete Comment.",isError: true);
+      }
+    } catch (e) {
+      print("Error deleting comment: $e");
+      showSnackbar("Error", "Something went wrong",isError: true);
+
+    } finally {
+      dismissLoading();
     }
   }
 

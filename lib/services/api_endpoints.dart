@@ -23,6 +23,7 @@ class APIEndpoints {
 
   // Wishlist & Comments
   static const String addComment = "addcomment?secret=$_secretKey";
+  static const String deleteComment = "delete-comment?secret=$_secretKey";
   static const String addWishlist = "addwishlist?secret=$_secretKey";
   static const String showWishlist = "showwishlist";
   static const String removeMovie = "removemovie";

@@ -10,6 +10,7 @@ import 'package:myott/UI/Components/custom_button.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/Model/movie_details_model.dart';
+import 'package:myott/UI/Profile/Controller/ProfileController.dart';
 import 'package:myott/video_player/component/Video_player_page.dart';
 import '../Components/Comment_section.dart';
 import '../Components/buildAccessButton.dart';
@@ -30,8 +31,8 @@ class MovieDetailsPage extends StatefulWidget {
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
-  final MovieController movieController =
-  Get.put(MovieController());
+  final MovieController movieController = Get.put(MovieController());
+  final ProfileController profileController=Get.put(ProfileController());
 
 
   @override
@@ -82,11 +83,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 ),
 
                 CommentSection(
-                  comments: movie.comment, // List<Comment> implements BaseCommentModel
+                  comments: movie.comment,
                   controller: movieController.commentController,
                   onSend: () {
                     movieController.addCommentForMovie(movie.movie.id, movie.movie.slug);
                   },
+                  onDelete: (comment) {
+                    movieController.deleteCommentForMovie(comment.id, movie.movie.slug);
+                  },
+                  currentUserId: profileController.user.value!.id, // ✅ Pass logged-in user ID
                 )
 
 
@@ -128,7 +133,7 @@ class MovieBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final MOrder? order = movie!.movie.movieOrder; // or movie!.movie.order if renamed
+    final MOrder? order = movie!.movie.movieOrder; // or movie!.movie.order if renamed
 
     print("🔥 DEBUG VALUES 🔥");
     print("🎬 isFree: ${movie!.movie.packages.free}");

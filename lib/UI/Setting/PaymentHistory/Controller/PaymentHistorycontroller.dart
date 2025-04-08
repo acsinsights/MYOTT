@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/Core/Utils/app_common.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -40,6 +41,7 @@ class PaymentHistoryController extends GetxController {
   }
   Future<void> downloadAndOpenPDF(int orderId) async {
     try {
+      showLoading();
       print("📌 Starting PDF download for Order ID: $orderId");
 
       String url = APIEndpoints.invoice(orderId);
@@ -70,8 +72,8 @@ class PaymentHistoryController extends GetxController {
         print("❌ File not found after download!");
         return;
       }
-
       OpenResult result = await OpenFilex.open(filePath);
+      dismissLoading();
       print("📌 OpenFile result: ${result.type}");
 
       if (result.type != ResultType.done) {

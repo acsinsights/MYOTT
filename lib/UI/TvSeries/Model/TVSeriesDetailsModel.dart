@@ -8,21 +8,18 @@ import '../../Model/BaseCommentsModel.dart';
 class SeriesDetailResponse {
   Series series;
   List<Episode> episodes;
-  List<Package> packages;
   List<SeriesComments> comments;
 
 
   SeriesDetailResponse({
     required this.series,
     required this.episodes,
-    required this.packages,
     required this.comments
   });
 
   factory SeriesDetailResponse.fromJson(Map<String, dynamic> json) => SeriesDetailResponse(
     series: Series.fromJson(json["series"]),
     episodes: json["episodes"]!=null? List<Episode>.from(json["episodes"].map((x) => Episode.fromJson(x))):[],
-    packages: json["packages"]!=null ? List<Package>.from(json["packages"].map((x) => Package.fromJson(x))):[],
     comments: json["comment"] != null ? List<SeriesComments>.from(json["comment"].map((x) => SeriesComments.fromJson(x))) : [],
   );
 
@@ -69,7 +66,7 @@ class Episode {
 }
 
 
-class Package {
+class SeriesPackage {
   int id;
   String selection;
   int coinCost;
@@ -77,7 +74,7 @@ class Package {
   int offerPrice;
   bool isFree; // ✅ Changed from String to bool
 
-  Package({
+  SeriesPackage({
     required this.id,
     required this.selection,
     required this.coinCost,
@@ -86,23 +83,15 @@ class Package {
     required this.isFree,
   });
 
-  factory Package.fromJson(Map<String, dynamic> json) => Package(
+  factory SeriesPackage.fromJson(Map<String, dynamic> json) => SeriesPackage(
     id: json["id"] ?? 0,
     selection: json["selection"] ?? "",
     coinCost: json["coin_cost"] ?? 0,
     planPrice: json["plan_price"] ?? 0,
     offerPrice: json["offer_price"] ?? 0,
-    isFree: json["is_free"]?.toLowerCase() == "yes", // ✅ Convert "yes"/"no" to bool
+    isFree: json["is_free"]?? false, // ✅ Convert "yes"/"no" to bool
   );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "selection": selection,
-    "coin_cost": coinCost,
-    "plan_price": planPrice,
-    "offer_price": offerPrice,
-    "is_free": isFree ? "yes" : "no", // ✅ Convert bool back to string
-  };
 }
 
 
@@ -122,6 +111,7 @@ class Series {
   int views;
   int fakeViews;
   String status;
+  SeriesPackage seriesPackage;
   List<TvSeriesActor> actors;
   List<TvSeriesActor> directors;
   List<TvSeriesActor> genres;
@@ -143,6 +133,7 @@ class Series {
     required this.views,
     required this.fakeViews,
     required this.seriesorder,
+    required this.seriesPackage,
     required this.status,
     required this.actors,
     required this.directors,
@@ -166,7 +157,7 @@ class Series {
     fakeViews: json["fake_views"]??"",
     status: json["status"]??"",
     seriesorder: SOrder.fromJson(json["order"] ?? {}),
-
+    seriesPackage: SeriesPackage.fromJson(json["series_package"]??{}),
     actors: json["actors"]!=null?List<TvSeriesActor>.from(json["actors"].map((x) => TvSeriesActor.fromJson(x))):[],
     directors: json["directors"]!=null? List<TvSeriesActor>.from(json["directors"].map((x) => TvSeriesActor.fromJson(x))):[],
     genres:json["genres"]!=null? List<TvSeriesActor>.from(json["genres"].map((x) => TvSeriesActor.fromJson(x))):[],
@@ -276,7 +267,7 @@ class SeriesComments implements BaseCommentModel{
   String name;
   int userId;
   String email;
-  int blogId;
+  int seriesId;
   String comment;
   DateTime createdAt;
   DateTime updatedAt;
@@ -286,7 +277,7 @@ class SeriesComments implements BaseCommentModel{
     required this.name,
     required this.userId,
     required this.email,
-    required this.blogId,
+    required this.seriesId,
     required this.comment,
     required this.createdAt,
     required this.updatedAt,
@@ -297,7 +288,7 @@ class SeriesComments implements BaseCommentModel{
     name: json["name"]??"",
     userId: json["user_id"]??"",
     email: json["email"]??"",
-    blogId: json["blog_id"]??"",
+    seriesId: json["series_id"]??"",
     comment: json["comment"]??"",
     createdAt:  json["create_at"]!=null?DateTime.parse(json["created_at"]):DateTime.now(),
     updatedAt:  json["update_at"] !=null ? DateTime.parse(json["updated_at"]):DateTime.now(),
@@ -308,7 +299,7 @@ class SeriesComments implements BaseCommentModel{
     "name": name,
     "user_id": userId,
     "email": email,
-    "blog_id": blogId,
+    "blog_id": seriesId,
     "comment": comment,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),

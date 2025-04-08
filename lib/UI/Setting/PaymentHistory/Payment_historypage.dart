@@ -38,7 +38,6 @@ class PaymentHistoryPage extends StatelessWidget {
 
             return GestureDetector(
               onTap: (){
-                print("================================");
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -54,8 +53,13 @@ class PaymentHistoryPage extends StatelessWidget {
                         Text("Invoice: ${payment.invoiceNo}", style: const TextStyle(color: Colors.white70)),
                         Text("Transaction: ${payment.transactionId}", style: const TextStyle(color: Colors.white70)),
                         Text("Payment Method: ${payment.paymentMethod}", style: const TextStyle(color: Colors.white70)),
-                        Text("Price: ₹${payment.price} | Offer: ₹${payment.offerPrice}",
-                            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                        Text(
+                          payment.offerPrice == 0
+                              ? "Price: ₹${payment.price}"
+                              : "Price: ₹${payment.price} | Offer: ₹${payment.offerPrice}",
+                          style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                        ),
+
                         Text("Status: ${payment.transactionStatus}",
                             style: TextStyle(
                               color: payment.transactionStatus == "success" ? Colors.green : Colors.red,

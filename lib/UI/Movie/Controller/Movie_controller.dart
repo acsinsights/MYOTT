@@ -77,8 +77,7 @@ class MovieController extends GetxController {
   }
   void fetchMovieDetails(String slug) async   {
     try {
-      isLoading(true);
-
+      isLoading=true.obs;
       var fetchedMovieDetails = await moviesService.getMovieDetails(slug);
 
       if(fetchedMovieDetails!=null){
@@ -86,6 +85,7 @@ class MovieController extends GetxController {
         comments.assignAll(fetchedMovieDetails.comment); // Initialize comments separately
 
       }
+      dismissLoading();
 
     } catch (e) {
       print("Error fetching movie details: $e");
@@ -119,8 +119,7 @@ class MovieController extends GetxController {
     }
 
     try {
-      isLoading(true);
-
+      showLoading();
       Map<String, dynamic> formData = {
         "comment": commentController.text.trim(),
         "type": "M",
@@ -132,6 +131,8 @@ class MovieController extends GetxController {
       if (response != null && response['status'] == "success") {
         commentController.clear();
         showSnackbar("Success", response['message'] ?? "Comment added successfully");
+        dismissLoading();
+
         fetchMovieDetails(slug);
       } else {
         showSnackbar("Error", response['message'] ?? "Failed to add comment",isError: true);
@@ -141,7 +142,36 @@ class MovieController extends GetxController {
       showSnackbar("Error", "Something went wrong",isError: true);
 
     } finally {
-      isLoading(false);
+      dismissLoading();
+    }
+  }
+
+
+  Future<void>deleteCommentForMovie(int commentId,String slug) async {
+    try {
+      showLoading();
+      Map<String, dynamic> formData = {
+        "comment_id": commentId,
+        "type": "M",
+      };
+
+      var response = await commentService.deleteComment(formData);
+
+      if (response != null && response['status'] == "success") {
+        commentController.clear();
+        showSnackbar("Success", response['message'] ?? "Comment deleted successfully.");
+        dismissLoading();
+
+        fetchMovieDetails(slug);
+      } else {
+        showSnackbar("Error", response['message'] ?? "Failed to delete Comment.",isError: true);
+      }
+    } catch (e) {
+      print("Error deleting comment: $e");
+      showSnackbar("Error", "Something went wrong",isError: true);
+
+    } finally {
+      dismissLoading();
     }
   }
 

@@ -6,6 +6,7 @@ import 'package:myott/UI/Components/Comment_section.dart';
 import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Movie/Component/ExpandableDescription.dart';
+import 'package:myott/UI/Profile/Controller/ProfileController.dart';
 import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
 import '../../Core/Utils/app_common.dart';
 import '../../video_player/component/Video_player_page.dart';
@@ -23,6 +24,7 @@ class TvSeriesDetailsPage extends StatefulWidget {
 
 class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
   final TVSeriesController tvSeriesController = Get.put(TVSeriesController());
+  final ProfileController profileController=Get.put(ProfileController());
 
   @override
   void initState() {
@@ -82,7 +84,14 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
                     controller: tvSeriesController.commentController,
                     onSend: (){
                       tvSeriesController.addCommentForSeries(tvdetails.series.id, tvdetails.series.slug);
-                    })
+                    },
+                  onDelete: (comments){
+                    tvSeriesController.deleteCommentForSeries(tvdetails.series.id, tvdetails.series.slug);
+
+                  },
+                  currentUserId: profileController.user.value!.id,
+
+                    )
               ],
             ),
           );
@@ -175,11 +184,12 @@ class SeriesBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SOrder? order = series!.series.seriesorder; // or movie!.movie.order if renamed
+    final package = series!.series.seriesPackage;
 
     print("🔥 DEBUG VALUES 🔥");
-    print("🎬 isFree: ${series!.packages.first.isFree}");
-    print("📦 selection: ${series!.packages.first.selection}");
-    print("🔐 hasAccess: ${_checkHasAccess(order,series!.packages.first.selection)}");
+    print("🎬 isFree: ${package.isFree}");
+    print("📦 selection: ${package.selection}");
+    print("🔐 hasAccess: ${_checkHasAccess(order,package.selection)}");
 
     if (order != null) {
       print("📦 Orders Count: 1");
@@ -275,7 +285,7 @@ class SeriesBanner extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 10.w,),
-                            series!.packages.isNotEmpty && !series!.packages.first.isFree
+                            !package.isFree
                                 ? Icon(
                               Icons.workspace_premium, // Premium icon
                               color: Colors.amber,
@@ -287,19 +297,20 @@ class SeriesBanner extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 10.h),
+
                         ContentAccessButton(
-                          coinPrice: series!.packages.isNotEmpty ? series!.packages.first.coinCost : 0,
-                          isFree: series!.packages.isNotEmpty ? series!.packages.first.isFree : false,
-                          selection: series!.packages.isNotEmpty? series!.packages.first.selection :"" ,
-                          hasAccess: _checkHasAccess(order, series!.packages.first.selection),
+                          coinPrice: package.coinCost,
+                          isFree: package.isFree,
+                          selection: package.selection ,
+                          hasAccess: _checkHasAccess(order, package.selection),
                           videoUrl: series!.series.trailerUrl,
                           subtitles: {},
                           // dubbedLanguages: {},
                           contentId: series!.series.id,
-                          contentCost: series!.packages.isNotEmpty ? series!.packages.first.coinCost : 0,
+                          contentCost: package.coinCost,
                           contentType: MediaType.series.toString(),
-                          planPrice: series!.packages.isNotEmpty ? series!.packages.first.planPrice : 0,
-                          offerPrice: series!.packages.isNotEmpty ? series!.packages.first.offerPrice : 0,
+                          planPrice:  package.planPrice,
+                          offerPrice: package.offerPrice,
                           slug: series!.series.slug,
                         ),
                         SizedBox(height: 10.h),

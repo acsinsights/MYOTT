@@ -27,6 +27,27 @@ class CommentService {
       return {"error": "Failed to send comment"};
     }
   }
+ Future<dynamic> deleteComment(Map<String, dynamic> data) async {
+    try {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      final token = preferences.getString("access_token");
+
+      if (token == null) {
+        return {"error": "User not authenticated"};
+      }
+
+      Response? response = await apiService.post(
+        APIEndpoints.deleteComment,
+        token: token,
+        data: data,
+      );
+
+      return response?.data; // Returning response data instead of raw response
+    } catch (e) {
+      print("Error in sendComment: $e");
+      return {"error": "Failed to send comment"};
+    }
+  }
 
   Future<dynamic> replyComment(Map<String, dynamic> reply) async {
     try {
@@ -49,4 +70,6 @@ class CommentService {
       return {"error": "Failed to reply to comment"};
     }
   }
+
+
 }

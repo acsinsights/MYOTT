@@ -36,23 +36,18 @@ void showSnackbar(String title, String message, {bool isError = false}) {
 }
 
 void showLoading({String? message}) {
-  if (Get.isDialogOpen ?? false) return;
+  if (Get.isDialogOpen == true) return;
 
   Get.dialog(
     Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const CircularProgressIndicator(
-            color: Colors.redAccent,
-          ),
+          const CircularProgressIndicator(color: Colors.redAccent),
           if (message != null) ...[
             const SizedBox(height: 16),
-            Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ]
+            Text(message, style: const TextStyle(color: Colors.white)),
+          ],
         ],
       ),
     ),
@@ -63,7 +58,13 @@ void showLoading({String? message}) {
 }
 
 void dismissLoading() {
-  if (Get.isDialogOpen ?? false) {
-    Get.back();
+  if (Get.isDialogOpen == true) {
+    Navigator.of(Get.overlayContext!).pop(); // ✅ Safe dismiss
   }
 }
+
+
+
+
+
+
