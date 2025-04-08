@@ -43,9 +43,10 @@ class ActorList extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       final actordata=homeController.homePageData.value!.actors[index];
-                      Get.to(() => ActorsDetailedScreen(
-                       actors: actordata,
-                      ));
+                      Get.to(() => ActorsDetailedScreen(),arguments: {
+                        "slug":actordata.slug
+
+                      });
                       print(actor.image);
                     },
                     child: Padding(

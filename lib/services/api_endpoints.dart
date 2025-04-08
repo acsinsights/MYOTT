@@ -42,6 +42,7 @@ class APIEndpoints {
 
   // Actor
   static String actorDetails(String actorSlug) => "actor/$actorSlug?secret=$_secretKey";
+  static String directorDetails(String actorSlug) => "director/$actorSlug?secret=$_secretKey";
 
   // Genre & Audio
   static String moviesByGenre(String genreSlug) => "genre/$genreSlug?secret=$_secretKey";

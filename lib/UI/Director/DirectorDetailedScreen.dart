@@ -3,42 +3,41 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
-import 'package:myott/UI/Actors/Controller/ActorController.dart';
 import 'package:myott/UI/Components/MovieListShrimerLoad.dart';
+import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Video/video_Detials_page.dart';
-import '../Components/network_image_widget.dart';
 import '../Movie/Movie_details_page.dart';
+import 'Controller/DirectorController.dart';
 
-class ActorsDetailedScreen extends StatefulWidget {
-  const ActorsDetailedScreen({Key? key}) : super(key: key);
+class DirectorDetailedScreen extends StatefulWidget {
+  const DirectorDetailedScreen({Key? key}) : super(key: key);
 
   @override
-  State<ActorsDetailedScreen> createState() => _ActorsDetailedScreenState();
+  State<DirectorDetailedScreen> createState() => _DirectorDetailedScreenState();
 }
 
-class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
-  final ActorController actorController = Get.put(ActorController());
+class _DirectorDetailedScreenState extends State<DirectorDetailedScreen> {
+  final DirectorController directorController = Get.put(DirectorController());
 
   @override
   void initState() {
     final slug = Get.arguments['slug'];
-    actorController.fetchActorDetails(slug);
+    directorController.fetchDirectorDetails(slug);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final actor = actorController.actorData.value?.actor;
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Obx(() {
-          final actor = actorController.actorData.value?.actor;
+          final director = directorController.directorData.value;
 
-          return actor == null
-              ? Center(child: CircularProgressIndicator())
+          return director == null
+              ? const Center(child: CircularProgressIndicator())
               : NestedScrollView(
-            controller: actorController.scrollController,
+            controller: directorController.scrollController,
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverAppBar(
@@ -52,15 +51,15 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () => Navigator.pop(context),
                   ),
-                  title: actorController.showTitle.value
-                      ? Text(actor.name ?? '', style: AppTextStyles.SubHeadingb2)
+                  title: directorController.showTitle.value
+                      ? Text(director.name ?? '', style: AppTextStyles.SubHeadingb2)
                       : const SizedBox.shrink(),
                   flexibleSpace: FlexibleSpaceBar(
                     background: Stack(
                       fit: StackFit.expand,
                       children: [
-                        if (actor.image != null)
-                          NetworkImageWidget(imageUrl: actor.image,errorAsset: "assets/Avtars/avtar.jpg",),
+                        if (director.image != null)
+                          NetworkImageWidget(imageUrl: director.image,errorAsset: "assets/Avtars/avtar.jpg",),
                         Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -77,7 +76,7 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
                           bottom: 20,
                           left: 16,
                           right: 16,
-                          child: Text(actor.name ?? '', style: AppTextStyles.SubHeadingb2),
+                          child: Text(director.name ?? '', style: AppTextStyles.SubHeadingb2),
                         ),
                       ],
                     ),
@@ -92,15 +91,15 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 10.h),
-                    if (actor.bio != null)
-                      HtmlWidget(actor.bio!, textStyle: AppTextStyles.SubHeading2),
+                    if (director.bio != null)
+                      HtmlWidget(director.bio!, textStyle: AppTextStyles.SubHeading2),
                     SizedBox(height: 20.h),
 
                     /// Movies
                     buildMediaSection(
-                      title: "Movies of ${actor.name}",
-                      items: actorController.actorData.value?.movies ?? [],
-                      isLoading: actorController.isLoading.value,
+                      title: "Movies by ${director.name}",
+                      items: directorController.directorData.value?.movies ?? [],
+                      isLoading: directorController.isLoading.value,
                       onTap: (movie) => Get.to(() => const MovieDetailsPage(), arguments: {
                         "slug": movie.slug,
                       }),
@@ -109,10 +108,10 @@ class _ActorsDetailedScreenState extends State<ActorsDetailedScreen> {
 
                     /// Videos
                     buildMediaSection(
-                      title: "Videos of ${actor.name}",
-                      items: actorController.actorData.value?.videos ?? [],
-                      isLoading: actorController.isLoading.value,
-                      onTap: (video) => Get.to(() =>  VideoDetialsPage(), arguments: {
+                      title: "Videos by ${director.name}",
+                      items: directorController.directorData.value?.videos ?? [],
+                      isLoading: directorController.isLoading.value,
+                      onTap: (video) => Get.to(() => VideoDetialsPage(), arguments: {
                         "slug": video.slug,
                       }),
                     ),

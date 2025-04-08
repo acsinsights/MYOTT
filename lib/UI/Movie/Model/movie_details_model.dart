@@ -158,24 +158,23 @@ class Ctor {
   final int id;
   final String name;
   final String image;
+  final String slug;
 
   Ctor({
    required this.id,
     required this.name,
     required this.image,
+    required this.slug
   });
 
   factory Ctor.fromJson(Map<String, dynamic> json) => Ctor(
     id: json["id"] ?? 0, // Default ID to 0 if null
     name: json["name"] ?? "Unknown", // Default name if null
     image: json["image"] ?? "", // Default empty string if null
+    slug: json["slug"]??""
   );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "image": image,
-  };
+
 }
 
 class MovieComments implements BaseCommentModel {

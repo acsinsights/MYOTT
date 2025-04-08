@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_common.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
+import 'package:myott/UI/Actors/ActorsDetailedScreen.dart';
 
 import 'package:myott/UI/Components/custom_button.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
@@ -12,6 +13,7 @@ import 'package:myott/UI/Movie/Model/movie_details_model.dart';
 import 'package:myott/video_player/component/Video_player_page.dart';
 import '../Components/Comment_section.dart';
 import '../Components/buildAccessButton.dart';
+import '../Director/DirectorDetailedScreen.dart';
 import 'Component/ExpandableDescription.dart';
 import 'Component/RatingBottomSheet.dart';
 
@@ -71,8 +73,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 SizedBox(
                   height: 10.h,
                 ),
-                ActorListWidget(actors: movie.movie.actors,label: "Artist",),
-                ActorListWidget(actors: movie.movie.directors,label: "Directors",),
+                ActorListWidget(actors: movie.movie.actors,label: "Artist",type: "actor",),
+                ActorListWidget(actors: movie.movie.directors,label: "Directors",type: "director",),
 
 
                 SizedBox(
@@ -373,10 +375,16 @@ class MoviesActionButtons extends StatelessWidget {
   }
 }
 class ActorListWidget extends StatelessWidget {
-  final List<Ctor> actors;
+  final List<Ctor> actors; // Ctor used for both Actor and Director
   final String label;
+  final String type; // 'actor' or 'director'
 
-  const ActorListWidget({super.key, required this.actors,required this.label});
+  const ActorListWidget({
+    super.key,
+    required this.actors,
+    required this.label,
+    required this.type,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -403,6 +411,15 @@ class ActorListWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 12.0),
                 child: GestureDetector(
                   onTap: () {
+                    if (type == "actor") {
+                      Get.to(() => const ActorsDetailedScreen(), arguments: {
+                        "slug": actor.slug,
+                      });
+                    } else if (type == "director") {
+                      Get.to(() => const DirectorDetailedScreen(), arguments: {
+                        "slug": actor.slug,
+                      });
+                    }
                   },
                   child: Column(
                     children: [
@@ -411,8 +428,8 @@ class ActorListWidget extends StatelessWidget {
                           height: 65.h,
                           width: 65.w,
                           imageUrl: actor.image,
-                        errorAsset: "assets/Avtars/person2.png",
-                        )
+                          errorAsset: "assets/Avtars/person2.png",
+                        ),
                       ),
                       SizedBox(height: 5.h),
                       Text(
@@ -429,5 +446,4 @@ class ActorListWidget extends StatelessWidget {
       ],
     );
   }
-
 }

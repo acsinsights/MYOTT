@@ -4,20 +4,17 @@ import 'package:myott/services/ActorService.dart';
 import '../Model/ActorDetailsModel.dart';
 
 class ActorController extends GetxController {
-  final ActorSerivce _actorService;
-  final String actorSlug;
+  final ActorSerivce _actorService =ActorSerivce();
 
   var actorData = Rxn<ActorDetailsModel>();
   var isLoading = false.obs;
   var showTitle = false.obs;
   ScrollController scrollController = ScrollController();
 
-  ActorController(this._actorService, this.actorSlug);
 
   @override
   void onInit() {
     super.onInit();
-    fetchActorDetails();
 
     scrollController.addListener(() {
       if (scrollController.offset > 300) {
@@ -28,7 +25,7 @@ class ActorController extends GetxController {
     });
   }
 
-  void fetchActorDetails() async {
+  void fetchActorDetails(String actorSlug) async {
     try {
       isLoading.value = true;
       var fetchedActorDetails = await _actorService.fetchActorsDetails(actorSlug);

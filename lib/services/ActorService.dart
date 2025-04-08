@@ -3,8 +3,7 @@ import 'package:myott/services/api_endpoints.dart';
 import 'package:myott/services/api_service.dart';
 
 class ActorSerivce{
-  ApiService _apiService;
-  ActorSerivce(this._apiService);
+  ApiService _apiService=ApiService();
 
   Future<ActorDetailsModel?> fetchActorsDetails(String actorSlug) async {
     try {

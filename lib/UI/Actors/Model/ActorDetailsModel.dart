@@ -9,12 +9,14 @@ ActorDetailsModel actorDetailsModelFromJson(String str) => ActorDetailsModel.fro
 String actorDetailsModelToJson(ActorDetailsModel data) => json.encode(data.toJson());
 
 class ActorDetailsModel {
+  Actor actor;
   List<ActorMovie> movies;
   List<ActorVideo> videos;
   List<ActorSeries> series;
   List<ActorAudio> audio;
 
   ActorDetailsModel({
+    required this.actor,
     required this.movies,
     required this.series,
     required this.videos,
@@ -22,6 +24,9 @@ class ActorDetailsModel {
   });
 
   factory ActorDetailsModel.fromJson(Map<String, dynamic> json) => ActorDetailsModel(
+    actor: json["actor"] != null
+        ? Actor.fromJson(json["actor"])
+        : Actor(id: 0, name: "Unknown", image: '', bio: ''), // default object
     movies: (json["movies"] != null)
         ? List<ActorMovie>.from(json["movies"].map((x) => ActorMovie.fromJson(x)))
         : [],
@@ -43,8 +48,32 @@ class ActorDetailsModel {
     "videos": List<dynamic>.from(videos.map((x) => x)),
     "audio": List<dynamic>.from(audio.map((x) => x)),
   };
+
+
 }
 
+
+class Actor {
+  int id;
+  String name;
+  String image;
+  String bio;
+
+  Actor({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.bio,
+  });
+
+  factory Actor.fromJson(Map<String, dynamic> json) => Actor(
+    id: json["id"]??0,
+    name: json["name"]??"",
+    image: json["image"]??"",
+    bio: json["bio"]??"",
+  );
+
+}
 class ActorMovie {
   int id;
   String name;
