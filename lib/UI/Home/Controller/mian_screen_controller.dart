@@ -4,6 +4,7 @@ import 'package:myott/UI/Home/home_screen.dart';
 import 'package:myott/UI/Wishlist/wishlist_page.dart';
 import '../../Profile/profile_screen.dart';
 import '../../Search/search_screen.dart';
+import '../dramaboxHomeScreen.dart';
 
 
 
@@ -15,7 +16,8 @@ class MainScreenController extends GetxController {
   }
 
   final List<Widget> screens = [
-    HomeScreen(),
+    // HomeScreen(),
+    Dramaboxhomescreen(),
     SearchScreen(),
     ShowWishlistPage(),
     ProfileScreen(),

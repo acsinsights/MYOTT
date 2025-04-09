@@ -17,8 +17,14 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> {
-  final profileController = Get.find<ProfileController>();
+  final profileController = Get.put(ProfileController());
+  // ProfileController profileController=Get.find<ProfileController>();
   WalletController walletController = Get.put(WalletController());
+
+  @override
+  void initState() {
+    profileController.fetchProfileData();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -22,13 +22,10 @@ class MediaItem {
   });
 }
 
-LatestMandTModel latestMandTModelFromJson(String str) => LatestMandTModel.fromJson(json.decode(str));
-
-String latestMandTModelToJson(LatestMandTModel data) => json.encode(data.toJson());
 
 class LatestMandTModel {
-  List<Movie> movies;
-  List<Series> series;
+  List<latestMovie> movies;
+  List<latestSeries> series;
 
   LatestMandTModel({
     required this.movies,
@@ -36,17 +33,14 @@ class LatestMandTModel {
   });
 
   factory LatestMandTModel.fromJson(Map<String, dynamic> json) => LatestMandTModel(
-    movies: List<Movie>.from(json["movies"].map((x) => Movie.fromJson(x))),
-    series: List<Series>.from(json["series"].map((x) => Series.fromJson(x))),
+    movies: List<latestMovie>.from(json["movies"].map((x) => latestMovie.fromJson(x))),
+    series: List<latestSeries>.from(json["series"].map((x) => latestSeries.fromJson(x))),
   );
 
-  Map<String, dynamic> toJson() => {
-    "movies": List<dynamic>.from(movies.map((x) => x.toJson())),
-    "series": List<dynamic>.from(series.map((x) => x.toJson())),
-  };
+
 }
 
-class Movie {
+class latestMovie {
   int id;
   String name;
   String slug;
@@ -55,7 +49,7 @@ class Movie {
   final String contentType;
   Package package;
 
-  Movie({
+  latestMovie({
     required this.id,
     required this.name,
     required this.slug,
@@ -65,7 +59,7 @@ class Movie {
     required this.package,
   });
 
-  factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+  factory latestMovie.fromJson(Map<String, dynamic> json) => latestMovie(
     id: json["id"]??0,
 
     name: json["name"]??"",
@@ -76,19 +70,6 @@ class Movie {
 
     package: Package.fromJson(json["package"]),
   );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-
-    "name": name,
-    "slug": slug,
-    "poster_img": posterImg,
-    "thumbnail_img": thumbnailImg,
-
-    "package": package.toJson(),
-    "content_type": contentType, // Include type in JSON
-
-  };
 }
 
 class Actor {
@@ -211,7 +192,7 @@ class SeriesPackage {
   };
 }
 
-class Series {
+class latestSeries {
   int id;
   String seriesUploadType;
   String name;
@@ -228,7 +209,7 @@ class Series {
   SeriesPackage? seriesPackage;
   final String contentType; // "series"
 
-  Series({
+  latestSeries({
     required this.id,
     required this.seriesUploadType,
 
@@ -249,7 +230,7 @@ class Series {
     required this.seriesPackage,
   });
 
-  factory Series.fromJson(Map<String, dynamic> json) => Series(
+  factory latestSeries.fromJson(Map<String, dynamic> json) => latestSeries(
     id: json["id"] ?? 0,
     seriesUploadType: json["series_upload_type"] ?? 0,
     name: json["name"]?.toString() ?? "",

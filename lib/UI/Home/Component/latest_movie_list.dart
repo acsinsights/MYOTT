@@ -14,8 +14,8 @@ import '../../Movie/Controller/Movie_controller.dart';
 import '../../TvSeries/TvSeries_details_page.dart'; // Import Series Controller
 
 class LatestMandSList extends StatelessWidget {
-  final List<Movie> movies;
-  final List<Series> series;
+  final List<latestMovie> movies;
+  final List<latestSeries> series;
 
   LatestMandSList({Key? key, required this.movies, required this.series}) : super(key: key);
 
