@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_common.dart';
 import 'package:myott/services/commentService.dart';
+import 'package:myott/services/watchHistoryService.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,7 @@ import '../Model/movie_details_model.dart';
 class MovieController extends GetxController {
   final MoviesService moviesService=MoviesService();
   CommentService commentService=CommentService();
+  WatchHistoryService watchHistoryService=WatchHistoryService();
   final WishlistService wishlistService = WishlistService();
   TextEditingController commentController = TextEditingController();
 
@@ -70,7 +72,6 @@ class MovieController extends GetxController {
   Future<void> refreshMovieDetails() async {
     await fetchMovieDetails(movieDetails.value!.movie.slug);
   }
-
 
 
   Future<void> toggleWishlist(int movieId, String type) async {

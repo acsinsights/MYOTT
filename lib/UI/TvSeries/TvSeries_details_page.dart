@@ -29,7 +29,6 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
   @override
   void initState() {
     profileController.fetchProfileData();
-
     final slug = Get.arguments['slug'];
     tvSeriesController.fetchTVSeriesDetails(slug);
     tvSeriesController.checkWishlistStatus(slug);
@@ -37,7 +36,7 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-   
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -50,6 +49,7 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
               return Center(child: Text("TV Series details not available", style: AppTextStyles.SubHeading2));
             }
             final tvdetails = tvSeriesController.tvSeriesDetails.value;
+          final userId=profileController.user.value!.id;
 
           return SingleChildScrollView(
             child: Column(
@@ -91,7 +91,7 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
                     tvSeriesController.deleteCommentForSeries(comments.id, tvdetails.series.slug);
 
                   },
-                  currentUserId: profileController.user.value!.id,
+                  currentUserId:userId,
 
                     )
               ],

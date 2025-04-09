@@ -214,6 +214,8 @@ class VideoBanner extends StatelessWidget {
     print("🎬 isFree: ${video!.videoPackage.free}");
     print("📦 selection: ${video!.videoPackage.selection}");
     print("🔐 hasAccess: ${_checkHasAccess(order,video!.videoPackage.selection)}");
+    print("Video Url: ${video!.trailerUrl}");
+
 
     if (order != null) {
       print("📦 Orders Count: 1");

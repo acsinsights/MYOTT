@@ -76,69 +76,69 @@ class UserProfile extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Profile",
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextButton(
-                onPressed: () => Get.to(() => CreateProfileScreen()),
-                child: Text(
-                  "Add Profile",
-                  style: GoogleFonts.poppins(color: Colors.red, fontSize: 16),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-
-          Container(
-            padding: const EdgeInsets.all(12),
-            width: 140.w,
-            height: 180.h,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.red),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  height: 60.w,
-                  width: 60.w,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.red),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: NetworkImageWidget(
-                        imageUrl: user.image,
-                        errorAsset: "assets/Avtars/avtar.jpg",
-                      )),
-                ),
-                SizedBox(height: 6),
-                Text(
-                  textAlign: TextAlign.center,
-                  user.name ?? "Unknown",
-                  style: GoogleFonts.poppins(color: Colors.white, fontSize: 14),
-                ),
-                TextButton.icon(
-                  onPressed: () => Get.to(() => EditUserProfileScreen()),
-                  icon:  Icon(Icons.edit, size: 14, color: Colors.white70),
-                  label: Text(
-                    "Edit",
-                    style: GoogleFonts.poppins(color: Colors.white70),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       "Profile",
+          //       style: GoogleFonts.poppins(
+          //         color: Colors.white,
+          //         fontSize: 18,
+          //         fontWeight: FontWeight.bold,
+          //       ),
+          //     ),
+          //     TextButton(
+          //       onPressed: () => Get.to(() => CreateProfileScreen()),
+          //       child: Text(
+          //         "Add Profile",
+          //         style: GoogleFonts.poppins(color: Colors.red, fontSize: 16),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // const SizedBox(height: 8),
+          //
+          // Container(
+          //   padding: const EdgeInsets.all(12),
+          //   width: 140.w,
+          //   height: 180.h,
+          //   decoration: BoxDecoration(
+          //     border: Border.all(color: Colors.red),
+          //     borderRadius: BorderRadius.circular(8),
+          //   ),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     children: [
+          //       Container(
+          //         height: 60.w,
+          //         width: 60.w,
+          //         decoration: BoxDecoration(
+          //             borderRadius: BorderRadius.circular(30),
+          //             color: Colors.red),
+          //         child: ClipRRect(
+          //             borderRadius: BorderRadius.circular(30),
+          //             child: NetworkImageWidget(
+          //               imageUrl: user.image,
+          //               errorAsset: "assets/Avtars/avtar.jpg",
+          //             )),
+          //       ),
+          //       SizedBox(height: 6),
+          //       Text(
+          //         textAlign: TextAlign.center,
+          //         user.name ?? "Unknown",
+          //         style: GoogleFonts.poppins(color: Colors.white, fontSize: 14),
+          //       ),
+          //       TextButton.icon(
+          //         onPressed: () => Get.to(() => EditUserProfileScreen()),
+          //         icon:  Icon(Icons.edit, size: 14, color: Colors.white70),
+          //         label: Text(
+          //           "Edit",
+          //           style: GoogleFonts.poppins(color: Colors.white70),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       );
     });

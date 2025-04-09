@@ -17,6 +17,14 @@ class APIEndpoints {
   static  String invoice(int orderID) => "$_baseurl/invoice/$orderID?secret=$_secretKey";
 
 
+  //WatchHisoty
+  static const String showWatchHistoy = "watchhistory?secret=$_secretKey";
+  static String addWatchHistory(String type, int id) =>
+      "addwatchhistory/$type/$id?secret=$_secretKey";
+
+  static String deleteWatchHistory(String type, int id) =>
+      "delete_watchhistory/$type/$id?secret=$_secretKey";
+
 
   // Home
   static const String homeEndpoint = "home?secret=$_secretKey";

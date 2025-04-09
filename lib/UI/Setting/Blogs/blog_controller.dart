@@ -87,9 +87,8 @@ class BlogController extends GetxController {
       if (response != null && response['status'] == "success") {
         commentController.clear();
         showSnackbar("Success", response['message'] ?? "Comment added successfully");
-        dismissLoading();
 
-
+        fetchBlogDetails(slug);
       } else {
         showSnackbar("Error", response['message'] ?? "Failed to add comment",isError: true);
       }
@@ -114,7 +113,7 @@ class BlogController extends GetxController {
       if (response != null && response['status'] == "success") {
         commentController.clear();
         showSnackbar("Success", response['message'] ?? "Comment deleted successfully.");
-        dismissLoading();
+        fetchBlogDetails(slug);
 
       } else {
         showSnackbar("Error", response['message'] ?? "Failed to delete Comment.",isError: true);

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myott/UI/PaymentGateways/PaymentSelectionScreen.dart';
 
 import '../../Core/Utils/app_common.dart';
+import '../../services/watchHistoryService.dart';
 import '../../video_player/component/Video_player_page.dart';
 import '../Profile/Controller/ProfileController.dart';
 import '../Profile/screens/SubscriptionPackage/subscription_page.dart';
@@ -48,13 +49,34 @@ class ContentAccessButton extends StatefulWidget {
 
 class _ContentAccessButtonState extends State<ContentAccessButton> {
   late ProfileController profileController;
+  final WatchHistoryService _watchHistoryService = WatchHistoryService();
 
   @override
   void initState() {
     super.initState();
     profileController = Get.put(ProfileController());
   }
+  void _logWatchHistory() {
+    if (widget.contentId != null && widget.contentType != null) {
+      String shortType = _getShortType(widget.contentType!);
+      _watchHistoryService.addWatchHistory(shortType, widget.contentId!);
+    }
+  }
 
+  String _getShortType(String contentType) {
+    switch (contentType.toLowerCase()) {
+      case 'movie':
+        return 'M';
+      case 'series':
+        return 'S';
+      case 'video':
+        return 'V';
+      case 'audio':
+        return 'A';
+      default:
+        return 'U'; // Unknown
+    }
+  }
   @override
   Widget build(BuildContext context) {
     if (widget.isFree || widget.hasAccess) {
@@ -103,6 +125,8 @@ class _ContentAccessButtonState extends State<ContentAccessButton> {
       width: 180.w,
       text: "Play Now",
       onPressed: () {
+        _logWatchHistory(); // 👈 add this line
+
         Get.to(VideoPlayerPage(
           videoUrl: widget.videoUrl,
           subtitles: widget.subtitles,
@@ -123,6 +147,9 @@ class _ContentAccessButtonState extends State<ContentAccessButton> {
       borderColor: Colors.white,
     );
   }
+
+
+
 
   @override
   void dispose() {

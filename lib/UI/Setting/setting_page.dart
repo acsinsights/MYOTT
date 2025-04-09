@@ -12,6 +12,7 @@ import 'package:myott/UI/Setting/account_setting/AccountSettingsScreen.dart';
 import 'package:myott/UI/Setting/Subscription_History/Subscription_history_page.dart';
 import 'package:myott/UI/Setting/language/langSelectionScreen.dart';
 import 'package:myott/UI/Setting/Faq/faq_screen.dart';
+import 'package:myott/UI/WatchHistory/WatchHistoryPage.dart';
 
 import '../Components/custom_button.dart';
 import '../Profile/Components/SettingItem.dart';
@@ -59,6 +60,7 @@ class HelpAndSettingScreen extends StatelessWidget {
             icon: Icons.person_outline,
             subtitle: "subSubscription".tr,
           ),
+
           SettingItem(
               onTap: (){
                 Get.to(WalletScreen());
@@ -66,10 +68,15 @@ class HelpAndSettingScreen extends StatelessWidget {
               title: "Wallet".tr, icon: Icons.wallet),
           SettingItem(
               onTap: (){
-                Get.to(SubscriptionHistoryScreen());
-
+                Get.to(WatchHistoryPage());
               },
-              title: "Subscription".tr, icon: Icons.history),
+              title: "WatchHistory".tr, icon: Icons.history_toggle_off),
+          // SettingItem(
+          //     onTap: (){
+          //       Get.to(SubscriptionHistoryScreen());
+          //
+          //     },
+          //     title: "Subscription".tr, icon: Icons.history),
           SettingItem(
               onTap: (){
                 Get.to(PaymentHistoryPage());
