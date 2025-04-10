@@ -91,6 +91,7 @@ class _ContentAccessButtonState extends State<ContentAccessButton> {
 
       case 'pricingSection':
         return _buildCustomButton("Buy on Rent", () {
+          print( widget.contentType );
           Get.to(PaymentSelectionScreen(), arguments: {
             "paymentType": PaymentType.ppv.name,
             "price": widget.planPrice ?? 0,

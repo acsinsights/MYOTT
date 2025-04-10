@@ -39,13 +39,12 @@ class _MainScreenState extends State<MainScreen> {
       return true;
     }
   }
-
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return Obx(() => WillPopScope(
       onWillPop: () => onBackPressed(),
       child: Scaffold(
-        body: controller.screens[selectedIndex], // ✅ GetX nahi use kiya yaha
+        body: controller.screens[selectedIndex],
         bottomNavigationBar: BottomAppBar(
           color: AppColors.background,
           child: Padding(
@@ -62,12 +61,13 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
-    );
+    ));
   }
+
 
   Widget _buildNavItem(IconData icon, int index) {
     return IconButton(
-      icon: Icon(icon, color: selectedIndex == index ? AppColors.primary2 : AppColors.white),
+      icon: Icon(icon, color: selectedIndex == index ? AppColors.primary2 : AppColors.subText),
       onPressed: () {
         setState(() {
           selectedIndex = index;

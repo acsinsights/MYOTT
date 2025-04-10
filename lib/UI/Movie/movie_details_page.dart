@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:myott/Core/Utils/app_colors.dart';
 import 'package:myott/Core/Utils/app_common.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Actors/ActorsDetailedScreen.dart';
@@ -46,7 +47,7 @@ profileController.fetchProfileData();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Obx(() {
           if (movieController.isLoading.value) {
@@ -167,7 +168,7 @@ class MovieBanner extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     height: 400.h,
-                    color: Colors.black.withOpacity(
+                    color: AppColors.black.withOpacity(
                         0.7), // Black overlay with 50% opacity
                   ),
                 ],
@@ -182,7 +183,7 @@ class MovieBanner extends StatelessWidget {
                     },
                     icon: Icon(
                       Icons.arrow_back,
-                      color: Colors.white,
+                      color: AppColors.white,
                     ))),
             Positioned(
               bottom: 20,

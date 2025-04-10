@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
+import 'package:myott/UI/Home/Controller/themeController.dart';
 import 'package:myott/UI/Setting/Wallet/wallet_Screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -45,27 +46,55 @@ class Dramaboxhomescreen extends StatefulWidget {
 
 class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
   final homeController = Get.put(HomeController());
+  ThemeController controller=Get.put(ThemeController());
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 500.h, // adjust height as needed
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  colors: [
+                    Colors.redAccent.withOpacity(0.35),
+                    Colors.transparent,
+                  ],
+                  center: Alignment.topCenter,
+                  radius: 1.0,
+                ),
+              ),
+            ),
+          ),
+
           SafeArea(
             child: SingleChildScrollView(
               child: Obx(() {
                 final homeData = homeController.homePageData.value;
 
-                if (homeData == null) {
-                  return Center(child: Text("No data available", style: TextStyle(color: Colors.white)));
+                if (homeController.isLoading.value) {
+                  return Center(child: CircularProgressIndicator(color: Colors.redAccent));
                 }
 
+                if (homeData == null) {
+                  return Center(
+                    child: Text(
+                      "No data available",
+                      style: TextStyle(color: AppColors.text),
+                    ),
+                  );
+                }
                 return Column(
                   children: [
                     SizedBox(height: 50.h),
                     MovieSlider(),
+
                     if (homeData.latest.movies.isNotEmpty || homeData.latest.series.isNotEmpty) ...[
                       SectionTitle(title: "Latest".tr, showAll: false),
                       LatestDramaMandSList(movies: homeData.latest.movies, series: homeData.latest.series)
@@ -121,24 +150,6 @@ class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
             ),
           ),
 // Glowing reddish effect at top
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 500.h, // adjust height as needed
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: RadialGradient(
-                  colors: [
-                    Colors.redAccent.withOpacity(0.35),
-                    Colors.transparent,
-                  ],
-                  center: Alignment.topCenter,
-                  radius: 1.0,
-                ),
-              ),
-            ),
-          ),
 
           // 🎁 Gift Icon Positioned at Top Right
           Positioned(
@@ -191,54 +202,57 @@ class RoundedVideoList extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 240,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: videos.length,
-        padding: const EdgeInsets.only(left: 16),
-        itemBuilder: (context, index) {
-          final video = videos[index];
+      height: 180.h,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final double itemWidth = (constraints.maxWidth - 16 - (2 * 12)) / 3;
 
-          return GestureDetector(
-            onTap: () {
-              final videoId = video.id;
-              final slug = video.slug;
-              Get.to(VideoDetialsPage(), arguments: {
-                "videoId": videoId,
-                "slug": slug
-              });
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: videos.length,
+            padding: const EdgeInsets.only(left: 16),
+            itemBuilder: (context, index) {
+              final video = videos[index];
+
+              return GestureDetector(
+                onTap: () {
+                  Get.to(VideoDetialsPage(), arguments: {
+                    "videoId": video.id,
+                    "slug": video.slug
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          width: itemWidth,
+                          height: itemWidth * 1.2,
+                          child: NetworkImageWidget(
+                            imageUrl: video.image,
+                            errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      SizedBox(
+                        width: itemWidth,
+                        child: Text(
+                          video.name,
+                          style: AppTextStyles.SubHeading2.copyWith(color: AppColors.text),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 140,
-                    height: 170,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: NetworkImageWidget(
-                      imageUrl: video.image,
-                      errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  SizedBox(
-                    width: 120,
-                    child: Text(
-                      video.name,
-                      style: AppTextStyles.SubHeading2.copyWith(color: Colors.white),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           );
         },
       ),
@@ -266,63 +280,64 @@ class RoundedTvSeriesList extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 220,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: tvSeries.length,
-        padding: const EdgeInsets.only(left: 16),
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              final slug = tvSeries[index].slug;
-              Get.to(() => TvSeriesDetailsPage(), arguments: {
-                "slug": slug
-              }, binding: BindingsBuilder(() {
-                Get.put(TVSeriesController());
-              }));
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 140,
-                    height: 170,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        tvSeries[index].thumbnailImg,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'assets/images/placeholder.png',
+      height: 180.h,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final double itemWidth = (constraints.maxWidth - 16 - (2 * 12)) / 3;
+
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: tvSeries.length,
+            padding: const EdgeInsets.only(left: 16),
+            itemBuilder: (context, index) {
+              final item = tvSeries[index];
+
+              return GestureDetector(
+                onTap: () {
+                  Get.to(() => TvSeriesDetailsPage(), arguments: {
+                    "slug": item.slug
+                  }, binding: BindingsBuilder(() {
+                    Get.put(TVSeriesController());
+                  }));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          width: itemWidth,
+                          height: itemWidth * 1.2,
+                          child: Image.network(
+                            item.thumbnailImg,
                             fit: BoxFit.cover,
-                          );
-                        },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/placeholder.png',
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: SizedBox(
-                      width: 120,
-                      child: Text(
-                        tvSeries.isEmpty ? "" : tvSeries[index].name,
-                        style: AppTextStyles.SubHeading2.copyWith(color: Colors.white),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: true,
+                      const SizedBox(height: 6),
+                      SizedBox(
+                        width: itemWidth,
+                        child: Text(
+                          item.name,
+                          style: AppTextStyles.SubHeading2.copyWith(color: Colors.white, fontSize: 12),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       ),
@@ -334,7 +349,11 @@ class LatestDramaMandSList extends StatelessWidget {
   final List<latestMovie> movies;
   final List<latestSeries> series;
 
-  LatestDramaMandSList({Key? key, required this.movies, required this.series}) : super(key: key);
+  LatestDramaMandSList({
+    Key? key,
+    required this.movies,
+    required this.series,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -362,58 +381,63 @@ class LatestDramaMandSList extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 200,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: latestList.length,
-        padding: const EdgeInsets.only(left: 16),
-        itemBuilder: (context, index) {
-          final item = latestList[index];
+      height: 180.h,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final double itemWidth = (constraints.maxWidth - 16 - (2 * 12)) / 3;
 
-          return GestureDetector(
-            onTap: () {
-              if (item.type == MediaType.movie) {
-                Get.to(() => MovieDetailsPage(), arguments: {
-                  "movieId": item.id,
-                  "slug": item.slug,
-                });
-              } else if (item.type == MediaType.series) {
-                Get.to(() => TvSeriesDetailsPage(), arguments: {
-                  "slug": item.slug,
-                });
-              }
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      width: 140,
-                      height: 170,
-                      child: NetworkImageWidget(
-                        imageUrl: item.imageUrl,
-                        errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: latestList.length,
+            padding: const EdgeInsets.only(left: 16),
+            itemBuilder: (context, index) {
+              final item = latestList[index];
+
+              return GestureDetector(
+                onTap: () {
+                  if (item.type == MediaType.movie) {
+                    Get.to(() => MovieDetailsPage(), arguments: {
+                      "movieId": item.id,
+                      "slug": item.slug,
+                    });
+                  } else if (item.type == MediaType.series) {
+                    Get.to(() => TvSeriesDetailsPage(), arguments: {
+                      "slug": item.slug,
+                    });
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          width: itemWidth,
+                          height: itemWidth * 1.2, // maintain poster ratio
+                          child: NetworkImageWidget(
+                            imageUrl: item.imageUrl,
+                            errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 6),
+                      SizedBox(
+                        width: itemWidth,
+                        child: Text(
+                          item.name,
+                          style: AppTextStyles.SubHeading2.copyWith(color: AppColors.text),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 6),
-                  SizedBox(
-                    width: 120,
-                    child: Text(
-                      item.name,
-                      style: AppTextStyles.SubHeading2.copyWith(color: Colors.white),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       ),
@@ -455,70 +479,72 @@ class DramaMovieList extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 220,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: movies.length,
-        padding: const EdgeInsets.only(left: 16),
-        itemBuilder: (context, index) {
-          final movie = movies[index];
-          final bool isFree = movie.package?.free ?? false;
+      height: 180,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final double itemWidth = (constraints.maxWidth - 16 - (2 * 12)) / 3;
 
-          return GestureDetector(
-            onTap: () {
-              final slug = movie.slug;
-              debugPrint(slug);
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: movies.length,
+            padding: const EdgeInsets.only(left: 16),
+            itemBuilder: (context, index) {
+              final movie = movies[index];
+              final bool isFree = movie.package?.free ?? false;
 
-              Get.to(() => MovieDetailsPage(), arguments: {
-                'slug': slug,
-              });
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12.0),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+              return GestureDetector(
+                onTap: () {
+                  final slug = movie.slug;
+                  debugPrint(slug);
+                  Get.to(() => MovieDetailsPage(), arguments: {'slug': slug});
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: Stack(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Container(
-                          width: 140,
-                          height: 170,
-                          child: NetworkImageWidget(
-                            imageUrl: movie.thumbnailImg,
-                            errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              width: itemWidth,
+                              height: itemWidth * 1.25, // maintain poster ratio
+                              child: NetworkImageWidget(
+                                imageUrl: movie.thumbnailImg,
+                                errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          SizedBox(
+                            width: itemWidth,
+                            child: Text(
+                              movie.name,
+                              style: AppTextStyles.SubHeading2.copyWith(color: AppColors.text),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      if (isTop10 && index < topRankImages.length)
+                        Positioned(
+                          bottom: itemWidth * 0.45,
+                          right: 6,
+                          child: Image.asset(
+                            topRankImages[index],
+                            width: 30,
+                            height: 40,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 6),
-                      SizedBox(
-                        width: 120,
-                        child: Text(
-                          movie.name,
-                          style: AppTextStyles.SubHeading2.copyWith(color: Colors.white),
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                        ),
-                      ),
                     ],
                   ),
-
-                  if (isTop10 && index < topRankImages.length)
-                    Positioned(
-                      bottom: 60,
-                      right: 8,
-                      child: Image.asset(
-                        topRankImages[index],
-                        width: 30,
-                        height: 60,
-                      ),
-                    ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       ),
@@ -592,8 +618,8 @@ class MovieSlider extends StatelessWidget {
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    Colors.black.withOpacity(0.4),
-                                    Colors.transparent,
+                                    AppColors.black.withOpacity(0.4),
+                                    AppColors.transparent,
                                   ],
                                   begin: Alignment.bottomCenter,
                                   end: Alignment.topCenter,

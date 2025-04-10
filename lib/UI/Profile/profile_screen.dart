@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myott/Core/Utils/app_colors.dart';
+import 'package:myott/Core/Utils/app_text_styles.dart';
+import 'package:myott/UI/Home/Controller/themeController.dart';
 import 'package:myott/UI/PaymentGateways/Controller/PaymentGatewayController.dart';
 import 'package:myott/services/MovieService.dart';
 import 'package:myott/services/api_service.dart';
@@ -16,24 +19,36 @@ import 'package:myott/UI/Setting/setting_page.dart';
 import 'Components/MovieListComponent.dart';
 
 class ProfileScreen extends StatelessWidget {
+  final ThemeController controller = Get.find<ThemeController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.black,
-        title:
-        Text("Profile".tr, style: GoogleFonts.poppins(color: Colors.white)),
+        backgroundColor: Theme.of(context).appBarTheme.shadowColor, // 👈 Recommended
+        elevation: 0,
+        title: Text(
+          "Profile".tr,
+          style: AppTextStyles.Headingb4
+        ),
         actions: [
+          Obx(() {
+            return IconButton(
+              icon: Icon(
+                controller.isDarkMode.value ? Icons.light_mode : Icons.dark_mode,
+                color: Theme.of(context).iconTheme.color, // 👈 Icon color dynamic
+              ),
+              onPressed: controller.toggleTheme,
+            );
+          }),
           IconButton(
-            icon: Icon(Icons.settings, color: Colors.white),
-            onPressed: () {
-              Get.to(HelpAndSettingScreen());
-            },
+            icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color),
+            onPressed: () => Get.to(HelpAndSettingScreen()),
           ),
         ],
       ),
+
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(

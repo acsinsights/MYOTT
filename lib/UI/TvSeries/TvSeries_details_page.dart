@@ -310,7 +310,7 @@ class SeriesBanner extends StatelessWidget {
                           // dubbedLanguages: {},
                           contentId: series!.series.id,
                           contentCost: package.coinCost,
-                          contentType: MediaType.series.toString(),
+                          contentType: MediaType.series.name,
                           planPrice:  package.planPrice,
                           offerPrice: package.offerPrice,
                           slug: series!.series.slug,
