@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myott/Core/Utils/app_colors.dart';
 import 'package:myott/UI/Components/custom_text_field.dart';
 import 'package:myott/UI/Components/custom_button.dart';
 import 'package:myott/UI/Setting/Wallet/wallet_controller.dart';
@@ -18,82 +19,100 @@ class WalletScreen extends StatefulWidget {
 
 class _WalletScreenState extends State<WalletScreen> {
   final profileController = Get.put(ProfileController());
-  // ProfileController profileController=Get.find<ProfileController>();
-  WalletController walletController = Get.put(WalletController());
+  final walletController = Get.put(WalletController());
 
   @override
   void initState() {
     profileController.fetchProfileData();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Get.back();
-          },
+          icon: Icon(Icons.arrow_back, color: theme.iconTheme.color),
+          onPressed: () => Get.back(),
         ),
-        backgroundColor: Colors.black,
-        title: Text("Wallet", style: AppTextStyles.Headingb4),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
+        title: Text("Wallet", style: AppTextStyles.Headingb4),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 20.0),
+        padding: EdgeInsets.symmetric(vertical: 20.h),
         child: Column(
           children: [
             // Balance Container
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Container(
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.all(15.r),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color(0xFF3C3939),
+                  borderRadius: BorderRadius.circular(20.r),
+                  color:AppColors.card,
                   boxShadow: [
-                    BoxShadow(color: Colors.black26, blurRadius: 10, spreadRadius: 5)
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 10.r,
+                      spreadRadius: 5.r,
+                    )
                   ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Current Balance
                     Obx(() {
                       final balance = profileController.user.value?.coins ?? 0.0;
                       return Container(
-                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                        margin: EdgeInsets.only(bottom: 20),
+                        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
+                        margin: EdgeInsets.only(bottom: 20.h),
                         decoration: BoxDecoration(
-                          color: Color(0xFF242323),
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.greenAccent.withOpacity(0.3)),
+                          color: AppColors.card,
+                          borderRadius: BorderRadius.circular(15.r),
+                          border: Border.all(
+                            color: Colors.greenAccent.withOpacity(0.3),
+                          ),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Current Balance", style: TextStyle(color: Colors.white70, fontSize: 14)),
                             Text(
-                              "${balance.toInt()} Coins", // Displaying integer value
-                              style: TextStyle(color: Colors.amberAccent, fontSize: 24, fontWeight: FontWeight.bold),
+                              "Current Balance",
+                              style: AppTextStyles.SubHeading2
+                            ),
+                            Text(
+                              "${balance.toInt()} Coins",
+                              style: AppTextStyles.Headingb4.copyWith(
+                                color: AppColors.yellow
+                              )
                             ),
                           ],
                         ),
                       );
                     }),
 
-                    Divider(color: Colors.white.withOpacity(0.5)),
+                    Divider(color: theme.dividerColor.withOpacity(0.5)),
 
                     // Coins to credit
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("You will get", style: TextStyle(color: Colors.white60, fontSize: 14)),
+                        Text(
+                          "You will get",
+                          style: AppTextStyles.SubHeading2
+
+                        ),
                         Obx(() => Text(
                           "${walletController.coinsToCredit.value} Coins",
-                          style: TextStyle(color: Colors.amberAccent, fontSize: 24, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.amberAccent,
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         )),
                       ],
                     ),
@@ -102,11 +121,11 @@ class _WalletScreenState extends State<WalletScreen> {
               ),
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
 
-            // Add Money to Wallet Section
+            // Add Money
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                 children: [
                   CustomTextField(
@@ -114,12 +133,11 @@ class _WalletScreenState extends State<WalletScreen> {
                     controller: walletController.moneyController,
                     hintText: "0.00",
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   CustomButton(
                     width: double.infinity,
                     text: "Add Money to wallet",
-                    backgroundColor: Colors.black,
-                    borderColor: Colors.red,
+                    backgroundColor: AppColors.primary,
                     onPressed: () {
                       walletController.proceedToPayment();
                     },
@@ -128,11 +146,11 @@ class _WalletScreenState extends State<WalletScreen> {
               ),
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
 
-            // Alerts Section
+            // Alerts
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -169,5 +187,4 @@ class _WalletScreenState extends State<WalletScreen> {
     }
     super.dispose();
   }
-
 }

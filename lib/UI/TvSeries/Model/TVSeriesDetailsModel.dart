@@ -115,7 +115,7 @@ class Series {
   List<TvSeriesActor> actors;
   List<TvSeriesActor> directors;
   List<TvSeriesActor> genres;
-  SOrder seriesorder;
+  SOrder? seriesorder;
 
   Series({
     required this.id,
@@ -156,7 +156,9 @@ class Series {
     views: json["views"]??"",
     fakeViews: json["fake_views"]??"",
     status: json["status"]??"",
-    seriesorder: SOrder.fromJson(json["order"] ?? {}),
+    seriesorder: (json["order"] != null && json["order"]["id"] != null)
+        ? SOrder.fromJson(json["order"])
+        : null,
     seriesPackage: SeriesPackage.fromJson(json["series_package"]??{}),
     actors: json["actors"]!=null?List<TvSeriesActor>.from(json["actors"].map((x) => TvSeriesActor.fromJson(x))):[],
     directors: json["directors"]!=null? List<TvSeriesActor>.from(json["directors"].map((x) => TvSeriesActor.fromJson(x))):[],

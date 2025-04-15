@@ -28,4 +28,12 @@ class AppColors {
   static const Color red = Color(0xFFE50914);
   static const Color blue = Color(0xFF2196F3);
   static const Color yellow = Color(0xFFFBC02D);
+
+  static const backgroundWhite = Colors.white;
+  static const textBlack = Colors.black;
+  static const textGray = Colors.grey;
+  static const textFieldBG = Color(0xFFF0F0F0);
+  static const cardWhite = Color(0xFFFFFFFF);
+  static const iconGray = Color(0xFF9E9E9E);
+  static const primaryRed = Color(0xFFE53935);
 }

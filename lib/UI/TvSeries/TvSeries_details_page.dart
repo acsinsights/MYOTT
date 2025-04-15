@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Components/Comment_section.dart';
-import 'package:myott/UI/Components/ShimmerLoader.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Movie/Component/ExpandableDescription.dart';
 import 'package:myott/UI/Profile/Controller/ProfileController.dart';
@@ -14,7 +13,6 @@ import '../Components/buildAccessButton.dart';
 import '../Components/custom_button.dart';
 import 'Component/SeriesActionButton.dart';
 import 'Component/TvSeries_Seasons.dart';
-import 'Component/TVSeries_synopsis.dart';
 import 'Model/TVSeriesDetailsModel.dart';
 
 class TvSeriesDetailsPage extends StatefulWidget {
@@ -49,7 +47,7 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
               return Center(child: Text("TV Series details not available", style: AppTextStyles.SubHeading2));
             }
             final tvdetails = tvSeriesController.tvSeriesDetails.value;
-          final userId=profileController.user.value!.id;
+            final userId=profileController.user.value!.id;
 
           return SingleChildScrollView(
             child: Column(
@@ -69,11 +67,11 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TvSeriesEpisode(tvSeries: tvdetails),
+                      TvSeriesEpisode(tvSeries: tvdetails,order: tvdetails.series.seriesorder,),
                       SizedBox(height: 5.h,),
-                      ActorListWidget(actors: tvdetails.series.actors, label: "Artist"),
+                      // ActorListWidget(actors: tvdetails.series.actors, label: "Artist"),
                       SizedBox(height: 5.h,),
-                      ActorListWidget(actors: tvdetails.series.directors, label: "Directors"),
+                      // ActorListWidget(actors: tvdetails.series.directors, label: "Directors"),
                       SeriesGenreList(tvdetails: tvdetails),
                       SizedBox(height: 30.h,),
 

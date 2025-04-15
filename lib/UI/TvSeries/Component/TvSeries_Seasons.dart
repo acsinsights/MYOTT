@@ -3,21 +3,44 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
-import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 
 import '../../../video_player/component/Video_player_page.dart';
+import '../Model/TVSeriesDetailsModel.dart';
 import 'episode_card.dart';
 
 
 
 class TvSeriesEpisode extends StatelessWidget {
   final SeriesDetailResponse tvSeries;
-  const TvSeriesEpisode({required this.tvSeries});
+  final SOrder? order; // 👈 Order info from parent
+
+  const TvSeriesEpisode({
+    required this.tvSeries,
+    required this.order,
+  });
+  bool _checkHasAccess(SOrder? order, String contentType) {
+    contentType = contentType.trim();
+
+    if (contentType == "subsriptionSystem" || contentType == "pricingSection") {
+      return order != null &&
+          order.endDate != null &&
+          order.endDate!.isAfter(DateTime.now());
+    }
+
+    if (contentType == "coinCostSection") {
+      return order != null; // ✅ Just check if order exists
+    }
+
+    return false;
+  }
+
+  bool _checkEpisodeAccess(Episode episode, SOrder? order, String contentType) {
+    if (episode.isFree) return true;
+    return _checkHasAccess(order, contentType);
+  }
 
   @override
   Widget build(BuildContext context) {
-    print("Episodes: ${tvSeries.episodes}"); // ✅ Debugging
 
     if (tvSeries.episodes.isEmpty) {
       return Padding(
@@ -39,19 +62,38 @@ class TvSeriesEpisode extends StatelessWidget {
             itemCount: tvSeries.episodes.length,
             itemBuilder: (context, index) {
               final episode = tvSeries.episodes[index];
-              print("Episode $index: ${episode.title}, ${episode.poster}"); // ✅ Debugging
+
               return GestureDetector(
-                  onTap: (){
-                    Get.to(VideoPlayerPage(videoUrl: episode.uploadUrl, subtitles: {}, dubbedLanguages: {},));
-                  },
-                  child: EpisodeCard(episode.title, episode.poster.toString()));
+                onTap: () {
+                  if (_checkEpisodeAccess(episode,tvSeries.series.seriesorder,tvSeries.series.seriesPackage.selection)) {
+                    // ✅ Access allowed — play video
+                    Get.to(() => VideoPlayerPage(
+                      videoUrl: episode.uploadUrl,
+                      subtitles: {},
+                      dubbedLanguages: {},
+                    ));
+                  } else {
+                    // ❌ Access denied — show snackbar
+                    Get.snackbar(
+                      "Access Denied",
+                      "You don't have access to this episode.",
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
+                  }
+                },
+                child: EpisodeCard(
+                  episode.title,
+                  episode.poster.toString(),
+                ),
+              );
             },
           ),
         ),
       ],
     );
   }
-
 }
 
 

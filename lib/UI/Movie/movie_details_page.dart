@@ -93,7 +93,7 @@ profileController.fetchProfileData();
                   onDelete: (comment) {
                     movieController.deleteCommentForMovie(comment.id, movie.movie.slug);
                   },
-                  currentUserId: profileController.user.value!.id, // ✅ Pass logged-in user ID
+                  currentUserId: profileController.user.value!.id ?? 0, // ✅ Pass logged-in user ID
                 )
 
 

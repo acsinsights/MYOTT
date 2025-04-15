@@ -13,6 +13,7 @@ import '../../Core/Utils/app_colors.dart';
 import '../../Core/Utils/app_common.dart';
 import '../../Core/Utils/app_text_styles.dart';
 import '../Actors/Components/actor_list.dart';
+import '../Components/MovieListShrimerLoad.dart';
 import '../Components/Movie_grid.dart';
 import '../Components/ShimmerLoader.dart';
 import '../Components/TvSeriesGrid.dart';
@@ -79,7 +80,21 @@ class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
                 final homeData = homeController.homePageData.value;
 
                 if (homeController.isLoading.value) {
-                  return Center(child: CircularProgressIndicator(color: Colors.redAccent));
+                  return Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        ShimmerLoader(height: 400.h),
+                        SizedBox(height: 20,),
+                        MovieShrimmerLoader(),
+                        SizedBox(height: 20,),
+                        MovieShrimmerLoader(),
+                        SizedBox(height: 20,),
+                        MovieShrimmerLoader(),
+                        SizedBox(height: 20,),
+                      ],
+                    ),
+                  );
                 }
 
                 if (homeData == null) {
@@ -109,7 +124,7 @@ class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
                       ),
                       DramaMovieList(movies: homeData.top10.take(10).toList(), isTop10: true),
                     ],
-                    ActorList(),
+                    // ActorList(),
                     if (homeData.series.isNotEmpty) ...[
                       SectionTitle(
                         title: "TV Series".tr,
@@ -143,7 +158,7 @@ class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
                       GenreSelection(),
                     ],
                     const SizedBox(height: 20),
-                    ComingSoonWidget(),
+                    // ComingSoonWidget(),
                   ],
                 );
               }),

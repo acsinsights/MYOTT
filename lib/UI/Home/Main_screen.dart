@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
@@ -45,18 +46,20 @@ class _MainScreenState extends State<MainScreen> {
       onWillPop: () => onBackPressed(),
       child: Scaffold(
         body: controller.screens[selectedIndex],
-        bottomNavigationBar: BottomAppBar(
-          color: AppColors.background,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildNavItem(Icons.home, 0),
-                _buildNavItem(Icons.search, 1),
-                _buildNavItem(Icons.favorite, 2),
-                _buildNavItem(Icons.person, 3),
-              ],
+        bottomNavigationBar: SafeArea(
+          child: BottomAppBar(
+            color: AppColors.background,
+            child: SizedBox(
+              height: 60, // Fixed height avoids overflow
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Flexible(child: _buildNavItem(Icons.home, 0, "Home")),
+                  Flexible(child: _buildNavItem(Icons.search, 1, "Search")),
+                  Flexible(child: _buildNavItem(Icons.favorite, 2, "MyList")),
+                  Flexible(child: _buildNavItem(CupertinoIcons.profile_circled, 3, "Profile")),
+                ],
+              ),
             ),
           ),
         ),
@@ -65,14 +68,34 @@ class _MainScreenState extends State<MainScreen> {
   }
 
 
-  Widget _buildNavItem(IconData icon, int index) {
-    return IconButton(
-      icon: Icon(icon, color: selectedIndex == index ? AppColors.primary2 : AppColors.subText),
-      onPressed: () {
+  Widget _buildNavItem(IconData icon, int index, String text) {
+    final isSelected = selectedIndex == index;
+
+    return GestureDetector(
+      onTap: () {
         setState(() {
           selectedIndex = index;
         });
       },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 24,
+            color: isSelected ? AppColors.primary2 : AppColors.subText,
+          ),
+          SizedBox(height: 2),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 12,
+              color: isSelected ? AppColors.primary2 : AppColors.subText,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
