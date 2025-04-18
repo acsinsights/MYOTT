@@ -65,13 +65,13 @@ class HomeScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 MovieSlider(),
-                if (homeData.latest.movies.isNotEmpty || homeData.latest.series.isNotEmpty) ...[
-                  SectionTitle(
-                    title: "Latest".tr,
-                    showAll: false,
-                  ),
-                  LatestMandSList(movies: homeData.latest.movies, series: homeData.latest.series)
-                ],
+                // if (homeData.latest.movies.isNotEmpty || homeData.latest.series.isNotEmpty) ...[
+                //   SectionTitle(
+                //     title: "Latest".tr,
+                //     showAll: false,
+                //   ),
+                //   LatestMandSList(movies: homeData.latest.movies, series: homeData.latest.series)
+                // ],
                 if (homeData.top10.isNotEmpty) ...[
                   SectionTitle(
                     title: "Top 10".tr,

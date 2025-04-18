@@ -17,7 +17,7 @@ class ProfileController extends GetxController {
 
   var user=Rxn<UserModel>();
   Rx<File?> selectedImage = Rx<File?>(null);
-  final RxBool isLoading = false.obs; // ✅ Loading state
+  final RxBool isLoading = false.obs;
 
   final nameController=TextEditingController();
   final emailController=TextEditingController();
@@ -137,9 +137,12 @@ class ProfileController extends GetxController {
     return true; // ✅ Validation passed
   }
 
+
   Future<void> fetchProfileData() async {
     try {
+      isLoading(true);
       final response = await profileService.getUserDetails();
+
 
       if (response != null) {
         user.value = UserModel.fromJson(response['user']);
@@ -151,12 +154,14 @@ class ProfileController extends GetxController {
         if (user.value!.image != null) {
           selectedImage.value = null;
         }
+        isLoading(false);
 
       } else {
         Get.snackbar("Failed", "Failed to load profile data",
             backgroundColor: Colors.red, colorText: Colors.white);
       }
     } catch (e) {
+      isLoading(false);
       print("❌ Error Fetching Profile Data: $e");
       // Get.snackbar("Error", "An error occurred while loading profile data.",
       //     backgroundColor: Colors.red, colorText: Colors.white);
@@ -172,7 +177,7 @@ class ProfileController extends GetxController {
 
       if (response != null && response['user'] != null) {
         user.value = UserModel.fromJson(response['user']);
-        update(); // To refresh any widgets listening to user changes
+        update();
       } else {
         Get.snackbar("Error", "Unable to refresh user data",
             backgroundColor: Colors.red, colorText: Colors.white);

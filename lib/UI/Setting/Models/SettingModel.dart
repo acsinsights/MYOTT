@@ -213,6 +213,7 @@ class GeneralSettings {
   String supportEmail;
   String address;
   String logo;
+  int view;
   DateTime updatedAt;
 
   GeneralSettings({
@@ -221,6 +222,7 @@ class GeneralSettings {
     required this.email,
     required this.supportEmail,
     required this.address,
+    required this.view,
     required this.logo,
     required this.updatedAt,
   });
@@ -232,6 +234,7 @@ class GeneralSettings {
     supportEmail: json["support_email"]??"",
     address: json["address"]??"",
     logo: json["logo"]??"",
+    view: json["view"]??0,
     updatedAt: json["updated_at"] != null ? DateTime.tryParse(json["updated_at"]) ?? DateTime.now() : DateTime.now(),
   );
 

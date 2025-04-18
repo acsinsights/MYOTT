@@ -7,10 +7,12 @@ import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Movie/Component/ExpandableDescription.dart';
 import 'package:myott/UI/Profile/Controller/ProfileController.dart';
 import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';
+import 'package:myott/video_player/component/verticalPlayerPage.dart';
 import '../../Core/Utils/app_common.dart';
 import '../../video_player/component/Video_player_page.dart';
 import '../Components/buildAccessButton.dart';
 import '../Components/custom_button.dart';
+import '../Setting/Setting_Controller.dart';
 import 'Component/SeriesActionButton.dart';
 import 'Component/TvSeries_Seasons.dart';
 import 'Model/TVSeriesDetailsModel.dart';
@@ -23,6 +25,8 @@ class TvSeriesDetailsPage extends StatefulWidget {
 class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
   final TVSeriesController tvSeriesController = Get.put(TVSeriesController());
   final ProfileController profileController=Get.put(ProfileController());
+  final SettingController settiingController=Get.put(SettingController());
+
 
   @override
   void initState() {
@@ -35,25 +39,28 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
   @override
   Widget build(BuildContext context) {
 
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child:Obx(() {
-          if (tvSeriesController.isLoading.value) {
+          if (tvSeriesController.isLoading.value && profileController.isLoading.value && settiingController.isLoading.value) {
             return Center(child: CircularProgressIndicator(color: Colors.white,)); // Replace with Shimmer if needed
           }
 
             if (tvSeriesController.tvSeriesDetails.value == null) {
               return Center(child: Text("TV Series details not available", style: AppTextStyles.SubHeading2));
             }
-            final tvdetails = tvSeriesController.tvSeriesDetails.value;
+           final verticalPlayer = 1;
+
+          final tvdetails = tvSeriesController.tvSeriesDetails.value;
             final userId=profileController.user.value!.id;
 
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SeriesBanner(series: tvdetails!),
+                SeriesBanner(series: tvdetails!,verticalPlayer: verticalPlayer),
 
                  SizedBox(height: 10),
                 ExpandableDescription(description: tvdetails.series.description),
@@ -73,7 +80,7 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
                       SizedBox(height: 5.h,),
                       // ActorListWidget(actors: tvdetails.series.directors, label: "Directors"),
                       SeriesGenreList(tvdetails: tvdetails),
-                      SizedBox(height: 30.h,),
+                      // SizedBox(height: 30.h,),
 
 
 
@@ -157,13 +164,71 @@ class SeriesGenreList extends StatelessWidget {
 }
 
 class SeriesBanner extends StatelessWidget {
-  const SeriesBanner({
+   SeriesBanner({
     super.key,
     required this.series,
+    required this.verticalPlayer,
   });
 
   final SeriesDetailResponse? series;
+  final int? verticalPlayer;
 
+  List<Episode> episodes = [
+    Episode(
+      id: 1,
+      episodeNumber: 1,
+      title: "Midnight Serenity",
+      description: "A calming escape into the heart of the night — feel the tranquility of moonlit silence.",
+      poster: "poster",
+      isFree: true,
+      uploadUrl: "https://videos.pexels.com/video-files/5896379/5896379-uhd_1440_2560_24fps.mp4",
+    ),
+    Episode(
+      id: 2,
+      episodeNumber: 2,
+      title: "Golden Hour Dreams",
+      description: "The perfect blend of soft light and warm skies — a visual symphony of sunset.",
+      poster: "poster",
+      isFree: true,
+      uploadUrl: "https://videos.pexels.com/video-files/4812203/4812203-hd_1080_1920_30fps.mp4",
+    ),
+    Episode(
+      id: 3,
+      episodeNumber: 3,
+      title: "Urban Rhythm",
+      description: "Experience the soul of the city through lights, movement, and a touch of chaos.",
+      poster: "poster",
+      isFree: true,
+      uploadUrl: "https://videos.pexels.com/video-files/8859849/8859849-sd_360_640_25fps.mp4",
+    ),
+    Episode(
+      id: 4,
+      episodeNumber: 4,
+      title: "Nature’s Echo",
+      description: "Dive into the wild — leaves rustle, water flows, and peace reigns.",
+      poster: "poster",
+      isFree: true,
+      uploadUrl: "https://videos.pexels.com/video-files/4448895/4448895-sd_360_640_30fps.mp4",
+    ),
+    Episode(
+      id: 5,
+      episodeNumber: 5,
+      title: "The Quiet Adventure",
+      description: "A poetic journey through isolated paths, where every sound tells a story.",
+      poster: "poster",
+      isFree: false,
+      uploadUrl: "https://videos.pexels.com/video-files/6010489/6010489-sd_360_640_25fps.mp4",
+    ),
+    Episode(
+      id: 6,
+      episodeNumber: 6,
+      title: "Nature’s Echo",
+      description: "Dive into the wild — leaves rustle, water flows, and peace reigns.",
+      poster: "poster",
+      isFree: false,
+      uploadUrl: "https://videos.pexels.com/video-files/4448895/4448895-sd_360_640_30fps.mp4",
+    ),
+  ];
 
   bool _checkHasAccess(SOrder? order, String contentType) {
     contentType = contentType.trim();
@@ -318,11 +383,29 @@ class SeriesBanner extends StatelessWidget {
                           width: 180.w,
                           text: "Trailer",
                           onPressed: () {
-                            Get.to(VideoPlayerPage(
-                              videoUrl: series!.series.trailerUrl,
-                              subtitles: {},
-                              dubbedLanguages: {},
-                            ));
+
+                            // Get.to(VideoPlayerPage(
+                            //   videoUrl: series!.series.trailerUrl,
+                            //   subtitles: {},
+                            //   dubbedLanguages: {},
+                            // ));
+                            if (verticalPlayer == 0) {
+                              Get.to(VideoPlayerPage(
+                                videoUrl: series!.series.trailerUrl,
+                                subtitles: {},
+                                dubbedLanguages: {},
+                              ));
+                            }
+                            else {
+                              Get.to(VerticalPlayerPage(episodes: series!.episodes,
+                                seriesPackage: series!.series.seriesPackage,
+                                order: series!.series.seriesorder,
+                                slug: series!.series.slug,
+                                contentId: series!.series.id, title: series!.series.name,
+
+                              ));
+
+                            }
                           },
                           backgroundColor: Colors.black,
                           borderColor: Colors.white,

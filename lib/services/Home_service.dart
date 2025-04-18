@@ -38,7 +38,6 @@ class HomeService {
       throw Exception("Something went wrong. Please try again.");
     }
   }
-
   String _handleDioError(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:

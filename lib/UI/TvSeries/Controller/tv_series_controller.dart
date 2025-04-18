@@ -74,7 +74,7 @@ CommentService commentService=CommentService();
     if (isWishlisted.value) {
       /// ✅ Remove from Wishlist
       showLoading();
-      bool removed = await wishlistService.removeMovieFromWatchlist(id: movieId);
+      bool removed = await wishlistService.removeSeriesFromWatchlist(id: movieId);
       if (removed) {
         isWishlisted.value = false; // Update UI
       }

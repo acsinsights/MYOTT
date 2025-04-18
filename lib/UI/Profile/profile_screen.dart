@@ -2,22 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:myott/Core/Utils/app_colors.dart';
+
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Home/Controller/themeController.dart';
-import 'package:myott/UI/PaymentGateways/Controller/PaymentGatewayController.dart';
-import 'package:myott/services/MovieService.dart';
-import 'package:myott/services/api_service.dart';
-import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
+
 import 'package:myott/UI/Profile/Components/SubscriptionBanner.dart';
 import 'package:myott/UI/Profile/Components/UserProfile.dart';
-import 'package:myott/UI/Profile/screens/create_profile.dart';
-import 'package:myott/UI/Profile/screens/edit_User_profile.dart';
-import 'package:myott/UI/Profile/screens/SubscriptionPackage/subscription_page.dart';
-import 'package:myott/UI/Setting/setting_page.dart';
 
-import 'Components/MovieListComponent.dart';
+import 'package:myott/UI/Setting/setting_page.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ThemeController controller = Get.find<ThemeController>();

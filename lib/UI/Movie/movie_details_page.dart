@@ -12,7 +12,9 @@ import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Movie/Controller/Movie_controller.dart';
 import 'package:myott/UI/Movie/Model/movie_details_model.dart';
 import 'package:myott/UI/Profile/Controller/ProfileController.dart';
+import 'package:myott/UI/Setting/Setting_Controller.dart';
 import 'package:myott/video_player/component/Video_player_page.dart';
+import 'package:myott/video_player/component/verticalPlayerPage.dart';
 import '../Components/Comment_section.dart';
 import '../Components/buildAccessButton.dart';
 import '../Director/DirectorDetailedScreen.dart';
@@ -34,6 +36,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   final MovieController movieController = Get.put(MovieController());
   final ProfileController profileController=Get.put(ProfileController());
+  final SettingController settiingController=Get.put(SettingController());
 
 
   @override
@@ -41,7 +44,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     final slug = Get.arguments['slug'];
     movieController.fetchMovieDetails(slug);
     movieController.checkWishlistStatus(slug);
-profileController.fetchProfileData();
+    profileController.fetchProfileData();
+
+
   }
 
   @override
@@ -61,11 +66,13 @@ profileController.fetchProfileData();
                 ));
           }
           final movie = movieController.movieDetails.value;
+          // final verticalPlayer = settiingController.settingData!.value!.generalSettings.view;
+          final verticalPlayer = 1;
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MovieBanner(movie: movie),
+                MovieBanner(movie: movie,),
                 ExpandableDescription(
                   description: movie!.movie.description,
                 ),
@@ -112,9 +119,10 @@ profileController.fetchProfileData();
 }
 
 class MovieBanner extends StatelessWidget {
-  const MovieBanner({
+   MovieBanner({
     super.key,
     required this.movie,
+
   });
 
   final MovieDetailsModel? movie;
@@ -269,11 +277,12 @@ class MovieBanner extends StatelessWidget {
                           width: 180.w,
                           text: "Trailer",
                           onPressed: () {
-                            Get.to(VideoPlayerPage(
-                              videoUrl: movie!.movie.trailerUrl,
-                              subtitles: movie!.movie.subtitles,
-                              dubbedLanguages: {},
-                            ));
+
+                              Get.to(VideoPlayerPage(
+                                videoUrl: movie!.movie.trailerUrl,
+                                subtitles: movie!.movie.subtitles,
+                                dubbedLanguages: {},
+                              ));
                           },
                           backgroundColor: Colors.black,
                           borderColor: Colors.white,
@@ -288,6 +297,7 @@ class MovieBanner extends StatelessWidget {
         ));
   }
 }
+
 class MoviesActionButtons extends StatelessWidget {
   const MoviesActionButtons({
     super.key,
@@ -381,6 +391,7 @@ class MoviesActionButtons extends StatelessWidget {
     );
   }
 }
+
 class ActorListWidget extends StatelessWidget {
   final List<Ctor> actors; // Ctor used for both Actor and Director
   final String label;

@@ -12,7 +12,7 @@ import 'episode_card.dart';
 
 class TvSeriesEpisode extends StatelessWidget {
   final SeriesDetailResponse tvSeries;
-  final SOrder? order; // 👈 Order info from parent
+  final SOrder? order;
 
   const TvSeriesEpisode({
     required this.tvSeries,
@@ -28,7 +28,7 @@ class TvSeriesEpisode extends StatelessWidget {
     }
 
     if (contentType == "coinCostSection") {
-      return order != null; // ✅ Just check if order exists
+      return order != null;
     }
 
     return false;
@@ -66,7 +66,6 @@ class TvSeriesEpisode extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   if (_checkEpisodeAccess(episode,tvSeries.series.seriesorder,tvSeries.series.seriesPackage.selection)) {
-                    // ✅ Access allowed — play video
                     Get.to(() => VideoPlayerPage(
                       videoUrl: episode.uploadUrl,
                       subtitles: {},

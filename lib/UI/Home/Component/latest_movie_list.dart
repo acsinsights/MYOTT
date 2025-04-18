@@ -28,7 +28,6 @@ class LatestMandSList extends StatelessWidget {
         imageUrl: movie.posterImg,
         slug: movie.slug,
         type: MediaType.movie,
-        isfree: movie.package.free,
       )),
       ...series.map((series) => MediaItem(
         id: series.id,
@@ -36,7 +35,6 @@ class LatestMandSList extends StatelessWidget {
         imageUrl: series.thumbnailImg,
         slug: series.slug,
         type: MediaType.series,
-        isfree: series.seriesPackage!.free,
       )),
     ];
 

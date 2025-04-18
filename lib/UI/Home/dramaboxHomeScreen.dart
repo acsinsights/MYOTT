@@ -110,10 +110,10 @@ class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
                     SizedBox(height: 50.h),
                     MovieSlider(),
 
-                    if (homeData.latest.movies.isNotEmpty || homeData.latest.series.isNotEmpty) ...[
-                      SectionTitle(title: "Latest".tr, showAll: false),
-                      LatestDramaMandSList(movies: homeData.latest.movies, series: homeData.latest.series)
-                    ],
+                    // if (homeData.latest.movies.isNotEmpty || homeData.latest.series.isNotEmpty) ...[
+                    //   SectionTitle(title: "Latest".tr, showAll: false),
+                    //   LatestDramaMandSList(movies: homeData.latest.movies, series: homeData.latest.series)
+                    // ],
                     if (homeData.top10.isNotEmpty) ...[
                       SectionTitle(
                         title: "Top 10".tr,
@@ -379,7 +379,6 @@ class LatestDramaMandSList extends StatelessWidget {
         imageUrl: movie.posterImg,
         slug: movie.slug,
         type: MediaType.movie,
-        isfree: movie.package.free,
       )),
       ...series.map((series) => MediaItem(
         id: series.id,
@@ -387,7 +386,6 @@ class LatestDramaMandSList extends StatelessWidget {
         imageUrl: series.thumbnailImg,
         slug: series.slug,
         type: MediaType.series,
-        isfree: series.seriesPackage!.free,
       )),
     ];
 

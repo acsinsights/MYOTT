@@ -1,7 +1,7 @@
 class APIEndpoints {
   // Secret Key
   static const String _secretKey = "06c51069-0171-4f23-bf8f-41c9cd86762d";
-  static const String _baseurl="https://templatecookies.com/ott/public/api";
+  static const String _baseurl="https://templatecookies.com/ott_clicknplay/public/api";
 
   // Authentication
   static const String sendOtp = "send-otp";
