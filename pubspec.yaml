@@ -62,7 +62,7 @@ dependencies:
   flutter_paypal_payment: ^1.0.8
   flutter_subtitle: ^0.0.5
   just_audio: ^0.9.46
-  webview_flutter: ^4.10.0
+  webview_flutter: ^4.11.0
   better_player_plus: ^1.0.8
   uuid: ^4.5.1
   phonepe_payment_sdk: ^3.0.0

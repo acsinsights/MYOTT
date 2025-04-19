@@ -51,7 +51,7 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
             if (tvSeriesController.tvSeriesDetails.value == null) {
               return Center(child: Text("TV Series details not available", style: AppTextStyles.SubHeading2));
             }
-           final verticalPlayer = 1;
+           final verticalPlayer = settiingController.settingData.value?.generalSettings!.view ;
 
           final tvdetails = tvSeriesController.tvSeriesDetails.value;
             final userId=profileController.user.value!.id;
@@ -363,10 +363,35 @@ class SeriesBanner extends StatelessWidget {
                         ),
                         SizedBox(height: 10.h),
 
-                        ContentAccessButton(
+                        verticalPlayer == 1
+                            ? CustomButton(
+                          width: 180.w,
+                          text: "Play Now",
+                          onPressed: () {
+                            if (verticalPlayer == 0) {
+                              Get.to(VideoPlayerPage(
+                                videoUrl: series!.series.trailerUrl,
+                                subtitles: {},
+                                dubbedLanguages: {},
+                              ));
+                            } else {
+                              Get.to(VerticalPlayerPage(
+                                episodes: series!.episodes,
+                                seriesPackage: series!.series.seriesPackage,
+                                order: series!.series.seriesorder,
+                                slug: series!.series.slug,
+                                contentId: series!.series.id,
+                                title: series!.series.name,
+                              ));
+                            }
+                          },
+                          backgroundColor: Colors.black,
+                          borderColor: Colors.white,
+                        )
+                            : ContentAccessButton(
                           coinPrice: package.coinCost,
                           isFree: package.isFree,
-                          selection: package.selection ,
+                          selection: package.selection,
                           hasAccess: _checkHasAccess(order, package.selection),
                           videoUrl: series!.series.trailerUrl,
                           subtitles: {},
@@ -374,38 +399,24 @@ class SeriesBanner extends StatelessWidget {
                           contentId: series!.series.id,
                           contentCost: package.coinCost,
                           contentType: MediaType.series.name,
-                          planPrice:  package.planPrice,
+                          planPrice: package.planPrice,
                           offerPrice: package.offerPrice,
                           slug: series!.series.slug,
                         ),
+
                         SizedBox(height: 10.h),
+
                         CustomButton(
                           width: 180.w,
                           text: "Trailer",
                           onPressed: () {
 
-                            // Get.to(VideoPlayerPage(
-                            //   videoUrl: series!.series.trailerUrl,
-                            //   subtitles: {},
-                            //   dubbedLanguages: {},
-                            // ));
-                            if (verticalPlayer == 0) {
-                              Get.to(VideoPlayerPage(
-                                videoUrl: series!.series.trailerUrl,
-                                subtitles: {},
-                                dubbedLanguages: {},
-                              ));
-                            }
-                            else {
-                              Get.to(VerticalPlayerPage(episodes: series!.episodes,
-                                seriesPackage: series!.series.seriesPackage,
-                                order: series!.series.seriesorder,
-                                slug: series!.series.slug,
-                                contentId: series!.series.id, title: series!.series.name,
+                            Get.to(VideoPlayerPage(
+                              videoUrl: series!.series.trailerUrl,
+                              subtitles: {},
+                              dubbedLanguages: {},
+                            ));
 
-                              ));
-
-                            }
                           },
                           backgroundColor: Colors.black,
                           borderColor: Colors.white,

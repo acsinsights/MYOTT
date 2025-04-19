@@ -24,10 +24,11 @@ class PaymentSelectionScreen extends StatelessWidget {
     final String currency = args['currency'] ?? "INR";
     final int contentId = args['content_id'] ?? 0;
 
-    final MediaType contentType = args['content_type'] is MediaType
-        ? args['content_type']
-        : MediaType.movie;
-
+    final String contentTypeString = args['content_type'] ?? 'movie';
+    final MediaType contentType = MediaType.values.firstWhere(
+          (e) => e.name == contentTypeString,
+      orElse: () => MediaType.movie,
+    );
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
