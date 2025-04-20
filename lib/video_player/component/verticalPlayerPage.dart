@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
-import 'package:myott/video_player/component/youtube_short.dart';
 import 'package:video_player/video_player.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,95 +43,36 @@ class VerticalPlayerPage extends StatelessWidget {
           body:Stack(
             children: [
 
-              PageView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: controller.episodes.length,
-                onPageChanged: controller.onPageChanged,
-                itemBuilder: (context, index) {
-                  final episode = controller.episodes[index];
-                  final isYouTube = episode.uploadUrl.contains("youtube.com") || episode.uploadUrl.contains("youtu.be");
-
-                  return GestureDetector(
-                    onTap: () => controller.togglePlayPause(index),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        if (isYouTube)
-                          YouTubeShortPlayer(url: episode.uploadUrl)
-                        else
-                          Obx(() {
-                            final videoController = controller.controllers[index];
-                            if (videoController.value.isInitialized)
-                              return FittedBox(
-                                fit: BoxFit.cover,
-                                child: SizedBox(
-                                  width: videoController.value.size.width,
-                                  height: videoController.value.size.height,
-                                  child: VideoPlayer(videoController),
-                                ),
-                              );
-                            else
-                              return Center(child: CircularProgressIndicator());
-                          }),
-
-                        // Play/Pause Icon (shows briefly when tapped)
-                        Obx(() {
-                          final isPlaying = controller.isPlaying(index);
-                          final showIcon = controller.showPlayPauseIcon.value &&
-                              controller.currentIndex.value == index;
-
-                          return AnimatedOpacity(
-                            opacity: showIcon ? 1.0 : 0.0,
-                            duration: Duration(milliseconds: 300),
-                            child: Center(
-                              child: Container(
-                                padding: EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: Colors.black38,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  isPlaying ? Icons.pause : Icons.play_arrow,
-                                  size: 50,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
-                  );
-                },
-              ),
-
-
-
-
               // PageView.builder(
               //   scrollDirection: Axis.vertical,
               //   itemCount: controller.episodes.length,
               //   onPageChanged: controller.onPageChanged,
               //   itemBuilder: (context, index) {
-              //     final videoController = controller.controllers[index];
               //     final episode = controller.episodes[index];
+              //     final isYouTube = episode.uploadUrl.contains("youtube.com") || episode.uploadUrl.contains("youtu.be");
               //
               //     return GestureDetector(
               //       onTap: () => controller.togglePlayPause(index),
               //       child: Stack(
               //         fit: StackFit.expand,
               //         children: [
-              //           if (videoController.value.isInitialized)
-              //             FittedBox(
-              //               fit: BoxFit.cover,
-              //               child: SizedBox(
-              //                 width: videoController.value.size.width,
-              //                 height: videoController.value.size.height,
-              //                 child: VideoPlayer(videoController),
-              //               ),
-              //             )
+              //           if (isYouTube)
+              //             YouTubeShortPlayer(url: episode.uploadUrl)
               //           else
-              //             Center(child: CircularProgressIndicator()),
+              //             Obx(() {
+              //               final videoController = controller.controllers[index];
+              //               if (videoController.value.isInitialized)
+              //                 return FittedBox(
+              //                   fit: BoxFit.cover,
+              //                   child: SizedBox(
+              //                     width: videoController.value.size.width,
+              //                     height: videoController.value.size.height,
+              //                     child: VideoPlayer(videoController),
+              //                   ),
+              //                 );
+              //               else
+              //                 return Center(child: CircularProgressIndicator());
+              //             }),
               //
               //           // Play/Pause Icon (shows briefly when tapped)
               //           Obx(() {
@@ -164,6 +104,65 @@ class VerticalPlayerPage extends StatelessWidget {
               //     );
               //   },
               // ),
+
+
+
+
+              PageView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: controller.episodes.length,
+                onPageChanged: controller.onPageChanged,
+                itemBuilder: (context, index) {
+                  final videoController = controller.controllers[index];
+                  final episode = controller.episodes[index];
+
+                  return GestureDetector(
+                    onTap: () => controller.togglePlayPause(index),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        if (videoController.value.isInitialized)
+                          FittedBox(
+                            fit: BoxFit.cover,
+                            child: SizedBox(
+                              width: videoController.value.size.width,
+                              height: videoController.value.size.height,
+                              child: VideoPlayer(videoController),
+                            ),
+                          )
+                        else
+                          Center(child: CircularProgressIndicator()),
+
+                        // Play/Pause Icon (shows briefly when tapped)
+                        Obx(() {
+                          final isPlaying = controller.isPlaying(index);
+                          final showIcon = controller.showPlayPauseIcon.value &&
+                              controller.currentIndex.value == index;
+
+                          return AnimatedOpacity(
+                            opacity: showIcon ? 1.0 : 0.0,
+                            duration: Duration(milliseconds: 300),
+                            child: Center(
+                              child: Container(
+                                padding: EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Colors.black38,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  isPlaying ? Icons.pause : Icons.play_arrow,
+                                  size: 50,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  );
+                },
+              ),
 
               // Title Bar
               Positioned(

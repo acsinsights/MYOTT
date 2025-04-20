@@ -55,9 +55,14 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Obx(() {
-          if (movieController.isLoading.value) {
-            return Center(child: CircularProgressIndicator(color: Colors.white,));
+          if (movieController.isLoading.value ||
+              profileController.isLoading.value ||
+              settiingController.isLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(color: Colors.white),
+            );
           }
+
           if (movieController.movieDetails.value == null) {
             return Center(
                 child: Text(
@@ -83,8 +88,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 SizedBox(
                   height: 10.h,
                 ),
-                ActorListWidget(actors: movie.movie.actors,label: "Artist",type: "actor",),
-                ActorListWidget(actors: movie.movie.directors,label: "Directors",type: "director",),
+                // ActorListWidget(actors: movie.movie.actors,label: "Artist",type: "actor",),
+                // ActorListWidget(actors: movie.movie.directors,label: "Directors",type: "director",),
 
 
                 SizedBox(

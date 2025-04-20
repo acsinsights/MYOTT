@@ -75,6 +75,7 @@ dependencies:
   open_filex: ^4.7.0
   permission_handler: ^11.4.0
   crypto: ^3.0.6
+  audio_session: ^0.1.25
 
 dev_dependencies:
   flutter_test:

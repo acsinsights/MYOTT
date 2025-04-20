@@ -56,6 +56,7 @@ class APIEndpoints {
   // Genre & Audio
   static String moviesByGenre(String genreSlug) => "genre/$genreSlug?secret=$_secretKey";
   static String moviesByAudio(String audioSlug) => "language/$audioSlug?secret=$_secretKey";
+  static String audioDetails(String audioSlug) => "audio/$audioSlug?secret=$_secretKey";
 
   // Search
   static String searchMovies(String searchTerm) => "search?secret=$_secretKey&searchTerm=$searchTerm";

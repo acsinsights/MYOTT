@@ -26,15 +26,15 @@ class ProfileScreen extends StatelessWidget {
           style: AppTextStyles.Headingb4
         ),
         actions: [
-          Obx(() {
-            return IconButton(
-              icon: Icon(
-                controller.isDarkMode.value ? Icons.light_mode : Icons.dark_mode,
-                color: Theme.of(context).iconTheme.color, // 👈 Icon color dynamic
-              ),
-              onPressed: controller.toggleTheme,
-            );
-          }),
+          // Obx(() {
+          //   return IconButton(
+          //     icon: Icon(
+          //       controller.isDarkMode.value ? Icons.light_mode : Icons.dark_mode,
+          //       color: Theme.of(context).iconTheme.color, // 👈 Icon color dynamic
+          //     ),
+          //     onPressed: controller.toggleTheme,
+          //   );
+          // }),
           IconButton(
             icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color),
             onPressed: () => Get.to(HelpAndSettingScreen()),

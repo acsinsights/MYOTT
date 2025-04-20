@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:myott/UI/Audio/AudioDetailsScreen.dart';
 import 'package:myott/UI/Audio/Controller/AudioController.dart';
 import 'package:myott/UI/Movie/Movie_details_page.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import 'package:myott/UI/Video/video_Detials_page.dart';
 
 import '../../Core/Utils/app_text_styles.dart';
-import 'Model/AudioDeatilsResponseModel.dart';
+import 'Model/LanguageDeatilsResponseModel.dart';
 
 class MoviesByAudio extends StatelessWidget {
   final AudioController controller = Get.put(AudioController());
@@ -35,7 +36,7 @@ class MoviesByAudio extends StatelessWidget {
             if (controller.videos.isNotEmpty) buildSection("Videos", controller.videos),
 
             // Audio Section
-            if (controller.audios.isNotEmpty) buildSection("Audio", controller.audios),
+            // if (controller.audios.isNotEmpty) buildSection("Audio", controller.audios),
           ],
         );
       }),
@@ -83,7 +84,7 @@ class MoviesByAudio extends StatelessWidget {
             "slug":item.slug
           });
         } else if (item is Audio) {
-          // Get.to(() => AudioDetailsScreen(audio: item));
+          Get.to(() => AudioDetailsScreen(slug: item.slug));
         }
       },
       child: Container(

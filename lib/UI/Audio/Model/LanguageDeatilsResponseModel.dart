@@ -1,29 +1,26 @@
 // To parse this JSON data, do
 //
-//     final AudioDeatilsResponseModel = AudioDeatilsResponseModelFromJson(jsonString);
+//     final LanguageDetailsResponseModel = AudioDeatilsResponseModelFromJson(jsonString);
 
 import 'dart:convert';
 
 import '../../../Core/Utils/app_common.dart';
 
-AudioDeatilsResponseModel AudioDeatilsResponseModelFromJson(String str) => AudioDeatilsResponseModel.fromJson(json.decode(str));
 
-String AudioDeatilsResponseModelToJson(AudioDeatilsResponseModel data) => json.encode(data.toJson());
-
-class AudioDeatilsResponseModel {
+class LanguageDetailsResponseModel {
   List<AuidoMovie> movies;
    List<AudioSeries> series;
   List<AudioVideo> videos;
   List<Audio> audio;
 
-  AudioDeatilsResponseModel({
+  LanguageDetailsResponseModel({
     required this.movies,
      required this.series,
     required this.videos,
     required this.audio,
   });
 
-  factory AudioDeatilsResponseModel.fromJson(Map<String, dynamic> json) => AudioDeatilsResponseModel(
+  factory LanguageDetailsResponseModel.fromJson(Map<String, dynamic> json) => LanguageDetailsResponseModel(
     movies: (json["movies"] as List?)?.map((x) => AuidoMovie.fromJson(x)).toList() ?? [],
     series: (json["tv_series"] as List?)?.map((x) => AudioSeries.fromJson(x)).toList() ?? [],
     videos: (json["videos"] as List?)?.map((x) => AudioVideo.fromJson(x)).toList() ?? [],

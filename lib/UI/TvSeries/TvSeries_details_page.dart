@@ -44,7 +44,7 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
       backgroundColor: Colors.black,
       body: SafeArea(
         child:Obx(() {
-          if (tvSeriesController.isLoading.value && profileController.isLoading.value && settiingController.isLoading.value) {
+          if (tvSeriesController.isLoading.value || profileController.isLoading.value || settiingController.isLoading.value) {
             return Center(child: CircularProgressIndicator(color: Colors.white,)); // Replace with Shimmer if needed
           }
 
@@ -74,7 +74,10 @@ class _TvSeriesDetailsPageState extends State<TvSeriesDetailsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TvSeriesEpisode(tvSeries: tvdetails,order: tvdetails.series.seriesorder,),
+                      verticalPlayer==0
+                      ?
+                      TvSeriesEpisode(tvSeries: tvdetails,order: tvdetails.series.seriesorder,):
+                          SizedBox.shrink(),
                       SizedBox(height: 5.h,),
                       // ActorListWidget(actors: tvdetails.series.actors, label: "Artist"),
                       SizedBox(height: 5.h,),

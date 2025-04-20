@@ -29,6 +29,7 @@ class HomeController extends GetxController {
       if (data != null) {
         homePageData.value = data;
         debugPrint("✅ Home Page Data Loaded Successfully");
+        print(homePageData.value!.video);
       } else {
         errorMessage.value = "No data available.";
         debugPrint("⚠️ No data received from API");

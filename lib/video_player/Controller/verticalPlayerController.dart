@@ -8,12 +8,14 @@ import 'package:video_player/video_player.dart';
 import '../../Core/Utils/app_common.dart';
 import '../../UI/Components/coin_bottomsheet.dart';
 import '../../UI/PaymentGateways/PaymentSelectionScreen.dart';
+import '../../UI/Profile/Controller/ProfileController.dart';
 import '../../UI/Profile/screens/SubscriptionPackage/subscription_page.dart';
 
 class VerticalPlayerController extends GetxController {
   final currentIndex = 0.obs;
   final showPlayPauseIcon = false.obs;
   final isInitialized = false.obs;
+  final ProfileController profileController = Get.put(ProfileController());
 
   List<Episode> episodes = [];
   List<VideoPlayerController> controllers = [];
@@ -182,8 +184,10 @@ class VerticalPlayerController extends GetxController {
   }
 
   int getUserCoins() {
-    return 0; // Replace with actual implementation
+    final userCoins = profileController.user.value?.coins ?? 0;
+    return userCoins;
   }
+
 
   void onPageChanged(int index) {
     if (currentIndex.value != index) {

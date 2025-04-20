@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:myott/UI/Audio/AudioDetailsScreen.dart';
 import 'package:myott/UI/Components/network_image_widget.dart';
 import 'package:myott/UI/Home/Controller/themeController.dart';
 import 'package:myott/UI/Setting/Wallet/wallet_Screen.dart';
@@ -595,21 +596,24 @@ class MovieSlider extends StatelessWidget {
 
                 return GestureDetector(
                   onTap: () {
+                    print(content.type?.toLowerCase());
                     switch (content.type?.toLowerCase()) {
-                      case 'movie':
+                      case 'm':
                         Get.to(MovieDetailsPage(), arguments: {
                           "slug": content.slug
                         });
                         break;
-                      case 'series':
+                      case 's':
                         Get.to(TvSeriesDetailsPage(), arguments: {
                           "slug": content.slug
                         });
                         break;
-                      case 'video':
+                      case 'v':
                         Get.to(VideoDetialsPage(), arguments: {
                           "slug": content.slug
                         });
+                      case 'a':
+                        Get.to(AudioDetailsScreen(slug: content.slug), );
                         break;
                       default:
                         showSnackbar("Comming Soon", "Future Update");

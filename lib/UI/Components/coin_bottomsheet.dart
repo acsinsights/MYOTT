@@ -174,11 +174,11 @@ Future<void> _callCoinPurchaseApi({
 
       if (contentType == MediaType.movie.toString()) {
         final movieController = Get.put(MovieController());
-        movieController.refreshMovieDetails();
+        await movieController.refreshMovieDetails();
       }
       else if (contentType == MediaType.series.toString()) {
         final seriesController = Get.find<TVSeriesController>();
-        seriesController.fetchTVSeriesDetails(slug);
+         seriesController.fetchTVSeriesDetails(slug);
       }
       else if(contentType == MediaType.video.toString()){
         final videoController = Get.find<VideoDetailsController>();
