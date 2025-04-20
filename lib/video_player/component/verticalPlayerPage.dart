@@ -387,10 +387,13 @@ class VerticalPlayerPage extends StatelessWidget {
                     onTap: () {
                       Get.back();
                       if (hasAccess) {
-                        controller.currentIndex.value = index;
-                        controller.playVideo(index);
+                        controller.changeEpisode(index); // Create this method in controller
                       } else {
-                        controller.handlePremiumContent();
+                        // Show dialog or navigate to subscription screen
+                        Get.snackbar("Access Denied", "Please purchase the series to unlock this episode",
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.redAccent,
+                            colorText: Colors.white);
                       }
                     },
                     child: Container(
@@ -455,7 +458,7 @@ class VerticalPlayerPage extends StatelessWidget {
     final contentId = controller.contentId ?? 0;
 
     // Construct a shareable message
-    final shareMessage = "Check out Episode ${episode.episodeNumber}: ${episode.title} on MyOTT! ${controller.slug ?? 'app://series/$contentId/episode/${episode.id}'}";
+    final shareMessage = "Check out Episode ${episode.episodeNumber}: ${episode.title} on MyOTT! ${controller.slug ?? 'app://series/$contentId/episode/${episode.id}'}\n${episode.uploadUrl}";
 
     Share.share(shareMessage);
   }

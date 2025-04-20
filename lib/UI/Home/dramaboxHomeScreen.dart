@@ -111,10 +111,10 @@ class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
                     SizedBox(height: 50.h),
                     MovieSlider(),
 
-                    // if (homeData.latest.movies.isNotEmpty || homeData.latest.series.isNotEmpty) ...[
-                    //   SectionTitle(title: "Latest".tr, showAll: false),
-                    //   LatestDramaMandSList(movies: homeData.latest.movies, series: homeData.latest.series)
-                    // ],
+                    if (homeData.latest.movies.isNotEmpty || homeData.latest.series.isNotEmpty) ...[
+                      SectionTitle(title: "Latest".tr, showAll: false),
+                      LatestDramaMandSList(movies: homeData.latest.movies, series: homeData.latest.series)
+                    ],
                     if (homeData.top10.isNotEmpty) ...[
                       SectionTitle(
                         title: "Top 10".tr,
@@ -331,7 +331,7 @@ class RoundedTvSeriesList extends StatelessWidget {
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return Image.asset(
-                                'assets/images/placeholder.png',
+                                'assets/images/movies/SliderMovies/movie-1.png',
                                 fit: BoxFit.cover,
                               );
                             },

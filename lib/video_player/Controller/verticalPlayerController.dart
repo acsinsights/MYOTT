@@ -109,6 +109,20 @@ class VerticalPlayerController extends GetxController {
       showPremiumContentDialog();
     }
   }
+  void changeEpisode(int index) async {
+    // Pause all videos
+    for (var vc in controllers) {
+      vc.pause();
+    }
+
+    currentIndex.value = index;
+    showPlayPauseIcon.value = false;
+
+    final controller = controllers[index];
+    if (controller.value.isInitialized) {
+      controller.play();
+    }
+  }
 
   void showPremiumContentDialog() {
     if (seriesPackage == null) {

@@ -1,7 +1,7 @@
 class APIEndpoints {
   // Secret Key
   static const String _secretKey = "06c51069-0171-4f23-bf8f-41c9cd86762d";
-  static const String _baseurl="https://templatecookies.com/ott_clicknplay/public/api";
+    static const String baseurl="https://templatecookies.com/ott_clicknplay/public/api/";
 
   // Authentication
   static const String sendOtp = "send-otp";
@@ -14,7 +14,7 @@ class APIEndpoints {
   static const  String createOrderCoin = "create-order/coins";
   static const  String createOrderPPV = "create-order/ppv";
 
-  static  String invoice(int orderID) => "$_baseurl/invoice/$orderID?secret=$_secretKey";
+  static  String invoice(int orderID) => "$baseurl+invoice/$orderID?secret=$_secretKey";
 
 
   //WatchHisoty

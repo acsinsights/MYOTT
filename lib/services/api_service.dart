@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:myott/services/api_endpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
@@ -6,7 +7,7 @@ class ApiService {
 
   ApiService()
       : _dio = Dio(BaseOptions(
-    baseUrl: "https://templatecookies.com/ott/public/api/",
+    baseUrl: APIEndpoints.baseurl,
     connectTimeout: const Duration(seconds: 100),
     receiveTimeout: const Duration(seconds: 100),
   ));

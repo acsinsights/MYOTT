@@ -63,7 +63,7 @@ class TvSeriesMovieList extends StatelessWidget {
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
-                            'assets/images/placeholder.png',
+                            'assets/images/movies/SliderMovies/movie-1.png',
                             fit: BoxFit.cover,
                           );
                         },

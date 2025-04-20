@@ -8,7 +8,7 @@ import 'SliderItemModel.dart';
 import 'latestMandTModel.dart';
 
 class HomePageModel {
-  // final LatestMandTModel latest;  // Updated: Now properly included as a map
+  final LatestMandTModel latest;  // Updated: Now properly included as a map
   final List<MoviesModel> top10;
   final List<MoviesModel> newArrival;
   final List<MoviesModel>? upcomingMovies;
@@ -20,7 +20,7 @@ class HomePageModel {
   final List<HomeGenreModel> genre;
 
   HomePageModel({
-    // required this.latest,
+    required this.latest,
     required this.top10,
     required this.newArrival,
     this.upcomingMovies,
@@ -33,10 +33,12 @@ class HomePageModel {
   });
 
   factory HomePageModel.fromJson(Map<String, dynamic> json) {
+    print("🎬 Raw latest: ${json['latest']}");
+
     return HomePageModel(
-      // latest: json['latest'] != null
-      //     ? LatestMandTModel.fromJson(json['latest']) // Correct mapping for latest as a Map
-      //     : LatestMandTModel(movies: [], series: []),  // Default to empty if null
+      latest: json['latest'] != null
+          ? LatestMandTModel.fromJson(json['latest']) // Correct mapping for latest as a Map
+          : LatestMandTModel(movies: [], series: []),  // Default to empty if null
 
       top10: (json['top_movies'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
       actors: (json['actors'] as List?)?.map((e) => ActorsModel.fromJson(e)).toList() ?? [],
@@ -46,6 +48,7 @@ class HomePageModel {
       upcomingMovies: (json['upcoming_movie'] as List?)?.map((e) => MoviesModel.fromJson(e)).toList() ?? [],
       slider: (json['slider'] as List?)?.map((e) => SliderItemModel.fromJson(e)).toList() ?? [],
       video: (json["videos"] as List?)?.map((e) => Video.fromJson(e)).toList() ?? [],
+
       series: (json["series"] as List?)?.map((e) => HomeSeries.fromJson(e)).toList() ?? [],
       genre: (json['all_genres'] as List?)?.map((e) => HomeGenreModel.fromJson(e)).toList() ?? [],
     );
