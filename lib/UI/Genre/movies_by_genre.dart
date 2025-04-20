@@ -71,10 +71,10 @@ class MoviesByGenre extends StatelessWidget {
                   });
                 }),
 
-              if (audios.isNotEmpty)
-                ContentSection(title: "Audios", items: audios, onTap: (audio) {
-                  // Future implementation for audio playback
-                }),
+              // if (audios.isNotEmpty)
+              //   ContentSection(title: "Audios", items: audios, onTap: (audio) {
+              //     // Future implementation for audio playback
+              //   }),
             ],
           ),
         );

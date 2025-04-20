@@ -81,7 +81,7 @@ class SearchScreen extends StatelessWidget {
                         leading: item.thumbnailImg != null && item.thumbnailImg!.isNotEmpty
                             ? ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            child: NetworkImageWidget(imageUrl: item.thumbnailImg,height: 100,width: 100,))
+                            child: NetworkImageWidget(imageUrl: item.thumbnailImg,height: 100,width: 100,errorAsset: "assets/images/movies/SliderMovies/movie-1.png",))
                             : Icon(Icons.image, size: 50, color: Colors.white70),
                         title: Text(item.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white)),
                         subtitle: Text(

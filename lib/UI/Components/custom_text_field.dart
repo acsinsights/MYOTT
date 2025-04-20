@@ -46,7 +46,7 @@
           hintText: hintText,
           hintStyle: AppTextStyles.SubHeading2,
           filled: true,
-          fillColor: AppColors.iconGray,
+          fillColor: AppColors.border,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,

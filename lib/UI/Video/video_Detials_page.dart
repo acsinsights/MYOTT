@@ -238,6 +238,8 @@ class VideoBanner extends StatelessWidget {
                     width: double.infinity,
                     height: 400.h,
                     fit: BoxFit.cover,
+                    errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+
                   ),
                   Container(
                     width: double.infinity,
@@ -273,6 +275,8 @@ class VideoBanner extends StatelessWidget {
                         imageUrl: video!.thumbnailImg,
                         fit: BoxFit.cover,
                         width: 140.w,
+                        errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+
                       ),
                     ),
                   ),

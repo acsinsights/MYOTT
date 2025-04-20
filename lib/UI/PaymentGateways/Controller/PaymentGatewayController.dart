@@ -22,6 +22,10 @@ class PaymentGatewayController extends GetxController {
   var razorpaySecret="".obs;
   var paypalClientId="".obs;
   var stripeKey="".obs;
+  var redirectUrl="".obs;
+  var phonepeMerchantId="".obs;
+  var phonepeSaltKey="".obs;
+
 
   @override
   void onInit() {
@@ -48,6 +52,11 @@ class PaymentGatewayController extends GetxController {
         razorpaySecret.value = gateway.razorpaySecret;
         paypalClientId.value = gateway.paypalClientId;
         stripeKey.value = gateway.stripeKey;
+        phonepeMerchantId.value=gateway.phonepeMerchantId;
+        redirectUrl.value=gateway.phonepeRedirectUrl;
+        phonepeSaltKey.value=gateway.phonepeSaltKey;
+
+
         // Add more as needed...
       } else {
         errorMessage.value = "No payment gateways found!";

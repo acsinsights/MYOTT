@@ -190,7 +190,7 @@ class SubscriptionScreen extends StatelessWidget {
                         "offer_price": hasOffer ? plan.offerPrice : null,
                         "currency": plan.currency,
                         "content_id": 0,
-                        "content_type": MediaType.movie,
+                        "content_type": MediaType.movie.name,
                       });
                     },
                   ),
