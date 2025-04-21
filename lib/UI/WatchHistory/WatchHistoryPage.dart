@@ -150,6 +150,8 @@ class WatchHistoryPage extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     String shortType = type[0].toUpperCase();
+                                    print(shortType);
+                                    print(id);
                                     controller.deleteHistory(shortType, id);
                                   },
                                   child: CircleAvatar(

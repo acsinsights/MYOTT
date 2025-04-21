@@ -5,11 +5,15 @@ import 'package:get/get_core/src/get_main.dart';
 
 import 'package:myott/Core/Utils/app_text_styles.dart';
 import 'package:myott/UI/Home/Controller/themeController.dart';
+import 'package:myott/UI/Profile/Components/SettingItem.dart';
 
 import 'package:myott/UI/Profile/Components/SubscriptionBanner.dart';
 import 'package:myott/UI/Profile/Components/UserProfile.dart';
 
 import 'package:myott/UI/Setting/setting_page.dart';
+
+import '../Setting/HelpAndSupport/supportType.dart';
+import 'Components/WatchHistoryHorizontalList.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ThemeController controller = Get.find<ThemeController>();
@@ -35,10 +39,10 @@ class ProfileScreen extends StatelessWidget {
           //     onPressed: controller.toggleTheme,
           //   );
           // }),
-          IconButton(
-            icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color),
-            onPressed: () => Get.to(HelpAndSettingScreen()),
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color),
+          //   onPressed: () => Get.to(HelpAndSettingScreen()),
+          // ),
         ],
       ),
 
@@ -51,18 +55,23 @@ class ProfileScreen extends StatelessWidget {
             SubscriptionBanner(),
             UserProfile(),
             SizedBox(height: 16),
+            Text(
+              "Recently Watched",
+              style: AppTextStyles.Headingb4,
+            ),
+            SizedBox(height: 10),
+            WatchHistoryHorizontalList(), // ✅ Add
+            SizedBox(height: 10),
 
-            // Text(
-            //   "ContinueWatching".tr,
-            //   style: GoogleFonts.poppins(
-            //       color: Colors.white,
-            //       fontSize: 18,
-            //       fontWeight: FontWeight.bold),
-            // ),
-            // SizedBox(
-            //   height: 10,
-            // ),
-            // MovieListComponent(movies: movieController.movies, isContinueWatching: true),
+            SettingItem(title: "Settings", icon: Icons.settings,
+            onTap: (){
+              Get.to(HelpAndSettingScreen());
+            },),
+            SettingItem(title: "Support".tr, icon: Icons.help,
+              onTap: (){
+                Get.to(SupportTypePage());
+              },
+            ),
           ],
         ),
       ),
@@ -70,67 +79,4 @@ class ProfileScreen extends StatelessWidget {
   }
 
 
-//   Widget _buildMovieList(bool isContinueWatching) {
-//     return SizedBox(
-//       height: isContinueWatching ? 140 : 180,
-//       child: ListView.builder(
-//         scrollDirection: Axis.horizontal,
-//         itemCount: movieimages.length, // Use the length of movie images list
-//         padding: const EdgeInsets.only(left: 16),
-//         itemBuilder: (context, index) {
-//           return Padding(
-//             padding: const EdgeInsets.only(right: 12.0),
-//             child: Container(
-//               width: 120,
-//               decoration: BoxDecoration(
-//                 color: Colors.grey[900],
-//                 borderRadius: BorderRadius.circular(10),
-//                 image: DecorationImage(
-//                   image:
-//                       AssetImage(movieimages[index]), // Load image from assets
-//                   fit: BoxFit.cover, // Make image cover the container
-//                 ),
-//               ),
-//               child: Stack(
-//                 alignment: Alignment.bottomLeft,
-//                 children: [
-//                   // Play Icon and Episode Info for Continue Watching
-//                   if (isContinueWatching)
-//                     Positioned(
-//                       bottom: 10,
-//                       left: 8,
-//                       child: Row(
-//                         children: [
-//                           const Icon(Icons.play_arrow,
-//                               size: 16, color: Colors.white),
-//                           Text(
-//                             "E1 E2",
-//                             style: GoogleFonts.poppins(
-//                                 fontSize: 12,
-//                                 color: Colors.white,
-//                                 fontWeight: FontWeight.bold),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//
-//                   // Progress Bar for Continue Watching
-//                   if (isContinueWatching)
-//                     Positioned(
-//                       bottom: 0,
-//                       child: Container(
-//                         height: 5,
-//                         width: 80,
-//                         color: Colors.redAccent,
-//                       ),
-//                     ),
-//                 ],
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
 }

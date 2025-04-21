@@ -59,6 +59,8 @@ class _ContentAccessButtonState extends State<ContentAccessButton> {
   void _logWatchHistory() {
     if (widget.contentId != null && widget.contentType != null) {
       String shortType = _getShortType(widget.contentType!);
+      print("==============================================="+shortType);
+      print(widget.contentId);
       _watchHistoryService.addWatchHistory(shortType, widget.contentId!);
     }
   }

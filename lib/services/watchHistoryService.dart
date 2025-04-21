@@ -8,6 +8,8 @@ class WatchHistoryService {
   Future<WatchHistoryResponseModel?> showWatchHistory() async {
     try {
       final response = await apiService.get(APIEndpoints.showWatchHistoy);
+      print(response?.data);
+
       return WatchHistoryResponseModel.fromJson(response?.data);
     } catch (e) {
       print("Error fetching watch history: $e");
@@ -18,6 +20,7 @@ class WatchHistoryService {
   Future<bool> addWatchHistory(String type, int contentId) async {
     try {
       final url = APIEndpoints.addWatchHistory(type, contentId);
+      print("Donneeeeeeeeeeeeeeeeeeeee");
       await apiService.get(url);
       return true;
     } catch (e) {

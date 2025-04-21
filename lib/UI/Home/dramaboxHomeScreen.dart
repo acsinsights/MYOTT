@@ -201,7 +201,7 @@ class RoundedVideoList extends StatelessWidget {
   final List<Video> videos;
   final bool isTop10;
 
-  RoundedVideoList({Key? key, required this.videos, this.isTop10 = false}) : super(key: key);
+  const RoundedVideoList({Key? key, required this.videos, this.isTop10 = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +218,7 @@ class RoundedVideoList extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 180.h,
+      height: 200.h, // increased height slightly
       child: LayoutBuilder(
         builder: (context, constraints) {
           final double itemWidth = (constraints.maxWidth - 16 - (2 * 12)) / 3;
@@ -238,33 +238,39 @@ class RoundedVideoList extends StatelessWidget {
                   });
                 },
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          width: itemWidth,
-                          height: itemWidth * 1.2,
-                          child: NetworkImageWidget(
-                            imageUrl: video.image,
-                            errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+                  padding: EdgeInsets.only(right: 12.w),
+                  child: SizedBox(
+                    width: itemWidth,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            width: itemWidth,
+                            height: itemWidth * 1.2,
+                            child: NetworkImageWidget(
+                              imageUrl: video.image,
+                              errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 6),
-                      SizedBox(
-                        width: itemWidth,
-                        child: Text(
-                          video.name,
-                          style: AppTextStyles.SubHeading2.copyWith(color: AppColors.text),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        SizedBox(height: 6.h),
+                        Flexible(
+                          child: Text(
+                            video.name,
+                            style: AppTextStyles.SubHeading2.copyWith(
+                              color: AppColors.text,
+                              fontSize: 12.sp,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -493,7 +499,7 @@ class DramaMovieList extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 180,
+      height: 200, // Increased height for better text visibility
       child: LayoutBuilder(
         builder: (context, constraints) {
           final double itemWidth = (constraints.maxWidth - 16 - (2 * 12)) / 3;
@@ -514,47 +520,36 @@ class DramaMovieList extends StatelessWidget {
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 12.0),
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              width: itemWidth,
-                              height: itemWidth * 1.25, // maintain poster ratio
-                              child: NetworkImageWidget(
-                                imageUrl: movie.thumbnailImg,
-                                errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          SizedBox(
+                  child: SizedBox(
+                    width: itemWidth,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
                             width: itemWidth,
-                            child: Text(
-                              movie.name,
-                              style: AppTextStyles.SubHeading2.copyWith(color: AppColors.text),
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            height: itemWidth * 1.25,
+                            child: NetworkImageWidget(
+                              imageUrl: movie.thumbnailImg,
+                              errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
                             ),
-                          ),
-                        ],
-                      ),
-
-                      if (isTop10 && index < topRankImages.length)
-                        Positioned(
-                          bottom: itemWidth * 0.45,
-                          right: 6,
-                          child: Image.asset(
-                            topRankImages[index],
-                            width: 30,
-                            height: 40,
                           ),
                         ),
-                    ],
+                        const SizedBox(height: 6),
+                        Text(
+                          movie.name,
+                          style: AppTextStyles.SubHeading2.copyWith(
+                            color: AppColors.text,
+                            fontSize: 12,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

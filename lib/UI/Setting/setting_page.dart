@@ -66,11 +66,11 @@ class HelpAndSettingScreen extends StatelessWidget {
                 Get.to(WalletScreen());
               },
               title: "Wallet".tr, icon: Icons.wallet),
-          SettingItem(
-              onTap: (){
-                Get.to(WatchHistoryPage());
-              },
-              title: "WatchHistory".tr, icon: Icons.history_toggle_off),
+          // SettingItem(
+          //     onTap: (){
+          //       Get.to(WatchHistoryPage());
+          //     },
+          //     title: "WatchHistory".tr, icon: Icons.history_toggle_off),
           // SettingItem(
           //     onTap: (){
           //       Get.to(SubscriptionHistoryScreen());
@@ -107,11 +107,7 @@ class HelpAndSettingScreen extends StatelessWidget {
               Get.to(TermsAndCondition());
             },
               title: "Terms".tr, icon: Icons.article_outlined),
-          SettingItem(title: "Support".tr, icon: Icons.help,
-            onTap: (){
-            Get.to(SupportTypePage());
-            },
-          ),
+
           SettingItem(
               title: "Refund".tr,
               icon: Icons.receipt_long_outlined),

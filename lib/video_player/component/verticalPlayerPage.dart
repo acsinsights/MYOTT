@@ -6,9 +6,10 @@ import 'package:video_player/video_player.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../services/watchHistoryService.dart';
 import '../Controller/verticalPlayerController.dart';
 
-class VerticalPlayerPage extends StatelessWidget {
+class VerticalPlayerPage extends StatefulWidget {
   final List<Episode> episodes;
   final SeriesPackage? seriesPackage;
   final SOrder? order;
@@ -16,7 +17,7 @@ class VerticalPlayerPage extends StatelessWidget {
   final int? contentId;
   final String title;
 
-  const VerticalPlayerPage({
+   VerticalPlayerPage({
     required this.episodes,
     this.seriesPackage,
     this.order,
@@ -26,11 +27,27 @@ class VerticalPlayerPage extends StatelessWidget {
   });
 
   @override
+  State<VerticalPlayerPage> createState() => _VerticalPlayerPageState();
+}
+
+class _VerticalPlayerPageState extends State<VerticalPlayerPage> {
+  final WatchHistoryService _watchHistoryService = WatchHistoryService();
+
+  void _logWatchHistory() {
+    if (widget.contentId != null) {
+      _watchHistoryService.addWatchHistory("S", widget.contentId!);
+      print("Adddddd");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final controller = Get.put(VerticalPlayerController());
 
+
+
     return FutureBuilder(
-      future: controller.initData(episodes, seriesPackage, order, slug,contentId),
+      future: controller.initData(widget.episodes, widget.seriesPackage, widget.order, widget.slug,widget.contentId),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Scaffold(
@@ -192,7 +209,7 @@ class VerticalPlayerPage extends StatelessWidget {
                         SizedBox(width: 12.w),
                         Expanded(
                           child: Text(
-                            title,
+                            widget.title,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18.sp,
@@ -309,6 +326,11 @@ class VerticalPlayerPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    _logWatchHistory();
   }
 
   Widget _buildActionButton(IconData icon, String label, VoidCallback onTap) {
