@@ -31,6 +31,7 @@ import '../TvSeries/Model/TVSeriesDetailsModel.dart';
 import '../TvSeries/TvSeries_details_page.dart';
 import '../Video/video_Detials_page.dart';
 import 'Component/Audio_selection.dart';
+import 'Component/CategoryFilterBar .dart';
 import 'Component/coming_soon_widget.dart';
 import 'Component/latest_movie_list.dart';
 import 'Controller/Home_controller.dart';
@@ -109,6 +110,8 @@ class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
                 return Column(
                   children: [
                     SizedBox(height: 50.h),
+                    CategoryFilterBar(),
+
                     MovieSlider(),
 
                     if (homeData.latest.movies.isNotEmpty || homeData.latest.series.isNotEmpty) ...[

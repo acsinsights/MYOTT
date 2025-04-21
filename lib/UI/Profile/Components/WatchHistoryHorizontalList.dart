@@ -25,7 +25,7 @@ class WatchHistoryHorizontalList extends StatelessWidget {
       }
 
       return SizedBox(
-        height: 180.h, // Increased height to fit image + text
+        height: 190.h,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -66,43 +66,64 @@ class WatchHistoryHorizontalList extends StatelessWidget {
               slug = item.video.slug;
             }
 
-            return GestureDetector(
-              onTap: () {
-                if (type == "Movie") {
-                  Get.to(MovieDetailsPage(), arguments: {"slug": slug});
-                } else if (type == "Series") {
-                  Get.to(TvSeriesDetailsPage(), arguments: {"slug": slug});
-                } else if (type == "Audio") {
-                  Get.toNamed('/audio-details', arguments: {'id': id});
-                } else if (type == "Video") {
-                  Get.to(VideoDetialsPage(), arguments: {"slug": slug});
-                }
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: NetworkImageWidget(
-                      imageUrl: image,
-                      width: 100.w,
-                      height: 140.h,
-                      errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+            return Stack(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    if (type == "Movie") {
+                      Get.to(MovieDetailsPage(), arguments: {"slug": slug});
+                    } else if (type == "Series") {
+                      Get.to(TvSeriesDetailsPage(), arguments: {"slug": slug});
+                    } else if (type == "Audio") {
+                      Get.toNamed('/audio-details', arguments: {'id': id});
+                    } else if (type == "Video") {
+                      Get.to(VideoDetialsPage(), arguments: {"slug": slug});
+                    }
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: NetworkImageWidget(
+                          imageUrl: image,
+                          width: 100.w,
+                          height: 140.h,
+                          errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+                        ),
+                      ),
+                      SizedBox(height: 6.h),
+                      SizedBox(
+                        width: 100.w,
+                        child: Text(
+                          title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // ❌ Delete Button on top-right of thumbnail
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      String shortType = type[0].toUpperCase(); // M / S / A / V
+                      controller.deleteHistory(shortType, id);
+                    },
+                    child: CircleAvatar(
+                      radius: 12.r,
+                      backgroundColor: Colors.redAccent,
+                      child: Icon(Icons.close, size: 14.sp, color: Colors.white),
                     ),
                   ),
-                  SizedBox(height: 6.h),
-                  SizedBox(
-                    width: 100.w,
-                    child: Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 12.sp),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             );
           },
         ),
