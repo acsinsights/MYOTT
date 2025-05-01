@@ -13,6 +13,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../Core/Utils/app_colors.dart';
 import '../../Core/Utils/app_common.dart';
 import '../../Core/Utils/app_text_styles.dart';
+import '../../video_player/component/Video_player_page.dart';
 import '../Actors/Components/actor_list.dart';
 import '../Components/MovieListShrimerLoad.dart';
 import '../Components/Movie_grid.dart';
@@ -25,6 +26,7 @@ import '../Genre/components/Gnere_selection.dart';
 import '../Model/Moviesmodel.dart';
 import '../Movie/Model/movie_details_model.dart';
 import '../Movie/Movie_details_page.dart';
+import '../Setting/Setting_Controller.dart';
 import '../TvSeries/Component/TvShowList.dart';
 import '../TvSeries/Controller/tv_series_controller.dart';
 import '../TvSeries/Model/TVSeriesDetailsModel.dart';
@@ -37,7 +39,7 @@ import 'Component/latest_movie_list.dart';
 import 'Controller/Home_controller.dart';
 import 'Controller/MovieSliderController.dart';
 import 'Model/latestMandTModel.dart';
-import 'Model/seriesModel.dart';
+import 'Model/HomeSeries.dart';
 import 'Model/videoModel.dart';
 
 class Dramaboxhomescreen extends StatefulWidget {
@@ -50,6 +52,7 @@ class Dramaboxhomescreen extends StatefulWidget {
 class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
   final homeController = Get.put(HomeController());
   ThemeController controller=Get.put(ThemeController());
+  final SettingController settiingController=Get.put(SettingController());
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +83,7 @@ class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
             child: SingleChildScrollView(
               child: Obx(() {
                 final homeData = homeController.homePageData.value;
+                final verticalPlayer = settiingController.settingData.value?.generalSettings!.view ;
 
                 if (homeController.isLoading.value) {
                   return Padding(
@@ -137,7 +141,7 @@ class _DramaboxhomescreenState extends State<Dramaboxhomescreen> {
                           title: "TV Series".tr,
                         )),
                       ),
-                      RoundedTvSeriesList(tvSeries: homeData.series),
+                      RoundedTvSeriesList(tvSeries: homeData.series,verticalPlayer: verticalPlayer??0,),
                     ],
                     if (homeData.audios.isNotEmpty) ...[
                       SectionTitle(title: "Languages".tr, showAll: false),
@@ -287,8 +291,11 @@ class RoundedVideoList extends StatelessWidget {
 
 class RoundedTvSeriesList extends StatelessWidget {
   final List<HomeSeries> tvSeries;
+  final int verticalPlayer;
 
-  RoundedTvSeriesList({Key? key, required this.tvSeries}) : super(key: key);
+
+  RoundedTvSeriesList({Key? key, required this.tvSeries,    required this.verticalPlayer,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -324,6 +331,16 @@ class RoundedTvSeriesList extends StatelessWidget {
                   }, binding: BindingsBuilder(() {
                     Get.put(TVSeriesController());
                   }));
+                  // if (verticalPlayer == 0) {
+                  //   Get.to(() => TvSeriesDetailsPage(), arguments: {
+                  //     "slug": item.slug
+                  //   }, binding: BindingsBuilder(() {
+                  //     Get.put(TVSeriesController());
+                  //   }));
+                  // }else{
+                  //
+                  // }
+
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 12.0),

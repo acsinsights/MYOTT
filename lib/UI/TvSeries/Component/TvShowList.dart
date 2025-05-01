@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myott/UI/Home/Model/seriesModel.dart';
+import 'package:myott/UI/Home/Model/HomeSeries.dart';
 import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
 import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/UI/TvSeries/Controller/tv_series_controller.dart';

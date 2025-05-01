@@ -1,7 +1,7 @@
 import 'package:myott/UI/Genre/Model/genre_model.dart';
 import 'package:myott/UI/Actors/Model/ActorsModel.dart';
 import 'package:myott/UI/Home/Model/HomeAudio.dart';
-import 'package:myott/UI/Home/Model/seriesModel.dart';
+import 'package:myott/UI/Home/Model/HomeSeries.dart';
 import 'package:myott/UI/Home/Model/videoModel.dart';
 import '../../Model/Moviesmodel.dart';
 import 'SliderItemModel.dart';

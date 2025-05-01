@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myott/Core/Utils/app_common.dart';
 import 'package:myott/UI/Home/Main_screen.dart';
 import 'package:myott/services/ProfileService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,18 +60,21 @@ class ProfileController extends GetxController {
       );
 
       if (response != null && response.statusCode == 200) {
-        Get.snackbar("Success", "Profile updated successfully!",backgroundColor: Colors.green,colorText: Colors.white);
+        await fetchProfileData();
+        showSnackbar("Success", "Profile updated successfully!",isError: false);
       } else {
-        Get.snackbar("Error", "Failed to upload data",backgroundColor: Colors.red,colorText: Colors.white);
+        showSnackbar("Error", "Failed to upload data",isError: true);
+
       }
     } catch (e) {
       print("Error uploading user data: $e");
-      // Get.snackbar("Error", "Something went wrong!");
     } finally {
       isLoading.value = false;
       update();
     }
   }
+
+
   void updateUserData() async {
     try {
       isLoading.value = true;
@@ -82,7 +86,8 @@ class ProfileController extends GetxController {
       String phone = phoneController.text.trim();
 
       if (imageFile == null) {
-        Get.snackbar("Error", "Please select an image before updating your profile!",colorText: AppColors.white,backgroundColor: AppColors.primary2);
+        showSnackbar("Error", "Please select an image before updating your profile!",isError: true);
+
         isLoading.value = false;
         return;
       }
@@ -96,9 +101,10 @@ class ProfileController extends GetxController {
 
       if (response != null && response.statusCode == 200) {
         fetchProfileData(); // ✅ Refresh profile data
-        Get.snackbar("Success", "Profile updated successfully!");
+        showSnackbar("Success", "Profile updated successfully!",isError: false);
       } else {
-        Get.snackbar("Error", "Failed to upload data");
+
+        showSnackbar("Error", "Failed to upload data",isError: true);
       }
     } catch (e) {
       print("Error uploading user data: $e");
@@ -111,26 +117,30 @@ class ProfileController extends GetxController {
 
   bool validateFields() {
     if (selectedImage.value == null) {
-      Get.snackbar("Error", "Please select an image before updating your profile!",
-          colorText: AppColors.white, backgroundColor: AppColors.primary2);
+      showSnackbar("Error", "Please select an image before updating your profile!",isError: true);
+
+
       return false;
     }
 
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar("Error", "Name cannot be empty!",
-          colorText: AppColors.white, backgroundColor: AppColors.primary2);
+      showSnackbar("Error", "Name cannot be empty!!",isError: true);
+
+
       return false;
     }
 
     if (emailController.text.trim().isEmpty) {
-      Get.snackbar("Error", "Email cannot be empty!",
-          colorText: AppColors.white, backgroundColor: AppColors.primary2);
+      showSnackbar("Error", "Email cannot be empty!",isError: true);
+
+
       return false;
     }
 
     if (phoneController.text.trim().isEmpty) {
-      Get.snackbar("Error", "Phone number cannot be empty!",
-          colorText: AppColors.white, backgroundColor: AppColors.primary2);
+      showSnackbar("Error", "Phone number cannot be empty!",isError: true);
+
+
       return false;
     }
 
@@ -157,8 +167,8 @@ class ProfileController extends GetxController {
         isLoading(false);
 
       } else {
-        Get.snackbar("Failed", "Failed to load profile data",
-            backgroundColor: Colors.red, colorText: Colors.white);
+        showSnackbar("Failed", "Failed to load profile data",isError: true);
+
       }
     } catch (e) {
       isLoading(false);
@@ -179,8 +189,9 @@ class ProfileController extends GetxController {
         user.value = UserModel.fromJson(response['user']);
         update();
       } else {
-        Get.snackbar("Error", "Unable to refresh user data",
-            backgroundColor: Colors.red, colorText: Colors.white);
+        showSnackbar("Error", "Unable to refresh user data",isError: true);
+
+
       }
     } catch (e) {
       print("❌ Error refreshing user data: $e");

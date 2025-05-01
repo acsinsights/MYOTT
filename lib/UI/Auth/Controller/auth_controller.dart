@@ -137,6 +137,7 @@ class AuthController extends GetxController {
   Future<void> verifyOtp() async {
     String otp = otpController.otpController.text.trim();
     String identifier = emailAddress.value.isNotEmpty ? emailAddress.value : mobileNumber.value;
+    print("///////////////////////////////////////////////////////////////////////////////"+identifier);
 
     if (otp.isEmpty) {
       Get.snackbar("Error", "Please enter the OTP",
@@ -160,7 +161,7 @@ class AuthController extends GetxController {
         );
         bool? isNewUser = prefs.getBool("creating_new_account");
         print("✅ OTP Verified. New Account: $isNewUser");
-        print(prefs.getString("access_token"));
+        debugPrint(prefs.getString("access_token"));
 
 
         if (isNewUser == true) {
@@ -221,8 +222,9 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.getString("access_token");
     await prefs.clear();
-    print("🔴 Logged out successfully");
+    print("🔴 Logged out successfully + acccesss_token: ${prefs.getString("access_token")}");
 
     Get.offAll(LoginPage());
   }

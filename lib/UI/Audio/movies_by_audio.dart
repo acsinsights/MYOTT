@@ -101,7 +101,7 @@ class MoviesByAudio extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: NetworkImage(item.thumbnailImg ?? "https://via.placeholder.com/120"),
+                  image: NetworkImage(item.thumbnailImg ?? "https://i.pravatar.cc/300"),
                   fit: BoxFit.cover,
                 ),
               ),

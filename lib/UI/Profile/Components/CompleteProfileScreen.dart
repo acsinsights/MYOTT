@@ -172,7 +172,7 @@ class CompleteProfileScreen extends StatelessWidget {
               backgroundImage: profileController.selectedImage.value != null
                   ? FileImage(profileController.selectedImage.value!)
                       as ImageProvider
-                  : const NetworkImage('https://via.placeholder.com/150'),
+                  : const NetworkImage('https://i.pravatar.cc/300'),
             ),
             InkWell(
               onTap: () => _showImagePickerDialog(),
@@ -199,13 +199,13 @@ class CompleteProfileScreen extends StatelessWidget {
         child: Wrap(
           children: [
             ListTile(
-              leading: const Icon(Icons.camera),
-              title: const Text("Take Photo"),
+              leading: const Icon(Icons.camera,color: Colors.black,),
+              title: const Text("Take Photo",style: TextStyle(color: Colors.black),),
               onTap: () => profileController.pickImage(ImageSource.camera),
             ),
             ListTile(
-              leading: const Icon(Icons.image),
-              title: const Text("Choose from Gallery"),
+              leading: const Icon(Icons.image,color: Colors.black,),
+              title: const Text("Choose from Gallery",style: TextStyle(color: Colors.black)),
               onTap: () => profileController.pickImage(ImageSource.gallery),
             ),
           ],
