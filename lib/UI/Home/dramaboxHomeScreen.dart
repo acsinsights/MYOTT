@@ -14,6 +14,7 @@ import '../../Core/Utils/app_colors.dart';
 import '../../Core/Utils/app_common.dart';
 import '../../Core/Utils/app_text_styles.dart';
 import '../../video_player/component/Video_player_page.dart';
+import '../../video_player/component/verticalPlayerPage.dart';
 import '../Actors/Components/actor_list.dart';
 import '../Components/MovieListShrimerLoad.dart';
 import '../Components/Movie_grid.dart';
@@ -326,20 +327,28 @@ class RoundedTvSeriesList extends StatelessWidget {
 
               return GestureDetector(
                 onTap: () {
-                  Get.to(() => TvSeriesDetailsPage(), arguments: {
-                    "slug": item.slug
-                  }, binding: BindingsBuilder(() {
-                    Get.put(TVSeriesController());
-                  }));
-                  // if (verticalPlayer == 0) {
-                  //   Get.to(() => TvSeriesDetailsPage(), arguments: {
-                  //     "slug": item.slug
-                  //   }, binding: BindingsBuilder(() {
-                  //     Get.put(TVSeriesController());
-                  //   }));
-                  // }else{
-                  //
-                  // }
+                  // Get.to(() => TvSeriesDetailsPage(), arguments: {
+                  //   "slug": item.slug
+                  // }, binding: BindingsBuilder(() {
+                  //   Get.put(TVSeriesController());
+                  // }));
+                  if (verticalPlayer == 0) {
+                    Get.to(() => TvSeriesDetailsPage(), arguments: {
+                      "slug": item.slug
+                    }, binding: BindingsBuilder(() {
+                      Get.put(TVSeriesController());
+                    }));
+                  }else{
+                    Get.to(VerticalPlayerPage(
+                      episodes: item!.episodes,
+                      seriesPackage: item.seriesPackage,
+                      order: item.seriesorder,
+                      slug: item.slug,
+                      contentId: item.id,
+                      title: item.name,
+                    ));
+
+                  }
 
                 },
                 child: Padding(
