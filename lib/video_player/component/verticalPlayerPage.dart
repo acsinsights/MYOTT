@@ -6,11 +6,12 @@ import 'package:video_player/video_player.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../UI/Home/Model/HomeSeries.dart';
 import '../../services/watchHistoryService.dart';
 import '../Controller/verticalPlayerController.dart';
 
 class VerticalPlayerPage extends StatefulWidget {
-  final List<Episode> episodes;
+  final List<HomeseriesEpisode> episodes;
   final SeriesPackage? seriesPackage;
   final SOrder? order;
   final String? slug;
@@ -402,7 +403,7 @@ class _VerticalPlayerPageState extends State<VerticalPlayerPage> {
                 itemCount: controller.episodes.length,
                 itemBuilder: (context, index) {
                   final episode = controller.episodes[index];
-                  final bool isFree = episode.isFree;
+                  final bool isFree = episode.episodeFree??false;
                   final bool hasAccess = isFree || controller.checkHasAccess();
 
                   return InkWell(

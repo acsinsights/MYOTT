@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myott/Core/Utils/app_text_styles.dart';
+import 'package:myott/UI/Home/Model/HomeSeries.dart';
 import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
 import 'package:video_player/video_player.dart';
 
@@ -17,7 +18,7 @@ class VerticalPlayerController extends GetxController {
   final isInitialized = false.obs;
   final ProfileController profileController = Get.put(ProfileController());
 
-  List<Episode> episodes = [];
+  List<HomeseriesEpisode> episodes = [];
   List<VideoPlayerController> controllers = [];
   SeriesPackage? seriesPackage;
   SOrder? order;
@@ -29,7 +30,7 @@ class VerticalPlayerController extends GetxController {
     super.onInit();
   }
 
-  Future<void> initData(List<Episode> epList, SeriesPackage? seriesPackage, SOrder? order, String? slug, int? contentId) async {
+  Future<void> initData(List<HomeseriesEpisode> epList, SeriesPackage? seriesPackage, SOrder? order, String? slug, int? contentId) async {
     this.episodes = epList;
     this.seriesPackage = seriesPackage;
     this.order = order;
@@ -49,7 +50,7 @@ class VerticalPlayerController extends GetxController {
     }
 
     controllers.clear();
-    controllers = episodes.map((ep) => VideoPlayerController.network(ep.uploadUrl)).toList();
+    controllers = episodes.map((ep) => VideoPlayerController.network(ep.uploadUrl??"")).toList();
 
     await Future.wait(controllers.map((c) => c.initialize()));
   }
@@ -76,7 +77,7 @@ class VerticalPlayerController extends GetxController {
     }
 
     final ep = episodes[index];
-    if (ep.isFree == true || checkHasAccess()) {
+    if (ep.episodeFree == true || checkHasAccess()) {
       controllers[index].play();
     } else {
       showPremiumContentDialog();
@@ -99,7 +100,7 @@ class VerticalPlayerController extends GetxController {
       showPlayPauseIcon.value = false;
     });
 
-    if (episode.isFree || checkHasAccess()) {
+    if (episode.episodeFree??false || checkHasAccess()) {
       if (controller.value.isPlaying) {
         controller.pause();
       } else {

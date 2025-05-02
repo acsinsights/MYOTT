@@ -369,32 +369,7 @@ class SeriesBanner extends StatelessWidget {
                         ),
                         SizedBox(height: 10.h),
 
-                        verticalPlayer == 1
-                            ? CustomButton(
-                          width: 180.w,
-                          text: "Play Now",
-                          onPressed: () {
-                            if (verticalPlayer == 0) {
-                              Get.to(VideoPlayerPage(
-                                videoUrl: series!.series.trailerUrl,
-                                subtitles: {},
-                                dubbedLanguages: {},
-                              ));
-                            } else {
-                              Get.to(VerticalPlayerPage(
-                                episodes: series!.episodes,
-                                seriesPackage: series!.series.seriesPackage,
-                                order: series!.series.seriesorder,
-                                slug: series!.series.slug,
-                                contentId: series!.series.id,
-                                title: series!.series.name,
-                              ));
-                            }
-                          },
-                          backgroundColor: Colors.black,
-                          borderColor: Colors.white,
-                        )
-                            : ContentAccessButton(
+                     ContentAccessButton(
                           coinPrice: package.coinCost,
                           isFree: package.isFree,
                           selection: package.selection,
