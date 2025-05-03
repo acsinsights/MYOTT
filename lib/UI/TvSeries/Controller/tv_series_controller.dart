@@ -18,6 +18,7 @@ CommentService commentService=CommentService();
 
   var isLoading = false.obs;
   var tvSeriesDetails = Rxn<SeriesDetailResponse>();
+  var torder=Rxn<SOrder>();
   var isDetailsLoading = true.obs;
   var isDownloaded = false.obs;
   var isWishlisted = false.obs;
@@ -45,6 +46,9 @@ CommentService commentService=CommentService();
       if (fetchedTVSeriesDetails != null) {
         tvSeriesDetails.value = fetchedTVSeriesDetails;
         comments.assignAll(fetchedTVSeriesDetails.comments); // Initialize comments separately
+        torder.value = fetchedTVSeriesDetails.series.seriesorder;
+        torder.refresh();
+        print("🔄 Refreshed seriesOrder: ${fetchedTVSeriesDetails.series.seriesorder}");
 
       }
     } catch (e) {

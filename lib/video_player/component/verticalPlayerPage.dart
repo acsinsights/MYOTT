@@ -45,8 +45,6 @@ class _VerticalPlayerPageState extends State<VerticalPlayerPage> {
   Widget build(BuildContext context) {
     final controller = Get.put(VerticalPlayerController());
 
-
-
     return FutureBuilder(
       future: controller.initData(widget.episodes, widget.seriesPackage, widget.order, widget.slug,widget.contentId),
       builder: (context, snapshot) {
@@ -122,8 +120,6 @@ class _VerticalPlayerPageState extends State<VerticalPlayerPage> {
               //     );
               //   },
               // ),
-
-
 
 
               PageView.builder(

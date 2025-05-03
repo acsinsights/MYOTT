@@ -72,9 +72,13 @@ class PaymentGatewayController extends GetxController {
     try {
       showLoading();
       await _paymentService.sendPaymentDataToBackend(data);
-      Get.off(() => PaymentSuccessScreen(transactionId: data.transactionID ?? ""));
-dismissLoading();
+      Get.off( PaymentSuccessScreen(transactionId: data.transactionID ?? "",
+      slug: data.slug ?? "",
+        contentType: data.contentType!.name,
+      ));
       showSnackbar("Success", "Payment successfully");
+      dismissLoading();
+
     } catch (e) {
       dismissLoading();
       showSnackbar("Error", "Failed to send payment data", isError: true);

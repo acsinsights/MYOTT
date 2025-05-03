@@ -88,7 +88,11 @@ class _ContentAccessButtonState extends State<ContentAccessButton> {
     switch (widget.selection) {
       case 'subsriptionSystem':
         return _buildCustomButton("Subscribe to Watch", () {
-          Get.to(SubscriptionScreen());
+          Get.to(SubscriptionScreen(),arguments: {
+            "content_type": widget.contentType ?? "",
+            "content_id": widget.contentId ?? 0,
+            "slug": widget.slug,
+          });
         });
 
       case 'pricingSection':
@@ -102,6 +106,7 @@ class _ContentAccessButtonState extends State<ContentAccessButton> {
             "content_type": widget.contentType ?? "",
             "currency": "INR",
             "packageStatus": "active",
+            "slug": widget.slug,
           });
         });
 

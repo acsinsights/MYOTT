@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:myott/UI/Home/Main_screen.dart';
 import 'package:myott/UI/Setting/Setting_Controller.dart';
 import 'package:myott/UI/SplashScreen/splashScreen.dart';
+import 'package:myott/routes/app_pages.dart';
 import 'package:myott/services/Setting_service.dart';
 import 'package:myott/services/api_endpoints.dart';
 import 'package:myott/services/auth_service.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
             themeMode: themeController.isDarkMode.value
                 ? ThemeMode.dark
                 : ThemeMode.light,
+            getPages: AppPages.routes,
             debugShowCheckedModeBanner: false,
             translations: TranslationService(),
             locale: TranslationService.getLocale(savedLang),

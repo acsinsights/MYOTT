@@ -17,6 +17,7 @@ class MovieController extends GetxController {
   WatchHistoryService watchHistoryService=WatchHistoryService();
   final WishlistService wishlistService = WishlistService();
   TextEditingController commentController = TextEditingController();
+  Rxn<MOrder> movieOrder = Rxn<MOrder>();
 
   var comments = <MovieComments>[].obs;
   RxBool isWishlisted = false.obs;
@@ -56,12 +57,17 @@ class MovieController extends GetxController {
 
   Future<void> fetchMovieDetails(String slug) async {
     try {
+      print("Fetching movie details for slug: $slug");
       isLoading.value = true;
       var fetchedMovieDetails = await moviesService.getMovieDetails(slug);
 
       if (fetchedMovieDetails != null) {
         movieDetails.value = fetchedMovieDetails;
         comments.assignAll(fetchedMovieDetails.comment);
+        movieOrder.value = fetchedMovieDetails.movie.movieOrder;
+        movieOrder.refresh();
+        print("🔄 Refreshed movieOrder: ${fetchedMovieDetails.movie.movieOrder}");
+
       }
     } catch (e) {
       print("Error fetching movie details: $e");
@@ -70,13 +76,14 @@ class MovieController extends GetxController {
     }
   }
   Future<void> refreshMovieDetails() async {
+    print("refreesshh callledd");
     await fetchMovieDetails(movieDetails.value!.movie.slug);
+
   }
 
 
   Future<void> toggleWishlist(int movieId, String type) async {
     if (isWishlisted.value) {
-      /// ✅ Remove from Wishlist
       showLoading();
       bool removed = await wishlistService.removeMovieFromWatchlist(id: movieId);
       print(movieId);

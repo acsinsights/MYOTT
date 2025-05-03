@@ -1,13 +1,101 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:myott/UI/Components/custom_button.dart';
+import 'package:myott/UI/Home/Main_screen.dart';
+import '../../Core/Utils/app_common.dart';
+import '../Movie/Controller/Movie_controller.dart';
+import '../TvSeries/Controller/tv_series_controller.dart';
+import '../Video/Controller/VideoDetailsController.dart'; // Assuming you store MediaType here
 
-import '../Home/Main_screen.dart';
-
-class PaymentSuccessScreen extends StatelessWidget {
+class PaymentSuccessScreen extends StatefulWidget {
   final String transactionId;
+  final String slug;
+  final String contentType;
 
-  const PaymentSuccessScreen({super.key, required this.transactionId});
+  const PaymentSuccessScreen({
+    super.key,
+    required this.transactionId,
+    required this.slug,
+    required this.contentType,
+  });
+
+  @override
+  State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
+}
+
+class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
+  int countdown = 5;
+  Timer? _timer;
+  bool found = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startCountdownAndRedirect();
+    });
+  }
+
+
+  void _startCountdownAndRedirect() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) return; // prevent calling setState or navigation after dispose
+
+      if (countdown == 1) {
+        timer.cancel();
+        _redirectToContentDetails();
+      } else {
+        setState(() {
+          countdown--;
+        });
+      }
+    });
+  }
+
+
+  void _redirectToContentDetails() {
+    Get.until((route) {
+      if (route.settings.name == '/moviedetails' ||
+          route.settings.name == '/tvSeriesDetails' ||
+          route.settings.name == '/videoDetails') {
+        found = true;
+        return true;
+      }
+      return false;
+    });
+
+    if (!found) {
+      if (widget.contentType == MediaType.movie.name) {
+        Get.offNamed('/movieDetails', arguments: {'slug': widget.slug});
+      } else if (widget.contentType == MediaType.series.name) {
+        Get.offNamed('/verticalPlayer', arguments: {'slug': widget.slug});
+      } else if (widget.contentType == MediaType.video.name) {
+        Get.offNamed('/videoDetails', arguments: {'slug': widget.slug});
+      }else{
+        Get.offAll(MainScreen());
+      }
+    }
+
+    // 🔄 Refresh the correct content controller
+    if (widget.contentType == MediaType.movie.name) {
+      final controller = Get.put(MovieController());
+      controller.fetchMovieDetails(widget.slug);
+    } else if (widget.contentType == MediaType.series.name) {
+      final controller = Get.find<TVSeriesController>();
+      controller.fetchTVSeriesDetails(widget.slug);
+    } else if (widget.contentType == MediaType.video.name) {
+      final controller = Get.find<VideoDetailsController>();
+      controller.fetchVideoDetails(widget.slug);
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,46 +106,29 @@ class PaymentSuccessScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // 🖼️ Your OTT success image
             Image.asset(
-              'assets/images/paymentSucces.png', // 👈 Replace with your path
+              'assets/images/paymentSucces.png',
               height: 240,
             ),
-
             const SizedBox(height: 32),
-
-            // 🎉 Success Message
             const Text(
               "Payment Successful!",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
               textAlign: TextAlign.center,
             ),
-
             const SizedBox(height: 12),
-
-            // 🧾 OTT-related subtext
             Text(
-              "Your transaction ID is:\n$transactionId\n\nYou’ve unlocked premium entertainment. Sit back and enjoy binge-worthy content!",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
-              ),
+              "Your transaction ID is:\n${widget.transactionId}\n\nYou’ll be redirected in $countdown seconds...",
+              style: const TextStyle(fontSize: 16, color: Colors.white70),
               textAlign: TextAlign.center,
             ),
-
             const SizedBox(height: 32),
-
-            // 🚀 Explore More Button
             SizedBox(
               width: double.infinity,
-              child: CustomButton(onPressed: (){
-                Get.offAll(MainScreen());
-
-              },text: "Explore More",),
+              child: CustomButton(
+                text: "Go Now",
+                onPressed: _redirectToContentDetails,
+              ),
             ),
           ],
         ),

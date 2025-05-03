@@ -23,11 +23,12 @@ class PaymentSelectionScreen extends StatelessWidget {
     final int offerPrice = args['offer_price'] ?? 0;
     final String currency = args['currency'] ?? "INR";
     final int contentId = args['content_id'] ?? 0;
+    final String slug=args['slug'] ?? "";
 
     final String contentTypeString = args['content_type'] ?? 'movie';
     final MediaType contentType = MediaType.values.firstWhere(
           (e) => e.name == contentTypeString,
-      orElse: () => MediaType.movie,
+      orElse: () => MediaType.None,
     );
     return Scaffold(
       backgroundColor: Colors.black,
@@ -60,6 +61,7 @@ class PaymentSelectionScreen extends StatelessWidget {
                 offerprice: offerPrice,
                 price: price,
                 paymentType: paymentType,
+                slug: slug,
                 packageid: packageId,
                 packageStatus: packageStatus,
                 currency: currency,
@@ -112,6 +114,8 @@ class PaymentSelectionScreen extends StatelessWidget {
                     packageStatus: packageStatus,
                     currency: currency,
                     contentId: contentId,
+                    slug: slug,
+
                     contentType: contentType,
                 email: profileController.user.value?.email,
                 contact: profileController.user.value?.mobile,

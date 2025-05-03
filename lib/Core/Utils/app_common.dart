@@ -19,7 +19,7 @@ enum PaymentType { subscription, ppv, coins }
 
 enum ContentType { M, S, V, A }
 
-enum MediaType { movie, series, video, Audio }
+enum MediaType { movie, series, video, Audio,None }
 
 void showSnackbar(String title, String message, {bool isError = false}) {
   Get.snackbar(

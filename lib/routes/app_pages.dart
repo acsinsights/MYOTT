@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:myott/UI/Movie/Movie_details_page.dart';
 import 'package:myott/UI/Profile/Components/CompleteProfileScreen.dart';
+import 'package:myott/UI/TvSeries/TvSeries_details_page.dart';
+import 'package:myott/UI/Video/video_Detials_page.dart';
+import 'package:myott/video_player/component/verticalPlayerPage.dart';
 
 import '../Binding/auth_binding.dart';
 import '../UI/Auth/Login/login_page.dart';
@@ -14,7 +17,11 @@ class AppPages {
     GetPage(name: AppRoutes.LOGIN, page: () => LoginPage(), binding: AuthBinding()),
     GetPage(name: AppRoutes.PROFILE_CREATION, page: () => CompleteProfileScreen(), binding: AuthBinding()),
     GetPage(name: AppRoutes.HOME, page: () => MainScreen()),
-    GetPage(name: AppRoutes.MOVIES, page: () => MovieDetailsPage(),arguments: {}),
+    GetPage(name: AppRoutes.MOVIEDETAILS, page: () => MovieDetailsPage(),arguments: {}),
     GetPage(name: AppRoutes.SPLASH, page: () => MainScreen()),
+    GetPage(name: AppRoutes.TVSERIESDETAILS, page: () => TvSeriesDetailsPage(),arguments: {}),
+    GetPage(name: AppRoutes.VIDEODETAILS, page: () => VideoDetialsPage(),arguments: {}),
+    // GetPage(name: AppRoutes.VERTICAlPLAYER, page: () => VerticalPlayerPage(),arguments: {}),
+
   ];
 }

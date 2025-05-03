@@ -31,12 +31,11 @@ class MovieDetailsPage extends StatefulWidget {
 }
 
 
-
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   final MovieController movieController = Get.put(MovieController());
-  final ProfileController profileController=Get.put(ProfileController());
-  final SettingController settiingController=Get.put(SettingController());
+  final ProfileController profileController = Get.put(ProfileController());
+  final SettingController settiingController = Get.put(SettingController());
 
 
   @override
@@ -45,8 +44,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     movieController.fetchMovieDetails(slug);
     movieController.checkWishlistStatus(slug);
     profileController.fetchProfileData();
-
-
   }
 
   @override
@@ -77,14 +74,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MovieBanner(movie: movie,),
+                MovieBanner(),
                 ExpandableDescription(
                   description: movie!.movie.description,
                 ),
                 SizedBox(
                   height: 10.h,
                 ),
-                MoviesActionButtons(movieController: movieController, movie: movie),
+                MoviesActionButtons(
+                    movieController: movieController, movie: movie),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -100,12 +98,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   comments: movie.comment,
                   controller: movieController.commentController,
                   onSend: () {
-                    movieController.addCommentForMovie(movie.movie.id, movie.movie.slug);
+                    movieController.addCommentForMovie(
+                        movie.movie.id, movie.movie.slug);
                   },
                   onDelete: (comment) {
-                    movieController.deleteCommentForMovie(comment.id, movie.movie.slug);
+                    movieController.deleteCommentForMovie(
+                        comment.id, movie.movie.slug);
                   },
-                  currentUserId: profileController.user.value!.id ?? 0, // ✅ Pass logged-in user ID
+                  currentUserId: profileController.user.value!.id ??
+                      0, // ✅ Pass logged-in user ID
                 )
 
 
@@ -120,22 +121,22 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void dispose() {
     Get.delete<MovieController>();
+    super.dispose(); // 🛑 This line is mandatory!
+
   }
 }
 
 class MovieBanner extends StatelessWidget {
-   MovieBanner({
-    super.key,
-    required this.movie,
+  MovieBanner({super.key});
 
-  });
+  final MovieController controller = Get.find<MovieController>();
 
-  final MovieDetailsModel? movie;
   bool _checkHasAccess(MOrder? order, String contentType) {
     contentType = contentType.trim();
 
     if (contentType == "subsriptionSystem" || contentType == "pricingSection") {
-      return order != null && order.endDate != null && order.endDate!.isAfter(DateTime.now());
+      return order != null && order.endDate != null &&
+          order.endDate!.isAfter(DateTime.now());
     }
 
     if (contentType == "coinCostSection") {
@@ -145,27 +146,31 @@ class MovieBanner extends StatelessWidget {
     return false;
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final MOrder? order = movie!.movie.movieOrder; // or movie!.movie.order if renamed
+    return Obx(() {
+      final movie = controller.movieDetails.value;
+      final MOrder? order = controller.movieOrder.value;
 
-    print("🔥 DEBUG VALUES 🔥");
-    print("🎬 isFree: ${movie!.movie.packages.free}");
-    print("📦 selection: ${movie!.movie.packages.selection}");
-    print("🔐 hasAccess: ${_checkHasAccess(order,movie!.movie.packages.selection)}");
+      if (movie == null) {
+        return SizedBox.shrink(); // or a loading indicator
+      }
 
-    if (order != null) {
-      print("📦 Orders Count: 1");
-      print("📄 Order ID: ${order.orderId}");
-      print("🗓️ Start: ${order.startDate} - End: ${order.endDate}");
-      print("✅ Is Active: ${order.endDate.isAfter(DateTime.now())}");
-    } else {
-      print("❌ No Order Found");
-    }
+      print("🔥 DEBUG VALUES 🔥");
+      print("🎬 isFree: ${movie.movie.packages.free}");
+      print("📦 selection: ${movie.movie.packages.selection}");
+      print("🔐 hasAccess: ${_checkHasAccess(order, movie.movie.packages.selection)}");
 
+      if (order != null) {
+        print("📦 Orders Count: 1");
+        print("📄 Order ID: ${order.orderId}");
+        print("🗓️ Start: ${order.startDate} - End: ${order.endDate}");
+        print("✅ Is Active: ${order.endDate.isAfter(DateTime.now())}");
+      } else {
+        print("❌ No Order Found");
+      }
 
-    return Container(
+      return Container(
         height: 400.h,
         child: Stack(
           children: [
@@ -173,7 +178,7 @@ class MovieBanner extends StatelessWidget {
               child: Stack(
                 children: [
                   NetworkImageWidget(
-                    imageUrl: movie!.movie.thumbnailImg,
+                    imageUrl: movie.movie.thumbnailImg,
                     width: double.infinity,
                     height: 400.h,
                     fit: BoxFit.cover,
@@ -182,23 +187,24 @@ class MovieBanner extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     height: 400.h,
-                    color: AppColors.black.withOpacity(
-                        0.7), // Black overlay with 50% opacity
+                    color: AppColors.black.withOpacity(0.7),
                   ),
                 ],
               ),
             ),
             Positioned(
-                top: 10,
-                left: 10,
-                child: IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: AppColors.white,
-                    ))),
+              top: 10,
+              left: 10,
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: AppColors.white,
+                ),
+              ),
+            ),
             Positioned(
               bottom: 20,
               left: 10,
@@ -210,11 +216,10 @@ class MovieBanner extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: NetworkImageWidget(
-                        imageUrl: movie!.movie.posterImg,
+                        imageUrl: movie.movie.posterImg,
                         fit: BoxFit.cover,
                         width: 140.w,
                         errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
-
                       ),
                     ),
                   ),
@@ -223,21 +228,20 @@ class MovieBanner extends StatelessWidget {
                     width: 200.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(height: 20.h),
                         Text(
-                          movie!.movie.name,
+                          movie.movie.name,
                           style: AppTextStyles.Headingb4,
                           maxLines: 2,
                         ),
                         Row(
                           children: [
                             Text(
-                              movie!.movie.releaseYear, // Release Year
+                              movie.movie.releaseYear,
                               style: AppTextStyles.SubHeadingb3,
                             ),
-                            SizedBox(width: 10.w), // Space between year and maturity
+                            SizedBox(width: 10.w),
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                               decoration: BoxDecoration(
@@ -245,52 +249,48 @@ class MovieBanner extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Text(
-                                movie!.movie.maturity, // Maturity Rating
+                                movie.movie.maturity,
                                 style: AppTextStyles.SubHeadingb3.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10.w,),
-                            movie!.movie.packages.free
-                                ? SizedBox.shrink() // Show nothing if free
+                            SizedBox(width: 10.w),
+                            movie.movie.packages.free
+                                ? SizedBox.shrink()
                                 : Icon(
-                              Icons.workspace_premium, // Use premium-related icon
-                              color: Colors.amber, // Highlighted color for premium
-                              size: 25.w, // Adjust size as needed
+                              Icons.workspace_premium,
+                              color: Colors.amber,
+                              size: 25.w,
                             ),
-
                           ],
                         ),
                         SizedBox(height: 10.h),
-
                         ContentAccessButton(
-                          coinPrice: movie!.movie.packages.coinCost,
-                          slug: movie!.movie.slug,
-                          isFree: movie!.movie.packages.free,
-                          selection: movie!.movie.packages.selection.toString(),
-                          hasAccess: _checkHasAccess(movie!.movie.movieOrder, movie!.movie.packages.selection.toString()),
-                          videoUrl: movie!.movie.movieUploadUrl,
-                          subtitles: movie!.movie.subtitles,
-                          // dubbedLanguages: movie!.movie.dubbedLanguages,
-                          contentId: movie!.movie.id,
-                          contentCost: movie!.movie.packages.coinCost,
+                          coinPrice: movie.movie.packages.coinCost,
+                          slug: movie.movie.slug,
+                          isFree: movie.movie.packages.free,
+                          selection: movie.movie.packages.selection.toString(),
+                          hasAccess: _checkHasAccess(order, movie.movie.packages.selection.toString()),
+                          videoUrl: movie.movie.movieUploadUrl,
+                          subtitles: movie.movie.subtitles,
+                          contentId: movie.movie.id,
+                          contentCost: movie.movie.packages.coinCost,
                           contentType: MediaType.movie.name,
-                          planPrice: movie!.movie.packages.planPrice,
-                          offerPrice: movie!.movie.packages.offerPrice,
+                          planPrice: movie.movie.packages.planPrice,
+                          offerPrice: movie.movie.packages.offerPrice,
                         ),
                         SizedBox(height: 10.h),
                         CustomButton(
                           width: 180.w,
                           text: "Trailer",
                           onPressed: () {
-
-                              Get.to(VideoPlayerPage(
-                                videoUrl: movie!.movie.trailerUrl,
-                                subtitles: movie!.movie.subtitles,
-                                dubbedLanguages: {},
-                              ));
+                            Get.to(VideoPlayerPage(
+                              videoUrl: movie.movie.trailerUrl,
+                              subtitles: movie.movie.subtitles,
+                              dubbedLanguages: {},
+                            ));
                           },
                           backgroundColor: Colors.black,
                           borderColor: Colors.white,
@@ -302,7 +302,9 @@ class MovieBanner extends StatelessWidget {
               ),
             )
           ],
-        ));
+        ),
+      );
+    });
   }
 }
 
@@ -322,19 +324,20 @@ class MoviesActionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-          onTap: (){
+          onTap: () {
             movieController.toggleWishlist(movie!.movie.id, "M");
           },
           child: Column(
             children: [
-              Obx(() => Icon(
-                movieController.isWishlisted.value
-                    ? CupertinoIcons.heart_fill
-                    : CupertinoIcons.add,
-                color: movieController.isWishlisted.value
-                    ? Colors.red
-                    : Colors.white,
-              )),
+              Obx(() =>
+                  Icon(
+                    movieController.isWishlisted.value
+                        ? CupertinoIcons.heart_fill
+                        : CupertinoIcons.add,
+                    color: movieController.isWishlisted.value
+                        ? Colors.red
+                        : Colors.white,
+                  )),
 
               SizedBox(height: 10),
               Obx(() =>
@@ -348,7 +351,7 @@ class MoviesActionButtons extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             movieController.toggleRate();
             Get.bottomSheet(
               RatingBottomSheet(movieId: movie!.movie.id, type: "M"),
@@ -376,8 +379,9 @@ class MoviesActionButtons extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: (){
-            movieController.shareContent(movie!.movie.name, "Movie", movie!.movie.movieUploadUrl);
+          onTap: () {
+            movieController.shareContent(
+                movie!.movie.name, "Movie", movie!.movie.movieUploadUrl);
           },
           child: Column(
             children: [

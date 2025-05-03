@@ -13,6 +13,7 @@ class PaymentData {
   final String? packageStatus;
   final String? packageType;
   final String? paymentType;
+  final String? slug;
   final int? packageid;
   final String? email;
   final String? contact;
@@ -28,6 +29,7 @@ class PaymentData {
     this.currency,
     this.transactionID,
     this.transactionStatus,
+    this.slug,
     this.packageStatus,
     this.packageType,
     this.paymentType,
@@ -92,6 +94,7 @@ class PaymentData {
     String? paymentType,
     int? packageid,
     String? email,
+    String? slug,
     String? contact,
     int? contentId,
     MediaType? contentType,
@@ -109,6 +112,7 @@ class PaymentData {
       paymentType: paymentType ?? this.paymentType,
       packageid: packageid ?? this.packageid,
       email: email ?? this.email,
+      slug: slug ?? this.slug,
       contact: contact ?? this.contact,
       contentId: contentId ?? this.contentId,
       contentType: contentType ?? this.contentType,

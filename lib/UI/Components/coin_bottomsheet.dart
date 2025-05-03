@@ -170,18 +170,18 @@ Future<void> _callCoinPurchaseApi({
 
 
     if (success) {
-
-
-      if (contentType == MediaType.movie.toString()) {
+      print("entered if block");
+      if (contentType == MediaType.movie.name) {
+        print("Movie content type detected");
         final movieController = Get.put(MovieController());
-        await movieController.refreshMovieDetails();
-      }
-      else if (contentType == MediaType.series.toString()) {
-        final seriesController = Get.find<TVSeriesController>();
-         seriesController.fetchTVSeriesDetails(slug);
-      }
-      else if(contentType == MediaType.video.toString()){
-        final videoController = Get.find<VideoDetailsController>();
+        await Future.delayed(Duration(milliseconds: 300)); // Optional delay
+        await movieController.fetchMovieDetails(slug);     // ✅ Use passed slug
+        movieController.movieOrder.refresh();
+      } else if (contentType == MediaType.series.name) {
+        final seriesController = Get.put(TVSeriesController());
+        seriesController.fetchTVSeriesDetails(slug);
+      } else if (contentType == MediaType.video.name) {
+        final videoController = Get.put(VideoDetailsController());
         videoController.fetchVideoDetails(slug);
       }
       Get.snackbar("Success", "🎉 Content Unlocked!",
@@ -189,7 +189,6 @@ Future<void> _callCoinPurchaseApi({
       final profileController = Get.find<ProfileController>();
       await profileController.refreshUser(); // 🔄 refresh user data
       dismissLoading();
-
     } else {
       Get.snackbar("Error", "⚠️ Failed to unlock content.",
           backgroundColor: Colors.red, colorText: Colors.white);
@@ -203,3 +202,4 @@ Future<void> _callCoinPurchaseApi({
         backgroundColor: Colors.red, colorText: Colors.white);
   }
 }
+

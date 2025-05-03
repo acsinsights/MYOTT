@@ -14,7 +14,7 @@ class APIEndpoints {
   static const String createOrderCoin = "create-order/coins";
   static const String createOrderPPV = "create-order/ppv";
 
-  static  String invoice(int orderID) => "$baseurl+invoice/$orderID?secret=$_secretKey";
+  static  String invoice(int orderID) => baseurl+"invoice/$orderID?secret=$_secretKey";
 
 
   //WatchHisoty

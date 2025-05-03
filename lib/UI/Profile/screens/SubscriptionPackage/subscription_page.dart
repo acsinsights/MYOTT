@@ -11,6 +11,14 @@ class SubscriptionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args = Get.arguments ?? {};
+    final String contentTypeString = args['content_type'] ?? 'None';
+    final String slug=args['slug'] ?? "";
+
+    final MediaType contentType = MediaType.values.firstWhere(
+          (e) => e.name == contentTypeString,
+      orElse: () => MediaType.None,
+    );
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -190,7 +198,8 @@ class SubscriptionScreen extends StatelessWidget {
                         "offer_price": hasOffer ? plan.offerPrice : null,
                         "currency": plan.currency,
                         "content_id": 0,
-                        "content_type": MediaType.movie.name,
+                        "content_type": contentType.name,
+                        "slug": slug,
                       });
                     },
                   ),

@@ -13,6 +13,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../Core/Utils/app_colors.dart';
 import '../../Core/Utils/app_common.dart';
 import '../../Core/Utils/app_text_styles.dart';
+import '../../routes/app_routes.dart';
 import '../../video_player/component/Video_player_page.dart';
 import '../../video_player/component/verticalPlayerPage.dart';
 import '../Actors/Components/actor_list.dart';
@@ -445,7 +446,7 @@ class LatestDramaMandSList extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   if (item.type == MediaType.movie) {
-                    Get.to(() => MovieDetailsPage(), arguments: {
+                    Get.toNamed(AppRoutes.MOVIEDETAILS, arguments: {
                       "movieId": item.id,
                       "slug": item.slug,
                     });
