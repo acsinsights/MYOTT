@@ -25,7 +25,7 @@ class PaymentSelectionScreen extends StatelessWidget {
     final int contentId = args['content_id'] ?? 0;
     final String slug=args['slug'] ?? "";
 
-    final String contentTypeString = args['content_type'] ?? 'movie';
+    final String contentTypeString = args['content_type'];
     final MediaType contentType = MediaType.values.firstWhere(
           (e) => e.name == contentTypeString,
       orElse: () => MediaType.None,

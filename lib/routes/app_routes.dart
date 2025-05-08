@@ -7,6 +7,6 @@ class AppRoutes {
   static const String VIDEODETAILS = '/videoDetails';
   static const String SPLASH = '/splash';
   static const String SETTINGS = '/settings';
-  static const String VERTICAlPLAYER = '/verticalPlayer';
+  static const String VERTICAlPLAYERPAGE = '/verticalPlayerPage';
 
 }

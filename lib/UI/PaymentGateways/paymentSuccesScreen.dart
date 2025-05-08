@@ -13,12 +13,14 @@ class PaymentSuccessScreen extends StatefulWidget {
   final String transactionId;
   final String slug;
   final String contentType;
+  final int? contentId;
 
   const PaymentSuccessScreen({
     super.key,
     required this.transactionId,
     required this.slug,
     required this.contentType,
+    this.contentId,
   });
 
   @override
@@ -57,10 +59,12 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
 
   void _redirectToContentDetails() {
     Get.until((route) {
+      print('Current route in stack: ${route.settings.name}');
       if (route.settings.name == '/moviedetails' ||
-          route.settings.name == '/tvSeriesDetails' ||
+          route.settings.name == '/verticalPlayerPage' ||
           route.settings.name == '/videoDetails') {
         found = true;
+        print('Found existing route: ${route.settings.name}');
         return true;
       }
       return false;
@@ -68,24 +72,36 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
 
     if (!found) {
       if (widget.contentType == MediaType.movie.name) {
+        print("Navigating to: /movieDetails");
         Get.offNamed('/movieDetails', arguments: {'slug': widget.slug});
       } else if (widget.contentType == MediaType.series.name) {
-        Get.offNamed('/verticalPlayer', arguments: {'slug': widget.slug});
+        print("Navigating to: /verticalPlayerPage");
+        print("Content ID: ${widget.contentId}");
+        print("Slug from paysuccess: ${widget.slug}");
+        Get.offNamed('/verticalPlayerPage', arguments: {
+          'slug': widget.slug,
+          'contentId': widget.contentId
+        });
       } else if (widget.contentType == MediaType.video.name) {
+        print("Navigating to: /videoDetails");
         Get.offNamed('/videoDetails', arguments: {'slug': widget.slug});
-      }else{
+      } else {
+        print("Navigating to: MainScreen()");
         Get.offAll(MainScreen());
       }
     }
 
     // 🔄 Refresh the correct content controller
     if (widget.contentType == MediaType.movie.name) {
+      print("Fetching movie details for slug: ${widget.slug}");
       final controller = Get.put(MovieController());
       controller.fetchMovieDetails(widget.slug);
     } else if (widget.contentType == MediaType.series.name) {
+      print("Fetching series details for slug: ${widget.slug}");
       final controller = Get.find<TVSeriesController>();
       controller.fetchTVSeriesDetails(widget.slug);
     } else if (widget.contentType == MediaType.video.name) {
+      print("Fetching video details for slug: ${widget.slug}");
       final controller = Get.find<VideoDetailsController>();
       controller.fetchVideoDetails(widget.slug);
     }

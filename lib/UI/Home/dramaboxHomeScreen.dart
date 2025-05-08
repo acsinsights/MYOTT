@@ -16,6 +16,7 @@ import '../../Core/Utils/app_text_styles.dart';
 import '../../routes/app_routes.dart';
 import '../../video_player/component/Video_player_page.dart';
 import '../../video_player/component/verticalPlayerPage.dart';
+import '../../video_player/component/verticalPlayerPagee.dart';
 import '../Actors/Components/actor_list.dart';
 import '../Components/MovieListShrimerLoad.dart';
 import '../Components/Movie_grid.dart';
@@ -241,7 +242,7 @@ class RoundedVideoList extends StatelessWidget {
 
               return GestureDetector(
                 onTap: () {
-                  Get.to(VideoDetialsPage(), arguments: {
+                  Get.toNamed(AppRoutes.VIDEODETAILS, arguments: {
                     "videoId": video.id,
                     "slug": video.slug
                   });
@@ -340,14 +341,11 @@ class RoundedTvSeriesList extends StatelessWidget {
                       Get.put(TVSeriesController());
                     }));
                   }else{
-                    Get.to(VerticalPlayerPage(
-                      episodes: item!.episodes,
-                      seriesPackage: item.seriesPackage,
-                      order: item.seriesorder,
-                      slug: item.slug,
-                      contentId: item.id,
-                      title: item.name,
-                    ));
+                    Get.toNamed(AppRoutes.VERTICAlPLAYERPAGE, arguments: {
+                      "slug": item.slug,
+                      "contentId": item.id
+                    });
+
 
                   }
 
@@ -634,7 +632,7 @@ class MovieSlider extends StatelessWidget {
                         });
                         break;
                       case 'v':
-                        Get.to(VideoDetialsPage(), arguments: {
+                        Get.toNamed(AppRoutes.VIDEODETAILS, arguments: {
                           "slug": content.slug
                         });
                       case 'a':

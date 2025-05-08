@@ -180,13 +180,14 @@ Future<void> _callCoinPurchaseApi({
       } else if (contentType == MediaType.series.name) {
         final seriesController = Get.put(TVSeriesController());
         seriesController.fetchTVSeriesDetails(slug);
+        seriesController.torder.refresh();
       } else if (contentType == MediaType.video.name) {
         final videoController = Get.put(VideoDetailsController());
         videoController.fetchVideoDetails(slug);
       }
       Get.snackbar("Success", "🎉 Content Unlocked!",
           backgroundColor: Colors.green, colorText: Colors.white);
-      final profileController = Get.find<ProfileController>();
+      final profileController = Get.put(ProfileController());
       await profileController.refreshUser(); // 🔄 refresh user data
       dismissLoading();
     } else {

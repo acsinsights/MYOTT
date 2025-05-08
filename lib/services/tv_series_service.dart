@@ -21,7 +21,7 @@ class TVSeriesService {
     } on DioException catch (e) {
       print("API Error: ${e.response?.statusCode} - ${e.message}");
     } catch (e) {
-      print("Unexpected Error: $e");
+      print("Unexpected Error from TvSeries: $e");
     }
     return [];
   }
@@ -39,7 +39,7 @@ class TVSeriesService {
     } on DioException catch (e) {
       print("API Error: ${e.response?.statusCode} - ${e.message}");
     } catch (e) {
-      print("Unexpected Error: $e");
+      print("Unexpected Error in fetchtvseriesdetails: $e");
     }
     return null;
   }

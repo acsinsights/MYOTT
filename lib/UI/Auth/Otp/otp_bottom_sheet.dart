@@ -10,9 +10,22 @@ import '../../../Core/Utils/app_text_styles.dart';
 import '../../Components/custom_button.dart';
 import 'otp_controller.dart';
 
-class OtpBottomSheet extends StatelessWidget {
+class OtpBottomSheet extends StatefulWidget {
+  @override
+  State<OtpBottomSheet> createState() => _OtpBottomSheetState();
+}
+
+class _OtpBottomSheetState extends State<OtpBottomSheet> {
   final OtpController otpController = Get.find<OtpController>();
+
   final AuthController authController = Get.find<AuthController>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    otpController.startTimer();
+  }
 
   @override
   Widget build(BuildContext context) {

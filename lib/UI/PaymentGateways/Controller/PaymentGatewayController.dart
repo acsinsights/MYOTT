@@ -72,9 +72,13 @@ class PaymentGatewayController extends GetxController {
     try {
       showLoading();
       await _paymentService.sendPaymentDataToBackend(data);
+      print("Payment Data Sent: ${data.toJson()}"); // Debugging
+      print("Slug from Payment Gateway: ${data.slug}");
       Get.off( PaymentSuccessScreen(transactionId: data.transactionID ?? "",
       slug: data.slug ?? "",
         contentType: data.contentType!.name,
+        contentId: data.contentId,
+
       ));
       showSnackbar("Success", "Payment successfully");
       dismissLoading();

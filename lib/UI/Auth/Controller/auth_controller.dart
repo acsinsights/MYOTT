@@ -7,6 +7,7 @@ import 'package:myott/UI/Auth/Login/login_page.dart';
 import 'package:myott/UI/Profile/Components/CompleteProfileScreen.dart';
 import 'package:myott/UI/Profile/screens/EditProfile/EditProfileScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../Core/Utils/app_common.dart';
 import '../../../services/SecureStorageService.dart';
 import '../../Home/Main_screen.dart';
 import '../Model/otp_response_model.dart';
@@ -136,6 +137,7 @@ class AuthController extends GetxController {
 
   Future<void> verifyOtp() async {
     String otp = otpController.otpController.text.trim();
+    // String otp="123456";
     String identifier = emailAddress.value.isNotEmpty ? emailAddress.value : mobileNumber.value;
     print("///////////////////////////////////////////////////////////////////////////////"+identifier);
 
@@ -169,6 +171,7 @@ class AuthController extends GetxController {
         } else {
           Get.offAll(() => MainScreen());
         }
+        showSnackbar("Success", "OTP Verified Successfully");
 
         Get.snackbar("Success", response.message,
             snackPosition: SnackPosition.TOP,

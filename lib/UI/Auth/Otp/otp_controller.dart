@@ -9,7 +9,6 @@ class OtpController extends GetxController {
 
   @override
   void onInit() {
-    startTimer();
     super.onInit();
   }
 

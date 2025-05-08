@@ -28,6 +28,13 @@ class WatchHistoryController extends GetxController {
     }
   }
 
+  Future<void>addHistory(String type, int id) async {
+    final added = await watchHistoryService.addWatchHistory(type, id);
+    if (added) {
+      fetchWatchHistory();
+    }
+  }
+
   Future<void> deleteHistory(String type, int id) async {
     final deleted = await watchHistoryService.deleteWatchHistory(type, id);
     if (deleted) {

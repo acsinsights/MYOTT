@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:myott/services/tv_series_service.dart';
 import 'package:myott/UI/TvSeries/Model/TVSeriesDetailsModel.dart';
-import 'package:myott/UI/TvSeries/Model/TvSeriesModel.dart';
 import 'package:myott/services/wishlistService.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -15,10 +14,11 @@ class TVSeriesController extends GetxController {
 final WishlistService wishlistService=WishlistService();
 CommentService commentService=CommentService();
   var comments = <SeriesComments>[].obs;
+  var episodes = <Episode>[].obs;
 
   var isLoading = false.obs;
   var tvSeriesDetails = Rxn<SeriesDetailResponse>();
-  var torder=Rxn<SOrder>();
+  var torder=Rxn<SOrder?>(null);
   var isDetailsLoading = true.obs;
   var isDownloaded = false.obs;
   var isWishlisted = false.obs;
@@ -38,7 +38,7 @@ CommentService commentService=CommentService();
 
 
 
-  void fetchTVSeriesDetails(String slug) async {
+  Future<void> fetchTVSeriesDetails(String slug) async {
     try {
       isLoading.value = true; // ✅ Use isDetailsLoading, not isLoading
 
@@ -47,6 +47,7 @@ CommentService commentService=CommentService();
         tvSeriesDetails.value = fetchedTVSeriesDetails;
         comments.assignAll(fetchedTVSeriesDetails.comments); // Initialize comments separately
         torder.value = fetchedTVSeriesDetails.series.seriesorder;
+        episodes.assignAll(fetchedTVSeriesDetails.episodes);
         torder.refresh();
         print("🔄 Refreshed seriesOrder: ${fetchedTVSeriesDetails.series.seriesorder}");
 

@@ -10,6 +10,7 @@ class VideoDetailsController extends GetxController{
   final VideoService videoService=VideoService();
   final WishlistService wishlistService=WishlistService();
   var videoDetails = Rxn<VideoDetailsModel>(null);
+  var videoOrder = Rxn<VOrder>(null);
   var isWishList = false.obs;
   var isRated = false.obs;
   var isLiked = false.obs;
@@ -25,7 +26,7 @@ class VideoDetailsController extends GetxController{
 
       if(fetchedVideoDetails!=null){
         videoDetails.value = fetchedVideoDetails;
-
+        videoOrder.value = fetchedVideoDetails.vOrder;
       }
 
     } catch (e) {

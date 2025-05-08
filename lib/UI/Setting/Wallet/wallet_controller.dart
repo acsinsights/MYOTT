@@ -40,7 +40,8 @@ class WalletController extends GetxController {
     final Data = {
       "price": amount.toInt(),
       "currency": currency,
-      "paymentType": "wallet"
+      "paymentType": "wallet",
+      "content_type": MediaType.None.name
     };
 
     Get.to(PaymentSelectionScreen(), arguments: Data);

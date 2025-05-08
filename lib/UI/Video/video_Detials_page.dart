@@ -15,6 +15,7 @@ import '../Components/buildAccessButton.dart';
 import '../Components/custom_button.dart';
 import '../Components/network_image_widget.dart';
 import '../Movie/Component/RatingBottomSheet.dart';
+import '../Profile/Controller/ProfileController.dart';
 
 class VideoDetialsPage extends StatefulWidget {
   @override
@@ -23,17 +24,19 @@ class VideoDetialsPage extends StatefulWidget {
 
 class _VideoDetialsPageState extends State<VideoDetialsPage> {
   VideoDetailsController videoDetailsController =
-      Get.put(VideoDetailsController());
+  Get.put(VideoDetailsController());
+  final ProfileController profileController = Get.put(ProfileController());
 
   @override
   void initState() {
     var slug = Get.arguments["slug"];
     videoDetailsController.fetchVideoDetails(slug);
+    profileController.fetchProfileData();
+
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
@@ -41,8 +44,8 @@ class _VideoDetialsPageState extends State<VideoDetialsPage> {
             if (videoDetailsController.videoDetails.value == null) {
               return Center(
                   child: CircularProgressIndicator(
-                color: Colors.white,
-              ));
+                    color: Colors.white,
+                  ));
             }
             if (videoDetailsController.videoDetails.value == null) {
               return Center(
@@ -54,38 +57,39 @@ class _VideoDetialsPageState extends State<VideoDetialsPage> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                  VideoBanner(
-                    video: videoDetails!,
-                  ),
-                  SizedBox(height: 10),
-                  ExpandableDescription(description: videoDetails.description),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        videoActionButtons(
-                            videodetailsController: videoDetailsController,
-                            videos: videoDetails),
-                        SizedBox(
-                          height: 5.h,
+                      VideoBanner(
+                      ),
+                      SizedBox(height: 10),
+                      ExpandableDescription(
+                          description: videoDetails!.description),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            videoActionButtons(
+                                videodetailsController: videoDetailsController,
+                                videos: videoDetails),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            VideoActorListWidget(
+                                actors: videoDetails.cast.actors,
+                                label: "Actors"),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            VideoActorListWidget(
+                                actors: videoDetails.cast.directors,
+                                label: "Directors"),
+                            VideosGenreList(videodetails: videoDetails),
+                            SizedBox(
+                              height: 30.h,
+                            )
+                          ],
                         ),
-                        VideoActorListWidget(
-                            actors: videoDetails.cast.actors, label: "Actors"),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        VideoActorListWidget(
-                            actors: videoDetails.cast.directors,
-                            label: "Directors"),
-                        VideosGenreList(videodetails: videoDetails),
-                        SizedBox(
-                          height: 30.h,
-                        )
-                      ],
-                    ),
-                  )
-                ]));
+                      )
+                    ]));
           }),
         ));
   }
@@ -93,7 +97,6 @@ class _VideoDetialsPageState extends State<VideoDetialsPage> {
   @override
   void dispose() {
     Get.delete<VideoDetailsController>();
-
   }
 }
 
@@ -169,7 +172,7 @@ class VideosGenreList extends StatelessWidget {
                       ),
                       child: Center(
                         child:
-                            Text(genre.name, style: AppTextStyles.SubHeadingb2),
+                        Text(genre.name, style: AppTextStyles.SubHeadingb2),
                       ),
                     ),
                   ),
@@ -184,17 +187,15 @@ class VideosGenreList extends StatelessWidget {
 }
 
 class VideoBanner extends StatelessWidget {
-  const VideoBanner({
-    super.key,
-    required this.video,
-  });
 
-  final VideoDetailsModel? video;
+  final VideoDetailsController controller = Get.find<VideoDetailsController>();
+
   bool _checkHasAccess(VOrder? order, String contentType) {
     contentType = contentType.trim();
 
     if (contentType == "subsriptionSystem" || contentType == "pricingSection") {
-      return order != null && order.endDate != null && order.endDate!.isAfter(DateTime.now());
+      return order != null && order.endDate != null &&
+          order.endDate!.isAfter(DateTime.now());
     }
 
     if (contentType == "coinCostSection") {
@@ -205,148 +206,153 @@ class VideoBanner extends StatelessWidget {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
-    final VOrder? order = video!.vOrder; // or movie!.movie.order if renamed
+    return Obx(() {
+      final video= controller.videoDetails.value;
+      final VOrder? order = controller.videoOrder.value;
+      if(video==null){
+        return SizedBox.shrink(); // or a loading indicator
 
-    print("🔥 DEBUG VALUES 🔥");
-    print("🎬 isFree: ${video!.videoPackage.free}");
-    print("📦 selection: ${video!.videoPackage.selection}");
-    print("🔐 hasAccess: ${_checkHasAccess(order,video!.videoPackage.selection)}");
-    print("Video Url: ${video!.trailerUrl}");
+      }
 
+      print("🔥 DEBUG VALUES 🔥");
+      print("🎬 isFree: ${video!.videoPackage.free}");
+      print("📦 selection: ${video!.videoPackage.selection}");
+      print("🔐 hasAccess: ${_checkHasAccess(order,video!.videoPackage.selection)}");
+      print("Video Url: ${video!.trailerUrl}");
+      if (order != null) {
+        print("📦 Orders Count: 1");
+        print("📄 Order ID: ${order.orderId}");
+        print("🗓️ Start: ${order.startDate} - End: ${order.endDate}");
+        print("✅ Is Active: ${order.endDate.isAfter(DateTime.now())}");
+      } else {
+        print("❌ No Order Found");
+      }
+      return Container(
+          height: 400.h,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Stack(
+                  children: [
+                    NetworkImageWidget(
+                      imageUrl: video!.thumbnailImg,
+                      width: double.infinity,
+                      height: 400.h,
+                      fit: BoxFit.cover,
+                      errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
 
-    if (order != null) {
-      print("📦 Orders Count: 1");
-      print("📄 Order ID: ${order.orderId}");
-      print("🗓️ Start: ${order.startDate} - End: ${order.endDate}");
-      print("✅ Is Active: ${order.endDate.isAfter(DateTime.now())}");
-    } else {
-      print("❌ No Order Found");
-    }
-
-    return Container(
-        height: 400.h,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Stack(
-                children: [
-                  NetworkImageWidget(
-                    imageUrl: video!.thumbnailImg,
-                    width: double.infinity,
-                    height: 400.h,
-                    fit: BoxFit.cover,
-                    errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
-
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 400.h,
-                    color: Colors.black
-                        .withOpacity(0.7), // Black overlay with 50% opacity
-                  ),
-                ],
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 400.h,
+                      color: Colors.black
+                          .withOpacity(0.7), // Black overlay with 50% opacity
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Positioned(
-                top: 10,
+              Positioned(
+                  top: 10,
+                  left: 10,
+                  child: IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      ))),
+              Positioned(
+                bottom: 20,
                 left: 10,
-                child: IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    ))),
-            Positioned(
-              bottom: 20,
-              left: 10,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 200.h,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: NetworkImageWidget(
-                        imageUrl: video!.thumbnailImg,
-                        fit: BoxFit.cover,
-                        width: 140.w,
-                        errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 200.h,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: NetworkImageWidget(
+                          imageUrl: video!.thumbnailImg,
+                          fit: BoxFit.cover,
+                          width: 140.w,
+                          errorAsset: "assets/images/movies/SliderMovies/movie-1.png",
 
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 20.w),
-                  Container(
-                    width: 200.w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 20.h),
-                        Text(
-                          video!.name,
-                          style: AppTextStyles.Headingb4,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              video!.releaseYear, // Release Year
-                              style: AppTextStyles.SubHeadingb3,
-                            ),
-                            SizedBox(
-                                width: 10.w), // Space between year and maturity
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w, vertical: 2.h),
-                              decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.circular(5),
+                    SizedBox(width: 20.w),
+                    Container(
+                      width: 200.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 20.h),
+                          Text(
+                            video!.name,
+                            style: AppTextStyles.Headingb4,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                video!.releaseYear, // Release Year
+                                style: AppTextStyles.SubHeadingb3,
                               ),
-                              child: Text(
-                                video!.maturity, // Maturity Rating
-                                style: AppTextStyles.SubHeadingb3.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                              SizedBox(
+                                  width: 10.w),
+                              // Space between year and maturity
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.w, vertical: 2.h),
+                                decoration: BoxDecoration(
+                                  color: Colors.yellow,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Text(
+                                  video!.maturity, // Maturity Rating
+                                  style: AppTextStyles.SubHeadingb3.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10.h),
-                        ContentAccessButton(
-                          coinPrice: video!.videoPackage.coinCost,
-                          slug: video!.slug,
-                          isFree:video!.videoPackage.free,
-                          selection: video!.videoPackage.selection.toString(),
-                          hasAccess: _checkHasAccess(video!.vOrder, video!.videoPackage.selection.toString()),
-                          videoUrl: video!.trailerUrl,
-                          subtitles: {},
-                          // dubbedLanguages: movie!.movie.dubbedLanguages,
-                          contentId: video!.id,
-                          contentCost: video!.videoPackage.coinCost,
-                          contentType: MediaType.video.name,
-                          planPrice: video!.videoPackage.planPrice,
-                          offerPrice: video!.videoPackage.offerPrice,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ));
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10.h),
+                          ContentAccessButton(
+                            coinPrice: video!.videoPackage.coinCost,
+                            slug: video!.slug,
+                            isFree: video!.videoPackage.free,
+                            selection: video!.videoPackage.selection.toString(),
+                            hasAccess: _checkHasAccess(order,
+                                video!.videoPackage.selection.toString()),
+                            videoUrl: video!.trailerUrl,
+                            subtitles: {},
+                            // dubbedLanguages: movie!.movie.dubbedLanguages,
+                            contentId: video!.id,
+                            contentCost: video!.videoPackage.coinCost,
+                            contentType: MediaType.video.name,
+                            planPrice: video!.videoPackage.planPrice,
+                            offerPrice: video!.videoPackage.offerPrice,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ));
+    });
   }
 }
 
@@ -356,6 +362,7 @@ class videoActionButtons extends StatelessWidget {
 
   final VideoDetailsController videodetailsController;
   final VideoDetailsModel videos;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -367,7 +374,8 @@ class videoActionButtons extends StatelessWidget {
           },
           child: Column(
             children: [
-              Obx(() => Icon(
+              Obx(() =>
+                  Icon(
                     videodetailsController.isWishList.value
                         ? CupertinoIcons.heart_fill
                         : CupertinoIcons.add,
@@ -376,7 +384,8 @@ class videoActionButtons extends StatelessWidget {
                         : Colors.white,
                   )),
               SizedBox(height: 10),
-              Obx(() => Text(
+              Obx(() =>
+                  Text(
                     videodetailsController.isWishList.value
                         ? "Wishlisted"
                         : "WishList",
@@ -447,11 +456,11 @@ class VideoActorListWidget extends StatelessWidget {
                       children: [
                         ClipOval(
                             child: NetworkImageWidget(
-                          height: 65.h,
-                          width: 65.w,
-                          imageUrl: actor.image,
-                          errorAsset: "assets/Avtars/person2.png",
-                        )),
+                              height: 65.h,
+                              width: 65.w,
+                              imageUrl: actor.image,
+                              errorAsset: "assets/Avtars/person2.png",
+                            )),
                         SizedBox(height: 5.h),
                         Text(
                           overflow: TextOverflow.ellipsis,
